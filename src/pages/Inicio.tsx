@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { EQUIPO, EQUIPO_NOMBRE, EVENTO, ESTADO_TXT, PREVIEW, RETO, SECCIONES } from '../config/proyecto'
+import { EQUIPO, EQUIPO_NOMBRE, EVENTO, PREVIEW, RETO, SECCIONES } from '../config/proyecto'
 import { Icon } from '../components/Icon'
 import { Avatar } from '../components/Avatar'
 import { NovaMark } from '../components/NovaMark'
-
-const TAG: Record<string, string> = { listo: 'ok', 'en-curso': 'warn', pendiente: 'off' }
+import { Tilt } from '../components/Tilt'
 
 function Preview() {
   const [falla, setFalla] = useState(false)
@@ -66,7 +65,7 @@ export default function Inicio() {
             <Constelacion n={EQUIPO.length} />
             <div className="grid g4">
               {EQUIPO.map((m) => (
-                <article key={m.nombre} className="card member">
+                <Tilt key={m.nombre} className="card member">
                   <Avatar m={m} />
                   <h3>{m.nombre}</h3>
                   <div className="rol">{m.rol || <span className="placeholder">Rol por completar</span>}</div>
@@ -78,7 +77,7 @@ export default function Inicio() {
                       {m.web && <a className="btn sm" href={m.web} target="_blank" rel="noreferrer"><Icon name="globe" size={14} />Web</a>}
                     </div>
                   )}
-                </article>
+                </Tilt>
               ))}
             </div>
           </div>
@@ -115,22 +114,6 @@ export default function Inicio() {
         <Preview />
       </section>
 
-      <section className="section">
-        <div className="section-head"><div><h2>Entregables</h2><p>El estado de cada parte.</p></div></div>
-        <div className="grid g4">
-          {secciones.map((s, i) => (
-            <Link key={s.id} to={s.ruta} className="card link-card sec-card">
-              <div className="top">
-                <span className="num">0{i + 1}</span>
-                <span className={`tag ${TAG[s.estado]}`}><span className="dot" />{ESTADO_TXT[s.estado]}</span>
-              </div>
-              <h3>{s.titulo}</h3>
-              <p>{s.resumen}</p>
-              <span className="go">Abrir <Icon name="arrow" size={14} /></span>
-            </Link>
-          ))}
-        </div>
-      </section>
     </div>
   )
 }

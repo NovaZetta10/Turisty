@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import {
   AVISO_SERIES, CIFRAS_2026, DATOS_ABIERTOS, DEBATES, ENTIDADES, FORMATO_HACKATHON, FUENTES,
@@ -8,17 +8,42 @@ import { Refs, Verificado } from '../components/Refs'
 import { Icon } from '../components/Icon'
 import { MapaIslas } from '../components/MapaIslas'
 import { Mercados } from '../components/Mercados'
+import { Contador } from '../components/Contador'
 
-const INDICE = [
-  ['esencial', 'Lo esencial'],
+const TABS = [
+  ['resumen', 'Resumen'],
   ['islas', 'Mapa por islas'],
   ['mercados', 'De dónde vienen'],
-  ['senales', 'Señales 2026'],
   ['temas', 'Temas y retos'],
   ['referentes', 'Benchmark'],
   ['extra', 'Datos y criterios'],
   ['fuentes', 'Fuentes'],
 ] as const
+type Tab = (typeof TABS)[number][0]
+
+/** Pestañas con un indicador que se desliza hasta la activa. */
+function Pestanas({ tab, setTab }: { tab: Tab; setTab: (t: Tab) => void }) {
+  const caja = useRef<HTMLDivElement>(null)
+  const [ind, setInd] = useState<{ x: number; y: number; w: number; h: number } | null>(null)
+  useLayoutEffect(() => {
+    const medir = () => {
+      const b = caja.current?.querySelector<HTMLButtonElement>(`[data-tab="${tab}"]`)
+      if (!b) return
+      setInd({ x: b.offsetLeft, y: b.offsetTop, w: b.offsetWidth, h: b.offsetHeight })
+      b.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+    }
+    medir(); window.addEventListener('resize', medir)
+    return () => window.removeEventListener('resize', medir)
+  }, [tab])
+  return (
+    <div className="tabs no-print" role="tablist" aria-label="Secciones de la investigación" ref={caja}>
+      {ind && <span className="tabs-ind" style={{ transform: `translate(${ind.x}px, ${ind.y}px)`, width: ind.w, height: ind.h }} />}
+      {TABS.map(([id, t]) => (
+        <button key={id} data-tab={id} role="tab" aria-selected={tab === id} className={tab === id ? 'on' : ''} onClick={() => setTab(id)}>{t}</button>
+      ))}
+    </div>
+  )
+}
 
 // Los cuatro números que hay que llevarse en la cabeza
 const ESENCIAL = [
@@ -29,9 +54,11 @@ const ESENCIAL = [
 ]
 
 export default function Investigacion() {
-  const [params] = useSearchParams()
+  const [params, setParams] = useSearchParams()
+  const tab = (TABS.find(([id]) => id === params.get('tab'))?.[0] ?? (params.get('f') ? 'fuentes' : 'resumen')) as Tab
+  const setTab = (t: Tab) => setParams({ tab: t }, { replace: true })
   const [cat, setCat] = useState('Todas')
-  const [verFuentes, setVerFuentes] = useState(false)
+  const [verFuentes, setVerFuentes] = useState(true)
   const [qf, setQf] = useState('')
   const categorias = useMemo(() => ['Todas', ...Array.from(new Set(REFERENTES.map((r) => r.categoria)))], [])
   const refs = REFERENTES.filter((r) => cat === 'Todas' || r.categoria === cat)
@@ -51,27 +78,25 @@ export default function Investigacion() {
     }, 60)
   }, [f])
 
-  const ir = (id: string) => (e: React.MouseEvent) => { e.preventDefault(); document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }) }
 
   return (
     <div className="wrap">
       <header className="page-head enter">
         <span className="kicker">Investigación previa · antes de conocer el reto</span>
         <h1>El turismo en Canarias, de un vistazo</h1>
-        <p>Primero los números, luego el mapa, y el detalle solo si hace falta. Cada dato lleva su fuente <span className="ref" style={{ pointerEvents: 'none' }}>n</span>.</p>
+        <p>Elige una pestaña. Cada dato lleva su fuente <span className="ref" style={{ pointerEvents: 'none' }}>n</span>.</p>
       </header>
 
       <div className="inv-layout">
-        <nav className="toc no-print" aria-label="Índice">
-          {INDICE.map(([id, t]) => <a key={id} href={`#${id}`} onClick={ir(id)}>{t}</a>)}
-        </nav>
+        <Pestanas tab={tab} setTab={setTab} />
 
-        <div>
+        <div key={tab} className="tab-panel" role="tabpanel">
+          {tab === 'resumen' && (<>
           <section id="esencial">
             <div className="hero-stats">
               {ESENCIAL.map((e, n) => (
                 <div key={e.l} className={`hero-stat enter enter-${n + 2}`}>
-                  <b>{e.v}</b>
+                  <b><Contador valor={e.v} /></b>
                   <span>{e.l}</span>
                   <small>{e.d} <Refs ids={e.f} /></small>
                 </div>
@@ -79,31 +104,36 @@ export default function Investigacion() {
             </div>
             <p className="nota"><Icon name="alert" size={14} /> {AVISO_SERIES}</p>
           </section>
-
-          <section id="islas" className="section">
-            <div className="section-head"><div><h2>Canarias por islas</h2><p>Pasa el ratón (o toca) una isla. Cambia el indicador para ver otro mapa de calor.</p></div></div>
-            <MapaIslas />
-          </section>
-
-          <section id="mercados" className="section">
-            <div className="section-head"><div><h2>¿De dónde vienen?</h2><p>Lanzarote vive del británico; La Palma, del alemán y del peninsular.</p></div></div>
-            <Mercados />
-          </section>
-
           <section id="senales" className="section">
             <div className="section-head"><div><h2>Señales de 2026</h2><p>Lo que ha cambiado este año.</p></div></div>
             <div className="senales">
-              {CIFRAS_2026.map((d) => (
-                <div key={d.etiqueta} className="senal">
-                  <b className={d.valor.startsWith('-') ? 'down' : ''}>{d.valor}</b>
+              {CIFRAS_2026.map((d, n) => (
+                <div key={d.etiqueta} className="senal enter" style={{ animationDelay: `${0.25 + n * 0.06}s` }}>
+                  <b className={d.valor.startsWith('-') ? 'down' : ''}><Contador valor={d.valor} /></b>
                   <span>{d.etiqueta}</span>
                   <small>{d.detalle} <Refs ids={d.fuentes} /> {!d.verificado && <Verificado ok={false} />}</small>
                 </div>
               ))}
             </div>
           </section>
+          </>)}
 
-          <section id="temas" className="section">
+          {tab === 'islas' && (
+          <section id="islas">
+            <div className="section-head"><div><h2>Canarias por islas</h2><p>Pasa el ratón (o toca) una isla. Cambia el indicador para ver otro mapa de calor.</p></div></div>
+            <MapaIslas />
+          </section>
+          )}
+
+          {tab === 'mercados' && (
+          <section id="mercados">
+            <div className="section-head"><div><h2>¿De dónde vienen?</h2><p>Lanzarote vive del británico; La Palma, del alemán y del peninsular.</p></div></div>
+            <Mercados />
+          </section>
+          )}
+
+          {tab === 'temas' && (
+          <section id="temas">
             <div className="section-head"><div><h2>Temas y retos probables</h2><p>Abre solo lo que te interese.</p></div></div>
             <div className="acordeon">
               {DEBATES.map((t) => (
@@ -135,8 +165,10 @@ export default function Investigacion() {
               ))}
             </div>
           </section>
+          )}
 
-          <section id="referentes" className="section">
+          {tab === 'referentes' && (
+          <section id="referentes">
             <div className="section-head"><div><h2>Benchmark</h2><p>Quién resolvió algo parecido, y con qué resultado.</p></div></div>
             <div className="chips" style={{ marginBottom: 14 }}>
               {categorias.map((c) => <button key={c} className={`chip ${cat === c ? 'on' : ''}`} onClick={() => setCat(c)}>{c}</button>)}
@@ -154,8 +186,10 @@ export default function Investigacion() {
               ))}
             </div>
           </section>
+          )}
 
-          <section id="extra" className="section">
+          {tab === 'extra' && (
+          <section id="extra">
             <div className="grid g3">
               <div className="card">
                 <div className="kicker">Datos abiertos</div>
@@ -172,11 +206,13 @@ export default function Investigacion() {
               </div>
             </div>
           </section>
+          )}
 
-          <section id="fuentes" className="section">
+          {tab === 'fuentes' && (
+          <section id="fuentes">
             <div className="section-head">
               <div><h2>Fuentes</h2><p>{FUENTES.length} fuentes numeradas. Pulsa cualquier número de la página para saltar aquí.</p></div>
-              <button className="btn sm" onClick={() => setVerFuentes(!verFuentes)}>{verFuentes ? 'Ocultar' : 'Ver las fuentes'}</button>
+              
             </div>
             {verFuentes && (
               <>
@@ -197,6 +233,7 @@ export default function Investigacion() {
               </>
             )}
           </section>
+          )}
         </div>
       </div>
     </div>

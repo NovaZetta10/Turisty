@@ -172,7 +172,7 @@ export default function Presentacion() {
       <header className="page-head enter no-print">
         <span className="kicker">Entregable · pitch</span>
         <h1>Presentación</h1>
-        <p>Plantilla genérica: portada del reto, pregunta-gancho, la demo en el móvil del jurado, la solución y qué revisar. Flechas para avanzar, <span className="code">F</span> pantalla completa.</p>
+        <p>Pitch de 5 minutos: portada del reto, pregunta-gancho, la demo en el móvil del jurado, problema, solución y qué revisar. Flechas para avanzar, <span className="code">F</span> pantalla completa.</p>
       </header>
 
       <div className="deck-bar">

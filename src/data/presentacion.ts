@@ -1,5 +1,6 @@
 // Presentación · plantilla genérica de pitch.
-// Estructura: portada del reto → pregunta-gancho → acción 1 (probar la demo) → explicación → acción 2 (qué revisar).
+// Pitch de 5 minutos: portada del reto → pregunta-gancho → acción 1 (probar la demo) → problema → solución → acción 2 (qué revisar).
+// Si hace falta, hay más tipos de diapositiva (pasos, cifras, columnas): añádelas aquí sin tocar el código.
 // Lo que va entre [corchetes] se sustituye cuando conozcamos el reto. Los tipos admitidos están en Slide.
 
 export type Slide =
@@ -31,36 +32,5 @@ export const SLIDES: Slide[] = [
     ],
   },
   { tipo: 'frase', kicker: 'La solución', titulo: '[Nombre]: [qué hace, en una frase que se entienda a la primera].', lead: '[Para quién] · [por qué es distinta de lo que existe].' },
-  {
-    tipo: 'pasos',
-    kicker: 'Cómo funciona',
-    titulo: 'Tres pasos, desde el punto de vista del usuario.',
-    pasos: [
-      { titulo: '[Paso 1]', texto: '[Cuándo y dónde entra en contacto].' },
-      { titulo: '[Paso 2]', texto: '[La acción principal, en un gesto].' },
-      { titulo: '[Paso 3]', texto: '[Lo que gana él y lo que gana la empresa].' },
-    ],
-  },
-  {
-    tipo: 'cifras',
-    kicker: 'Impacto',
-    titulo: 'Qué mediremos para saber que funciona.',
-    cifras: [
-      { valor: '[KPI 1]', etiqueta: '[adopción o uso]' },
-      { valor: '[KPI 2]', etiqueta: '[ingreso o ahorro]' },
-      { valor: '[KPI 3]', etiqueta: '[satisfacción o sostenibilidad]' },
-    ],
-    fuente: '[Hipótesis a validar en el piloto / fuente del dato].',
-  },
-  {
-    tipo: 'columnas',
-    kicker: 'Viabilidad',
-    titulo: 'Cómo lo pondríamos en marcha.',
-    columnas: [
-      { titulo: 'Piloto', texto: '[Dónde, cuánto tiempo y con quién].' },
-      { titulo: 'Coste', texto: '[Implantación y coste mensual estimados].' },
-      { titulo: 'Siguiente paso', texto: '[Criterio para escalar o parar].' },
-    ],
-  },
   { tipo: 'cta', kicker: 'Para el jurado', titulo: 'Todo está aquí. Si solo tenéis cinco minutos, empezad por esto:', texto: 'Escanea para abrir todos los entregables.' },
 ]

@@ -34,7 +34,7 @@
 }
 
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; background: var(--night); }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body {
   margin: 0; font-family: var(--font); color: var(--text); font-size: 16px; line-height: 1.6;
@@ -44,20 +44,8 @@ body {
     radial-gradient(900px 600px at 8% 4%, rgba(70, 92, 200, .18), transparent 60%),
     var(--night);
 }
-/* cielo estrellado fijo, muy sutil */
-body::before {
-  content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .55;
-  background-image:
-    radial-gradient(1px 1px at 12% 18%, #fff 50%, transparent 51%),
-    radial-gradient(1px 1px at 72% 12%, #fff 50%, transparent 51%),
-    radial-gradient(1.4px 1.4px at 42% 66%, #ffe7b8 50%, transparent 51%),
-    radial-gradient(1px 1px at 88% 52%, #fff 50%, transparent 51%),
-    radial-gradient(1px 1px at 26% 84%, #cfd9ff 50%, transparent 51%),
-    radial-gradient(1.2px 1.2px at 58% 34%, #fff 50%, transparent 51%),
-    radial-gradient(1px 1px at 6% 48%, #fff 50%, transparent 51%),
-    radial-gradient(1px 1px at 94% 88%, #ffe7b8 50%, transparent 51%);
-  background-size: 420px 420px, 380px 380px, 520px 520px, 300px 300px, 460px 460px, 350px 350px, 610px 610px, 540px 540px;
-}
+/* cielo interactivo: canvas fijo detrás de todo (components/Cielo.tsx) */
+.cielo { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
 ::selection { background: var(--nova); color: var(--night); }
 img { max-width: 100%; display: block; }
 a { color: var(--ice); text-underline-offset: 3px; text-decoration-thickness: 1px; }
@@ -208,7 +196,7 @@ tbody tr:hover { background: rgba(255, 255, 255, .025); }
 .toc { position: sticky; top: 80px; display: flex; flex-direction: column; gap: 2px; font-size: 14px; }
 .toc a { color: var(--text-2); text-decoration: none; padding: 6px 12px; border-radius: 999px; transition: background-color .15s var(--ease-out), color .15s var(--ease-out); }
 .toc a:hover { background: rgba(255, 255, 255, .06); color: var(--text); }
-.inv-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 40px; }
+.inv-layout { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 40px; align-items: start; }
 .inv-layout > * { min-width: 0; }
 .inv-layout section { scroll-margin-top: 84px; }
 @media (max-width: 960px) {
@@ -500,3 +488,86 @@ tbody tr:hover { background: rgba(255, 255, 255, .025); }
 @media (max-width: 640px) { .isla-lbl { font-size: 20px; } .isla-lbl .v { display: none; } }
 .hero > .kicker { display: block; }
 .s-qr-cap { word-break: normal; overflow-wrap: anywhere; }
+
+/* ---------- la estrella titila ---------- */
+.hero-word .burst svg { animation: titila 3.4s ease-in-out 1.3s infinite; transform-origin: 50% 50%; }
+.hero-word .burst::before { animation: halo 3.4s ease-in-out 1.3s infinite; }
+@keyframes titila {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  20% { transform: scale(1.12) rotate(8deg); }
+  28% { transform: scale(.94) rotate(4deg); }
+  55% { transform: scale(1.04) rotate(-4deg); }
+}
+@keyframes halo { 0%, 100% { opacity: .85; transform: scale(1); } 20% { opacity: 1; transform: scale(1.15); } 55% { opacity: .7; transform: scale(.95); } }
+.brand .nova-mark { animation: titila 4.2s ease-in-out infinite; transform-origin: 50% 50%; }
+.brand:hover .nova-mark { animation-duration: 1.2s; }
+.slide .s-burst svg { animation: titila 3.4s ease-in-out 1.4s infinite; transform-origin: 50% 50%; }
+.hero-word { cursor: default; }
+.hero-word:hover .burst svg { animation-duration: 1s; }
+
+/* ---------- tarjetas que se levantan e inclinan ---------- */
+.tilt { --rx: 0deg; --ry: 0deg; --mx: 50%; --my: 50%; position: relative; overflow: hidden; transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)); transition: transform .35s var(--ease-out), border-color .25s var(--ease-out); will-change: transform; }
+@media (hover: hover) and (pointer: fine) {
+  .tilt:hover { transform: perspective(900px) translateY(-6px) rotateX(var(--rx)) rotateY(var(--ry)); transition: transform .12s linear, border-color .25s var(--ease-out); border-color: rgba(255, 210, 122, .45); }
+}
+.tilt-glow { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: radial-gradient(260px circle at var(--mx) var(--my), rgba(255, 210, 122, .14), transparent 60%); transition: opacity .3s var(--ease-out); }
+.tilt:hover .tilt-glow { opacity: 1; }
+.tilt > *:not(.tilt-glow) { position: relative; }
+.member .avatar { transition: transform .35s var(--ease-out), box-shadow .35s var(--ease-out); }
+.member:hover .avatar { transform: translateY(-2px) rotate(-6deg) scale(1.06); box-shadow: 0 0 0 1px rgba(255, 210, 122, .7), 0 0 34px -2px rgba(255, 210, 122, .75); }
+.member .rol { transition: letter-spacing .3s var(--ease-out); }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-word .burst svg, .hero-word .burst::before, .brand .nova-mark, .slide .s-burst svg { animation: none !important; }
+  .tilt, .tilt:hover { transform: none !important; }
+}
+
+/* ---------- pestañas de investigación ---------- */
+.tabs { position: sticky; top: 84px; display: flex; flex-direction: column; gap: 2px; align-self: start; }
+.tabs button { position: relative; z-index: 1; text-align: left; font: inherit; font-size: 14px; font-weight: 500; color: var(--text-2); background: none; border: 0; padding: 9px 14px; border-radius: 999px; cursor: pointer; transition: color .2s var(--ease-out), transform .15s var(--ease-out); }
+.tabs button:hover { color: var(--text); }
+.tabs button:active { transform: scale(.97); }
+.tabs button.on { color: var(--night); font-weight: 600; }
+.tabs-ind { position: absolute; left: 0; top: 0; z-index: 0; border-radius: 999px; background: var(--nova); box-shadow: 0 0 24px -6px rgba(255, 210, 122, .7); transition: transform .35s var(--ease-out), width .35s var(--ease-out), height .35s var(--ease-out); }
+@media (max-width: 960px) {
+  .tabs { top: 62px; z-index: 20; flex-direction: row; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 8px 16px; background: rgba(6, 10, 23, .85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tabs button { white-space: nowrap; flex: none; }
+}
+@media (max-width: 760px) { .tabs { top: 98px; } }
+.tab-panel { animation: panel .4s var(--ease-out) both; min-height: 60vh; }
+@keyframes panel { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+.tab-panel :is(.grid, .retos, .entidades, .acordeon, .barras, .senales) > * { animation: enter .45s var(--ease-out) backwards; }
+.tab-panel :is(.grid, .retos, .entidades, .acordeon, .barras, .senales) > *:nth-child(1) { animation-delay: 0.12s; }
+.tab-panel :is(.grid, .retos, .entidades, .acordeon, .barras, .senales) > *:nth-child(2) { animation-delay: 0.16s; }
+.tab-panel :is(.grid, .retos, .entidades, .acordeon, .barras, .senales) > *:nth-child(3) { animation-delay: 0.20s; }
+.tab-panel :is(.grid, .retos, .entidades, .acordeon, .barras, .senales) > *:nth-child(4) { animation-delay: 0.24s; }
+.tab-panel :is(.grid, .retos, .entidades, .acordeon, .barras, .senales) > *:nth-child(5) { animation-delay: 0.28s; }
+.tab-panel :is(.grid, .retos, .entidades, .acordeon, .barras, .senales) > *:nth-child(6) { animation-delay: 0.32s; }
+.tab-panel :is(.grid, .retos, .entidades, .acordeon, .barras, .senales) > *:nth-child(7) { animation-delay: 0.36s; }
+.tab-panel :is(.grid, .retos, .entidades, .acordeon, .barras, .senales) > *:nth-child(8) { animation-delay: 0.40s; }
+.tab-panel :is(.grid, .retos, .entidades, .acordeon, .barras, .senales) > *:nth-child(9) { animation-delay: 0.44s; }
+.tab-panel :is(.grid, .retos, .entidades, .acordeon, .barras, .senales) > *:nth-child(10) { animation-delay: 0.48s; }
+.tab-panel :is(.grid, .retos, .entidades, .acordeon, .barras, .senales) > *:nth-child(11) { animation-delay: 0.52s; }
+.tab-panel :is(.grid, .retos, .entidades, .acordeon, .barras, .senales) > *:nth-child(12) { animation-delay: 0.56s; }
+.tab-panel :is(.grid, .retos, .entidades, .acordeon, .barras, .senales) > *:nth-child(13) { animation-delay: 0.60s; }
+.tab-panel :is(.grid, .retos, .entidades, .acordeon, .barras, .senales) > *:nth-child(14) { animation-delay: 0.64s; }
+.tab-panel :is(.grid, .retos, .entidades, .acordeon, .barras, .senales) > *:nth-child(15) { animation-delay: 0.68s; }
+.tab-panel :is(.grid, .retos, .entidades, .acordeon, .barras, .senales) > *:nth-child(16) { animation-delay: 0.72s; }
+/* barras que crecen desde la izquierda, fila a fila */
+.barra { transform-origin: left center; animation: crece .7s var(--ease-out) backwards; }
+.barra-fila:nth-child(1) .barra { animation-delay: .15s; } .barra-fila:nth-child(2) .barra { animation-delay: .22s; } .barra-fila:nth-child(3) .barra { animation-delay: .29s; }
+.barra-fila:nth-child(4) .barra { animation-delay: .36s; } .barra-fila:nth-child(5) .barra { animation-delay: .43s; } .barra-fila:nth-child(6) .barra { animation-delay: .5s; }
+@keyframes crece { from { transform: scaleX(0); } to { transform: none; } }
+/* islas que aparecen una a una */
+.mapa-svg .isla { animation: isla-in .6s var(--ease-out) backwards; transform-box: fill-box; transform-origin: center; }
+.mapa-svg .isla:nth-child(2) { animation-delay: .05s; } .mapa-svg .isla:nth-child(3) { animation-delay: .1s; } .mapa-svg .isla:nth-child(4) { animation-delay: .15s; }
+.mapa-svg .isla:nth-child(5) { animation-delay: .2s; } .mapa-svg .isla:nth-child(6) { animation-delay: .25s; } .mapa-svg .isla:nth-child(7) { animation-delay: .3s; } .mapa-svg .isla:nth-child(8) { animation-delay: .35s; }
+@keyframes isla-in { from { opacity: 0; transform: translateY(10px) scale(.92); } to { opacity: 1; transform: none; } }
+.isla { transition: fill .45s var(--ease-out), opacity .2s var(--ease-out), stroke .2s var(--ease-out); }
+.mapa-panel h3 { animation: enter .35s var(--ease-out) both; }
+.hero-stat { transition: background-color .25s var(--ease-out); }
+.hero-stat:hover { background: var(--night-3); }
+.ref-card, .entidad, .reto, .senal { transition: transform .2s var(--ease-out), border-color .2s var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .ref-card:hover, .reto:hover, .entidad:hover { transform: translateY(-3px); border-color: rgba(255, 210, 122, .4); } }
+@media (prefers-reduced-motion: reduce) { .tab-panel, .tab-panel *, .barra, .mapa-svg .isla { animation: none !important; } .tabs-ind { transition: none; } }

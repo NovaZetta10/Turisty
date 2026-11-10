@@ -3,6 +3,7 @@ import { Link, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import { EQUIPO_NOMBRE, EVENTO, REPO_URL, SECCIONES } from './config/proyecto'
 import { Icon } from './components/Icon'
 import { NovaMark } from './components/NovaMark'
+import { Cielo } from './components/Cielo'
 import Inicio from './pages/Inicio'
 import Investigacion from './pages/Investigacion'
 import Usuarios from './pages/Usuarios'
@@ -41,6 +42,7 @@ export default function App() {
   return (
     <>
       <ScrollTop />
+      <Cielo />
       <header className="topbar">
         <div className="wrap topbar-inner">
           <Link to="/" className="brand">
