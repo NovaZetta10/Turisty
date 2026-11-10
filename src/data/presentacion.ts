@@ -1,55 +1,66 @@
-// Presentación · plantilla de pitch.
-// Cada diapositiva es un objeto: cambia los textos aquí. Los tipos admitidos están en Slide abajo.
-import { EQUIPO_NOMBRE, EVENTO, RETO } from '../config/proyecto'
+// Presentación · plantilla genérica de pitch.
+// Estructura: portada del reto → pregunta-gancho → acción 1 (probar la demo) → explicación → acción 2 (qué revisar).
+// Lo que va entre [corchetes] se sustituye cuando conozcamos el reto. Los tipos admitidos están en Slide.
 
 export type Slide =
-  | { tipo: 'portada'; titulo: string; subtitulo: string; nota?: string }
-  | { tipo: 'equipo'; titulo: string }
-  | { tipo: 'texto'; kicker: string; titulo: string; puntos?: string[]; nota?: string }
-  | { tipo: 'cifras'; kicker: string; titulo: string; cifras: { valor: string; etiqueta: string }[]; fuente?: string }
+  /** Empresa, reto y fecha (salen de RETO y EVENTO en la configuración). Sin nombre de equipo. */
+  | { tipo: 'portada' }
+  /** La pregunta que engancha y el remate que aparece después. */
+  | { tipo: 'pregunta'; antes: string; destacado: string; despues?: string; remate: string }
+  /** Primer punto de acción: QR a la demo para que el jurado la pruebe mientras hablamos. */
+  | { tipo: 'accion'; kicker: string; titulo: string; texto: string; destino: 'prototipo' | 'web' }
+  | { tipo: 'columnas'; kicker: string; titulo: string; lead?: string; columnas: { titulo: string; texto: string }[] }
   | { tipo: 'pasos'; kicker: string; titulo: string; pasos: { titulo: string; texto: string }[] }
-  | { tipo: 'cierre'; titulo: string; subtitulo: string }
+  | { tipo: 'cifras'; kicker: string; titulo: string; cifras: { valor: string; etiqueta: string }[]; fuente?: string }
+  | { tipo: 'frase'; kicker: string; titulo: string; lead?: string }
+  /** Último punto de acción: dónde están los entregables y cuáles revisar primero (DESTACADOS en la configuración). */
+  | { tipo: 'cta'; kicker: string; titulo: string; texto: string }
 
 export const SLIDES: Slide[] = [
-  { tipo: 'portada', titulo: RETO.definido ? RETO.titulo : 'Nombre de la solución', subtitulo: `${EQUIPO_NOMBRE} · ${EVENTO.nombre}`, nota: RETO.definido ? `Reto propuesto por ${RETO.empresa}` : 'Reto propuesto por [empresa]' },
-  { tipo: 'texto', kicker: 'El reto', titulo: RETO.definido ? RETO.pregunta : '¿Cómo podemos [verbo] para [usuario] sin [restricción]?', nota: 'Copia la pregunta del reto tal cual. Es lo primero que el jurado debe reconocer.' },
+  { tipo: 'portada' },
+  { tipo: 'pregunta', antes: '¿Y si te dijéramos que', destacado: '[resultado concreto para el usuario]', despues: 'sin [lo que hoy lo impide]?', remate: 'Te lo demostramos.' },
+  { tipo: 'accion', kicker: 'Ahora mismo', titulo: 'Saca el móvil y pruébalo mientras te lo contamos.', texto: '[Qué puede hacer en 30 segundos: el gesto principal de la demo].', destino: 'prototipo' },
   {
-    tipo: 'cifras',
-    kicker: 'Por qué ahora',
-    titulo: 'El turismo canario crece en valor, pero no en visitantes',
-    cifras: [
-      { valor: '18,4 M', etiqueta: 'turistas en 2025' },
-      { valor: '-0,5 %', etiqueta: 'extranjeros ene–sep 2026' },
-      { valor: '≈ 60 %', etiqueta: 'Reino Unido + Alemania' },
+    tipo: 'columnas',
+    kicker: 'El problema',
+    titulo: '[Usuario] hoy [lo que le pasa], y le cuesta [tiempo, dinero o experiencia].',
+    columnas: [
+      { titulo: 'Qué pasa', texto: '[El dolor, con un dato o una cita real].' },
+      { titulo: 'A quién', texto: '[El usuario principal y el momento en que le ocurre].' },
+      { titulo: 'Qué cuesta', texto: '[El impacto para la empresa].' },
     ],
-    fuente: 'Promotur 2025 · INE Frontur sep. 2026 · elDiario.es. Sustituir por las cifras del reto.',
   },
-  { tipo: 'texto', kicker: 'El problema', titulo: 'Qué le pasa hoy al usuario', puntos: ['Dolor 1, con un dato', 'Dolor 2, con una cita de un usuario real', 'Dolor 3: lo que cuesta a la empresa'] },
-  { tipo: 'texto', kicker: 'Para quién', titulo: 'Nuestra persona principal', puntos: ['Quién es y en qué momento del viaje está', 'Qué necesita', 'Qué la frena'], nota: 'Toma la persona de la pestaña Usuarios.' },
-  { tipo: 'texto', kicker: 'La solución', titulo: 'Una frase que se entienda a la primera', puntos: ['Qué hace', 'Para quién', 'Por qué es distinta'] },
+  { tipo: 'frase', kicker: 'La solución', titulo: '[Nombre]: [qué hace, en una frase que se entienda a la primera].', lead: '[Para quién] · [por qué es distinta de lo que existe].' },
   {
     tipo: 'pasos',
     kicker: 'Cómo funciona',
-    titulo: 'Tres pasos, desde el punto de vista del usuario',
+    titulo: 'Tres pasos, desde el punto de vista del usuario.',
     pasos: [
-      { titulo: 'Descubre', texto: 'Dónde y cuándo entra en contacto con la solución.' },
-      { titulo: 'Usa', texto: 'La acción principal, en un gesto.' },
-      { titulo: 'Gana', texto: 'Lo que obtiene él y lo que obtiene la empresa.' },
+      { titulo: '[Paso 1]', texto: '[Cuándo y dónde entra en contacto].' },
+      { titulo: '[Paso 2]', texto: '[La acción principal, en un gesto].' },
+      { titulo: '[Paso 3]', texto: '[Lo que gana él y lo que gana la empresa].' },
     ],
   },
-  { tipo: 'texto', kicker: 'Demo', titulo: 'Prototipo en vivo', nota: 'Abre la pestaña Prototipo o el QR de la demo.' },
   {
     tipo: 'cifras',
     kicker: 'Impacto',
-    titulo: 'Qué mediremos para saber si funciona',
+    titulo: 'Qué mediremos para saber que funciona.',
     cifras: [
-      { valor: 'KPI 1', etiqueta: 'adopción o uso' },
-      { valor: 'KPI 2', etiqueta: 'ingreso o ahorro' },
-      { valor: 'KPI 3', etiqueta: 'satisfacción o sostenibilidad' },
+      { valor: '[KPI 1]', etiqueta: '[adopción o uso]' },
+      { valor: '[KPI 2]', etiqueta: '[ingreso o ahorro]' },
+      { valor: '[KPI 3]', etiqueta: '[satisfacción o sostenibilidad]' },
     ],
-    fuente: 'Hipótesis a validar en el piloto.',
+    fuente: '[Hipótesis a validar en el piloto / fuente del dato].',
   },
-  { tipo: 'texto', kicker: 'Piloto y viabilidad', titulo: 'Cómo lo probaríamos y cuánto cuesta', puntos: ['Alcance: dónde, cuánto tiempo, con quién', 'Coste estimado y de dónde sale', 'Criterio para escalar o parar'] },
-  { tipo: 'equipo', titulo: `Somos ${EQUIPO_NOMBRE}` },
-  { tipo: 'cierre', titulo: 'Gracias', subtitulo: 'Preguntas' },
+  {
+    tipo: 'columnas',
+    kicker: 'Viabilidad',
+    titulo: 'Cómo lo pondríamos en marcha.',
+    columnas: [
+      { titulo: 'Piloto', texto: '[Dónde, cuánto tiempo y con quién].' },
+      { titulo: 'Coste', texto: '[Implantación y coste mensual estimados].' },
+      { titulo: 'Siguiente paso', texto: '[Criterio para escalar o parar].' },
+    ],
+  },
+  { tipo: 'cta', kicker: 'Para el jurado', titulo: 'Todo está aquí. Si solo tenéis cinco minutos, empezad por esto:', texto: 'Escanea para abrir todos los entregables.' },
 ]

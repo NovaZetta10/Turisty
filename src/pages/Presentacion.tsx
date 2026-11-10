@@ -1,94 +1,137 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { SLIDES, type Slide } from '../data/presentacion'
-import { EQUIPO, EQUIPO_NOMBRE, EVENTO } from '../config/proyecto'
+import { DESTACADOS, EQUIPO, EQUIPO_NOMBRE, EVENTO, PROTOTIPO, RETO, SECCIONES, SITIO_URL } from '../config/proyecto'
 import { Icon } from '../components/Icon'
-import { Avatar } from '../components/Avatar'
+import { NovaMark } from '../components/NovaMark'
+import { Qr, urlBase } from '../components/Qr'
 
-const Marca = () => (
-  <span className="s-brand">
-    <svg width="1.6em" height="1.6em" viewBox="0 0 24 24"><path d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z" fill="#f2b33d" /></svg>
-    {EQUIPO_NOMBRE}
-  </span>
+const A = ({ i, children, className = '', style }: { i: number; children: React.ReactNode; className?: string; style?: CSSProperties }) => (
+  <div className={`a ${className}`} style={{ ...style, ['--i' as string]: i }}>{children}</div>
 )
 
-const nombreSlide = (s: Slide) => ('kicker' in s ? s.kicker : s.tipo === 'portada' ? 'Portada' : s.tipo === 'equipo' ? 'Equipo' : 'Cierre')
+const nombreSlide = (s: Slide) => (s.tipo === 'portada' ? 'Portada' : s.tipo === 'pregunta' ? 'Pregunta' : s.kicker)
+
+function urlDemo() {
+  const base = urlBase(SITIO_URL)
+  if (PROTOTIPO.url.startsWith('http')) return PROTOTIPO.url
+  return base + '#/prototipo'
+}
 
 function Contenido({ s }: { s: Slide }) {
   switch (s.tipo) {
     case 'portada':
       return (
+        <div className="s-cover" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+          <div className="s-burst a"><NovaMark size="100%" className="" /></div>
+          <A i={0}><span className="s-kicker">{RETO.definido ? RETO.empresa : '[Empresa]'}</span></A>
+          <A i={1}><div className="s-mega" style={{ marginTop: '1.6cqw' }}>{RETO.definido ? RETO.titulo : '[Nombre del reto]'}</div></A>
+          <A i={2} className="meta">
+            <span><b>Fecha</b>{EVENTO.fecha}</span>
+            <span><b>Evento</b>{EVENTO.nombre}</span>
+          </A>
+        </div>
+      )
+    case 'pregunta':
+      return (
+        <div className="s-question" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+          <A i={0}><div className="s-mega">{s.antes} <em>{s.destacado}</em>{s.despues ? ` ${s.despues}` : ''}</div></A>
+          <div className="s-answer a"><NovaMark size="1em" className="" />{s.remate}</div>
+        </div>
+      )
+    case 'accion': {
+      const url = s.destino === 'prototipo' ? urlDemo() : urlBase(SITIO_URL)
+      return (
+        <div className="s-action">
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <A i={0} className="s-badge"><span>●</span> Punto de acción</A>
+            <A i={1}><span className="s-kicker">{s.kicker}</span></A>
+            <A i={2}><div className="s-title">{s.titulo}</div></A>
+            <A i={3}><p className="s-lead">{s.texto}</p></A>
+          </div>
+          <A i={4}>
+            <Qr url={url} />
+            <div className="s-qr-cap">{url.replace(/^https?:\/\//, '')}</div>
+          </A>
+        </div>
+      )
+    }
+    case 'columnas':
+      return (
         <>
-          <div className="slide-glow" />
-          <Marca />
-          <div style={{ marginTop: 'auto', position: 'relative' }}>
-            <div className="s-big">{s.titulo}</div>
-            <div className="s-sub">{s.subtitulo}</div>
-            {s.nota && <div className="s-note" style={{ marginTop: '2cqw' }}>{s.nota}</div>}
+          <A i={0}><span className="s-kicker">{s.kicker}</span></A>
+          <A i={1}><div className="s-title">{s.titulo}</div></A>
+          {s.lead && <A i={2}><p className="s-lead">{s.lead}</p></A>}
+          <div className="s-cols">
+            {s.columnas.map((c, n) => <A key={n} i={3 + n} className="s-col"><i>0{n + 1}</i><b>{c.titulo}</b><p>{c.texto}</p></A>)}
           </div>
         </>
       )
-    case 'cierre':
+    case 'frase':
       return (
-        <>
-          <div className="slide-glow" />
-          <Marca />
-          <div style={{ margin: 'auto 0', position: 'relative' }}>
-            <div className="s-big">{s.titulo}</div>
-            <div className="s-sub">{s.subtitulo}</div>
-          </div>
-        </>
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'center' }}>
+          <A i={0}><span className="s-kicker">{s.kicker}</span></A>
+          <A i={1}><div className="s-mega" style={{ fontSize: '5.6cqw', marginTop: '1.6cqw', maxWidth: '90%' }}>{s.titulo}</div></A>
+          {s.lead && <A i={2}><p className="s-lead">{s.lead}</p></A>}
+        </div>
       )
-    case 'equipo':
+    case 'pasos':
       return (
         <>
-          <span className="s-kicker">Equipo</span>
-          <h2>{s.titulo}</h2>
-          <div className="s-equipo">
-            {EQUIPO.map((m) => (
-              <div key={m.nombre} className="s-m">
-                <Avatar m={m} className="av" />
-                <b>{m.nombre}</b>
-                <span>{m.rol || m.estudios}</span>
-              </div>
-            ))}
+          <A i={0}><span className="s-kicker">{s.kicker}</span></A>
+          <A i={1}><div className="s-title">{s.titulo}</div></A>
+          <div className="s-flow">
+            {s.pasos.map((p, n) => <A key={n} i={2 + n} className="s-step"><i>{n + 1}</i><b>{p.titulo}</b><p>{p.texto}</p></A>)}
           </div>
-        </>
-      )
-    case 'texto':
-      return (
-        <>
-          <span className="s-kicker">{s.kicker}</span>
-          <h2>{s.titulo}</h2>
-          {s.puntos && <ul>{s.puntos.map((p) => <li key={p}>{p}</li>)}</ul>}
-          {s.nota && <div className="s-note">{s.nota}</div>}
         </>
       )
     case 'cifras':
       return (
         <>
-          <span className="s-kicker">{s.kicker}</span>
-          <h2>{s.titulo}</h2>
-          <div className="s-cifras">{s.cifras.map((c) => <div key={c.etiqueta} className="s-cifra"><b>{c.valor}</b><span>{c.etiqueta}</span></div>)}</div>
-          {s.fuente && <div className="s-note" style={{ marginTop: '2.5cqw' }}>Fuente: {s.fuente}</div>}
+          <A i={0}><span className="s-kicker">{s.kicker}</span></A>
+          <A i={1}><div className="s-title">{s.titulo}</div></A>
+          <div className="s-cols">
+            {s.cifras.map((c, n) => <A key={n} i={2 + n} className="s-col s-cifra"><b>{c.valor}</b><span>{c.etiqueta}</span></A>)}
+          </div>
+          {s.fuente && <A i={6}><p className="s-lead" style={{ fontSize: '1.3cqw', color: 'var(--muted)', maxWidth: '100%' }}>{s.fuente}</p></A>}
         </>
       )
-    case 'pasos':
+    case 'cta': {
+      const base = urlBase(SITIO_URL)
+      const picks = DESTACADOS.map((d) => ({ ...d, s: SECCIONES.find((x) => x.id === d.id) })).filter((d) => d.s)
       return (
-        <>
-          <span className="s-kicker">{s.kicker}</span>
-          <h2>{s.titulo}</h2>
-          <div className="s-pasos">{s.pasos.map((p, i) => <div key={p.titulo} className="s-paso"><i>0{i + 1}</i><b>{p.titulo}</b><p>{p.texto}</p></div>)}</div>
-        </>
+        <div className="s-action" style={{ alignItems: 'stretch' }}>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <A i={0} className="s-badge"><span>●</span> Punto de acción</A>
+            <A i={1}><span className="s-kicker">{s.kicker}</span></A>
+            <A i={2}><div className="s-title" style={{ fontSize: '3.4cqw' }}>{s.titulo}</div></A>
+            <div className="s-picks">
+              {picks.map((p, n) => (
+                <A key={p.id} i={3 + n} className="s-pick"><i>{n + 1}</i><div><b>{p.s!.titulo}</b><span>{p.motivo}</span></div></A>
+              ))}
+            </div>
+            <A i={7} className="s-team"><b>Equipo {EQUIPO_NOMBRE}</b> · {EQUIPO.map((m) => m.nombre.split(' ')[0]).join(' · ')}</A>
+          </div>
+          <A i={6} style={{ alignSelf: 'center' }}>
+            <Qr url={base} />
+            <div className="s-qr-cap">{s.texto}</div>
+          </A>
+        </div>
       )
+    }
   }
 }
 
 function SlideView({ s, i, dir }: { s: Slide; i: number; dir?: number }) {
-  const dark = s.tipo === 'portada' || s.tipo === 'cierre'
+  const sinPie = s.tipo === 'portada' || s.tipo === 'pregunta'
   return (
-    <div className={`slide ${dark ? 'dark' : ''} ${dir && dir < 0 ? 'back' : ''}`}>
+    <div className={`slide ${dir && dir < 0 ? 'back' : ''}`}>
       <Contenido s={s} />
-      {!dark && <div className="s-pie"><span>{EQUIPO_NOMBRE} · {EVENTO.nombre}</span><span className="tnum">{i + 1} / {SLIDES.length}</span></div>}
+      {!sinPie && (
+        <div className="s-foot">
+          <span className="wordmark"><NovaMark size="1.1em" className="" />{EQUIPO_NOMBRE.toLowerCase()}</span>
+          <span className="tnum">{String(i + 1).padStart(2, '0')} / {String(SLIDES.length).padStart(2, '0')}</span>
+        </div>
+      )}
     </div>
   )
 }
@@ -104,6 +147,10 @@ export default function Presentacion() {
       return nx
     })
   }, [])
+  const pantalla = () => {
+    if (document.fullscreenElement) document.exitFullscreen()
+    else stage.current?.requestFullscreen?.()
+  }
 
   useEffect(() => {
     const k = (e: KeyboardEvent) => {
@@ -118,12 +165,6 @@ export default function Presentacion() {
     return () => window.removeEventListener('keydown', k)
   }, [ir])
 
-  const pantalla = () => {
-    if (document.fullscreenElement) document.exitFullscreen()
-    else stage.current?.requestFullscreen?.()
-  }
-
-  // deslizar en móvil
   const x0 = useRef<number | null>(null)
 
   return (
@@ -131,11 +172,11 @@ export default function Presentacion() {
       <header className="page-head enter no-print">
         <span className="kicker">Entregable · pitch</span>
         <h1>Presentación</h1>
-        <p>Diapositivas en el navegador. Flechas del teclado para avanzar, <span className="code">F</span> para pantalla completa, y «Exportar PDF» para imprimirlas una por página.</p>
+        <p>Plantilla genérica: portada del reto, pregunta-gancho, la demo en el móvil del jurado, la solución y qué revisar. Flechas para avanzar, <span className="code">F</span> pantalla completa.</p>
       </header>
 
       <div className="deck-bar">
-        <span className="count">Diapositiva {i + 1} de {SLIDES.length} · {nombreSlide(SLIDES[i])}</span>
+        <span className="count">{String(i + 1).padStart(2, '0')} / {SLIDES.length} · {nombreSlide(SLIDES[i])}</span>
         <button className="btn sm" onClick={() => ir(i - 1)} disabled={i === 0} aria-label="Anterior"><Icon name="left" /></button>
         <button className="btn sm" onClick={() => ir(i + 1)} disabled={i === SLIDES.length - 1} aria-label="Siguiente"><Icon name="right" /></button>
         <button className="btn sm" onClick={pantalla}><Icon name="expand" size={14} />Pantalla completa</button>
@@ -156,7 +197,7 @@ export default function Presentacion() {
       <div className="thumbs no-print">
         {SLIDES.map((s, n) => (
           <button key={n} className={`thumb ${n === i ? 'on' : ''}`} onClick={() => ir(n)}>
-            <b>{String(n + 1).padStart(2, '0')}</b>{nombreSlide(s)}
+            <b>{String(n + 1).padStart(2, '0')}{(s.tipo === 'accion' || s.tipo === 'cta') ? ' · acción' : ''}</b>{nombreSlide(s)}
           </button>
         ))}
       </div>

@@ -93,10 +93,10 @@ export const SECCIONES: Seccion[] = [
   {
     id: 'usuarios',
     ruta: '/usuarios',
-    titulo: 'Usuarios: buyer persona y user journey',
+    titulo: 'Análisis de usuario',
     corto: 'Usuarios',
-    resumen: 'Para quién es la solución: perfiles, necesidades, frenos y el recorrido antes, durante y después.',
-    estado: 'en-curso',
+    resumen: 'Para quién es la solución. Se construye cuando conozcamos el reto: perfiles, journey u otro análisis que pida.',
+    estado: 'pendiente',
     visible: true,
   },
   {
@@ -128,4 +128,17 @@ export const PROTOTIPO = {
   notas: [] as string[],
 }
 
-export const REPO_URL = '' // p. ej. 'https://github.com/usuario/repo'
+export const REPO_URL = ''
+
+/** Dirección pública de la web (para los QR de la presentación). Vacía = se usa la dirección actual. */
+export const SITIO_URL = ''
+
+/**
+ * Llamada a la acción final de la presentación: los 2–3 entregables que queremos que el jurado revise primero.
+ * `id` es el de SECCIONES; `motivo` es una frase de por qué mirarlo.
+ */
+export const DESTACADOS: { id: string; motivo: string }[] = [
+  { id: 'prototipo', motivo: 'Pruébalo: [qué puede hacer el jurado en dos minutos].' },
+  { id: 'usuarios', motivo: '[Por qué este análisis respalda la solución].' },
+  { id: 'investigacion', motivo: '[El dato que más pesa en la propuesta].' },
+] // p. ej. 'https://github.com/usuario/repo'

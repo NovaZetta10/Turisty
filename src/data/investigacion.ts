@@ -43,6 +43,7 @@ export const FUENTES: Fuente[] = [
   { id: 37, titulo: 'Iberostar elimina los plásticos de un solo uso', medio: 'Iberostar', fecha: '18-04-2018', url: 'https://www.iberostar.com/en/press_room/news/iberostar-eliminates-single-use-plastics-from-all-its-hotel-rooms', abierta: true },
   { id: 38, titulo: 'GHT Hotels y HiJiffy', medio: 'Hotel Tech Report (caso del proveedor)', fecha: '2025', url: 'https://hoteltechreport.com/news/ght-hotels', abierta: true },
   { id: 39, titulo: 'Retos Digitales de Ashotel: premio a un hotel de La Gomera', medio: 'Hosteltur', fecha: '2019', url: 'https://www.hosteltur.com/133106_un-hotel-de-la-gomera-premiado-por-su-proyecto-de-integracion-de-datos.html', abierta: true },
+  { id: 41, titulo: 'Perfil del turista según isla de alojamiento 2025 (Canarias e islas)', medio: 'Promotur · Observatorio Turístico de Canarias', fecha: '03-2026', url: 'https://observatorioturisticodecanarias.com/sites/default/files/migration_files/2026-03/Promotur_canarias%20e%20islas_2025_0.pdf', abierta: true },
   { id: 40, titulo: 'Mālama Hawaiʻi dashboard', medio: 'Maui Now', fecha: '10-04-2024', url: 'https://mauinow.com/2024/04/10/malama-hawaii-dashboard-connects-visitors-with-volunteer-opportunities-and-nonprofits/', abierta: false },
 ]
 
@@ -182,3 +183,29 @@ export const PENDIENTE_VERIFICAR = [
   'Cifras por isla y por mercado para todo Canarias en el ISTAC.',
   'Bases, rúbrica y empresa del reto: preguntarlo al organizador el primer día.',
 ]
+
+/** Perfil del turista por isla, 2025 (Promotur, turistas de 16 años o más) [41]. La Gomera y El Hierro no vienen en ese informe. */
+export type Isla = {
+  id: string
+  nombre: string
+  turistas?: number
+  gastoViaje?: number
+  gastoDiario?: number
+  estancia?: number
+  repetidores?: number
+  reinoUnido?: number
+  alemania?: number
+  peninsula?: number
+}
+
+export const ISLAS: Isla[] = [
+  { id: 'tenerife', nombre: 'Tenerife', turistas: 6443553, gastoViaje: 1418, gastoDiario: 182.15, estancia: 8.9, repetidores: 69.2, reinoUnido: 37.1, alemania: 11.5, peninsula: 12.3 },
+  { id: 'gran-canaria', nombre: 'Gran Canaria', turistas: 4192419, gastoViaje: 1498, gastoDiario: 175.35, estancia: 10.1, repetidores: 72.8, reinoUnido: 21.3, alemania: 19.5, peninsula: 12.1 },
+  { id: 'lanzarote', nombre: 'Lanzarote', turistas: 2871074, gastoViaje: 1439, gastoDiario: 184.03, estancia: 8.7, repetidores: 78.4, reinoUnido: 51.1, alemania: 8.2, peninsula: 9.3 },
+  { id: 'fuerteventura', nombre: 'Fuerteventura', turistas: 2388592, gastoViaje: 1390, gastoDiario: 166.72, estancia: 9.2, repetidores: 70.0, reinoUnido: 30.7, alemania: 29.0, peninsula: 8.1 },
+  { id: 'la-palma', nombre: 'La Palma', turistas: 188913, gastoViaje: 1366, gastoDiario: 158.97, estancia: 9.7, repetidores: 79.9, reinoUnido: 7.8, alemania: 42.0, peninsula: 27.0 },
+  { id: 'la-gomera', nombre: 'La Gomera' },
+  { id: 'el-hierro', nombre: 'El Hierro' },
+]
+
+export const CANARIAS_2025: Isla = { id: 'canarias', nombre: 'Canarias', turistas: 16125238, gastoViaje: 1438, gastoDiario: 178.16, estancia: 9.2, repetidores: 72.0, reinoUnido: 34.1, alemania: 16.0, peninsula: 11.3 }

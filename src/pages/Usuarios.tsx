@@ -29,7 +29,40 @@ function Curva({ pasos }: { pasos: PasoJourney[] }) {
   )
 }
 
+const HUECOS = [
+  { t: 'Buyer persona', d: 'Quién es el usuario principal: contexto, necesidades, frenos y motivaciones.', q: '¿A quién le duele más el problema del reto?' },
+  { t: 'User journey', d: 'Su recorrido antes, durante y después, con la emoción en cada fase.', q: '¿En qué momento exacto actúa nuestra solución?' },
+  { t: 'Validación', d: 'Qué hemos contrastado con usuarios reales durante el evento.', q: '¿Con cuántas personas hablamos y qué nos dijeron?' },
+]
+
 export default function Usuarios() {
+  if (PERSONAS.length === 0) return <Vacio />
+  return <ConDatos />
+}
+
+function Vacio() {
+  return (
+    <div className="wrap">
+      <header className="page-head enter">
+        <span className="kicker">Entregable · análisis de usuario</span>
+        <h1>Para quién lo hacemos</h1>
+        <p>Se construye cuando conozcamos el reto. La estructura ya está lista: en cuanto se rellene <span className="code">src/data/usuarios.ts</span>, esta página muestra las personas y el journey con su curva de emociones.</p>
+      </header>
+      <div className="grid g3">
+        {HUECOS.map((h, i) => (
+          <div key={h.t} className={`card slot enter enter-${i + 2}`}>
+            <span className="kicker">0{i + 1}</span>
+            <h3>{h.t}</h3>
+            <p>{h.d}</p>
+            <div className="q">{h.q}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function ConDatos() {
   const [id, setId] = useState(PERSONAS[0]?.id)
   const p = PERSONAS.find((x) => x.id === id) ?? PERSONAS[0]
   const conJourney = Object.keys(JOURNEY)
@@ -42,7 +75,7 @@ export default function Usuarios() {
       <header className="page-head enter">
         <span className="kicker">Entregable · análisis de usuario</span>
         <h1>Para quién lo hacemos</h1>
-        <p>Buyer personas y user journey. Son plantillas de turismo en Canarias para arrancar: cuando sepamos el reto, se ajustan y se marcan como validadas al contrastarlas con usuarios reales.</p>
+        <p>Buyer personas y user journey. Marcadas como validadas cuando se contrastan con usuarios reales.</p>
       </header>
 
       <section>

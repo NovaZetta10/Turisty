@@ -1,71 +1,54 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import {
-  AVISO_SERIES, CIFRAS_2025, CIFRAS_2026, DATOS_ABIERTOS, DEBATES, ENTIDADES, FORMATO_HACKATHON, FUENTES,
-  PENDIENTE_VERIFICAR, REFERENTES, RETOS_TIPO, type Dato, type Tema,
+  AVISO_SERIES, CIFRAS_2026, DATOS_ABIERTOS, DEBATES, ENTIDADES, FORMATO_HACKATHON, FUENTES,
+  PENDIENTE_VERIFICAR, REFERENTES, RETOS_TIPO,
 } from '../data/investigacion'
 import { Refs, Verificado } from '../components/Refs'
 import { Icon } from '../components/Icon'
+import { MapaIslas } from '../components/MapaIslas'
+import { Mercados } from '../components/Mercados'
 
 const INDICE = [
-  ['cifras', 'Cifras clave'],
-  ['debates', 'Debates abiertos'],
-  ['retos', 'Retos probables'],
-  ['entidades', 'Quién innova aquí'],
+  ['esencial', 'Lo esencial'],
+  ['islas', 'Mapa por islas'],
+  ['mercados', 'De dónde vienen'],
+  ['senales', 'Señales 2026'],
+  ['temas', 'Temas y retos'],
   ['referentes', 'Benchmark'],
-  ['datos', 'Datos abiertos'],
-  ['formato', 'Qué valoran'],
-  ['verificar', 'Por verificar'],
-  ['fuentes', `Fuentes (${FUENTES.length})`],
+  ['extra', 'Datos y criterios'],
+  ['fuentes', 'Fuentes'],
 ] as const
 
-function Cifras({ datos }: { datos: Dato[] }) {
-  return (
-    <div className="grid g3">
-      {datos.map((d) => (
-        <div key={d.etiqueta} className="card stat">
-          <div className="l">{d.etiqueta}</div>
-          <div className="v">{d.valor}</div>
-          {d.detalle && <div className="d">{d.detalle}</div>}
-          <div className="foot"><Verificado ok={d.verificado} /><span><Refs ids={d.fuentes} /></span></div>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-function TemaCard({ t }: { t: Tema }) {
-  return (
-    <div className="card">
-      <h3 style={{ fontSize: 17 }}>{t.titulo}</h3>
-      <p className="muted small" style={{ marginTop: 6 }}>{t.resumen}</p>
-      <ul className="list">{t.puntos.map((p) => <li key={p}>{p}</li>)}</ul>
-      <div style={{ marginTop: 12 }} className="small muted">Fuentes <Refs ids={t.fuentes} /></div>
-    </div>
-  )
-}
+// Los cuatro números que hay que llevarse en la cabeza
+const ESENCIAL = [
+  { v: '18,4 M', l: 'turistas en 2025', d: '+3,5 % · récord', f: [1] },
+  { v: '-0,5 %', l: 'extranjeros ene–sep 2026', d: 'mientras España crece +5,2 %', f: [2] },
+  { v: '72 %', l: 'repiten destino', d: 'fidelidad alta, poca novedad', f: [41] },
+  { v: '≈ 60 %', l: 'vienen de Reino Unido o Alemania', d: 'dependencia de dos mercados', f: [6] },
+]
 
 export default function Investigacion() {
   const [params] = useSearchParams()
   const [cat, setCat] = useState('Todas')
-  const [q, setQ] = useState('')
+  const [verFuentes, setVerFuentes] = useState(false)
   const [qf, setQf] = useState('')
   const categorias = useMemo(() => ['Todas', ...Array.from(new Set(REFERENTES.map((r) => r.categoria)))], [])
-  const refs = REFERENTES.filter((r) => (cat === 'Todas' || r.categoria === cat) && (q === '' || `${r.nombre} ${r.lugar} ${r.que} ${r.resultado ?? ''}`.toLowerCase().includes(q.toLowerCase())))
-  const fuentes = FUENTES.filter((f) => qf === '' || `${f.id} ${f.titulo} ${f.medio} ${f.url}`.toLowerCase().includes(qf.toLowerCase()))
+  const refs = REFERENTES.filter((r) => cat === 'Todas' || r.categoria === cat)
+  const fuentes = FUENTES.filter((f) => qf === '' || `${f.id} ${f.titulo} ${f.medio} ${f.url}`.toLowerCase().includes(qf.toLowerCase())).sort((a, b) => a.id - b.id)
 
-  // ?f=12 → salta a la fuente 12 y la resalta
+  // ?f=12 → abre la lista de fuentes, salta a la 12 y la resalta
   const f = params.get('f')
   useEffect(() => {
     if (!f) return
-    setQf('')
-    requestAnimationFrame(() => {
+    setQf(''); setVerFuentes(true)
+    setTimeout(() => {
       const el = document.getElementById(`fuente-${f}`)
       if (!el) return
       el.scrollIntoView({ behavior: 'smooth', block: 'center' })
       el.classList.add('hl')
       setTimeout(() => el.classList.remove('hl'), 2200)
-    })
+    }, 60)
   }, [f])
 
   const ir = (id: string) => (e: React.MouseEvent) => { e.preventDefault(); document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }) }
@@ -74,8 +57,8 @@ export default function Investigacion() {
     <div className="wrap">
       <header className="page-head enter">
         <span className="kicker">Investigación previa · antes de conocer el reto</span>
-        <h1>El turismo en Canarias, con fuentes</h1>
-        <p>Lo que sabemos antes del jueves: cifras, debates, retos probables y referentes. Cada dato lleva su número de fuente <span className="ref" style={{ pointerEvents: 'none' }}>n</span>; pulsa para ver de dónde sale. Lo marcado «Por verificar» no debe ir a la presentación sin contrastarlo.</p>
+        <h1>El turismo en Canarias, de un vistazo</h1>
+        <p>Primero los números, luego el mapa, y el detalle solo si hace falta. Cada dato lleva su fuente <span className="ref" style={{ pointerEvents: 'none' }}>n</span>.</p>
       </header>
 
       <div className="inv-layout">
@@ -84,116 +67,135 @@ export default function Investigacion() {
         </nav>
 
         <div>
-          <section id="cifras">
-            <div className="section-head"><div><h2>Cifras clave</h2><p>2025 cerrado y lo que llevamos de 2026.</p></div></div>
-            <div className="callout" style={{ marginBottom: 16 }}><Icon name="alert" size={18} /><span>{AVISO_SERIES}</span></div>
-            <h3 className="kicker" style={{ margin: '0 0 10px' }}>2025</h3>
-            <Cifras datos={CIFRAS_2025} />
-            <h3 className="kicker" style={{ margin: '24px 0 10px' }}>2026</h3>
-            <Cifras datos={CIFRAS_2026} />
+          <section id="esencial">
+            <div className="hero-stats">
+              {ESENCIAL.map((e, n) => (
+                <div key={e.l} className={`hero-stat enter enter-${n + 2}`}>
+                  <b>{e.v}</b>
+                  <span>{e.l}</span>
+                  <small>{e.d} <Refs ids={e.f} /></small>
+                </div>
+              ))}
+            </div>
+            <p className="nota"><Icon name="alert" size={14} /> {AVISO_SERIES}</p>
           </section>
 
-          <section id="debates" className="section">
-            <div className="section-head"><div><h2>Debates abiertos</h2><p>Los temas que están en la conversación pública y que un reto puede tocar.</p></div></div>
-            <div className="grid g2">{DEBATES.map((t) => <TemaCard key={t.titulo} t={t} />)}</div>
+          <section id="islas" className="section">
+            <div className="section-head"><div><h2>Canarias por islas</h2><p>Pasa el ratón (o toca) una isla. Cambia el indicador para ver otro mapa de calor.</p></div></div>
+            <MapaIslas />
           </section>
 
-          <section id="retos" className="section">
-            <div className="section-head"><div><h2>Retos probables</h2><p>Lo que una empresa turística canaria podría plantear, con el dolor y el dato que lo respalda.</p></div></div>
-            <div className="table-wrap">
-              <table>
-                <thead><tr><th>Reto</th><th>Dolor</th><th>Dato</th></tr></thead>
-                <tbody>
-                  {RETOS_TIPO.map((r) => (
-                    <tr key={r.titulo}><td style={{ fontWeight: 600, minWidth: 180 }}>{r.titulo}</td><td style={{ minWidth: 220 }}>{r.dolor}</td><td style={{ minWidth: 200 }}>{r.dato} <Refs ids={r.fuentes} /></td></tr>
-                  ))}
-                </tbody>
-              </table>
+          <section id="mercados" className="section">
+            <div className="section-head"><div><h2>¿De dónde vienen?</h2><p>Lanzarote vive del británico; La Palma, del alemán y del peninsular.</p></div></div>
+            <Mercados />
+          </section>
+
+          <section id="senales" className="section">
+            <div className="section-head"><div><h2>Señales de 2026</h2><p>Lo que ha cambiado este año.</p></div></div>
+            <div className="senales">
+              {CIFRAS_2026.map((d) => (
+                <div key={d.etiqueta} className="senal">
+                  <b className={d.valor.startsWith('-') ? 'down' : ''}>{d.valor}</b>
+                  <span>{d.etiqueta}</span>
+                  <small>{d.detalle} <Refs ids={d.fuentes} /> {!d.verificado && <Verificado ok={false} />}</small>
+                </div>
+              ))}
             </div>
           </section>
 
-          <section id="entidades" className="section">
-            <div className="section-head"><div><h2>Quién innova aquí</h2><p>Empresas e instituciones que podrían proponer el reto, y qué les preocupa.</p></div></div>
-            <div className="grid g2">
+          <section id="temas" className="section">
+            <div className="section-head"><div><h2>Temas y retos probables</h2><p>Abre solo lo que te interese.</p></div></div>
+            <div className="acordeon">
+              {DEBATES.map((t) => (
+                <details key={t.titulo}>
+                  <summary><span>{t.titulo}</span><small>{t.resumen}</small></summary>
+                  <ul className="list">{t.puntos.map((p) => <li key={p}>{p}</li>)}</ul>
+                  <div className="small muted" style={{ marginTop: 10 }}>Fuentes <Refs ids={t.fuentes} /></div>
+                </details>
+              ))}
+            </div>
+            <h3 className="kicker" style={{ margin: '28px 0 12px' }}>{RETOS_TIPO.length} retos que podría plantear una empresa</h3>
+            <div className="retos">
+              {RETOS_TIPO.map((r) => (
+                <details key={r.titulo} className="reto">
+                  <summary>{r.titulo}</summary>
+                  <p>{r.dolor}</p>
+                  <p className="dato">{r.dato} <Refs ids={r.fuentes} /></p>
+                </details>
+              ))}
+            </div>
+            <h3 className="kicker" style={{ margin: '28px 0 12px' }}>Quién innova aquí</h3>
+            <div className="entidades">
               {ENTIDADES.map((e) => (
-                <div key={e.nombre} className="card">
-                  <h3 style={{ fontSize: 16 }}>{e.nombre}</h3>
-                  <p className="small" style={{ marginTop: 6, color: 'var(--ink-2)' }}>{e.que}</p>
-                  <p className="small muted" style={{ marginTop: 8 }}><b style={{ color: 'var(--ink)' }}>Reto probable:</b> {e.retoProbable} <Refs ids={e.fuentes} /></p>
+                <div key={e.nombre} className="entidad" tabIndex={0}>
+                  <b>{e.nombre}</b>
+                  <span>{e.retoProbable}</span>
+                  <div className="entidad-mas">{e.que} <Refs ids={e.fuentes} /></div>
                 </div>
               ))}
             </div>
           </section>
 
           <section id="referentes" className="section">
-            <div className="section-head">
-              <div><h2>Benchmark: referentes</h2><p>Destinos y empresas que ya resolvieron algo parecido. Filtra por categoría o busca.</p></div>
-              <input className="search" placeholder="Buscar referente…" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Buscar referente" />
-            </div>
+            <div className="section-head"><div><h2>Benchmark</h2><p>Quién resolvió algo parecido, y con qué resultado.</p></div></div>
             <div className="chips" style={{ marginBottom: 14 }}>
               {categorias.map((c) => <button key={c} className={`chip ${cat === c ? 'on' : ''}`} onClick={() => setCat(c)}>{c}</button>)}
             </div>
             <div className="grid g3">
               {refs.map((r) => (
-                <div key={r.nombre} className="card" style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, alignItems: 'center' }}>
-                    <span className="tag">{r.categoria}</span>
-                    {!r.verificado && <Verificado ok={false} />}
-                  </div>
-                  <h3 style={{ fontSize: 16, marginTop: 4 }}>{r.nombre}</h3>
+                <div key={r.nombre} className="card ref-card">
+                  <div className="ref-top"><span className="tag">{r.categoria}</span>{!r.verificado && <Verificado ok={false} />}</div>
+                  <h3>{r.nombre}</h3>
                   <div className="small muted">{r.lugar}</div>
-                  <p className="small" style={{ color: 'var(--ink-2)' }}>{r.que}</p>
-                  {r.resultado && <p className="small"><b>Resultado:</b> {r.resultado}</p>}
-                  <div className="small muted" style={{ marginTop: 'auto', paddingTop: 6 }}>Fuentes <Refs ids={r.fuentes} /></div>
+                  <p>{r.que}</p>
+                  {r.resultado && <div className="resultado">{r.resultado}</div>}
+                  <div className="small muted" style={{ marginTop: 'auto', paddingTop: 8 }}><Refs ids={r.fuentes} /></div>
                 </div>
               ))}
-              {refs.length === 0 && <p className="muted">Ningún referente coincide con la búsqueda.</p>}
             </div>
           </section>
 
-          <section id="datos" className="section">
-            <div className="section-head"><div><h2>Datos abiertos para el prototipo</h2><p>De dónde sacar datos reales durante el reto.</p></div></div>
+          <section id="extra" className="section">
             <div className="grid g3">
-              {DATOS_ABIERTOS.map((d) => (
-                <div key={d.nombre} className="card">
-                  <h3 style={{ fontSize: 16 }}>{d.nombre}</h3>
-                  <p className="small" style={{ marginTop: 6, color: 'var(--ink-2)' }}>{d.que}</p>
-                  <p className="small muted" style={{ marginTop: 8, wordBreak: 'break-word' }}>{d.acceso} <Refs ids={d.fuentes} /></p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section id="formato" className="section">
-            <div className="section-head"><div><h2>{FORMATO_HACKATHON.titulo}</h2></div></div>
-            <TemaCard t={FORMATO_HACKATHON} />
-          </section>
-
-          <section id="verificar" className="section">
-            <div className="section-head"><div><h2>Por verificar</h2><p>Lo que hay que contrastar antes de usarlo en la presentación.</p></div></div>
-            <div className="card">
-              <ul className="list" style={{ marginTop: 0 }}>{PENDIENTE_VERIFICAR.map((p) => <li key={p}>{p}</li>)}</ul>
+              <div className="card">
+                <div className="kicker">Datos abiertos</div>
+                <ul className="list">{DATOS_ABIERTOS.map((d) => <li key={d.nombre}><b>{d.nombre}</b>: {d.que} <Refs ids={d.fuentes} /></li>)}</ul>
+              </div>
+              <div className="card">
+                <div className="kicker">{FORMATO_HACKATHON.titulo}</div>
+                <ul className="list">{FORMATO_HACKATHON.puntos.map((p) => <li key={p}>{p}</li>)}</ul>
+                <div className="small muted" style={{ marginTop: 8 }}><Refs ids={FORMATO_HACKATHON.fuentes} /></div>
+              </div>
+              <div className="card">
+                <div className="kicker">Por verificar</div>
+                <ul className="list">{PENDIENTE_VERIFICAR.map((p) => <li key={p}>{p}</li>)}</ul>
+              </div>
             </div>
           </section>
 
           <section id="fuentes" className="section">
             <div className="section-head">
-              <div><h2>Fuentes</h2><p>Numeradas como aparecen en la página. Las marcadas «No se pudo abrir» se citan por referencia y conviene revisarlas.</p></div>
-              <input className="search" placeholder="Buscar fuente…" value={qf} onChange={(e) => setQf(e.target.value)} aria-label="Buscar fuente" />
+              <div><h2>Fuentes</h2><p>{FUENTES.length} fuentes numeradas. Pulsa cualquier número de la página para saltar aquí.</p></div>
+              <button className="btn sm" onClick={() => setVerFuentes(!verFuentes)}>{verFuentes ? 'Ocultar' : 'Ver las fuentes'}</button>
             </div>
-            <div className="card" style={{ padding: 0 }}>
-              {fuentes.map((x) => (
-                <div key={x.id} id={`fuente-${x.id}`} className="fuente">
-                  <span className="n">[{x.id}]</span>
-                  <div style={{ minWidth: 0 }}>
-                    <div className="t">{x.titulo}</div>
-                    <div className="m">{x.medio}{x.fecha ? ` · ${x.fecha}` : ''}</div>
-                    <a className="url" href={x.url} target="_blank" rel="noreferrer">{x.url}</a>
-                  </div>
-                  {x.abierta ? <span className="tag ok"><Icon name="check" size={12} />Abierta</span> : <span className="tag warn">No se pudo abrir</span>}
+            {verFuentes && (
+              <>
+                <input className="search" style={{ marginBottom: 12 }} placeholder="Buscar fuente…" value={qf} onChange={(e) => setQf(e.target.value)} aria-label="Buscar fuente" />
+                <div className="card" style={{ padding: 0 }}>
+                  {fuentes.map((x) => (
+                    <div key={x.id} id={`fuente-${x.id}`} className="fuente">
+                      <span className="n">[{x.id}]</span>
+                      <div style={{ minWidth: 0 }}>
+                        <div className="t">{x.titulo}</div>
+                        <div className="m">{x.medio}{x.fecha ? ` · ${x.fecha}` : ''}</div>
+                        <a className="url" href={x.url} target="_blank" rel="noreferrer">{x.url}</a>
+                      </div>
+                      {x.abierta ? <span className="tag ok"><Icon name="check" size={12} />Abierta</span> : <span className="tag warn">No se pudo abrir</span>}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </>
+            )}
           </section>
         </div>
       </div>

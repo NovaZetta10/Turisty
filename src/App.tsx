@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import { EQUIPO_NOMBRE, EVENTO, REPO_URL, SECCIONES } from './config/proyecto'
 import { Icon } from './components/Icon'
+import { NovaMark } from './components/NovaMark'
 import Inicio from './pages/Inicio'
 import Investigacion from './pages/Investigacion'
 import Usuarios from './pages/Usuarios'
@@ -43,8 +44,8 @@ export default function App() {
       <header className="topbar">
         <div className="wrap topbar-inner">
           <Link to="/" className="brand">
-            <span className="brand-mark"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z" fill="#f2b33d" /></svg></span>
-            <span>{EQUIPO_NOMBRE}<small>{EVENTO.nombre}</small></span>
+            <NovaMark size={26} />
+            <span><span className="wordmark">{EQUIPO_NOMBRE.toLowerCase()}</span><small>{EVENTO.nombre}</small></span>
           </Link>
           <nav className="nav" aria-label="Secciones">
             <NavLink to="/" end>Inicio</NavLink>
