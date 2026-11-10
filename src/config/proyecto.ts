@@ -59,6 +59,8 @@ export const EQUIPO: Miembro[] = [
     nombre: 'Javier Domínguez Parras',
     rol: 'Telecomunicaciones & Ciberseguridad',
     estudios: 'Grado y máster en Ingeniería de Telecomunicaciones; cursando el máster de Ciberseguridad',
+    // Búsqueda en LinkedIn: sustituir por la URL exacta del perfil (linkedin.com/in/…) cuando la tengamos
+    linkedin: 'https://www.linkedin.com/search/results/people/?keywords=Javier%20Dom%C3%ADnguez%20Parras',
   },
   {
     nombre: 'Marcelo',
