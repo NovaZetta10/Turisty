@@ -11,10 +11,10 @@
 .s-qr-esquina span { font-size: 1cqw; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
 
 /* Revelación: «Os presentamos… Tenique», con el fogón común (components/Piedra) a la derecha */
-.s-reveal { display: grid; grid-template-columns: 1.25fr 1fr; gap: 3cqw; align-items: center; height: 100%; padding-right: 7cqw; }
+.s-reveal { display: grid; grid-template-columns: 1.25fr 1fr; grid-template-rows: 1fr auto; gap: 1.6cqw 3cqw; align-items: center; height: 100%; padding-right: 7cqw; }
 .s-reveal-antes { font-family: var(--display); font-size: 3cqw; color: var(--text-2); }
-.s-reveal-nombre { font-family: var(--display); font-weight: 700; font-size: 12cqw; letter-spacing: -0.05em; line-height: .95; color: var(--text); margin: .6cqw 0 2cqw; }
-.s-reveal-def { font-size: 2cqw; line-height: 1.4; color: var(--text-2); }
+.s-reveal-nombre { font-family: var(--display); font-weight: 700; font-size: 9.5cqw; letter-spacing: -0.05em; line-height: .95; color: var(--text); margin: .4cqw 0 1.2cqw; }
+.s-reveal-def { font-size: 1.7cqw; line-height: 1.4; color: var(--text-2); }
 
 /* Fogón común (src/components/Piedra.tsx) a escala de diapositiva: sus medidas son en px, aquí se pasan a cqw
    para que escale igual en la pestaña, a pantalla completa y en el PDF. */
@@ -28,22 +28,6 @@
 /* Las etiquetas de las piedras de atrás se apartan hacia fuera para no pisar la piedra de los vecinos, que va delante */
 .s-fogon-comun .fogon-p2 > span:last-child { translate: calc(var(--fs) * -0.3) 0; }
 .s-fogon-comun .fogon-p3 > span:last-child { translate: calc(var(--fs) * 0.3) 0; }
-
-/* Pareja problema → solución */
-.s-pareja { display: flex; flex-direction: column; height: 100%; }
-.s-pareja-cols { display: grid; grid-template-columns: 1fr auto 1fr; gap: 2.4cqw; align-items: stretch; margin-top: 2cqw; margin-right: 7cqw; flex: 1; min-height: 0; padding-bottom: 1cqw; }
-.s-pareja-prob, .s-pareja-sol { display: flex; flex-direction: column; gap: 1cqw; padding: 2.2cqw; border-radius: 1.6cqw; border: 1px solid var(--line); }
-.s-pareja-prob { background: rgba(255, 255, 255, .03); }
-.s-pareja-sol { background: color-mix(in srgb, var(--brand-red) 10%, transparent); border-color: color-mix(in srgb, var(--brand-red) 40%, transparent); }
-.s-pareja-et { font-size: 1.2cqw; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
-.s-pareja-sol .s-pareja-et { color: var(--nova); }
-.s-pareja-tit { font-family: var(--display); font-size: 2.5cqw; font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; }
-.s-pareja-valor { font-family: var(--display); font-size: 6.4cqw; font-weight: 700; letter-spacing: -0.05em; line-height: 1; color: var(--nova); margin-top: auto; font-variant-numeric: tabular-nums; }
-.s-pareja-etq { font-size: 1.5cqw; line-height: 1.4; color: var(--text-2); }
-.s-pareja-sol ul { margin: auto 0 0; padding-left: 1.8cqw; display: grid; gap: .8cqw; font-size: 1.6cqw; line-height: 1.4; color: var(--text-2); }
-.s-pareja-sol li::marker { color: var(--nova); }
-.s-pareja-flecha { align-self: center; color: var(--nova); }
-.s-pareja-flecha svg { width: 3cqw; height: 3cqw; }
 
 /* Las tres piedras, contentas */
 .s-fogon { display: grid; grid-template-columns: 1.1fr 1fr; gap: 3cqw; align-items: center; height: 100%; padding-right: 7cqw; }
@@ -64,11 +48,269 @@
 /* En la vista del móvil (diapositiva de menos de 520 px de ancho), los navegadores no bajan de un tamaño mínimo de letra
    y los motivos de DESTACADOS, los detalles de las parejas y las fuentes no caben. Se ocultan solo ahí; en el proyector y en el PDF se ven completos. */
 @container (max-width: 520px) {
-  .s-pick span, .s-pareja-etq, .s-pareja-sol ul, .s-fuente { display: none; }
+  .s-pick span, .s-fuente, .s-hito-fric { display: none; }
 }
 
 /* Pregunta-gancho larga (patrón «¿Cómo podemos…?»): más pequeña para que quepa */
-.s-question .s-mega.s-mega-largo { font-size: 4.3cqw; line-height: 1.08; max-width: 92%; }
+.s-question .s-mega.s-mega-largo { font-size: 5.3cqw; line-height: 1.08; max-width: 92%; }
 
 /* El PDF no debe heredar la animación de entrada del fogón común: sin esto, las piedras podrían imprimirse invisibles */
 .print-deck .fogon-p, .print-deck .fogon-llama, .print-deck .fogon-caldero, .print-deck .fogon-vapor { animation: none !important; }
+
+/* Reveal: las tres piedras debajo de la definición (ocupan las dos columnas) */
+.s-reveal-piedras { grid-column: 1 / -1; border-top: 1px solid var(--line-2); padding-top: 1.4cqw; }
+.s-reveal-union { font-family: var(--display); font-size: 2.3cqw; font-weight: 600; letter-spacing: -0.02em; color: var(--text); }
+.s-reveal-lista { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8cqw; margin-top: 1cqw; }
+.s-reveal-p { display: grid; grid-template-columns: auto 1fr; column-gap: .9cqw; row-gap: .2cqw; align-items: baseline; }
+.s-reveal-p i { grid-row: 1 / 3; font-style: normal; font-family: var(--display); font-weight: 700; font-size: 2.4cqw; color: var(--nova); }
+.s-reveal-p b { font-family: var(--display); font-size: 1.8cqw; }
+.s-reveal-p span { font-size: 1.4cqw; line-height: 1.35; color: var(--text-2); }
+.s-reveal-fuego { display: flex; align-items: center; gap: .7cqw; margin-top: 1cqw; font-size: 1.45cqw; font-weight: 600; color: var(--text-2); }
+.s-reveal-fuego svg { color: var(--nova); flex: none; }
+.s-reveal .s-fuente { margin-top: .8cqw; font-size: 1.1cqw; }
+.s-reveal .s-fogon-comun { transform-origin: center; }
+.s-reveal .s-fogon-comun .fogon { --fs: 6cqw !important; }
+.s-reveal .s-fogon-comun .piedra { width: 6cqw !important; height: 6cqw !important; }
+
+/* Sendero en zigzag (estilo de src/prototipo/Sendero.tsx, recreado aquí): tres paradas */
+.s-sendero { display: flex; flex-direction: column; height: 100%; padding-right: 7cqw; }
+.s-sendero-tit { font-size: 3cqw; max-width: 90%; }
+.s-sendero-via { position: relative; flex: 1; min-height: 0; margin-top: 2cqw; }
+.s-sendero-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.s-sendero-base { fill: none; stroke: var(--line-2); stroke-width: 3; stroke-linecap: round; }
+.s-sendero-traza { fill: none; stroke: var(--nova); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: s-traza .3s ease-out .15s forwards; }
+@keyframes s-traza { to { stroke-dashoffset: 0; } }
+.s-sendero-hitos { list-style: none; margin: 0; padding: 0; position: absolute; inset: 0; }
+.s-sendero-hitos li { position: absolute; width: 30%; display: flex; flex-direction: column; align-items: center; text-align: center; gap: .6cqw; transform: translate(-50%, -2.2cqw); animation: s-hito .28s var(--ease-out) both; animation-delay: calc(var(--i, 0) * 60ms + 120ms); }
+.s-sendero-hitos li:nth-child(1) { left: 16.7%; top: 15%; }
+.s-sendero-hitos li:nth-child(2) { left: 50%; top: 42%; }
+.s-sendero-hitos li:nth-child(3) { left: 83.3%; top: 15%; }
+@keyframes s-hito { from { opacity: 0; } to { opacity: 1; } }
+.s-hito-num { width: 4.4cqw; height: 4.4cqw; border-radius: 50%; display: grid; place-items: center; background: var(--halo); color: #fff; font-family: var(--display); font-weight: 700; font-size: 2.2cqw; flex: none; box-shadow: 0 0 0 .6cqw color-mix(in srgb, var(--halo) 25%, transparent); }
+.s-hito-txt { display: flex; flex-direction: column; gap: .4cqw; }
+.s-hito-txt b { font-family: var(--display); font-size: 2.2cqw; }
+.s-hito-fric { font-size: 1.6cqw; line-height: 1.35; color: var(--text-2); }
+.s-hito-sol { display: inline-flex; align-items: center; justify-content: center; gap: .5cqw; font-size: 1.6cqw; line-height: 1.35; font-weight: 600; color: var(--nova); }
+.s-hito-sol svg { flex: none; }
+
+/* Escena: voz de personaje */
+.s-escena { display: flex; flex-direction: column; justify-content: center; height: 100%; padding-right: 9cqw; }
+.s-voz { margin: 1.6cqw 0 1.4cqw; font-family: var(--display); font-size: 4.2cqw; font-weight: 600; line-height: 1.15; letter-spacing: -0.03em; color: var(--text); max-width: 92%; }
+.s-voz-quien { font-size: 1.4cqw; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.s-escena .s-fuente { margin-top: 3cqw; font-size: 1.4cqw; }
+
+/* Solución: lo que el prototipo hace hoy */
+.s-solucion { display: flex; flex-direction: column; height: 100%; padding-right: 9cqw; }
+.s-solucion-tit { font-size: 3.4cqw; max-width: 100%; }
+.s-solucion-lista { list-style: none; margin: 1.6cqw 0 0; padding: 0; display: grid; gap: .8cqw; }
+.s-solucion-p { display: grid; grid-template-columns: auto 1fr; gap: 1.2cqw; align-items: start; padding: 1cqw 1.6cqw; border-radius: 1.2cqw; background: color-mix(in srgb, var(--halo) 10%, transparent); border: 1px solid color-mix(in srgb, var(--halo) 35%, transparent); font-size: 2cqw; line-height: 1.35; color: var(--text); }
+.s-solucion-p svg { color: var(--nova); margin-top: .3cqw; flex: none; }
+.s-sellos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4cqw; margin-top: 1.6cqw; }
+.s-sello { display: flex; align-items: center; gap: 1cqw; padding: 1.4cqw 1.6cqw; border-radius: 1.2cqw; border: 1px solid var(--line-2); font-family: var(--display); font-weight: 600; font-size: 1.8cqw; line-height: 1.2; }
+.s-sello i { font-style: normal; width: 3cqw; height: 3cqw; border-radius: 50%; display: grid; place-items: center; background: var(--halo); color: #fff; font-size: 1.6cqw; flex: none; }
+.s-solucion .s-fuente { margin-top: auto; }
+
+/* Número de diapositiva (esquina inferior derecha) y barra de progreso fina al pie, dentro de cada diapositiva */
+.slide > .s-num { position: absolute; right: 2.4cqw; bottom: 1.6cqw; z-index: 2; font-size: 1.4cqw; font-weight: 600; color: var(--text-2); letter-spacing: .04em; }
+.slide > .s-progreso { position: absolute; left: 0; right: 0; bottom: 0; height: .5cqw; min-height: 3px; background: rgba(255, 255, 255, .08); z-index: 2; overflow: hidden; }
+.s-progreso i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, var(--brand-blue), var(--accent-fill)); transform-origin: left; transform: scaleX(var(--a, 0)); animation: s-prog .2s ease-out both; }
+@keyframes s-prog { from { transform: scaleX(var(--de, 0)); } to { transform: scaleX(var(--a, 0)); } }
+.stage .progress { display: none; }
+.print-deck .s-progreso i { animation: none; }
+
+/* Movimiento: entradas escalonadas de 220 ms, solo opacity y transform (styles.css las deja en 550 ms y más lejos) */
+@keyframes s-sube { from { opacity: 0; transform: translateY(.8cqw); } to { opacity: 1; transform: none; } }
+@keyframes s-pop { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: none; } }
+.slide .a:not(.s-burst):not(.s-answer), .slide.back .a:not(.s-burst):not(.s-answer) { animation: s-sube .22s cubic-bezier(.23, 1, .32, 1) both; animation-delay: calc(var(--i, 0) * 50ms + 40ms); }
+/* La revelación del nombre entra con más presencia: escala 0.96 → 1 y opacidad */
+.slide .a.s-pop { animation-name: s-pop; animation-duration: .26s; animation-delay: .12s; transform-origin: left center; }
+/* La voz del personaje aparece palabra a palabra */
+.s-pal { display: inline-block; white-space: pre; animation: s-sube .2s cubic-bezier(.23, 1, .32, 1) both; animation-delay: calc(var(--w, 0) * 35ms + 150ms); }
+.s-voz { white-space: normal; }
+.s-fogon-mensaje { font-size: 1.7cqw; line-height: 1.4; color: var(--text); margin-top: 2cqw; max-width: 90%; font-weight: 500; }
+.s-fogon-mensaje + .s-fogon-lema, .s-fogon-lema { margin-top: 1cqw; font-size: 3cqw; }
+.s-fogon-mensaje { margin-top: 1.2cqw; font-size: 1.55cqw; }
+.s-fogon-piedras { margin-top: 1.6cqw; gap: .6cqw; }
+
+@media (prefers-reduced-motion: reduce) {
+  .slide .a, .slide .a.s-pop, .s-pal, .s-progreso i { animation: none !important; }
+  .s-sendero-traza { animation: none; stroke-dashoffset: 0; }
+  .s-sendero-hitos li { animation: none; }
+}
+.print-deck .a, .print-deck .s-pal, .print-deck .s-progreso i { animation: none !important; }
+.print-deck .s-sendero-traza { animation: none; stroke-dashoffset: 0; }
+.print-deck .s-sendero-hitos li { animation: none; }
+
+/* Móvil con la pantalla real del prototipo, a la derecha de las soluciones (sin interacción) */
+.s-movil { position: absolute; right: 3cqw; top: 15cqw; pointer-events: none; user-select: none; }
+.s-movil .proto-4-escala { --s: inherit; }
+.s-solucion.con-movil { padding-right: 24cqw; }
+.s-solucion.con-movil .s-solucion-p { font-size: 1.75cqw; }
+.s-solucion.con-movil .s-solucion-tit { font-size: 3cqw; }
+.s-solucion.con-movil .s-sellos { grid-template-columns: 1fr; gap: .7cqw; }
+.s-solucion.con-movil .s-sello { font-size: 1.5cqw; padding: .8cqw 1.2cqw; }
+.s-solucion.con-movil .s-sello i { width: 2.4cqw; height: 2.4cqw; font-size: 1.3cqw; }
+.s-fogon-contexto { font-size: 1.5cqw; line-height: 1.35; color: var(--text-2); margin-top: 1.2cqw; max-width: 92%; }
+.s-fogon-contexto small { display: block; font-size: 1.05cqw; color: var(--muted); margin-top: .3cqw; }
+
+/* Coordinador · revisión 12-11 noche: diapositiva 12 sin pisar la marca y fogón más grande; leyendas fuera de las piedras */
+.s-fogon { padding-bottom: 5.5cqw; }
+.s-fogon-p { padding-top: .7cqw; }
+.s-fogon-mensaje { font-size: 1.5cqw; margin-top: 1.4cqw; }
+.s-fogon-lema { font-size: 3cqw; margin-top: 1.6cqw; }
+.s-fogon .s-fogon-comun .fogon { --fs: 9.5cqw !important; }
+.s-fogon .s-fogon-comun .piedra { width: 9.5cqw !important; height: 9.5cqw !important; }
+.s-fogon .s-fogon-comun .piedra-ic svg { width: 3.8cqw; height: 3.8cqw; }
+.s-fogon-comun .fogon-p2 > span:last-child { translate: calc(var(--fs) * -0.55) 0; }
+.s-fogon-comun .fogon-p3 > span:last-child { translate: calc(var(--fs) * 0.55) 0; }
+.s-fogon .s-title { font-size: 3.6cqw; }
+.s-fogon-p b { font-size: 1.7cqw; }
+.s-fogon-p span { font-size: 1.4cqw; }
+.s-fogon-piedras { margin-top: 1.6cqw; gap: .6cqw; }
+
+/* ── Soluciones con imágenes: móviles reales (o la captura del panel) a la derecha ── */
+.s-imgs { position: absolute; right: 3cqw; top: 14.5cqw; display: flex; gap: 1.4cqw; align-items: flex-start; pointer-events: none; user-select: none; }
+.s-imgs .s-movil { position: relative; right: auto; top: auto; }
+.s-gestion-img { width: 33cqw; height: auto; border-radius: 1cqw; border: 1px solid var(--line-2); box-shadow: 0 1cqw 3cqw -1cqw rgba(0, 0, 0, .6); display: block; }
+.s-solucion.con-imgs { padding-right: 34cqw; }
+.s-solucion.con-imgs.imgs-1 { padding-right: 38cqw; }
+.s-solucion.con-imgs .s-solucion-tit { font-size: 2.9cqw; }
+.s-solucion-intro { margin: 1.2cqw 0 0; font-family: var(--display); font-size: 2cqw; font-weight: 600; color: var(--nova); }
+.s-solucion.con-imgs .s-solucion-lista { margin-top: 1cqw; gap: .7cqw; }
+.s-solucion.con-imgs .s-solucion-p { font-size: 1.6cqw; padding: .8cqw 1.3cqw; }
+.s-solucion.con-imgs .s-sellos { grid-template-columns: 1fr; gap: .5cqw; margin-top: .8cqw; }
+.s-solucion.con-imgs .s-sello { font-size: 1.4cqw; padding: .6cqw 1.1cqw; }
+
+/* ── Escenas de problema: tono cálido (atardecer apagado) frente al azul noche de las soluciones ── */
+.slide.problema { background: linear-gradient(135deg, #2a1f1a, #3a2a20); --nova: #f0b27a; --muted: #cdb7a2; --text-2: #e4d3c3; }
+.slide.problema::before, .slide.problema::after { display: none; }
+.slide.problema .s-kicker { color: #f0b27a; }
+.slide.problema .s-progreso { background: rgba(255, 255, 255, .1); }
+.slide.problema .s-progreso i { background: linear-gradient(90deg, #b8562e, #f0b27a); }
+.slide.problema .s-num, .slide.problema .s-foot { color: #e4d3c3; }
+.s-escena { display: grid; grid-template-columns: 46fr 50fr; gap: 3cqw; align-items: center; height: 100%; padding-right: 2cqw; }
+.s-escena-ilu { width: 100%; align-self: center; }
+.s-escena-svg, .s-escena-ilu > svg { width: 100%; height: auto; display: block; }
+.s-escena-txt { display: flex; flex-direction: column; min-width: 0; padding-top: 6cqw; }
+.s-escena .s-voz { font-size: 3.1cqw; max-width: 100%; margin: 1.2cqw 0 1cqw; }
+.s-escena .s-fuente { margin-top: 1.6cqw; font-size: 1.2cqw; max-width: 100%; color: #cdb7a2; }
+.slide.problema .s-voz-quien { color: #cdb7a2; }
+
+/* ── Lo que ya está hecho ── */
+.s-hecho { display: flex; flex-direction: column; height: 100%; padding-right: 9cqw; }
+.s-hecho-tit { font-size: 3.4cqw; max-width: 100%; }
+.s-hecho-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4cqw; margin-top: 2cqw; }
+.s-hecho-it { display: grid; grid-template-columns: auto 1fr; column-gap: 1cqw; row-gap: .3cqw; padding: 1.4cqw 1.6cqw; border-radius: 1.2cqw; border: 1px solid var(--line-2); background: color-mix(in srgb, var(--halo) 8%, transparent); }
+.s-hecho-it svg { grid-row: 1 / 3; color: var(--nova); margin-top: .2cqw; }
+.s-hecho-it b { font-family: var(--display); font-size: 1.9cqw; }
+.s-hecho-it span { font-size: 1.5cqw; line-height: 1.35; color: var(--text-2); }
+.s-hecho-despues { margin-top: 2cqw; font-family: var(--display); font-size: 2.1cqw; font-weight: 600; color: var(--text); max-width: 92%; line-height: 1.25; }
+
+/* ── Cierre: «Somos Nova» como remate ── */
+.s-final .s-mega { font-size: 13cqw; }
+.s-final .s-final-equipo { margin-top: 3cqw; font-size: 2.6cqw; color: var(--text); font-family: var(--display); font-weight: 600; letter-spacing: -0.01em; }
+.s-final .s-final-sub { font-size: 2cqw; font-weight: 500; color: var(--muted); margin-top: 1.6cqw; }
+/* Sendero con el tono cálido de los problemas (petición de Esther) */
+.slide.problema .s-hito-num { background: #b8562e; box-shadow: 0 0 0 .6cqw rgba(240, 178, 122, .22); }
+.slide.problema .s-sendero-base { stroke: rgba(240, 178, 122, .25); }
+/* Coordinador: logo de Turismo de Tenerife en el pie de cada diapositiva (es su reto) y QR sin tinte de selección */
+.s-foot { right: 16cqw; }
+.s-foot-tdt { display: inline-flex; align-items: center; gap: .8cqw; font-size: 1.1cqw; color: var(--muted); }
+.s-foot-tdt img { height: 2.6cqw; width: auto; opacity: .95; }
+.slide, .s-qr, .s-qr-mini, .s-qr-esquina { -webkit-user-select: none; user-select: none; }
+.s-qr svg, .s-qr-mini svg { -webkit-user-select: none; user-select: none; pointer-events: none; }
+
+/* ═══ Tanda 12-11 (noche): vídeos, sendero con botones, sellos, gestión con burbujas, datos, CTA de tres peticiones ═══ */
+
+/* Soluciones con UN móvil grande (vídeo de la demo) */
+.s-solucion.con-imgs { padding-right: 31cqw; }
+.s-imgs { right: 8cqw; top: 14.5cqw; }
+.s-tel { width: 17.5cqw; aspect-ratio: 375 / 835; border-radius: 2.6cqw; border: .45cqw solid #0b1124; background: #000; overflow: hidden; box-shadow: 0 1.4cqw 4cqw -1cqw rgba(0, 0, 0, .7), 0 0 0 1px var(--line-2); }
+.s-demo-video { width: 100%; height: 100%; object-fit: cover; display: block; background: #0b1124; }
+.s-imgs .s-movil { position: relative; }
+.s-solucion.con-imgs .s-solucion-tit { font-size: 3cqw; }
+.s-solucion.con-imgs .s-solucion-p { font-size: 1.75cqw; padding: .9cqw 1.4cqw; }
+
+/* Sendero: el botón de la app que se pulsa en cada parada */
+.s-boton-app { display: inline-flex; align-items: center; gap: .6cqw; align-self: center; margin-top: .7cqw; padding: .7cqw 1.5cqw; border-radius: 999px; background: #f4f6fb; color: #1c2550; font-weight: 600; font-size: 1.55cqw; line-height: 1.1; box-shadow: 0 .4cqw 1.2cqw -.4cqw rgba(0, 0, 0, .5); }
+.s-boton-app svg { flex: none; }
+
+/* Los tres sellos con un ejemplo */
+.s-sellos-slide { display: flex; flex-direction: column; height: 100%; padding-right: 2cqw; }
+.s-sellos-tit { font-size: 3.2cqw; max-width: 90%; }
+.s-sellos-exp { display: flex; flex-direction: column; gap: .2cqw; margin-top: 1.4cqw; padding: .9cqw 1.4cqw; border-left: .4cqw solid var(--nova); background: rgba(255, 255, 255, .04); border-radius: 0 .8cqw .8cqw 0; max-width: 72cqw; }
+.s-sellos-exp b { font-family: var(--display); font-size: 2cqw; }
+.s-sellos-exp span { font-size: 1.35cqw; color: var(--text-2); }
+.s-sellos-fila { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8cqw; margin-top: 1.8cqw; flex: 1; min-height: 0; }
+.s-sello-g { display: flex; flex-direction: column; align-items: flex-start; gap: .7cqw; padding: 1.6cqw; border-radius: 1.4cqw; border: 1px solid var(--line-2); background: color-mix(in srgb, var(--halo) 8%, transparent); animation: s-estampa .24s cubic-bezier(.23, 1, .32, 1) both; animation-delay: calc(var(--k, 0) * 420ms + 350ms); }
+.s-sello-g b { font-family: var(--display); font-size: 1.9cqw; line-height: 1.15; }
+.s-sello-g p { margin: 0; font-size: 1.4cqw; line-height: 1.35; color: var(--text-2); }
+.s-sello-g small { margin-top: auto; font-size: 1.3cqw; line-height: 1.3; font-weight: 600; color: var(--nova); }
+.s-sello-estampa { position: relative; width: 6.4cqw; height: 6.4cqw; border-radius: 50%; display: grid; place-items: center; background: var(--halo); color: #fff; box-shadow: 0 0 0 .5cqw color-mix(in srgb, var(--halo) 30%, transparent); }
+.s-sello-estampa i { position: absolute; right: -.4cqw; top: -.4cqw; width: 2.4cqw; height: 2.4cqw; border-radius: 50%; display: grid; place-items: center; background: #fff; color: #1c2550; font-style: normal; font-weight: 700; font-size: 1.3cqw; }
+.s-sellos-slide .s-fuente { margin-top: 1cqw; }
+@keyframes s-estampa { from { opacity: 0; transform: scale(1.14); } to { opacity: 1; transform: none; } }
+
+/* Gestión: demo grande con burbujas numeradas que aparecen una tras otra */
+.s-gestion { display: flex; flex-direction: column; height: 100%; padding-right: 1cqw; }
+.s-gestion-tit { font-size: 2.7cqw; max-width: 82%; margin-top: .8cqw; }
+.s-gestion-cuerpo { display: grid; grid-template-columns: 56cqw 1fr; gap: 2.4cqw; margin-top: 1.6cqw; align-items: start; }
+.s-gestion-demo { position: relative; width: 56cqw; aspect-ratio: 16 / 9; border-radius: 1cqw; overflow: hidden; border: 1px solid var(--line-2); box-shadow: 0 1.4cqw 4cqw -1cqw rgba(0, 0, 0, .7); background: #0b1124; }
+.s-gestion-demo .s-demo-horiz, .s-gestion-demo .s-demo-video, .s-gestion-demo .s-demo-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.s-marca { position: absolute; width: 2.6cqw; height: 2.6cqw; margin: -1.3cqw 0 0 -1.3cqw; border-radius: 50%; display: grid; place-items: center; background: var(--nova); color: #1c2550; font-weight: 700; font-size: 1.5cqw; box-shadow: 0 0 0 .4cqw rgba(255, 255, 255, .35); animation: s-pop .24s cubic-bezier(.23, 1, .32, 1) both; animation-delay: calc(var(--k, 0) * 450ms + 500ms); }
+.s-burbujas { display: grid; gap: 1.1cqw; align-content: start; }
+.s-burbuja { position: relative; display: grid; grid-template-columns: auto 1fr; gap: 1cqw; align-items: center; padding: 1cqw 1.4cqw; border-radius: 1.6cqw; background: color-mix(in srgb, var(--halo) 14%, transparent); border: 1px solid color-mix(in srgb, var(--halo) 45%, transparent); font-size: 1.6cqw; line-height: 1.3; animation: s-sube .22s cubic-bezier(.23, 1, .32, 1) both; animation-delay: calc(var(--k, 0) * 450ms + 500ms); }
+.s-burbuja i { width: 2.6cqw; height: 2.6cqw; border-radius: 50%; display: grid; place-items: center; background: var(--nova); color: #1c2550; font-style: normal; font-weight: 700; font-size: 1.5cqw; }
+.s-gestion .s-fuente { margin-top: 1cqw; }
+
+/* Datos → propuesta → entidades */
+.s-datos { display: flex; flex-direction: column; height: 100%; padding-right: 9cqw; }
+.s-datos-tit { font-size: 3.2cqw; max-width: 100%; }
+.s-datos-flujo { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 1.2cqw; align-items: stretch; margin-top: 2.4cqw; }
+.s-datos-col { display: flex; flex-direction: column; gap: .8cqw; padding: 1.6cqw; border-radius: 1.4cqw; border: 1px solid var(--line-2); background: rgba(255, 255, 255, .03); }
+.s-datos-col b { font-size: 1.2cqw; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.s-datos-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .6cqw; font-size: 1.7cqw; line-height: 1.25; }
+.s-datos-prop { justify-content: center; background: color-mix(in srgb, var(--halo) 16%, transparent); border-color: color-mix(in srgb, var(--halo) 50%, transparent); }
+.s-datos-prop span { font-family: var(--display); font-size: 2.3cqw; font-weight: 600; line-height: 1.15; }
+.s-datos-flecha { align-self: center; color: var(--nova); }
+.s-datos-frase { margin: 2.2cqw 0 0; font-family: var(--display); font-size: 2.2cqw; font-weight: 600; line-height: 1.25; max-width: 92%; color: var(--text); }
+
+/* Fogón: tono cálido, un solo mensaje */
+.slide.problema .s-fogon-lema { color: #f0b27a; font-size: 3.6cqw; line-height: 1.12; margin-top: 2.4cqw; max-width: 92%; }
+.slide.problema .s-fogon-p { border-top-color: rgba(255, 255, 255, .18); }
+
+/* CTA: tres peticiones, cada una con su QR */
+.s-cta { display: flex; flex-direction: column; height: 100%; padding-right: 2cqw; }
+.s-cta-tit { font-size: 3.4cqw; }
+.s-cta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2cqw; margin-top: 2.2cqw; flex: 1; min-height: 0; padding-bottom: 5cqw; }
+.s-cta-it { display: flex; flex-direction: column; align-items: flex-start; gap: .8cqw; padding: 1.8cqw; border-radius: 1.4cqw; border: 1px solid var(--line-2); background: color-mix(in srgb, var(--halo) 8%, transparent); }
+.s-cta-it i { font-style: normal; width: 3.4cqw; height: 3.4cqw; border-radius: 50%; display: grid; place-items: center; background: var(--halo); color: #fff; font-family: var(--display); font-weight: 700; font-size: 2cqw; }
+.s-cta-it b { font-family: var(--display); font-size: 2.1cqw; line-height: 1.15; }
+.s-cta-it > span { font-size: 1.4cqw; line-height: 1.35; color: var(--text-2); }
+.s-qr-cta { width: 11cqw; padding: .5cqw; border-radius: .8cqw; background: #f4f6fb; margin-top: auto; }
+.s-qr-cta svg { display: block; width: 100%; height: auto; }
+.s-cta-it small { font-size: 1.1cqw; color: var(--muted); }
+
+/* Movimiento: sin animación con reduced-motion ni en el PDF */
+@media (prefers-reduced-motion: reduce) {
+  .s-sello-g, .s-marca, .s-burbuja { animation: none !important; }
+}
+.print-deck .s-sello-g, .print-deck .s-marca, .print-deck .s-burbuja { animation: none !important; }
+
+.s-tel { width: 15cqw; }
+.s-imgs { top: 15cqw; right: 9cqw; }
+.s-solucion.con-imgs { padding-right: 28cqw; }
+.s-gestion-cuerpo { grid-template-columns: 61cqw 1fr; gap: 2.2cqw; }
+.s-gestion-demo { width: 61cqw; }
+.s-burbuja { font-size: 1.5cqw; padding: .9cqw 1.2cqw; }
+.s-gestion-nota { margin-top: .6cqw; font-size: 1.1cqw; max-width: 100%; }
+.s-imgs { right: 10cqw; }
+.s-solucion.con-imgs { padding-right: 30cqw; }
+.s-datos-col ul { font-size: 1.9cqw; }
+.s-datos-prop span { font-size: 2.6cqw; }
+.s-datos-frase { font-size: 2.5cqw; }
+.s-datos-col { padding: 1.8cqw; }
+/* Los vídeos del móvil (780×1688) traen la app en el cuarto superior izquierdo y gris alrededor: se recorta ese cuarto.
+   Si se vuelven a grabar a tamaño completo, borrar estas dos reglas. */
+.s-tel { position: relative; }
+.s-tel .s-demo-video { position: absolute; left: 0; top: 0; width: 200%; height: 200%; object-fit: fill; }

@@ -133,6 +133,16 @@ export const SECCIONES: Seccion[] = [
     visible: true,
   },
   {
+    // Pedida por Esther (12-11-2026): cómo se conecta Tenique a Turismo de Tenerife, fuera del plan de acción.
+    id: 'conexion',
+    ruta: '/conexion',
+    titulo: 'Conexión con Turismo de Tenerife',
+    corto: 'Conexión',
+    resumen: 'Cómo encaja Tenique con lo que Turismo de Tenerife ya hace, qué le pide y qué le devuelve: datos, indicadores, sus propias experiencias y un retorno que se ve.',
+    estado: 'listo',
+    visible: true,
+  },
+  {
     id: 'futuro',
     ruta: '/futuro',
     titulo: 'Más allá del piloto',
@@ -194,7 +204,7 @@ export const SITIO_URL = 'https://novazetta10.github.io/Turisty/'
  * `id` es el de SECCIONES; `motivo` es una frase de por qué mirarlo.
  */
 export const DESTACADOS: { id: string; motivo: string }[] = [
-  { id: 'viabilidad', motivo: 'El calendario del plan de acción: qué pasa cada mes, quién lo lidera y cuándo se decide seguir, ajustar o parar.' },
-  { id: 'prototipo', motivo: 'El sendero de Tenique: cómo una experiencia real llega a la app, sobre sus tres piedras.' },
-  { id: 'responsabilidades', motivo: 'Lo que Tenique no resuelve: vivienda, movilidad y saneamiento, y de quién es cada competencia, con su ley.' },
+  { id: 'viabilidad', motivo: 'El plan de acción: la prueba de concepto de 2 semanas, quién lidera cada paso y cuándo se decide seguir, ajustar o parar.' },
+  { id: 'prototipo', motivo: 'El sendero de Tenique: cómo una experiencia real llega a la app, con sus tres sellos.' },
+  { id: 'conexion', motivo: 'Cómo se conecta Tenique a Turismo de Tenerife: qué pone, qué recibe y sus propias experiencias dentro.' },
 ]

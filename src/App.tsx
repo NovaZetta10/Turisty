@@ -1,22 +1,40 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState, type ComponentType } from 'react'
 import { Link, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import { EQUIPO_NOMBRE, EVENTO, REPO_URL, RETO, SECCIONES } from './config/proyecto'
 import { Icon } from './components/Icon'
 import { NovaMark } from './components/NovaMark'
 import { Cielo } from './components/Cielo'
+import { Supernova } from './components/Supernova'
 import Inicio from './pages/Inicio'
-import { Movil } from './prototipo/Movil'
+import { PausaFueraDePantalla } from './components/PausaFueraDePantalla'
+
+// #/app y #/gestion se descargan solo cuando se abren
+const Movil = lazy(() => import('./prototipo/Movil').then((m) => ({ default: m.Movil })))
+const Gestion = lazy(() => import('./gestion/Gestion'))
 
 /**
  * Registro automático de páginas: src/pages/Nombre.tsx se asocia a la sección con id 'nombre'.
  * Pestaña nueva = copiar src/pages/_Plantilla.tsx a src/pages/Nombre.tsx + una entrada en SECCIONES.
  * Los archivos que empiezan por _ no se registran.
  */
-const PAGINAS: Record<string, () => JSX.Element> = Object.fromEntries(
-  Object.entries(import.meta.glob<{ default: () => JSX.Element }>(['./pages/*.tsx', '!./pages/_*.tsx'], { eager: true }))
-    .map(([ruta, m]) => [ruta.slice(8, -4).toLowerCase(), m.default] as const)
+const CARGADORES = Object.fromEntries(
+  Object.entries(import.meta.glob<{ default: ComponentType }>(['./pages/*.tsx', '!./pages/_*.tsx', '!./pages/Inicio.tsx']))
+    .map(([ruta, cargar]) => [ruta.slice(8, -4).toLowerCase(), cargar] as const)
     .filter(([id]) => !id.startsWith('_')),
 )
+// Cada página es su propio fragmento: se descarga al abrirla (y el resto, en un rato de calma, para que cambiar de pestaña sea instantáneo).
+const PAGINAS: Record<string, ComponentType> = Object.fromEntries(
+  Object.entries(CARGADORES).map(([id, cargar]) => [id, lazy(cargar)] as const),
+)
+function usePrecarga(activa: boolean) {
+  useEffect(() => {
+    if (!activa) return
+    const ric = (window as { requestIdleCallback?: (f: () => void, o?: { timeout: number }) => number }).requestIdleCallback
+    const lanzar = () => { Object.values(CARGADORES).forEach((c) => { c().catch(() => {}) }) }
+    const id = ric ? ric(lanzar, { timeout: 4000 }) : window.setTimeout(lanzar, 2500)
+    return () => { if (!ric) window.clearTimeout(id) }
+  }, [activa])
+}
 
 function ScrollTop() {
   const { pathname } = useLocation()
@@ -41,12 +59,17 @@ function BackToTop() {
 export default function App() {
   const visibles = SECCIONES.filter((s) => s.visible)
   const { pathname } = useLocation()
+  usePrecarga(pathname !== '/app' && pathname !== '/gestion')
   // Prototipo a pantalla completa (#/app): sin cabecera ni pie, para abrirlo desde el QR en el móvil.
-  if (pathname === '/app') return <div className="app-escena"><Movil completo /></div>
+  if (pathname === '/app') return <div className="app-escena"><Suspense fallback={null}><Movil completo /></Suspense></div>
+  // Panel de gestión a pantalla completa (#/gestion), horizontal, para proyectar.
+  if (pathname === '/gestion') return <Suspense fallback={null}><Gestion /></Suspense>
   return (
     <>
       <ScrollTop />
       <Cielo />
+      <Supernova />
+      <PausaFueraDePantalla />
       <header className="topbar">
         <div className="wrap topbar-inner">
           <Link to="/" className="brand">
@@ -60,6 +83,7 @@ export default function App() {
         </div>
       </header>
       <main>
+        <Suspense fallback={null}>
         <Routes>
           <Route path="/" element={<Inicio />} />
           {visibles.map((s) => {
@@ -68,6 +92,7 @@ export default function App() {
           })}
           <Route path="*" element={<Inicio />} />
         </Routes>
+        </Suspense>
       </main>
       <footer className="footer no-print">
         <div className="wrap">

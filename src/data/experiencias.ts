@@ -46,9 +46,166 @@ export type Experiencia = {
   paraJovenes?: boolean
   /** Qué criterios cumple según la fuente y, si no llega, qué falta. */
   motivoJovenes?: string
+  /** Programa oficial al que pertenece, para mostrar su sello (p. ej. 'Tenerife es tuya'). */
+  programa?: string
 }
 
 const HOY = '12-11-2026'
+
+// ───────── «Tenerife es tuya» (Turismo de Tenerife) ─────────
+// Programa de sensibilización turística del Cabildo, a través de Turismo de Tenerife. Gratuito.
+// Solo se inscriben colectivos (asociaciones, ONG, personas mayores, colectivos vulnerables, alumnado de formación
+// y profesionales del turismo), de 15 a 20 personas y con 15 días de antelación. No hay plazas individuales: por eso mixta: false.
+// Cada ficha se ha abierto y leído el 12-11-2026. Se incluyen solo las que tienen fecha futura y lugar.
+// Si el municipio no está en la ficha y el lugar no lo deja claro, se pone «no consta».
+const TET_BASE = 'https://www.webtenerife.com/corporativa/que-hacemos/tenerife-proyecta/tenerife-es-tuya/'
+const TET_CUANDO = 'Solo para colectivos de 15 a 20 personas, con 15 días de antelación'
+
+function tenerifeEsTuya(x: {
+  id: string
+  titulo: string
+  descripcion: string
+  municipio: string
+  lugar?: string
+  zona: Zona
+  fecha: string
+  duracion: string
+  emociones: string[]
+  ruta: string
+  cultural?: boolean
+}): Experiencia {
+  return {
+    id: `tenerife-es-tuya-${x.id}`,
+    titulo: x.titulo,
+    descripcion: x.descripcion,
+    municipio: x.municipio,
+    lugar: x.lugar,
+    zona: x.zona,
+    quienOfrece: x.cultural
+      ? 'Turismo de Tenerife (Cabildo), con guías oficiales de APIT Tenerife'
+      : 'Turismo de Tenerife (Cabildo), con empresas de las Cartas por la Sostenibilidad o entidades de buenas prácticas',
+    tipo: 'entidad',
+    cuando: `Fecha disponible: ${x.fecha}. ${TET_CUANDO}`,
+    duracion: x.duracion,
+    mixta: false,
+    emociones: x.emociones,
+    fuente: { titulo: `${x.titulo} · «Tenerife es tuya», Turismo de Tenerife`, url: TET_BASE + x.ruta, consultado: HOY },
+    verificado: true,
+    programa: 'Tenerife es tuya',
+  }
+}
+
+const TENERIFE_ES_TUYA: Experiencia[] = [
+  tenerifeEsTuya({
+    id: 'garachico', titulo: 'Garachico, historia y volcán', cultural: true,
+    descripcion: 'Ruta histórica a pie por los puntos más destacados de la Villa y Puerto de Garachico, con visita al castillo o a la iglesia.',
+    municipio: 'Garachico', zona: 'norte', fecha: '10 de diciembre de 2026', duracion: '2 horas',
+    emociones: ['raices', 'orgullo'], ruta: 'rutas-cascos-historicos/garachico-historia-y-volcan/',
+  }),
+  tenerifeEsTuya({
+    id: 'puerto-de-la-cruz', titulo: 'Puerto de la Cruz, historia de un puerto', cultural: true,
+    descripcion: 'Recorrido guiado a pie por el litoral de la ciudad: su historia, anécdotas y tradiciones, y su relación con el mar y el turismo.',
+    municipio: 'Puerto de la Cruz', zona: 'norte', fecha: '12 de enero de 2027', duracion: '2 horas',
+    emociones: ['raices', 'pertenencia'], ruta: 'rutas-cascos-historicos/puerto-de-la-cruz-historia-de-un-puerto/',
+  }),
+  tenerifeEsTuya({
+    id: 'pueblos-del-norte', titulo: 'Pueblos del norte: Tacoronte, El Sauzal, La Matanza, La Victoria y Santa Úrsula', cultural: true,
+    descripcion: 'Excursión panorámica por los cascos históricos de cinco pueblos del norte, centrada en su historia, paisaje e identidad. Incluye almuerzo.',
+    municipio: 'Tacoronte, El Sauzal, La Matanza de Acentejo, La Victoria de Acentejo y Santa Úrsula', zona: 'norte',
+    fecha: '20 de enero de 2027', duracion: '6 horas',
+    emociones: ['raices', 'pertenencia'], ruta: 'rutas-cascos-historicos/pueblos-del-norte/',
+  }),
+  tenerifeEsTuya({
+    id: 'laguneando', titulo: 'Laguneando por las montañas de Anaga', cultural: true,
+    descripcion: 'Paseo interpretativo por La Laguna que relaciona sus edificios y espacios emblemáticos con el territorio. Acaba con una degustación de productos de Anaga.',
+    municipio: 'San Cristóbal de La Laguna', zona: 'metropolitana', fecha: '18 de marzo de 2027', duracion: '2 horas y media',
+    emociones: ['raices', 'sabor'], ruta: 'rutas-cascos-historicos/laguneando/',
+  }),
+  tenerifeEsTuya({
+    id: 'la-orotava', titulo: 'La Villa de La Orotava', cultural: true,
+    descripcion: 'Paseo a pie por el centro histórico de La Orotava para conocer su historia, arquitectura y tradiciones.',
+    municipio: 'La Orotava', lugar: 'Centro histórico', zona: 'norte', fecha: '5 de mayo de 2027', duracion: '2 horas',
+    emociones: ['raices', 'orgullo'], ruta: 'rutas-cascos-historicos/la-villa-de-la-orotava/',
+  }),
+  tenerifeEsTuya({
+    id: 'candelaria', titulo: 'Candelaria: memoria, fe y territorio', cultural: true,
+    descripcion: 'Ruta pausada por Candelaria: el mundo guanche, la conquista, Chaxiraxi, la Virgen de Candelaria y las tradiciones vivas.',
+    municipio: 'Candelaria', zona: 'sur', fecha: '14 de mayo de 2027', duracion: 'Hora y media',
+    emociones: ['raices', 'pertenencia'], ruta: 'rutas-cascos-historicos/candelaria/',
+  }),
+  tenerifeEsTuya({
+    id: 'forestal-park', titulo: 'Forestal Park Tenerife',
+    descripcion: 'Aventura entre pinos canarios en el Paisaje Protegido de Las Lagunetas: recorridos elevados, puentes y tirolinas.',
+    municipio: 'No consta', lugar: 'Paisaje Protegido de Las Lagunetas', zona: 'medianias', fecha: '19 de noviembre de 2026', duracion: '5 horas',
+    emociones: ['adrenalina'], ruta: 'actividades-de-la-carta-de-sostenibilidad/forestal-park-tenerife/',
+  }),
+  tenerifeEsTuya({
+    id: 'velada-guanche', titulo: 'Velada Guanche',
+    descripcion: 'Un día en la comarca de Agache sobre la pervivencia de la cultura guanche: visita a El Escobonal, taller de alfarería, caminata interpretativa y observación astronómica.',
+    municipio: 'No consta', lugar: 'El Escobonal, comarca de Agache', zona: 'medianias', fecha: '21 de enero de 2027', duracion: '6 horas',
+    emociones: ['raices', 'asombro'], ruta: 'actividades-de-la-carta-de-sostenibilidad/velada-guanche/',
+  }),
+  tenerifeEsTuya({
+    id: 'guardianes-centenarios', titulo: 'Guardianes Centenarios',
+    descripcion: 'Recorrido suave de unos 6 kilómetros por el monte de Agua García y su laurisilva centenaria.',
+    municipio: 'No consta', lugar: 'Monte de Agua García', zona: 'norte', fecha: '12 de febrero de 2027', duracion: '3 horas',
+    emociones: ['calma', 'asombro'], ruta: 'actividades-de-la-carta-de-sostenibilidad/guardianes-centenarios/',
+  }),
+  tenerifeEsTuya({
+    id: 'anaga-sabores', titulo: 'Anaga: sabores y tradición',
+    descripcion: 'Senderismo de dificultad media por Anaga, con visita a una bodega, degustación de producto local y exhibición de salto del pastor.',
+    municipio: 'No consta', lugar: 'Anaga', zona: 'anaga', fecha: '7 de marzo de 2027', duracion: '5 horas',
+    emociones: ['sabor', 'raices'], ruta: 'actividades-de-la-carta-de-sostenibilidad/anaga-sabores-y-tradicion/',
+  }),
+  tenerifeEsTuya({
+    id: 'adeje-ellas', titulo: 'Adeje: ellas y el patrimonio material',
+    descripcion: 'Ruta a pie por los altos de Adeje con perspectiva de género: la memoria, los saberes y los oficios de las mujeres del territorio. Con degustación de quesos e higos.',
+    municipio: 'Adeje', lugar: 'Altos de Adeje', zona: 'medianias', fecha: '9 de abril de 2027', duracion: '3 horas y media',
+    emociones: ['raices', 'orgullo', 'sabor'], ruta: 'actividades-de-la-carta-de-sostenibilidad/adeje-ellas-sabias-huellas/',
+  }),
+  tenerifeEsTuya({
+    id: 'cetaceos-puerto-colon', titulo: 'Avistamiento de cetáceos desde Puerto Colón',
+    descripcion: 'Excursión de avistamiento responsable de cetáceos con interpretación del medio marino, comida y parada para bañarse si el mar lo permite.',
+    municipio: 'No consta', lugar: 'Puerto Colón, pantalán 3', zona: 'sur', fecha: '10 de febrero o 8 de junio de 2027', duracion: '3 horas',
+    emociones: ['asombro', 'calma'], ruta: 'actividades-de-la-carta-de-sostenibilidad/puerto-colon/',
+  }),
+  tenerifeEsTuya({
+    id: 'golf-del-sur-san-blas', titulo: 'Golf del Sur y Reserva Ambiental de San Blas',
+    descripcion: 'Visita guiada a la Reserva Ambiental de San Blas y su centro de interpretación, y visita al Golf del Sur para conocer su gestión sostenible.',
+    municipio: 'No consta', lugar: 'Reserva Ambiental de San Blas', zona: 'sur', fecha: '17 de noviembre de 2026', duracion: '4 horas',
+    emociones: ['asombro', 'calma'], ruta: 'buenas-practicas/reserva-san-blas/',
+  }),
+  tenerifeEsTuya({
+    id: 'accesibilidad-los-cristianos', titulo: 'Ecosistema de accesibilidad turística en Los Cristianos',
+    descripcion: 'Análisis práctico de la cadena de accesibilidad en destino: alojamiento, espacio público, playas y ocio. Se centra en el Hotel Marysol y los baños accesibles de las playas de Arona.',
+    municipio: 'Arona', lugar: 'Los Cristianos', zona: 'sur', fecha: '11 de diciembre de 2026', duracion: '4 horas',
+    emociones: ['pertenencia', 'orgullo'], ruta: 'buenas-practicas/ecosistema-de-accesibilidad/',
+  }),
+  tenerifeEsTuya({
+    id: 'hotel-tigaiga', titulo: 'Hotel Tigaiga, Parque Taoro y casco histórico del Puerto de la Cruz',
+    descripcion: 'Visita guiada a un hotel familiar para conocer su historia y su sostenibilidad, y paseo interpretado por el Parque Taoro y el casco histórico.',
+    municipio: 'Puerto de la Cruz', zona: 'norte', fecha: '9 de febrero de 2027', duracion: '3 horas',
+    emociones: ['raices', 'calma'], ruta: 'buenas-practicas/hotel-tigaiga/',
+  }),
+  tenerifeEsTuya({
+    id: 'iter-casas-bioclimaticas', titulo: 'ITER y casas bioclimáticas',
+    descripcion: 'Recorrido divulgativo por el Centro de Visitantes y el Paseo de las Energías Renovables, con entrada a algunas casas bioclimáticas.',
+    municipio: 'No consta', lugar: 'Centro de Visitantes del ITER', zona: 'sur', fecha: '7 de abril de 2027', duracion: '2 horas y media',
+    emociones: ['asombro', 'orgullo'], ruta: 'buenas-practicas/iter-y-casas-bioclimaticas/',
+  }),
+  tenerifeEsTuya({
+    id: 'las-miquelas', titulo: 'Centro Alfarero de Las Miquelas y Candelaria Verde',
+    descripcion: 'Itinerario de desarrollo comunitario: visita al Centro Alfarero de Las Miquelas para conocer la alfarería tradicional como motor de empleo inclusivo para mujeres.',
+    municipio: 'No consta', lugar: 'Centro Alfarero de Las Miquelas', zona: 'sur', fecha: '14 de abril de 2027', duracion: '3 horas',
+    emociones: ['raices', 'orgullo'], ruta: 'buenas-practicas/centro-de-las-miquelas/',
+  }),
+  tenerifeEsTuya({
+    id: 'cartas-sostenibilidad-cetaceos', titulo: 'Cartas por la Sostenibilidad y excursión de cetáceos',
+    descripcion: 'Presentación de acciones de sostenibilidad ligadas al mar y salida en dos embarcaciones de la Carta para avistar cetáceos de forma responsable.',
+    municipio: 'No consta', lugar: 'Club Náutico de Puerto Colón', zona: 'sur', fecha: '10 de junio de 2027', duracion: '4 horas',
+    emociones: ['asombro', 'calma'], ruta: 'buenas-practicas/hotel-la-pinta-y-cetaceos/',
+  }),
+]
 
 export const EXPERIENCIAS: Experiencia[] = [
   // ───────── Norte ─────────
@@ -878,6 +1035,209 @@ export const EXPERIENCIAS: Experiencia[] = [
     },
     verificado: true,
   },
+
+  // ───────── Cultura con participación vecinal ─────────
+  {
+    id: 'festival-mueca-puerto-de-la-cruz',
+    titulo: 'MUECA, Festival Internacional de Arte en la Calle',
+    descripcion:
+      'Cerca de cien actuaciones de teatro, circo, música y danza en las calles del Puerto de la Cruz. Desde hace 15 años lo sostiene también la plataforma ciudadana Cómplice MUECA: vecinos, entidades culturales, comercios y empresas que entraron cuando el festival peligraba y hoy forman parte de su organización.',
+    municipio: 'Puerto de la Cruz',
+    zona: 'norte',
+    quienOfrece: 'Área de Cultura del Ayuntamiento de Puerto de la Cruz y Plataforma Cómplice MUECA',
+    tipo: 'vecinos',
+    cuando: 'Cada primavera. En 2026, 24.ª edición: del 7 al 10 de mayo',
+    mixta: true,
+    emociones: ['celebracion', 'asombro', 'pertenencia'],
+    fuente: {
+      titulo: 'El Festival MUECA vuelve a situar la cultura en el centro de la vida urbana de Puerto de la Cruz · Ayuntamiento de Puerto de la Cruz, 06-04-2026',
+      url: 'https://www.puertodelacruz.es/noticias/2026/04/06/el-festival-mueca-vuelve-a-situar-la-cultura-en-el-centro-de-la-vida-urbana-de-puerto-de-la-cruz-del-7-al-10-de-mayo/',
+      consultado: HOY,
+    },
+    apoyo: {
+      titulo: 'Nota de prensa · Festival MUECA',
+      url: 'https://www.festivalmueca.com/el-festival-mueca-vuelve-a-situar-la-cultura-en-el-centro-de-la-vida-urbana-de-puerto-de-la-cruz-del-7-al-10-de-mayo/',
+      dato: 'Cómplice MUECA nace de la propia ciudadanía y cumple 15 años',
+    },
+    verificado: true,
+  },
+
+  // ───────── Deporte ─────────
+  // Carreras populares: mixta: true porque la inscripción está abierta a cualquiera, residente o visitante.
+  // Las fichas de inscripción se han leído en Chronotrack Canarias, la plataforma de Gesport Canarias.
+  {
+    id: 'torneo-del-fajin-lucha-canaria',
+    titulo: 'VII Torneo del Fajín de Lucha Canaria: repesca y gran final',
+    descripcion:
+      'Torneo de lucha canaria para niños y niñas de prebenjamín a infantil, con concentraciones en todas las islas. Los ganadores se llevan el fajín. La gran final reúne en Tenerife a 64 luchadores y luchadoras de todo el archipiélago.',
+    municipio: 'San Miguel de Abona',
+    lugar: 'Terrero municipal Tomás J. González Martín',
+    zona: 'sur',
+    quienOfrece: 'Fundación CajaCanarias, con la Federación Insular de Lucha Canaria de Tenerife y el Ayuntamiento de San Miguel de Abona',
+    tipo: 'asociacion',
+    cuando: 'Repesca: sábado 28 de noviembre de 2026, a las 17:00. Final: domingo 29 de noviembre, desde las 10:00',
+    mixta: false,
+    emociones: ['orgullo', 'raices', 'adrenalina'],
+    fuente: {
+      titulo: 'La gran final del Torneo del Fajín Fundación CajaCanarias regresa a Tenerife · Fundación CajaCanarias, 28-09-2026',
+      url: 'https://www.cajacanarias.com/noticias/la-gran-final-del-torneo-del-fajin-fundacion-cajacanarias-regresa-a-tenerife/',
+      consultado: HOY,
+    },
+    apoyo: {
+      titulo: 'VII Torneo del Fajín Lucha Canaria · Agenda de la Fundación CajaCanarias',
+      url: 'https://www.cajacanarias.com/agenda/vii-torneo-del-fajin-lucha-canaria/',
+      dato: 'Calendario: Güímar el 15 de noviembre (prebenjamín y benjamín); San Miguel el 28 y 29. Pueden inscribirse niños y niñas residentes en Canarias',
+    },
+    verificado: true,
+  },
+  {
+    id: 'k42-anaga-marathon',
+    titulo: 'K42 Canarias Anaga Marathon',
+    descripcion:
+      'Carreras de montaña por Anaga con salida en La Laguna: maratón, distancias más cortas, kilómetro vertical y una carrera para niños de 3 a 13 años.',
+    municipio: 'San Cristóbal de La Laguna',
+    lugar: 'Plaza del Cristo',
+    zona: 'anaga',
+    quienOfrece: 'Gesport Canarias',
+    tipo: 'empresa',
+    cuando: 'Del viernes 4 al domingo 6 de diciembre de 2026. Inscripción hasta el 30 de noviembre',
+    mixta: true,
+    emociones: ['adrenalina', 'asombro'],
+    fuente: {
+      titulo: 'K42 Canarias Anaga Marathon 2026 · inscripción en Chronotrack Canarias',
+      url: 'https://inscripciones.chronotrackcanarias.com/inscripcion/k42-canarias-anaga-marathon-2026/',
+      consultado: HOY,
+    },
+    verificado: true,
+  },
+  {
+    id: 'cross-navideno-puerto-de-la-cruz',
+    titulo: 'III Cross Navideño del Puerto de la Cruz',
+    descripcion: 'Carrera popular de 4 kilómetros desde los 15 años y carrera infantil de 3 a 15 años.',
+    municipio: 'Puerto de la Cruz',
+    zona: 'norte',
+    quienOfrece: 'Organizador no consta en la ficha (inscripción en Chronotrack Canarias)',
+    tipo: 'empresa',
+    cuando: '12 de diciembre de 2026, según el listado de Gesport Canarias. Inscripción hasta el 6 de diciembre',
+    mixta: true,
+    emociones: ['adrenalina', 'celebracion'],
+    fuente: {
+      titulo: 'III Cross Navideño Puerto de la Cruz 2026 · inscripción en Chronotrack Canarias',
+      url: 'https://inscripciones.chronotrackcanarias.com/inscripcion/iii-cross-navideno-puerto-de-la-cruz-2026/inscripcion_datos/',
+      consultado: HOY,
+    },
+    apoyo: {
+      titulo: 'Inscripciones · Gesport Canarias',
+      url: 'https://www.gesportcanarias.com/web/inscripciones/',
+      dato: 'Fecha del 12 de diciembre de 2026',
+    },
+    verificado: true,
+  },
+  {
+    id: 'media-maraton-tacoronte',
+    titulo: 'XXXVI Media Maratón Ciudad de Tacoronte',
+    descripcion: 'Una de las carreras populares con más historia de la isla: media maratón, 10 km y 5 km por Tacoronte.',
+    municipio: 'Tacoronte',
+    zona: 'norte',
+    quienOfrece: 'Concejalía de Deportes del Ayuntamiento de Tacoronte',
+    tipo: 'entidad',
+    cuando: 'Domingo 20 de diciembre de 2026, a las 8:30. Inscripción hasta el 16 de diciembre',
+    mixta: true,
+    emociones: ['adrenalina', 'orgullo'],
+    fuente: {
+      titulo: 'XXXVI Media Maratón Ciudad de Tacoronte 2026 · inscripción en Chronotrack Canarias',
+      url: 'https://inscripciones.chronotrackcanarias.com/inscripcion/xxxvi-media-maraton-ciudad-de-tacoronte-2026/',
+      consultado: HOY,
+    },
+    verificado: true,
+  },
+  {
+    id: 'san-silvestre-candelaria',
+    titulo: 'XIII San Silvestre de Candelaria',
+    descripcion:
+      'Carrera de fin de año de 5 km, popular y élite, con carrera adaptada, carrera infantil de 4 a 15 años y carrera familiar en parejas o con mascota. Los kilómetros se pueden sumar a una causa solidaria.',
+    municipio: 'Candelaria',
+    zona: 'sur',
+    quienOfrece: 'Organizador no consta en la ficha (inscripción en Chronotrack Canarias)',
+    tipo: 'empresa',
+    cuando: '26 de diciembre de 2026, según el listado de Gesport Canarias. Inscripción hasta el 15 de diciembre',
+    accesibilidad: 'Tiene carrera adaptada',
+    mixta: true,
+    emociones: ['celebracion', 'adrenalina', 'pertenencia'],
+    fuente: {
+      titulo: 'XIII San Silvestre Candelaria · inscripción en Chronotrack Canarias',
+      url: 'https://inscripciones.chronotrackcanarias.com/inscripcion/xiii-san-silvestre-candelaria/inscripcion_datos/',
+      consultado: HOY,
+    },
+    apoyo: {
+      titulo: 'Inscripciones · Gesport Canarias',
+      url: 'https://www.gesportcanarias.com/web/inscripciones/',
+      dato: 'Fecha del 26 de diciembre de 2026',
+    },
+    verificado: true,
+  },
+  {
+    id: 'san-silvestre-garachiquense',
+    titulo: 'XIV San Silvestre Garachiquense',
+    descripcion: 'Carrera de fin de año por Garachico: 5 km, un kilómetro no competitivo y carrera para niños.',
+    municipio: 'Garachico',
+    zona: 'norte',
+    quienOfrece: 'Podona Trail',
+    tipo: 'asociacion',
+    cuando: 'Jueves 31 de diciembre de 2026, a las 18:00. Inscripción hasta el 25 de diciembre',
+    mixta: true,
+    emociones: ['celebracion', 'adrenalina', 'pertenencia'],
+    fuente: {
+      titulo: 'XIV San Silvestre Garachiquense 2026 · inscripción en Chronotrack Canarias',
+      url: 'https://inscripciones.chronotrackcanarias.com/inscripcion/xiv-san-silvestre-garachiquense-2026/',
+      consultado: HOY,
+    },
+    verificado: true,
+  },
+  {
+    id: 'san-silvestre-golden-mile',
+    titulo: 'X San Silvestre Golden Mile',
+    descripcion: 'Carrera popular de fin de año de 5 km en Playa de las Américas, para corredores de todos los niveles.',
+    municipio: 'No consta',
+    lugar: 'Playa de las Américas',
+    zona: 'sur',
+    quienOfrece: 'Organizador no consta en la ficha (inscripción en Gesport Canarias)',
+    tipo: 'empresa',
+    cuando: '31 de diciembre de 2026',
+    mixta: true,
+    emociones: ['celebracion', 'adrenalina'],
+    fuente: {
+      titulo: 'San Silvestre Golden Mile · Hola Islas Canarias (turismo oficial de Canarias)',
+      url: 'https://www.holaislascanarias.com/eventos/tenerife/san-silvestre-golden-mile/',
+      consultado: HOY,
+    },
+    verificado: true,
+  },
+  {
+    id: 'trail-nocturno-tegueste',
+    titulo: 'Trail Nocturno Tegueste',
+    descripcion: 'Carrera de montaña de noche, de 14,2 km, por Tegueste, con una prueba para niños.',
+    municipio: 'Tegueste',
+    zona: 'metropolitana',
+    quienOfrece: 'Organizador no consta en la ficha (inscripción en Chronotrack Canarias)',
+    tipo: 'empresa',
+    cuando: '16 de enero de 2027, según el listado de Gesport Canarias. Inscripción hasta el 13 de enero',
+    mixta: true,
+    emociones: ['adrenalina', 'asombro'],
+    fuente: {
+      titulo: 'Trail Nocturno Tegueste 2027 · inscripción en Chronotrack Canarias',
+      url: 'https://inscripciones.chronotrackcanarias.com/inscripcion/trail-nocturno-tegueste-2027/inscripcion_datos/',
+      consultado: HOY,
+    },
+    apoyo: {
+      titulo: 'Inscripciones · Gesport Canarias',
+      url: 'https://www.gesportcanarias.com/web/inscripciones/',
+      dato: 'Fecha del 16 de enero de 2027',
+    },
+    verificado: true,
+  },
+
+  ...TENERIFE_ES_TUYA,
 ]
 
 /** Resumen para el diagnóstico. */

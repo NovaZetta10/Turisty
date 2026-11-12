@@ -8,7 +8,7 @@
 .cm-publico { display: flex; flex-direction: column; gap: 8px; }
 .cm .cm-frase { font-family: var(--display); font-size: 17px; line-height: 1.35; color: var(--text); }
 
-.cm-ico { display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--brand-red) 14%, transparent); color: var(--nova); flex: none; }
+.cm-ico { display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--halo) 14%, transparent); color: var(--nova); flex: none; }
 .cm-quien { display: inline-block; margin-top: 6px; font-size: 12px; color: var(--muted); }
 
 .cm-canales { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
@@ -29,7 +29,7 @@
 .cm-pieza { display: flex; flex-direction: column; gap: 6px; padding: 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); }
 .cm-pieza p { font-size: 14px; }
 
-.cm-offline { margin-top: 28px; padding: 20px; border-radius: var(--radius); border: 1px solid color-mix(in srgb, var(--nova) 45%, transparent); background: color-mix(in srgb, var(--brand-red) 8%, var(--night)); }
+.cm-offline { margin-top: 28px; padding: 20px; border-radius: var(--radius); border: 1px solid color-mix(in srgb, var(--nova) 45%, transparent); background: color-mix(in srgb, var(--halo) 8%, var(--night)); }
 .cm-offline-head h3 { font-size: 20px; margin: 4px 0 6px; }
 .cm-offline-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-top: 16px; }
 .cm-off { display: flex; flex-direction: column; gap: 6px; padding: 14px; border-radius: var(--radius-sm); background: var(--night-2); border: 1px solid var(--line); }

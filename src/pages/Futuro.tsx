@@ -19,7 +19,7 @@ export default function Futuro() {
         <p>{s?.resumen}</p>
       </header>
 
-      <p className="nota fut-aviso enter enter-2"><Icon name="alert" size={14} /> Son ideas, no compromisos. Ninguna forma parte del piloto ni de su presupuesto. Cada una lleva un caso real que la inspira, con su fuente.</p>
+      <p className="nota fut-aviso enter enter-2"><Icon name="alert" size={14} /> Son ideas, no compromisos: van más allá de lo que ya promete el plan de acción y no entran en el presupuesto del piloto. Cada una lleva un caso real que la inspira, con su fuente.</p>
 
       <ol className="fut-linea enter enter-2" aria-label="Horizontes">
         {HORIZONTES.map((h, n) => (

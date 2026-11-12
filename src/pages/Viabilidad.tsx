@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { Barras } from '../components/Grafico'
 import { Tabla, type Columna } from '../components/Tabla'
 import { Cifra, Rejilla, Tarjeta } from '../components/Tarjeta'
@@ -6,9 +6,12 @@ import { Refs, Verificado } from '../components/Refs'
 import { AGENTES, type AgenteId } from '../data/responsabilidades'
 import {
   CALENDARIO, CARRILES, type ItemCalendario, DAFO,
-  CATEGORIA_TXT, COSTES, ENCAJE, MEDIOAMBIENTE, ESCENARIOS, FASES, FONDO, KPIS, LEGAL, LIMITES, OPCIONES, RESIDENTE, PILOTO, RIESGOS, SUPUESTOS, SUPUESTOS_FONDO, fondoAnual, importe, totales,
-  type Categoria, type Coste, type Pagador, type Hipotesis, type Nivel, type Riesgo,
+  CATEGORIA_TXT, COSTES, MEDIOAMBIENTE, PRUEBA_CONCEPTO, SENTIDO_FONDO, ESCENARIOS, FASES, FONDO, KPIS, LEGAL, LIMITES, OPCIONES, RESIDENTE, PILOTO, RIESGOS, SUPUESTOS, SUPUESTOS_FONDO, fondoAnual, importe, totales,
+  type Categoria, type Coste, type IndicadorPrueba, type Pagador, type Hipotesis, type Nivel, type Riesgo,
 } from '../data/viabilidad'
+import { Link } from 'react-router-dom'
+import { Icon } from '../components/Icon'
+import { rutaDe } from '../config/proyecto'
 import '../styles/viabilidad.css'
 
 // Pestaña «Plan de acción» (id 'viabilidad', ruta /plan). Datos en src/data/viabilidad.ts.
@@ -87,8 +90,34 @@ function filasDeBarras(barras: ItemCalendario[]) {
   return filas
 }
 
+/** Hitos del mismo mes (o a menos de un mes) van en filas distintas para que no se tapen. */
+function filasDeHitos(hitos: ItemCalendario[]) {
+  const filas: ItemCalendario[][] = []
+  for (const h of [...hitos].sort((a, c) => a.desde - c.desde)) {
+    const f = filas.find((x) => h.desde - x[x.length - 1].desde >= 1)
+    if (f) f.push(h)
+    else filas.push([h])
+  }
+  return filas
+}
+
+type Pop = { it: ItemCalendario; left: number; top: number; ancho: number; origen: number }
+
 function Calendario() {
   const [sel, setSel] = useState('piloto')
+  const raiz = useRef<HTMLDivElement>(null)
+  const [pop, setPop] = useState<Pop | null>(null)
+  // Al pasar el ratón o llegar con el teclado a un rombo, se abre su resumen junto a él. En táctil, el toque abre el panel.
+  const abrir = (btn: HTMLElement, it: ItemCalendario) => {
+    const r = raiz.current?.getBoundingClientRect()
+    if (!r) return
+    const b = btn.getBoundingClientRect()
+    const cx = b.left + b.width / 2 - r.left
+    const ancho = Math.min(280, r.width - 16)
+    const left = Math.max(8, Math.min(cx - ancho / 2, r.width - ancho - 8))
+    setPop({ it, left, top: b.top - r.top, ancho, origen: cx - left })
+  }
+  const cerrar = () => setPop(null)
   const [agente, setAgente] = useState<AgenteId | ''>('')
   const actual = ITEMS.find((i) => i.id === sel)
   const suyo = (it: ItemCalendario) => !agente || it.agentes.includes(agente)
@@ -108,7 +137,7 @@ function Calendario() {
 
   let orden = 0
   return (
-    <div className="via-cal">
+    <div className="via-cal" ref={raiz}>
       <div className="via-cal-filtro" role="group" aria-label="Ver lo que hace cada agente">
         <span className="small muted">Ver por agente:</span>
         <button className={`via-chip ${agente === '' ? 'on' : ''}`} aria-pressed={agente === ''} onClick={() => setAgente('')}>Todos</button>
@@ -120,7 +149,7 @@ function Calendario() {
         {agente ? <><b>{nombreAgente}</b> participa en {cuantos} de {ITEMS.length} acciones. El resto se ve atenuado y marcado.</> : <>Toca una barra o un hito para ver qué es, quién lo lidera y cuándo se decide seguir. Con el teclado: tabulador o flechas.</>}
       </p>
 
-      <div className="via-cal-marco">
+      <div className="via-cal-marco" onScroll={cerrar}>
         <div className="via-cal-in" onKeyDown={teclas}>
           {/* eje */}
           <div className="via-cal-fila via-cal-eje" aria-hidden="true">
@@ -136,7 +165,7 @@ function Calendario() {
           {CARRILES.map((c) => {
             const items = ITEMS.filter((i) => i.carril === c.id)
             const filas = filasDeBarras(items.filter((i) => i.hasta !== undefined))
-            const hitos = items.filter((i) => i.hasta === undefined).sort((a, b) => a.desde - b.desde)
+            const filasHitos = filasDeHitos(items.filter((i) => i.hasta === undefined))
             return (
               <div key={c.id} className="via-cal-fila" role="group" aria-label={`Carril ${c.nombre}`}>
                 <div className="via-cal-nombre">{c.nombre}</div>
@@ -165,8 +194,8 @@ function Calendario() {
                       })}
                     </div>
                   ))}
-                  {hitos.length > 0 && (
-                    <div className="via-cal-sub via-cal-hitos">
+                  {filasHitos.map((hitos, hi) => (
+                    <div key={`h${hi}`} className="via-cal-sub via-cal-hitos">
                       {hitos.map((it) => {
                         const n = orden++
                         return (
@@ -176,13 +205,17 @@ function Calendario() {
                             style={{ left: `${pos(it.desde)}%`, ['--i' as string]: Math.min(n, 12) }}
                             aria-pressed={sel === it.id}
                             aria-label={`${it.decision ? 'Decisión' : 'Hito'}: ${it.titulo}. ${cuando(it)}. Lidera: ${it.lidera}.${suyo(it) ? '' : ` No participa ${nombreAgente}.`}`}
-                            title={`${it.titulo} · ${cuando(it)}`}
+                            aria-describedby={pop?.it.id === it.id ? 'via-pop' : undefined}
+                            onPointerEnter={(e) => { if (e.pointerType === 'mouse') abrir(e.currentTarget, it) }}
+                            onPointerLeave={(e) => { if (e.pointerType === 'mouse') cerrar() }}
+                            onFocus={(e) => { if (e.currentTarget.matches(':focus-visible')) abrir(e.currentTarget, it) }}
+                            onBlur={cerrar}
                             onClick={() => setSel(it.id)}
                           ><span aria-hidden="true" /></button>
                         )
                       })}
                     </div>
-                  )}
+                  ))}
                 </div>
               </div>
             )
@@ -213,6 +246,17 @@ function Calendario() {
             <div><dt>Participan</dt><dd className="via-cal-chips">{actual.agentes.map((a) => <span key={a} className="tag">{AGENTES.find((x) => x.id === a)?.corto ?? a}</span>)}</dd></div>
             {actual.umbral && <div><dt>Seguir o parar</dt><dd>{actual.umbral}</dd></div>}
           </dl>
+        </div>
+      )}
+      {pop && (
+        <div
+          key={pop.it.id} id="via-pop" role="tooltip" className="via-pop"
+          style={{ left: pop.left, top: pop.top, width: pop.ancho, transformOrigin: `${pop.origen}px 100%`, ['--flecha' as string]: `${pop.origen}px` }}
+        >
+          <span className="kicker">{CARRILES.find((c) => c.id === pop.it.carril)?.nombre ?? 'Comunicación'} · {cuando(pop.it)}</span>
+          <b>{pop.it.titulo}</b>
+          {pop.it.que && <p>{pop.it.que}</p>}
+          <small>Lidera: {pop.it.lidera}</small>
         </div>
       )}
     </div>
@@ -357,6 +401,13 @@ function Simulador() {
 }
 
 // ─── 3 · piloto ──────────────────────────────────────────────────────────────
+const COL_PRUEBA: Columna<IndicadorPrueba>[] = [
+  { clave: 'indicador', titulo: 'Indicador' },
+  { clave: 'base', titulo: 'Línea base (hoy)', render: (i) => <span className="muted">{i.base}</span> },
+  { clave: 'objetivo', titulo: 'Objetivo a 2 semanas', render: (i) => <><span className="via-ok">{i.objetivo}</span>{i.supuesto && <> <SupuestoTag si /></>}</> },
+  { clave: 'comoSeMide', titulo: 'Cómo se mide' },
+]
+
 const COL_HIPOTESIS: Columna<Hipotesis>[] = [
   { clave: 'hipotesis', titulo: 'Hipótesis' },
   { clave: 'metrica', titulo: 'Cómo la medimos' },
@@ -380,10 +431,97 @@ function Resumen() {
   return (
     <Rejilla cols={4}>
       <Cifra valor="60 meses" etiqueta="Hoja de ruta" detalle="De 3 municipios a toda la isla en el año 3" />
-      <Cifra valor="Mes 9" etiqueta="Primera decisión" detalle="Seguir, ajustar o parar con umbrales" />
+      <Cifra valor="2 semanas" etiqueta="Prueba de concepto" detalle="Primeros resultados medibles antes del piloto; decisión del piloto en el mes 9" />
       <Cifra valor={eur.format(fondo.total)} etiqueta="Fondo del barrio al año" detalle={`Piloto · ${n0.format(100 - fondo.pctPublico)} % privado · supuesto`} />
       <Cifra valor={eur.format(piloto.piloto)} etiqueta="Coste del piloto" detalle="6 meses con margen · supuesto" />
     </Rejilla>
+  )
+}
+
+/** Recorrido del euro en zigzag, como el sendero del prototipo. En móvil, vertical. Se dibuja al entrar en pantalla. */
+function SenderoEuro() {
+  const pasos = SENTIDO_FONDO.pasos
+  const n = pasos.length
+  const caja = useRef<HTMLDivElement>(null)
+  const [visto, setVisto] = useState(false)
+  useEffect(() => {
+    const el = caja.current
+    if (!el || typeof IntersectionObserver === 'undefined') { setVisto(true); return }
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisto(true); obs.disconnect() } }, { threshold: 0.3 })
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
+  const xs = pasos.map((_, i) => i * 100 + 50)
+  const ys = pasos.map((_, i) => (i % 2 ? 70 : 30))
+  const d = xs.map((x, i) => (i === 0 ? `M ${x} ${ys[i]}` : `C ${xs[i - 1] + 50} ${ys[i - 1]} ${x - 50} ${ys[i]} ${x} ${ys[i]}`)).join(' ')
+  return (
+    <div ref={caja} className={`via-euro ${visto ? 'visto' : ''}`} style={{ '--n': n } as CSSProperties}>
+      <svg className="via-euro-h" viewBox={`0 0 ${n * 100} 100`} preserveAspectRatio="none" aria-hidden="true">
+        <path d={d} className="via-euro-base" vectorEffect="non-scaling-stroke" />
+        <path d={d} className="via-euro-traza" pathLength={1} vectorEffect="non-scaling-stroke" />
+      </svg>
+      <ol className="via-euro-pasos" aria-label="Recorrido de cada euro">
+        {pasos.map((x, i) => (
+          <li key={x.titulo} className={i % 2 ? 'abajo' : 'arriba'} style={{ '--i': i } as CSSProperties}>
+            <span className="via-euro-num" aria-hidden="true">{i + 1}</span>
+            <span className="via-euro-txt"><b>{x.titulo}</b><small>{x.texto}</small></span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  )
+}
+
+/** Lleva a un nodo del árbol (o a un bloque) sin tocar la ruta: la web usa HashRouter. */
+function irA(id: string) {
+  const el = document.getElementById(['arbol', 'medioambiente'].includes(id) ? id : `h-${id}`)
+  if (!el) return
+  const quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  el.scrollIntoView({ behavior: quieto ? 'auto' : 'smooth', block: 'start' })
+  if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1')
+  el.focus({ preventScroll: true })
+  el.classList.remove('via-destacado')
+  void el.offsetWidth
+  el.classList.add('via-destacado')
+  window.setTimeout(() => el.classList.remove('via-destacado'), 1800)
+}
+
+/** Árbol de decisiones del piloto: cada hipótesis con tres ramas. Umbrales: supuestos. Ajustes y contingencias: propuestas. */
+function Arbol() {
+  return (
+    <div className="via-arbol" id="arbol">
+      <div className="via-arbol-ley small">
+        <span className="via-rama-t ok">Se cumple → seguimos</span>
+        <span className="via-rama-t medio">A medias → ajustamos</span>
+        <span className="via-rama-t no">No se cumple → plan de contingencia</span>
+        <span className="muted">Los umbrales son supuestos; los ajustes y los planes de contingencia, propuestas.</span>
+      </div>
+      {PILOTO.hipotesis.map((h, i) => (
+        <article key={h.id} id={`h-${h.id}`} className="via-nodo-grupo" aria-labelledby={`hn-${h.id}`}>
+          <div className="via-nodo">
+            <span className="kicker">Hipótesis {i + 1}</span>
+            <h3 id={`hn-${h.id}`}>{h.hipotesis}</h3>
+            <p className="small muted">{h.metrica}</p>
+          </div>
+          <ul className="via-ramas">
+            <li className="via-rama ok">
+              <span className="via-rama-t ok">Se cumple → seguimos</span>
+              <p>{h.exito}</p>
+            </li>
+            <li className="via-rama medio">
+              <span className="via-rama-t medio">A medias → ajustamos</span>
+              <p className="small muted">Entre los dos umbrales</p>
+              <p>{h.ajuste}</p>
+            </li>
+            <li className="via-rama no">
+              <span className="via-rama-t no">No se cumple → plan de contingencia</span>
+              <p className="small muted">{h.parada}</p>
+              <p>{h.contingencia} <span className="tag warn"><span className="dot" />Propuesta</span></p>
+            </li>
+          </ul>
+        </article>
+      ))}
+    </div>
   )
 }
 
@@ -477,6 +615,11 @@ function Dafo() {
                 {pt.fuentes && <Refs ids={pt.fuentes} />}
                 {pt.supuesto && <> <span className="tag warn"><span className="dot" />Supuesto</span></>}
                 {pt.porVerificar && <> <Verificado ok={false} /></>}
+                {pt.contingencia && (
+                  <button type="button" className="via-dafo-ir" onClick={() => irA(pt.contingencia!)}>
+                    {pt.enlace ?? 'Ver plan de contingencia'} <span aria-hidden="true">→</span>
+                  </button>
+                )}
               </li>
             ))}
           </ul>
@@ -497,7 +640,11 @@ export default function Viabilidad() {
 
       <Resumen />
 
-      <Bloque id="ruta" n={1} titulo="Hoja de ruta" texto="Cinco años en un calendario. Toca cualquier barra o hito para ver quién lo lidera y cuándo se decide seguir.">
+      <Bloque id="dafo" n={1} titulo="Punto de partida: DAFO" texto="Debilidades, amenazas, fortalezas y oportunidades de Tenique. Cada debilidad y amenaza lleva a su plan de contingencia.">
+        <Dafo />
+      </Bloque>
+
+      <Bloque id="ruta" n={2} titulo="Hoja de ruta" texto="Cinco años en un calendario. Toca cualquier barra o hito para ver quién lo lidera y cuándo se decide seguir.">
         <Calendario />
         <details className="via-lista">
           <summary>Ver las fases en lista</summary>
@@ -505,7 +652,13 @@ export default function Viabilidad() {
         </details>
       </Bloque>
 
-      <Bloque id="fondo" n={2} titulo="El fondo del barrio" texto="Lo pagan sobre todo quienes viven del turismo: empresas turísticas, vivienda vacacional y cada reserva. El Cabildo suma, no sostiene. Los vecinos deciden en qué se gasta y se ve en la calle.">
+      <Bloque id="fondo" n={3} titulo="El fondo del barrio" texto="Lo pagan sobre todo quienes viven del turismo: empresas turísticas, vivienda vacacional y cada reserva. El Cabildo suma, no sostiene. Los vecinos proponen en qué se gasta y se ve en la calle.">
+        <div className="card via-sentido">
+          <span className="kicker">Lo que pide Turismo de Tenerife</span>
+          <h3>{SENTIDO_FONDO.titulo}</h3>
+          <p>{SENTIDO_FONDO.texto}</p>
+          <SenderoEuro />
+        </div>
         <ol className="via-flujo">
           {FONDO.map((p, i) => (
             <li key={p.titulo} className="card">
@@ -529,7 +682,12 @@ export default function Viabilidad() {
         </div>
       </Bloque>
 
-      <Bloque id="piloto" n={3} titulo="Piloto" texto="Dónde, cuánto tiempo, con quién y qué tiene que pasar para seguir. Los umbrales son supuestos que se fijan con Turismo de Tenerife y el Cabildo.">
+      <Bloque id="prueba" n={4} titulo="Prueba de concepto en 2 semanas" texto={`${PRUEBA_CONCEPTO.lema} ${PRUEBA_CONCEPTO.cuando}`}>
+        <Tabla<IndicadorPrueba> titulo="Qué medimos en 2 semanas" columnas={COL_PRUEBA} filas={PRUEBA_CONCEPTO.indicadores} minAncho={720} nota="Línea base 0 solo donde Tenique aún no existe; lo demás se mide el día 1, sin inventar. Los objetivos son supuestos." />
+        <p className="small" style={{ marginTop: 10 }}><b>Dónde.</b> {PRUEBA_CONCEPTO.donde} <b>Después.</b> {PRUEBA_CONCEPTO.despues}</p>
+      </Bloque>
+
+      <Bloque id="piloto" n={5} titulo="Piloto" texto="Escala la prueba de concepto a 6 meses. Dónde, cuánto tiempo, con quién y qué tiene que pasar para seguir. Los umbrales son supuestos que se fijan con Turismo de Tenerife y el Cabildo.">
         <Rejilla cols={4}>
           <Cifra valor="3" etiqueta="Municipios" detalle="Uno turístico, uno rural y uno metropolitano" />
           <Cifra valor="6 meses" etiqueta="Duración" detalle="Meses 4–9, tras 3 de preparación" />
@@ -537,19 +695,21 @@ export default function Viabilidad() {
           <Cifra valor={String(PILOTO.hipotesis.length)} etiqueta="Hipótesis" detalle="Cada una con umbral para seguir o parar" />
         </Rejilla>
         <details className="via-lista">
-          <summary>Dónde, cuándo y con quién, en detalle</summary>
+          <summary>Ver dónde, cuándo y con quién</summary>
           <dl className="via-cal-dl">
             <div><dt>Dónde</dt><dd>{PILOTO.donde}</dd></div>
             <div><dt>Cuánto tiempo</dt><dd>{PILOTO.duracion}</dd></div>
             <div><dt>Con quién</dt><dd>{PILOTO.conQuien}</dd></div>
           </dl>
         </details>
-        <div style={{ marginTop: 16 }}>
+        <Arbol />
+        <details className="via-lista">
+          <summary>Ver la tabla de hipótesis y umbrales</summary>
           <Tabla<Hipotesis> titulo="Hipótesis y umbrales" columnas={COL_HIPOTESIS} filas={PILOTO.hipotesis} minAncho={720} />
-        </div>
+        </details>
       </Bloque>
 
-      <Bloque id="kpis" n={4} titulo="Cómo sabremos si funciona" texto={`${KPIS.length} indicadores, cada uno ligado a un criterio del reto. Los objetivos son supuestos.`}>
+      <Bloque id="kpis" n={6} titulo="Cómo sabremos si funciona" texto={`${KPIS.length} indicadores, cada uno ligado a un criterio del reto. Los objetivos son supuestos.`}>
         <Rejilla cols={3}>
           {KPIS.map((k) => (
             <Tarjeta key={k.nombre} kicker={k.criterio} titulo={k.nombre}>
@@ -561,7 +721,7 @@ export default function Viabilidad() {
         </Rejilla>
       </Bloque>
 
-      <Bloque id="medioambiente" n={5} titulo="Viabilidad medioambiental" texto="Cuidar el entorno en todos los ámbitos: en la ciudad y en la naturaleza. Son medidas propuestas; los cupos concretos se fijan con cada barrio.">
+      <Bloque id="medioambiente" n={7} titulo="Viabilidad medioambiental" texto="Cuidar el entorno en todos los ámbitos: en la ciudad y en la naturaleza. Son medidas propuestas; los cupos concretos se fijan con cada barrio.">
         <Rejilla cols={4}>
           {MEDIOAMBIENTE.map((m) => (
             <Tarjeta key={m.tema} kicker="Propuesta" titulo={m.tema}>
@@ -572,22 +732,18 @@ export default function Viabilidad() {
         </Rejilla>
       </Bloque>
 
-      <Bloque id="costes" n={6} titulo="Costes" texto="Implantación (una vez) y coste mensual del piloto. Cambia los supuestos y mira cómo se mueve el total.">
+      <Bloque id="costes" n={8} titulo="Costes" texto="Implantación (una vez) y coste mensual del piloto. Cambia los supuestos y mira cómo se mueve el total.">
         <Simulador />
       </Bloque>
 
-      <Bloque id="encaje" n={7} titulo="Encaje con lo que ya existe" texto="Tenique no empieza de cero: se apoya en programas que ya funcionan en Tenerife.">
-        <div className="via-encaje">
-          {ENCAJE.map((e) => (
-            <Tarjeta key={e.programa} kicker={e.quien} titulo={e.programa} fuentes={e.fuentes}>
-              <p>{e.queEs}</p>
-              <p style={{ marginTop: 8 }}><span className="tag warn"><span className="dot" />Propuesta</span> {e.comoEncaja}</p>
-            </Tarjeta>
-          ))}
+      <Bloque id="encaje" n={9} titulo="Conexión con Turismo de Tenerife" texto="Tenique no empieza de cero: se apoya en lo que Turismo de Tenerife y el Cabildo ya hacen.">
+        <div className="card via-conexion">
+          <p>Cómo encaja Tenique con la marca, los programas y los datos que ya existen tiene su propia sección.</p>
+          <Link className="btn" to={rutaDe('conexion')}>Ver la conexión con Turismo de Tenerife <Icon name="arrow" size={14} /></Link>
         </div>
       </Bloque>
 
-      <Bloque id="opciones" n={8} titulo="Opciones estudiadas" texto="Ideas que hemos analizado y que no entran en el plan base, con nuestra recomendación.">
+      <Bloque id="opciones" n={10} titulo="Opciones estudiadas" texto="Ideas que hemos analizado y que no entran en el plan base, con nuestra recomendación.">
         {OPCIONES.map((o) => (
           <div key={o.titulo} className="card via-opcion">
             <div className="via-opcion-head">
@@ -611,13 +767,9 @@ export default function Viabilidad() {
         ))}
       </Bloque>
 
-      <Bloque id="dafo" n={9} titulo="DAFO" texto="Debilidades, amenazas, fortalezas y oportunidades de Tenique, en una vista.">
-        <Dafo />
-      </Bloque>
-
-      <Bloque id="riesgos" n={10} titulo="Riesgos" texto="Legales, de adopción, operativos, medioambientales y económicos, con su mitigación. Y los límites de lo que Tenique puede hacer.">
+      <Bloque id="riesgos" n={11} titulo="Riesgos" texto="Legales, de adopción, operativos, medioambientales y económicos, con su mitigación. Y los límites de lo que Tenique puede hacer.">
         <MatrizRiesgos />
-        <details className="via-lista">
+        <details className="via-lista" open>
           <summary>Ver los {RIESGOS.length} riesgos con su mitigación</summary>
           <Tabla<Riesgo> columnas={COL_RIESGOS} filas={RIESGOS} minAncho={760} />
         </details>

@@ -13,7 +13,7 @@
 .fut-idea { display: flex; flex-direction: column; gap: 10px; }
 .fut-idea h3 { font-size: 17px; }
 .fut-idea > p { font-size: 14px; color: var(--text-2); }
-.fut-ico { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: var(--nova); background: color-mix(in srgb, var(--brand-red) 14%, transparent); }
+.fut-ico { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: var(--nova); background: color-mix(in srgb, var(--halo) 14%, transparent); }
 .fut-sueno .fut-ico { color: var(--text); background: color-mix(in srgb, var(--brand-blue) 45%, transparent); }
 .fut-bloque .list { margin-top: 6px; }
 .fut-riesgo { color: var(--text-2); }

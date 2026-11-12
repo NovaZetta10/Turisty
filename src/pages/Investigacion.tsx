@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import {
-  AVISO_SERIES, AVISO_TENERIFE, CAUSAS, CIFRAS_2026, CIFRAS_TENERIFE, DATOS_ABIERTOS, FUENTES, GUION, HALLAZGO_JOVENES, HIPOTESIS,
+  AVISO_SERIES, AVISO_TENERIFE, CAUSAS, CIFRAS_2026, CIFRAS_TENERIFE, DATOS_ABIERTOS, FUENTES, GUION, HALLAZGO_JOVENES, HIPOTESIS, IMPORTA_ARRASTRE, IMPORTA_TURISMO,
   ANTES_DESPUES, MUNICIPIO_EXISTE, MUNICIPIO_NO_EXISTE, PERCEPCION, PRESION, PRESION_TENERIFE, REFERENTES, RESPUESTA_RETO, RETORNO, RETORNO_COMPROMISO, RETORNO_HUECOS,
   SIN_ANTES_DESPUES,
   TURISTAS_TF_ENE_SEP, ZONAS, type Municipio, type Percepcion,
@@ -201,10 +201,10 @@ function Causas() {
         <div className="kicker">Lo que más falta</div>
         <ul className="list small">{HALLAZGO_JOVENES.falta.map((x) => <li key={x}>{x}</li>)}</ul>
         <p className="leccion"><b>Para Tenique:</b> {HALLAZGO_JOVENES.tenique}</p>
-        <div className="small muted">No es una estadística oficial: es lo que encontró el equipo el 12-11-2026. Ejemplos <Refs ids={HALLAZGO_JOVENES.fuentes} /></div>
+        <div className="small muted">No es una estadística oficial: es lo que encontró el equipo el 12-11-2026 en estas páginas: <Refs ids={HALLAZGO_JOVENES.fuentes} /></div>
       </div>
 
-      <div className="section-head" style={{ marginTop: 36 }}><div><h2>Hipótesis a validar con entrevistas</h2><p>Sin evidencia todavía. No las damos por hechas. H1–H7 son las mismas del guion de entrevistas.</p><p className="small muted guion-leyenda">V2 = pregunta 2 del guion para vecinos; T = turistas. Las hipótesis se contrastan en las entrevistas y la encuesta. Toca un código para ver la pregunta.</p></div></div>
+      <div className="section-head" style={{ marginTop: 36 }}><div><h2>Hipótesis del diagnóstico</h2><p>Sin evidencia todavía. No las damos por hechas. H1–H7 son las mismas del guion de entrevistas. H11 (depuradoras) es técnica: no entra en el guion de vecinos y se contrasta con el Consejo Insular de Aguas y los ayuntamientos. No son las hipótesis del piloto, que están en el plan de acción.</p><p className="small muted guion-leyenda">V2 = pregunta 2 del guion para vecinos; T = turistas. Las hipótesis se contrastan en las entrevistas y la encuesta. Toca un código para ver la pregunta.</p></div></div>
       <div className="acordeon">
         {HIPOTESIS.map((h) => (
           <details key={h.id}>
@@ -320,6 +320,30 @@ export default function Investigacion() {
                 ))}
               </div>
               <p className="nota"><Icon name="alert" size={14} /> {AVISO_TENERIFE} De enero a septiembre de 2026 llegaron {fmt(TURISTAS_TF_ENE_SEP.y2026 / 1e6, 2)} M de turistas, un {fmt(varEneSep)} % frente a 2025 <Refs ids={[46]} />.</p>
+            </section>
+
+            <section className="section">
+              <div className="section-head"><div><h2>Por qué importa el turismo</h2><p>En 2020 el turismo se paró y la isla lo notó en el paro y en las empresas. La solución no es menos turismo, sino un turismo mejor.</p></div></div>
+              <div className="grid g2 imp-grid">
+                {IMPORTA_TURISMO.map((d) => (
+                  <article key={d.etiqueta} className="card imp">
+                    <div className="ref-top"><span className="tag">{d.ambito}</span></div>
+                    <h3>{d.etiqueta}</h3>
+                    <ol className="imp-serie" aria-label={`${d.etiqueta}: 2019, 2020 y ${d.cuandoHoy}`}>
+                      <li><small>2019</small><b>{d.antes}</b></li>
+                      <li className="imp-covid"><small>2020 · COVID</small><b>{d.covid}</b></li>
+                      <li className="imp-hoy"><small>{d.cuandoHoy}</small><b>{d.hoy}</b></li>
+                    </ol>
+                    <p className="small">{d.nota} <Refs ids={d.fuentes} /></p>
+                  </article>
+                ))}
+              </div>
+              <div className="card imp-mariposa">
+                <div className="kicker">Efecto mariposa</div>
+                <p>{IMPORTA_ARRASTRE.texto} <Refs ids={IMPORTA_ARRASTRE.fuentes} /></p>
+                <p className="imp-idea">El turismo debería ser un pulmón para el desarrollo de toda la isla: lo que genera tiene que llegar a todas las áreas, también a los barrios que hoy no lo notan. Eso es lo que busca Tenique.</p>
+              </div>
+              <p className="nota"><Icon name="alert" size={14} /> Canarias solo como comparación: el empleo y el PIB turístico no se publican por isla. Las cifras de 2025 de Exceltur son un avance.</p>
             </section>
 
             <section className="section">
@@ -446,6 +470,7 @@ export default function Investigacion() {
             <section className="section">
               <div className="section-head"><div><h2>Comparación: Tenerife frente a las demás islas</h2><p>Perfil del turista por isla, 2025. Sirve para situar a Tenerife, no es parte del diagnóstico.</p></div></div>
               <MapaIslas />
+              <p className="nota"><Icon name="alert" size={14} /> Este perfil (Promotur) cuenta solo turistas de 16 años o más: 6,44 M en Tenerife en 2025 <Refs ids={[41]} />. El total de la isla, con menores, es 7,56 M según el balance de Turismo de Tenerife <Refs ids={[8]} />, que es la cifra que usamos en el diagnóstico.</p>
             </section>
           </>)}
 

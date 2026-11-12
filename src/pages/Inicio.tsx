@@ -132,7 +132,7 @@ export default function Inicio() {
             <b>tenique</b> <i>(canarismo)</i>: cada una de las tres piedras con que se hace un hogar rústico, que sirven para sustentar un tostador, una olla o cualquier otro recipiente.
             <span className="muted small"> · Academia Canaria de la Lengua</span><Refs ids={[FUENTE_TENIQUE]} />
           </p>
-          <p className="tenique-lema">Un fogón no se sostiene con una piedra ni con dos. Tenerife tampoco: vecinos, visitantes e instituciones. <b>Tenerife se cocina entre todos.</b></p>
+          <p className="tenique-lema">Un fogón no se sostiene con una piedra ni con dos. Tenerife tampoco: vecinos, visitantes y sector turístico, con Turismo de Tenerife encendiendo el fogón. <b>Tenerife se cocina entre todos.</b></p>
           <p className="tenique-def">Tenique es un programa estable, no una campaña: experiencias reales que vecinos y visitantes comparten en toda la isla. Funciona con personas (anfitriones y mediadores), con puntos físicos para quien no usa el móvil y con una app para descubrirlas por la emoción que buscas. Cada experiencia deja valor en su barrio, y se ve.</p>
           <span className="tj-go">Ver la propuesta <Icon name="arrow" size={14} /></span>
         </Link>

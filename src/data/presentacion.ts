@@ -1,49 +1,74 @@
 // Presentación · pitch de Tenique (reto 1 de Turismo de Tenerife: convivencia entre turismo y población local).
-// Orden (Esther, 12-11-2026): portada → pregunta-gancho → acción 1 (demo, perfiles) → «Os presentamos… Tenique»
-// → cuatro parejas problema/solución (vecinos, visitantes, sectores, Turismo de Tenerife) → las tres piedras contentas
-// → acción 2 (qué revisar) → gracias y preguntas.
-// Desde la revelación, el QR a la demo se queda en una esquina (lo pinta Presentacion.tsx).
-// Guion y tiempos: docs/pitch-guion.md. Propuestas de gancho: docs/pitch-preguntas-gancho.md.
+// Orden (Esther, 12-11-2026): portada → pregunta osada → acción (demo) → sendero → «Os presentamos… Tenique» con las tres piedras
+// → tres escenas de problema, cada una con su solución (vecino, visitante con los tres sellos, Turismo de Tenerife con sus datos)
+// → fogón → qué pedimos al jurado → «Somos Nova».
+// El QR a la demo se queda en una esquina desde la acción (lo pinta Presentacion.tsx).
+// Guion y tiempos: docs/pitch-guion.md. Alternativas de pregunta: docs/pitch-preguntas-gancho.md.
+// Reglas: Tenique es una iniciativa. Solo se promete lo que el prototipo hace hoy. Sin marcas ni empresas reales en las escenas.
+// Las quejas de las escenas son voces de personaje, no datos. Sin fechas ni meses del plan.
 // Cifras: solo las verificadas de src/data/investigacion.ts, con su fuente en el pie.
 
+export type Destino = 'plan' | 'futuro' | 'gestion'
+
 export type Slide =
-  /** Empresa, reto y fecha (salen de RETO y EVENTO en la configuración). Sin nombre de equipo. */
+  /** Empresa, reto, equipo y quién presenta (salen de RETO, EQUIPO_NOMBRE y EQUIPO en la configuración). */
   | { tipo: 'portada' }
-  /** La pregunta que engancha y el remate que aparece después. */
-  | { tipo: 'pregunta'; antes: string; destacado: string; despues?: string; remate: string }
+  /** La pregunta osada (patrón «¿Y si os dijéramos…?»). El remate es opcional y corto. */
+  | { tipo: 'pregunta'; antes: string; destacado: string; despues?: string; remate?: string }
   /** Punto de acción: QR a la demo. 'app' abre la portada de perfiles (#/app); 'prototipo', la pestaña Tenique. */
   | { tipo: 'accion'; kicker: string; titulo: string; texto: string; destino: 'app' | 'prototipo' | 'web' }
-  /** Revelación del nombre, con su definición y fuente. */
-  | { tipo: 'revelacion'; antes: string; nombre: string; definicion: string; fuente: string }
-  /** Un problema con su dato verificado, enfrentado a cómo lo resuelve Tenique. */
-  | { tipo: 'pareja'; kicker: string; problema: { titulo: string; valor: string; etiqueta: string }; solucion: { titulo: string; puntos: string[] }; fuente: string }
-  /** El fogón encendido: tres piedras sosteniendo el caldero y el lema. */
-  | { tipo: 'fogon'; kicker: string; titulo: string; piedras: { nombre: string; texto: string }[]; lema: string }
-  /** Cierre: gracias, preguntas y equipo. */
+  /** Sendero en zigzag con una parada por piedra: la fricción, cómo se resuelve y el botón que se pulsa en la app. */
+  | { tipo: 'sendero'; kicker: string; titulo: string; paradas: { quien: string; boton: string; friccion: string; solucion: string }[] }
+  /** Revelación del nombre, con su definición y fuente, y las tres piedras. */
+  | { tipo: 'revelacion'; antes: string; nombre: string; definicion: string; fuente: string; union: string; piedras: { nombre: string; texto: string }[]; fuego: string }
+  /** Escena: la voz de un personaje (no es un dato). El pie es opcional y solo lleva datos verificados. */
+  | { tipo: 'escena'; kicker: string; voz: string; quien: string; pie?: string; /** Ilustración animada de src/components/escenas/Escenas.tsx. */ imagen: 'vecino' | 'visitante' | 'gestion' }
+  /** Solución a la escena anterior: vídeo de la app en un móvil (public/video/demo-*). Solo lo que el prototipo hace hoy. */
+  | { tipo: 'solucion'; kicker: string; titulo: string; intro: string; puntos: string[]; nota?: string; video: 'vecino' | 'visitante' }
+  /** Los tres sellos con un ejemplo real del catálogo (se resuelve en Presentacion.tsx con src/prototipo/experiencias.ts). */
+  | { tipo: 'sellos'; kicker: string; titulo: string; experienciaId: string; sellos: { nombre: string; texto: string }[]; nota: string }
+  /** Solución de gestión: demo grande (public/video/demo-gestion o captura) con burbujas numeradas que aparecen una tras otra. */
+  | { tipo: 'gestion'; kicker: string; titulo: string; burbujas: string[]; nota?: string }
+  /** Para qué sirven los datos: datos → propuesta → entidades. */
+  | { tipo: 'datos'; kicker: string; titulo: string; datos: string[]; propuesta: string; entidades: string[]; frase: string }
+  /** El fogón encendido: tres piedras sosteniendo el caldero y el mensaje clave. */
+  | { tipo: 'fogon'; kicker: string; titulo: string; piedras: { nombre: string; texto: string }[]; mensaje?: string }
+  /** Cierre: remate grande, equipo y preguntas. */
   | { tipo: 'final'; titulo: string; subtitulo: string }
   | { tipo: 'columnas'; kicker: string; titulo: string; lead?: string; columnas: { titulo: string; texto: string }[]; fuente?: string }
   | { tipo: 'pasos'; kicker: string; titulo: string; pasos: { titulo: string; texto: string }[] }
   | { tipo: 'cifras'; kicker: string; titulo: string; cifras: { valor: string; etiqueta: string }[]; fuente?: string }
   | { tipo: 'frase'; kicker: string; titulo: string; lead?: string }
-  /** Punto de acción final: dónde están los entregables y cuáles revisar primero (DESTACADOS en la configuración). */
-  | { tipo: 'cta'; kicker: string; titulo: string; texto: string }
+  /** Lo que pedimos a quienes validan el reto: tres cosas concretas, cada una con su QR. */
+  | { tipo: 'cta'; kicker: string; titulo: string; pedidos: { titulo: string; texto: string; destino: Destino }[] }
 
 export const SLIDES: Slide[] = [
   { tipo: 'portada' },
   {
-    // Favorita (la 7) con el patrón de la pregunta de Fred. Olsen Express. Hay 15 propuestas en docs/pitch-preguntas-gancho.md.
+    // Esther (12-11-2026): tira hacia el orgullo, lo que quiere Turismo de Tenerife que se sienta al terminar.
+    // «Orgullo» tiene 8 experiencias verificadas (porEmocion('orgullo')). Camino en la demo: #/app → «Vivo en Tenerife» → «Orgullo» → lista: 2 toques.
     tipo: 'pregunta',
-    antes: '¿Cómo podemos hacer que el vecino',
-    destacado: 'note lo que deja el turismo, el visitante viva la isla de verdad y todos sintamos orgullo',
-    despues: ', sin otra campaña ni más presión sobre los barrios?',
-    remate: 'Con tres piedras.',
+    antes: '¿Y si os dijéramos que',
+    destacado: 'en menos de 30 segundos',
+    despues: 'podéis sentir orgullo de ser tinerfeños?',
   },
   {
     tipo: 'accion',
-    kicker: 'Ahora mismo',
-    titulo: 'Sacad el móvil, elegid un perfil: os lo demostramos.',
-    texto: 'Vecino, visitante, anfitrión o Turismo de Tenerife. Cada perfil ve Tenique a su manera, con experiencias reales de la isla.',
+    kicker: 'Os lo demostramos',
+    titulo: 'Sacad el móvil y escanead.',
+    texto: 'Acompañadnos con uno de los perfiles del turismo de Tenerife.',
     destino: 'app',
+  },
+  {
+    // Los botones son los textos exactos de la portada de #/app (Inicio en src/prototipo/pantallas.tsx).
+    tipo: 'sendero',
+    kicker: 'El sendero',
+    titulo: 'Acompañadnos en este sendero: los puntos de fricción que hemos detectado y cómo los resolvemos.',
+    paradas: [
+      { quien: 'Vecino', boton: 'Vivo en Tenerife', friccion: 'No nota lo que deja el turismo en su barrio.', solucion: 'Lo de aquí, avalado por su barrio.' },
+      { quien: 'Visitante', boton: 'Estoy de visita', friccion: 'No sabe cómo conocer a gente de aquí.', solucion: 'Elige lo que quiere sentir y lo vive con gente de aquí.' },
+      { quien: 'Gestión', boton: 'Turismo de Tenerife', friccion: 'No ve dónde se queda lo que deja el turismo.', solucion: 'Un panel con garantías y fondo por municipio.' },
+    ],
   },
   {
     // Fuente 48 de src/data/investigacion.ts. Definición literal de la Academia Canaria de la Lengua.
@@ -52,62 +77,120 @@ export const SLIDES: Slide[] = [
     nombre: 'Tenique',
     definicion: '«Cada una de las tres piedras con que se hace un hogar rústico, que sirven para sustentar un tostador, una olla o cualquier otro recipiente».',
     fuente: 'Academia Canaria de la Lengua, Diccionario básico de canarismos.',
+    union: 'Una iniciativa que une las tres piedras que hacen funcionar Tenerife.',
+    piedras: [
+      { nombre: 'Vecinos', texto: 'Quien vive aquí, quiere saber cómo se mueve el turismo y cómo puede aportar.' },
+      { nombre: 'Visitantes', texto: 'Quien viene de fuera y quiere sentirse parte de la comunidad.' },
+      { nombre: 'Sector turístico', texto: 'Hostelería, gastronomía, comercio y anfitriones: las empresas asociadas a Turismo de Tenerife y quienes viven del turismo.' },
+    ],
+    fuego: 'Turismo de Tenerife no es una cuarta piedra: enciende el fogón, porque garantiza y coordina.',
   },
   {
+    tipo: 'escena',
+    kicker: 'Escena · un vecino',
+    voz: 'Muchacho, mi niño… me tienen el barrio hecho un asco, y aquí solo vienen turistas a molestar y a hacer ruido.',
+    quien: 'Voz de un personaje, no un dato',
+    imagen: 'vecino',
     // Fuente 49.
-    tipo: 'pareja',
+    pie: 'El 53,9 % de quienes viven en Tenerife ve tensiones con los turistas. Fuente: ISTAC, ECOSOC, segundo trimestre de 2026.',
+  },
+  {
+    tipo: 'solucion',
     kicker: 'Para los vecinos',
-    problema: { titulo: 'El turismo es bueno para la isla, pero no lo notan en su vida.', valor: '35,9 %', etiqueta: 'cree que mejora su calidad de vida, aunque el 62,2 % lo ve muy beneficioso para la isla' },
-    solucion: {
-      titulo: 'Lo que deja el turismo se ve en su barrio, y lo deciden ellos.',
-      puntos: ['Un fondo por barrio: los vecinos votan en qué se gasta, también en papel.', 'Cada proyecto lleva su cartel: «esto lo ha pagado Tenique».', 'Sin el aval del barrio, una experiencia no entra.'],
-    },
-    fuente: 'Residentes en Tenerife. Fuente: ISTAC, Encuesta de Hábitos y Confianza Socioeconómica (ECOSOC), segundo trimestre de 2026.',
+    titulo: 'Desde Tenique, vemos y entendemos la frustración del vecino.',
+    intro: 'Con nuestra iniciativa…',
+    puntos: [
+      'Experiencias avaladas por su barrio: comida, oficios y fiestas.',
+      'Parte de cada reserva, al fondo de su municipio, en una cuenta del Cabildo.',
+      'El barrio propone en qué se usa.',
+      'Precio de residente o 2 horas de su tiempo.',
+    ],
+    nota: 'En la demo, importes, precios y valoraciones son ejemplos, y las propuestas no se envían.',
+    video: 'vecino',
   },
   {
-    // Fuentes 8 y 57; la observación sale del catálogo src/data/experiencias.ts.
-    tipo: 'pareja',
+    tipo: 'escena',
+    kicker: 'Escena · un visitante',
+    voz: 'Llegué al aeropuerto y me recibieron con pancartas diciéndome que me fuera. Así no se puede.',
+    quien: 'Voz de un personaje, no un dato',
+    imagen: 'visitante',
+  },
+  {
+    tipo: 'solucion',
     kicker: 'Para los visitantes',
-    problema: { titulo: 'Muchos visitantes y pocas formas de conocer a quien vive aquí.', valor: '7,56 M', etiqueta: 'turistas en Tenerife en 2025: unos 7,8 al año por cada residente' },
-    solucion: {
-      titulo: 'Experiencias reales con gente de la isla, buscadas por emoción.',
-      puntos: ['Avaladas por el barrio y garantizadas por Turismo de Tenerife.', 'Como invitado, no como cliente: sabe qué deja su viaje en el barrio.', 'En toda la isla, no solo en el sur.'],
-    },
-    fuente: 'Fuentes: Turismo de Tenerife, Balance de situación turística 2025 · ISTAC, población por municipios, 2025 · catálogo de experiencias reales del equipo: hoy casi todo lo compartido son fiestas y actividades institucionales.',
+    titulo: 'Desde Tenique, vemos y entendemos la frustración del visitante.',
+    intro: 'Con nuestra iniciativa…',
+    puntos: [
+      'Elige la emoción que quiere sentir.',
+      'Encuentra experiencias con gente de aquí.',
+      'Cada experiencia lleva tres sellos.',
+    ],
+    nota: 'Las emociones están por validar: se enseñan como diseño.',
+    video: 'visitante',
   },
   {
-    // Fuentes 51 y 8.
-    tipo: 'pareja',
-    kicker: 'Para empresas, comercio y vivienda vacacional',
-    problema: { titulo: 'Se factura más por más turistas, no por más gasto, y a pocos hogares les llega.', valor: '23,1 %', etiqueta: 'de los hogares tiene vínculo económico con el turismo. Facturación de 2025: 9.134 M€ (+2,2 %)' },
-    solucion: {
-      titulo: 'El gasto llega al comercio y al productor local, y su aportación se ve en la calle.',
-      puntos: ['Experiencias en su negocio, su finca o su taller, con producto local.', 'Cuota al fondo por convenio con el Cabildo, con sello de empresa o alojamiento corresponsable.', 'Garantía Turismo de Tenerife en cada experiencia.'],
-    },
-    fuente: 'Fuentes: ISTAC, ECOSOC, segundo trimestre de 2026 · Turismo de Tenerife, Balance de situación turística 2025.',
+    // Experiencia real y verificada del catálogo (src/data/experiencias.ts). Textos de los sellos: PIEDRAS en src/prototipo/tenique-piezas.tsx.
+    tipo: 'sellos',
+    kicker: 'Los tres sellos',
+    titulo: 'Así queda una experiencia real, con sus tres sellos.',
+    experienciaId: 'juego-del-palo-la-laguna',
+    sellos: [
+      { nombre: 'Avalada por el barrio', texto: 'Los vecinos o su asociación la avalan y lo renuevan. Si retiran el aval, sale.' },
+      { nombre: 'Garantía Turismo de Tenerife', texto: 'Cumple las condiciones del destino: legalidad, seguro de responsabilidad civil, accesibilidad y respeto al entorno. Antes de publicar.' },
+      { nombre: 'Valorada por quien la vivió', texto: 'Puntúan todas las personas que asistieron, vecinos y visitantes.' },
+    ],
+    nota: 'Experiencia real del catálogo. Los sellos y la valoración son ejemplos de la demo.',
   },
   {
-    // Fuentes 49, 50, 84 y 86.
-    tipo: 'pareja',
+    tipo: 'escena',
+    kicker: 'Escena · Turismo de Tenerife',
+    voz: 'Pero oíste… ¿y todo este dinero para dónde va? Porque aquí se mueve muchísimo.',
+    quien: 'Voz de un personaje, no un dato',
+    imagen: 'gestion',
+  },
+  {
+    // Esther completará esta diapositiva más adelante. Hoy solo lo que existe en #/gestion y en el panel de Turismo de Tenerife.
+    tipo: 'gestion',
     kicker: 'Para Turismo de Tenerife',
-    problema: { titulo: 'La tensión crece, y otra campaña no la arregla.', valor: '53,9 %', etiqueta: 'de quienes viven en Tenerife ve tensiones con los turistas. En 2024 era el 49,6 %' },
-    solucion: {
-      titulo: 'Un relato con datos, sobre lo que ya hacéis.',
-      puntos: ['Sigue a «Tenerife es tuya» y REGENERATe: del residente que redescubre y cuida la isla al que la comparte.', 'Turismo de Tenerife garantiza y coordina; el fondo lo gestiona el Cabildo.', 'La convivencia se mide por municipio, con una encuesta externa.'],
-    },
-    fuente: 'Fuentes: ISTAC, ECOSOC, segundo trimestre de 2024 y 2026 · Turismo de Tenerife, blog corporativo (02-09-2025 y 25-10-2025).',
+    titulo: 'Desde Tenique, vemos y entendemos la frustración de Turismo de Tenerife.',
+    burbujas: [
+      'Garantías pendientes: qué espera su visto bueno.',
+      'Fondo publicado por municipio.',
+      'Mapa de experiencias por municipio.',
+      'Un día en Tenique, en directo.',
+    ],
+    nota: 'Datos del panel simulados, con títulos y municipios reales del catálogo.',
   },
   {
+    tipo: 'datos',
+    kicker: 'Y todos estos datos sirven para algo más',
+    titulo: 'Con lo que se recopila, Turismo de Tenerife puede ir a cualquier mesa.',
+    datos: ['Experiencias por municipio', 'Fondo publicado', 'Valoraciones de quien las vivió', 'Garantías y avales'],
+    propuesta: 'Esto es lo que os proponemos',
+    entidades: ['Gobierno de Canarias', 'Cabildo', 'Universidad', 'Cualquier entidad'],
+    frase: '«Estos son nuestros datos, así se mueve nuestro turismo, y esto es lo que os proponemos; no porque nos apetezca, sino porque los datos nos avalan.»',
+  },
+  {
+    // Quitado a petición de Esther: la comparación con 2020 (fuentes 46 y 97), «Tenerife se cocina entre todos» y lo del pulmón (ver guion).
     tipo: 'fogon',
     kicker: 'Las tres piedras, contentas',
     titulo: 'Con las tres, el fogón se enciende.',
     piedras: [
-      { nombre: 'Vecinos', texto: 'Un fondo que deciden ellos, voz y reconocimiento.' },
-      { nombre: 'Visitantes y sector', texto: 'La isla de verdad con quien la vive, y un gasto que llega al barrio.' },
-      { nombre: 'Instituciones', texto: 'Datos de convivencia y un retorno que se ve.' },
+      { nombre: 'Vecinos', texto: 'Ven lo que deja el turismo y proponen en qué se usa.' },
+      { nombre: 'Visitantes', texto: 'Viven la isla con gente de aquí.' },
+      { nombre: 'Sector turístico', texto: 'Un gasto que llega a lo de aquí, con garantía.' },
     ],
-    lema: 'Tenerife se cocina entre todos.',
+    mensaje: 'La solución no es menos turismo, sino turismo de mejor calidad.',
   },
-  { tipo: 'cta', kicker: 'Para el jurado', titulo: 'Todo está aquí. Al corregir, mirad esto primero:', texto: 'Escanead para abrir todos los entregables.' },
-  { tipo: 'final', titulo: 'Gracias', subtitulo: '¿Preguntas?' },
+  {
+    tipo: 'cta',
+    kicker: 'Os pedimos tres cosas',
+    titulo: 'Para quienes validáis el reto:',
+    pedidos: [
+      { titulo: 'Jugad con nuestro simulador de costes', texto: 'Hemos acotado la solución y, en el peor caso, proponemos alternativas a los problemas que hemos pensado.', destino: 'plan' },
+      { titulo: 'Mirad nuestras ambiciones', texto: 'Nos hemos propuesto un producto mínimo viable, pero queremos que veáis hacia dónde puede crecer.', destino: 'futuro' },
+      { titulo: 'Ved un día en Tenique en vivo', texto: 'La simulación con todos los perfiles moviéndose a lo largo de un día.', destino: 'gestion' },
+    ],
+  },
+  { tipo: 'final', titulo: 'Somos Nova', subtitulo: '¿Preguntas?' },
 ]

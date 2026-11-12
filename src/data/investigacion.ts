@@ -1,6 +1,8 @@
 // Diagnóstico de Tenerife (fase 2, consultado el 12-11-2026) e investigación previa de Canarias (10-11-2026), que queda como comparación.
 // Cada dato lleva su fuente [n]. `verificado: false` = no se pudo comprobar en la fuente primaria.
 
+import { EXPERIENCIAS } from './experiencias'
+
 export type Fuente = { id: number; titulo: string; medio: string; fecha: string; url: string; abierta: boolean }
 
 export const FUENTES: Fuente[] = [
@@ -95,6 +97,12 @@ export const FUENTES: Fuente[] = [
   { id: 89, titulo: 'Audit of the Hawai‘i Tourism Authority (Report No. 25-07)', medio: 'Office of the Auditor, State of Hawai‘i', fecha: '2025', url: 'https://files.hawaii.gov/auditor/Reports/2025/25-07.pdf', abierta: true },
   { id: 90, titulo: 'Meet and Talk: grupo de conversación en inglés · Centro de Información Juvenil (Cabildo de Tenerife)', medio: 'Tenerife Joven y Educa', fecha: 'consultado el 12-11-2026', url: 'https://tenerifejovenyeduca.com/cij/grupos-juveniles/grupo-de-conversacion-en-ingles-meet-talk/', abierta: true },
   { id: 91, titulo: 'Halloween, gaming y senderos: actividades gratis para jóvenes este otoño en Santa Cruz (Distrito Joven)', medio: 'Diario de Avisos', fecha: '09-2026', url: 'https://diariodeavisos.elespanol.com/2026/09/actividades-jovenes-santa-cruz-tenerife/', abierta: true },
+  { id: 92, titulo: 'Centro de Información Juvenil: agenda de noviembre de 2026 y horario del centro', medio: 'Tenerife Joven y Educa (Cabildo de Tenerife)', fecha: 'consultado el 12-11-2026', url: 'https://tenerifejovenyeduca.com/cij/', abierta: true },
+  { id: 93, titulo: 'Centro de Información Juvenil: Espacio Joven (agenda)', medio: 'Tenerife Joven y Educa (Cabildo de Tenerife)', fecha: 'consultado el 12-11-2026', url: 'https://tenerifejovenyeduca.com/cij/espacio-joven/', abierta: true },
+  { id: 94, titulo: 'Centro de Información Juvenil: actividades', medio: 'Tenerife Joven y Educa (Cabildo de Tenerife)', fecha: 'consultado el 12-11-2026', url: 'https://tenerifejovenyeduca.com/cij/actividades/', abierta: true },
+  { id: 95, titulo: 'Juventud · Ayuntamiento de Adeje', medio: 'Ayuntamiento de Adeje', fecha: 'consultado el 12-11-2026', url: 'https://www.adeje.es/juventud', abierta: true },
+  { id: 96, titulo: 'Estudio IMPACTUR Canarias 2024 y avance 2025 (PDF)', medio: 'Exceltur y Gobierno de Canarias', fecha: '05-2026', url: 'https://www.exceltur.org/wp-content/uploads/2026/05/Estudio-IMPACTUR-Canarias-2024-y-Avance-2025_.pdf', abierta: true },
+  { id: 97, titulo: 'Indicador «Paro registrado», islas, mensual', medio: 'ISTAC · API de indicadores', fecha: 'consultado el 12-11-2026', url: 'https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PARO_REGISTRADO', abierta: true },
 ]
 
 export type Dato = { etiqueta: string; valor: string; detalle?: string; fuentes: number[]; verificado: boolean }
@@ -342,11 +350,11 @@ export const CAUSAS: Causa[] = [
       'Tensiones entre residentes y turistas: 53,9 %, frente al 43,4 % de Canarias.',
       'Pero el 72,9 % valora poder relacionarse con gente de otros lugares (81,4 % en el sur). El encuentro se valora; lo que falla es cómo se da.',
       'La manifestación del 20 de abril de 2024 en Santa Cruz reunió a unas 30.000 personas según la Delegación del Gobierno. Los organizadores insistieron en que no era contra los turistas.',
-      'Observación de nuestro catálogo de experiencias reales (29 revisadas, no es una cifra de la isla): casi todo lo que hoy comparten vecinos y visitantes son fiestas, romerías y actividades institucionales. Apenas hay experiencias con un vecino como anfitrión.',
+      `Observación de nuestro catálogo de experiencias reales (${EXPERIENCIAS.length} revisadas, ${EXPERIENCIAS.filter((e) => e.verificado).length} verificadas; no es una cifra de la isla): casi todo lo que hoy comparten vecinos y visitantes son fiestas, romerías y actividades institucionales. Apenas hay experiencias con un vecino como anfitrión.`,
     ],
     fuentes: [49, 50, 60],
     tenique: 'aborda',
-    queHace: 'Lo atacamos porque el encuentro se valora pero apenas existe: encuentros reales en los que el vecino enseña lo suyo y en sus términos; los locales validan y puntúan.',
+    queHace: 'Lo atacamos porque el encuentro se valora pero apenas existe: encuentros reales en los que el vecino enseña lo suyo y en sus términos. Cada experiencia lleva los tres sellos: garantía de Turismo de Tenerife, aval del barrio y valoración de quien la vivió.',
   },
   {
     titulo: 'Presión sobre el entorno natural', tema: 'Entorno natural',
@@ -401,18 +409,18 @@ export const HIPOTESIS: Hipotesis[] = [
 
 /**
  * Hallazgo de nuestra búsqueda (equipo de experiencias, 12-11-2026), no una estadística oficial.
- * Método y detalle en docs/experiencias-criterios.md. Sin cifras nuevas.
+ * Solo las 6 páginas leídas de verdad (docs/experiencias-criterios.md); las vistas solo en un buscador no se citan.
  */
 export const HALLAZGO_JOVENES = {
   titulo: 'Para los jóvenes, casi no hay dónde encontrarse',
-  texto: 'En 7 programas de juventud de Tenerife y 11 fuentes (Centro de Información Juvenil del Cabildo, La Laguna, Distrito Joven de Santa Cruz, Adeje, Arona, Carné Joven Canarias y agenda de la ULL) no aparece ninguna actividad que, según su fuente, sea a la vez asequible, en horario compatible y abierta a compartir entre jóvenes de aquí y de fuera.',
+  texto: 'En las 6 páginas leídas de 3 programas de juventud de Tenerife (Centro de Información Juvenil del Cabildo, Distrito Joven de Santa Cruz y Juventud de Adeje) no aparece ninguna actividad que, según su fuente, sea a la vez asequible, en horario compatible y abierta a compartir entre jóvenes de aquí y de fuera. Lo que más falta es el precio, la apertura a visitantes y el idioma.',
   falta: [
-    'Precio: la mayoría de las fichas no lo dicen.',
-    'Apertura a visitantes: ningún programa dice que reciba a jóvenes de fuera.',
-    'Idioma: solo una actividad es en inglés.',
+    'Precio: las páginas del Centro de Información Juvenil y de Adeje no lo dicen.',
+    'Apertura a visitantes: ninguna página dice que reciba a jóvenes de fuera.',
+    'Idioma: las páginas apenas lo mencionan.',
   ],
   tenique: 'Es un hueco que Tenique puede cubrir: experiencias de tarde o de fin de semana, con precio claro, en más de un idioma y pensadas para que jóvenes de aquí y de fuera las hagan juntos.',
-  fuentes: [90, 91],
+  fuentes: [92, 90, 93, 94, 91, 95],
 }
 
 /**
@@ -430,6 +438,24 @@ export const GUION: Record<string, string> = {
   T2: 'En este viaje, ¿has hablado con alguien de aquí que no te estuviera vendiendo nada?',
   T3: '¿Qué te ha hecho sentir que estabas en Tenerife y no en cualquier otro sitio?',
   T5: 'Si la buscaras por cómo quieres sentirte, ¿qué emociones elegirías?',
+}
+
+/**
+ * «Por qué importa el turismo»: qué pasó cuando paró (2020) y cómo está hoy. Turistas y paro de Tenerife (ISTAC);
+ * empleo y PIB turístico solo existen para Canarias (Exceltur, IMPACTUR). 2025 de IMPACTUR es avance.
+ */
+export type Serie = { etiqueta: string; ambito: 'Tenerife' | 'Canarias'; antes: string; covid: string; hoy: string; cuandoHoy: string; nota: string; fuentes: number[] }
+
+export const IMPORTA_TURISMO: Serie[] = [
+  { etiqueta: 'Turistas al año', ambito: 'Tenerife', antes: '5,73 M', covid: '1,86 M', hoy: '7,41 M', cuandoHoy: '2025', nota: 'En 2020 llegaron dos de cada tres turistas menos (−68 %). Serie del ISTAC; el balance de Turismo de Tenerife da 7,56 M en 2025.', fuentes: [46] },
+  { etiqueta: 'Personas en paro (octubre)', ambito: 'Tenerife', antes: '91.246', covid: '113.557', hoy: '64.114', cuandoHoy: '2025', nota: 'El máximo llegó en febrero de 2021: 123.823. Y no cuenta a quien estaba en ERTE, que no figuraba como parado.', fuentes: [97] },
+  { etiqueta: 'Empleos del turismo', ambito: 'Canarias', antes: '336.490', covid: '174.516', hoy: '413.064', cuandoHoy: '2025 (avance)', nota: 'Directos e indirectos. En 2020 se perdió casi la mitad. No hay dato por isla.', fuentes: [96] },
+  { etiqueta: 'Peso del turismo en la economía', ambito: 'Canarias', antes: '34,1 %', covid: '18,8 %', hoy: '37,7 %', cuandoHoy: '2025 (avance)', nota: 'Parte del PIB canario que genera el turismo. No hay dato por isla.', fuentes: [96] },
+]
+
+export const IMPORTA_ARRASTRE = {
+  texto: 'Por cada 100 € que generan directamente las empresas turísticas, se mueven 44,5 € en otros sectores: alimentación, comercio, logística, construcción, energía, servicios a empresas e industria. Y por cada 100 empleos turísticos, 38,5 más fuera del turismo (33,8 en 2019).',
+  fuentes: [96],
 }
 
 /** Lo que devuelve el turismo a Tenerife, con lo que hay publicado. */
@@ -533,6 +559,7 @@ export const DATOS_ABIERTOS: DatoAbierto[] = [
 ]
 
 export const PENDIENTE_VERIFICAR = [
+  'Empresas turísticas cerradas y personas en ERTE en Tenerife en 2020: el ISTAC solo publica por isla desde 2026; falta una fuente oficial con la serie.',
   'Venecia: pagos y recaudación de 2025 (la página oficial no carga; las cifras vienen de prensa).',
   'Vertidos: cuántos de los 403 puntos del censo están en Tenerife (la prensa da 180 en 2025 y 195 en 2021; falta el dato oficial por isla en IDECanarias).',
   'Depuración: capacidad del 52 % (2023) o el 86 % (2026) del agua residual, y 62,5 millones de m³ al año sin depurar bien. Vienen de un observatorio ciudadano, no de una fuente oficial.',

@@ -78,6 +78,12 @@ export type Experiencia = {
   paraJovenes?: boolean
   /** Qué criterios cumple (texto de Experiencias, en español). */
   motivoJovenes?: string
+  /** true = se llega sin coche propio (guagua, a pie o coche compartido). Sin dato, no se marca. */
+  sinCoche?: boolean
+  /** Cómo llegar según la fuente (línea, parada…). Sin dato, la ficha usa un texto genérico. */
+  comoLlegar?: string
+  /** Programa oficial al que pertenece (p. ej. 'Tenerife es tuya', de Turismo de Tenerife). */
+  programa?: string
 }
 
 /** Valores de demostración (no reales). */
@@ -116,6 +122,9 @@ function normalizar(x: Crudo, i: number): Experiencia | null {
     fiesta: FIESTA.test(String(x.titulo ?? '')),
     paraJovenes: x.paraJovenes === true,
     motivoJovenes: str(x.motivoJovenes),
+    sinCoche: typeof x.sinCoche === 'boolean' ? x.sinCoche : undefined,
+    comoLlegar: str(x.comoLlegar),
+    programa: str(x.programa),
     fuente: url ? { titulo: str(f.titulo) ?? url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0], url } : undefined,
   }
 }
@@ -166,8 +175,13 @@ export function ejemplo(e: Experiencia): DatosEjemplo {
 }
 
 /** A quién va el fondo: el municipio (en los datos, `lugar` suele ser una plaza o un espacio, no un barrio). */
-export const barrio = (e: Experiencia) => e.municipio
-export const donde = (e: Experiencia) => (e.lugar ? `${e.lugar}, ${e.municipio}` : e.municipio)
+/** Programa «Tenerife es tuya» de Turismo de Tenerife. */
+export const esTenerifeEsTuya = (e: Experiencia) => /^tenerife es tuya$/i.test(e.programa?.trim() ?? '')
+
+/** La fuente no dice el municipio (p. ej. rutas que cruzan varios): no cuenta como municipio en listas, mapa ni fondo. */
+export const sinMunicipio = (m: string) => /^no consta$/i.test(m.trim())
+export const barrio = (e: Experiencia) => (sinMunicipio(e.municipio) ? e.lugar ?? 'su zona' : e.municipio)
+export const donde = (e: Experiencia) => (sinMunicipio(e.municipio) ? e.lugar ?? '' : e.lugar ? `${e.lugar}, ${e.municipio}` : e.municipio)
 
 /** Emoción por id (o la primera de una experiencia), con su estilo. */
 export const emocion = (id?: unknown) => EMOCIONES.find((e) => e.id === id)

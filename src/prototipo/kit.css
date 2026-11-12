@@ -7,7 +7,8 @@
 .app-boton { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; flex: none; }
 .app-boton:disabled { opacity: .45; transform: none; }
 
-.app-idioma { width: 40px; height: 32px; border-radius: 999px; border: 1px solid var(--app-line); background: var(--app-bg); color: var(--app-ink); font: inherit; font-size: 12px; font-weight: 700; letter-spacing: .04em; cursor: pointer; transition: transform .15s var(--ease-out); }
+.app-idioma { width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border: 0; background: none; color: var(--app-ink); font: inherit; font-size: 12px; font-weight: 700; letter-spacing: .04em; cursor: pointer; transition: transform .15s var(--ease-out); }
+.app-idioma span { display: grid; place-items: center; width: 40px; height: 30px; border-radius: 999px; border: 1px solid var(--app-line); background: var(--app-bg); }
 .app-idioma:active { transform: scale(.94); }
 
 .app-aviso { position: absolute; left: 50%; top: 72px; transform: translateX(-50%); z-index: 3; background: var(--app-ink); color: var(--app-bg); font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 999px; white-space: nowrap; animation: app-aviso .25s var(--ease-out) both; }

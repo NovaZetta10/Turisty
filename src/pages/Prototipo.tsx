@@ -10,7 +10,8 @@ import { Movil } from '../prototipo/Movil'
 import { CuatroPerfiles } from '../prototipo/CuatroPerfiles'
 import { Sendero } from '../prototipo/Sendero'
 
-// Pestaña Tenique: la iniciativa (no solo la app). Orden: cabecera · demo · cuatro piezas · sendero · comunicación · tres piedras.
+// Pestaña Tenique: la iniciativa (no solo la app). Orden: cabecera · demo · cuatro piezas · sendero · comunicación · tres sellos.
+// Tres piedras = los agentes (vecinos, visitantes, sector turístico); Turismo de Tenerife enciende el fogón. Tres sellos = la validación de cada experiencia.
 
 /** Sección de comunicación (la hace Pitch en src/secciones/Comunicacion.tsx). Si aún no existe, se muestra un hueco. */
 const Comunicacion = (Object.values(import.meta.glob<{ default: ComponentType }>('../secciones/Comunicacion.tsx', { eager: true }))[0]?.default) ?? null
@@ -78,9 +79,9 @@ function Externo() {
 
 const PIEZAS = [
   { id: 'demo', kicker: 'Web y app', titulo: 'Buscar por emoción', texto: '«Quiero sentir…»: experiencias reales, con la triple validación y lo que cada una deja en su barrio.', icono: 'phone', enlace: 'Probar la app' },
-  { id: 'comunicacion', kicker: 'Personas y puntos físicos', titulo: 'Para quien no usa el móvil', texto: 'Anfitriones, asociaciones y un dinamizador por municipio. Oficinas de turismo, centros ciudadanos y ayuntamientos para apuntarse, proponer o votar en papel.', icono: 'user', enlace: 'Ver las alternativas' },
+  { id: 'comunicacion', kicker: 'Personas y puntos físicos', titulo: 'Para quien no usa el móvil', texto: 'Anfitriones, asociaciones y un dinamizador por municipio. Oficinas de turismo, centros ciudadanos y ayuntamientos para apuntarse, proponer u opinar en papel.', icono: 'user', enlace: 'Ver las alternativas' },
   { id: 'comunicacion', kicker: 'Comunicación', titulo: 'Contarlo cerca', texto: 'Lo cuentan vecinos y asociaciones, no solo una campaña: carteles en el barrio, reuniones y boca a boca.', icono: 'globe', enlace: 'Ver el plan' },
-  { id: 'fondo', kicker: 'Fondo del barrio', titulo: 'Lo que se ve en el barrio', texto: 'Cada experiencia aporta a una cuenta del Cabildo por municipio. El barrio decide en qué se gasta y se publica.', icono: 'heart', enlace: 'Cómo se financia' },
+  { id: 'fondo', kicker: 'Fondo del barrio', titulo: 'Lo que se ve en el barrio', texto: 'Lo pagan sobre todo las empresas turísticas y la vivienda vacacional, y cada experiencia suma. Una cuenta del Cabildo por municipio: el barrio propone en qué se gasta y se publica.', icono: 'heart', enlace: 'Cómo se financia' },
 ]
 
 export default function Prototipo() {
@@ -92,12 +93,13 @@ export default function Prototipo() {
         <h1>Tenique, una iniciativa para que Tenerife se cocine entre todos</h1>
         <p>
           Un tenique es cada una de las tres piedras que sostienen el caldero en el fogón canario<Refs ids={[FUENTE_TENIQUE]} />. Si falta una, no se sostiene.
-          Vecinos y visitantes comparten experiencias reales en toda la isla, y cada una deja algo visible en su barrio.
+          En Tenique, las tres piedras son los vecinos, los visitantes y el sector turístico (hostelería, gastronomía, comercio y anfitriones). Turismo de Tenerife enciende el fogón: garantiza y coordina.
+          Vecinos y visitantes comparten experiencias reales, y cada una deja algo visible en su barrio.
         </p>
       </header>
 
       <section id="demo" className="section tq-demo">
-        <div className="section-head tq-demo-head"><div><h2>Pruébalo</h2><p>{url ? 'Aquí mismo o en tu móvil con el QR. O mira cómo lo ve cada perfil.' : 'Aquí se podrá probar en cuanto esté lista.'}</p></div></div>
+        <div className="section-head tq-demo-head"><div><h2>Pruébalo</h2><p>{url ? 'Aquí mismo o en tu móvil con el QR. O mira cómo lo ve cada perfil.' : 'Aquí se podrá probar en cuanto esté lista.'}</p>{url && <p className="small muted">Así se verá con toda la isla (año 3). El piloto empieza en 3 municipios.</p>}</div></div>
         {url.startsWith('#') ? <Interno /> : url ? <Externo /> : (
           <Vacio
             titulo="Prototipo en preparación"
@@ -136,7 +138,7 @@ export default function Prototipo() {
       </section>
 
       <section id="piedras" className="section">
-        <div className="section-head"><div><h2>Cada experiencia, sobre tres piedras</h2><p>Solo entra si la sostienen las tres. Si el barrio retira su aval, sale.</p></div></div>
+        <div className="section-head"><div><h2>Cada experiencia lleva tres sellos</h2><p>Solo entra con los tres. Si el barrio retira su aval, sale.</p></div></div>
         <div className="grid g3">
           <div className="card tq-piedra"><b>Garantía Turismo de Tenerife</b><span>Cumple las condiciones del destino: legalidad, seguro de responsabilidad civil, accesibilidad y respeto al entorno.</span></div>
           <div className="card tq-piedra"><b>Avalada por el barrio</b><span>La asociación o los vecinos del barrio la avalan, y pueden retirar el aval.</span></div>

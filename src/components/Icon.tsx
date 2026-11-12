@@ -22,10 +22,11 @@ const PATHS: Record<string, string> = {
   heart: 'M12 20s-7-4.4-9-9a4.8 4.8 0 0 1 9-3 4.8 4.8 0 0 1 9 3c-2 4.6-9 9-9 9z',
   calendar: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4',
   phone: 'M8 3h8a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM11 18h2',
-  // las tres piedras: vecinos, visitantes y sector, instituciones
+  // las tres piedras: vecinos, visitantes (maleta), sector turístico (tienda); institución para quien enciende el fogón
   vecinos: 'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20a6 6 0 0 1 12 0M16 11a2.5 2.5 0 1 0 0-5M17 14.5a5 5 0 0 1 4 5.5',
   maleta: 'M4 8h16v11H4zM9 8V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V8M4 13h16M10 13v2h4v-2',
   institucion: 'M3 20h18M4 10h16M12 3l9 5H3zM6 10v8M10 10v8M14 10v8M18 10v8',
+  tienda: 'M4 10l1.5-5h13L20 10M4 10h16M4 10a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0M5 11v9h14v-9M10 20v-5h4v5',
   llama: 'M12 21c3.5 0 6-2.4 6-5.6 0-3.6-3-5.4-3.6-8.9-1.8 1.5-2.4 3.6-2.4 3.6S10.5 8.6 9.6 6C7.2 8.6 6 11.4 6 15.4 6 18.6 8.5 21 12 21z',
 }
 

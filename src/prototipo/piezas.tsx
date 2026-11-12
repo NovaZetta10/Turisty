@@ -103,7 +103,7 @@ export function SelectorIdioma() {
   const siguiente = IDIOMAS[(IDIOMAS.indexOf(idioma) + 1) % IDIOMAS.length]
   return (
     <button className="app-idioma" onClick={() => setIdioma(siguiente)} aria-label={idioma === 'es' ? 'Switch to English' : 'Cambiar a español'}>
-      {idioma.toUpperCase()}
+      <span>{idioma.toUpperCase()}</span>
     </button>
   )
 }

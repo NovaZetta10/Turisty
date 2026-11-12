@@ -102,7 +102,7 @@ export function MapaCalor({ cuentas, activo, onElegir }: { cuentas: Record<strin
         <i aria-hidden="true" />
         <span>{t({ es: 'Más experiencias', en: 'More experiences' })}</span>
       </figcaption>
-      <p className="tq-mapa-ayuda">{activo ? t({ es: `Viendo ${activo}. Tócalo otra vez para ver toda la isla.`, en: `Showing ${activo}. Tap it again to see the whole island.` }) : t({ es: 'Toca un municipio para ver sus experiencias.', en: 'Tap a town to see its experiences.' })}</p>
+      <p className="tq-mapa-ayuda">{activo ? t({ es: `Viendo ${activo}. Toca su punto en el mapa para ver toda la isla.`, en: `Showing ${activo}. Tap its dot on the map to see the whole island.` }) : t({ es: 'Toca un municipio para ver sus experiencias.', en: 'Tap a town to see its experiences.' })}</p>
     </figure>
   )
 }

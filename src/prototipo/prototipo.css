@@ -2,8 +2,8 @@
 .movil { --r: 34px; position: relative; overflow: hidden; height: min(780px, 80vh); aspect-ratio: 375 / 780; max-width: 100%; margin: 0 auto; border-radius: var(--r); padding: 8px; background: #05070f; box-shadow: 0 0 0 1px var(--line-2), var(--shadow-lg); }
 .movil-pantalla { height: 100%; display: flex; flex-direction: column; overflow: hidden; border-radius: calc(var(--r) - 8px); background: var(--app-bg); color: var(--app-ink); font-family: var(--app-font); font-size: 15px; line-height: 1.45; animation: app-entra .22s var(--ease-out) both; }
 .movil-pantalla.vuelta { animation-name: app-vuelve; }
-@keyframes app-entra { from { opacity: 0; transform: translateX(14px); } }
-@keyframes app-vuelve { from { opacity: 0; transform: translateX(-14px); } }
+@keyframes app-entra { from { opacity: 0; transform: translateX(24px); } }
+@keyframes app-vuelve { from { opacity: 0; transform: translateX(-24px); } }
 
 /* ruta #/app: en el móvil ocupa toda la pantalla */
 .app-escena { min-height: 100dvh; display: grid; place-items: center; padding: 24px 16px; }
@@ -13,8 +13,10 @@
   .movil.completo .movil-pantalla { border-radius: 0; }
 }
 
-.app-barra { flex: none; display: grid; grid-template-columns: 40px minmax(0, 1fr) 40px; align-items: center; height: 56px; padding: 0 8px; border-bottom: 1px solid var(--app-line); background: var(--app-surface); }
+.app-barra { flex: none; display: grid; grid-template-columns: minmax(max-content, 1fr) minmax(0, auto) minmax(max-content, 1fr); gap: 6px; align-items: center; height: 56px; padding: 0 8px; border-bottom: 1px solid var(--app-line); background: var(--app-surface); }
 .app-barra h1 { font-family: var(--app-font); font-size: 16px; font-weight: 600; letter-spacing: 0; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.app-barra-lado { display: flex; align-items: center; gap: 6px; min-width: 40px; }
+.app-barra-lado.fin { justify-content: flex-end; }
 .app-icono { width: 40px; height: 40px; display: grid; place-items: center; border: 0; background: none; color: inherit; border-radius: 50%; cursor: pointer; }
 button.app-icono:active { transform: scale(.94); }
 
@@ -156,3 +158,10 @@ button.app-tarjeta:active { transform: scale(.98); }
 .tq-pieza-ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: rgba(255, 255, 255, .06); color: var(--nova); margin-bottom: 4px; }
 .tq-pieza-link { align-self: flex-start; margin-top: auto; padding: 8px 0 0; border: 0; background: none; color: var(--nova); font: inherit; font-size: 14px; font-weight: 600; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
 .tq-pieza-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Barra superior simétrica: 88 px a cada lado (dos zonas táctiles de 44 px) y el título centrado de verdad.
+   Izquierda: volver. Derecha: acción (p. ej. corazón) + idioma. Nada se solapa aunque el título sea largo. */
+.app-barra { grid-template-columns: 88px minmax(0, 1fr) 88px; gap: 0; padding: 0 6px; }
+.app-barra-lado { gap: 0; min-width: 0; }
+.app-barra .app-icono { width: 44px; height: 44px; }
+.app-barra h1 { padding: 0 4px; }

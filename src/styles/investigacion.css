@@ -25,7 +25,7 @@
 .zona, .causa { display: flex; flex-direction: column; gap: 8px; }
 .zona h3, .causa h3 { font-size: 17px; }
 .zona .ref-top .tag:first-child { white-space: normal; height: auto; padding: 3px 9px; }
-.causa.principal { border-color: color-mix(in srgb, var(--brand-red) 45%, transparent); }
+.causa.principal { border-color: color-mix(in srgb, var(--halo) 45%, transparent); }
 
 .puente { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
 .puente > div { flex: 1 1 320px; }
@@ -98,3 +98,16 @@ select.search.tu-muni-sel option { background-color: var(--night-2); color: var(
 .hallazgo { margin-top: 28px; display: flex; flex-direction: column; gap: 8px; border-color: color-mix(in srgb, var(--warn) 40%, transparent); }
 .hallazgo h3 { font-size: 18px; }
 .hallazgo p.small { max-width: 80ch; }
+
+/* Por qué importa el turismo: 2019 → 2020 → hoy */
+.imp { display: flex; flex-direction: column; gap: 10px; }
+.imp h3 { font-size: 17px; }
+.imp-serie { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.imp-serie li { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: 10px; background: var(--night-3); min-width: 0; }
+.imp-serie small { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.imp-serie b { font-family: var(--display); font-size: 22px; line-height: 1.1; font-variant-numeric: tabular-nums; color: var(--text-2); }
+.imp-serie .imp-covid b { color: var(--nova-hot); }
+.imp-serie .imp-hoy b { color: var(--text); }
+.imp-mariposa { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; border-color: color-mix(in srgb, var(--ok) 40%, transparent); }
+.imp-idea { font-size: 16px; font-weight: 600; color: var(--text); }
+@media (max-width: 480px) { .imp-serie { gap: 6px; } .imp-serie li { padding: 8px; } .imp-serie b { font-size: 17px; } .imp-serie small { font-size: 10px; letter-spacing: .02em; } }

@@ -49,7 +49,7 @@ export const PUBLICOS: Publico[] = [
   },
   {
     id: 'empresas',
-    nombre: 'Empresas turísticas',
+    nombre: 'Sector turístico',
     icono: 'box',
     frase: 'Lo que aportas al fondo se ve en la calle, con tu sello de empresa corresponsable.',
     tono: 'Claro y con cifras: cuánto entra y en qué se gasta.',
@@ -90,8 +90,9 @@ export type Hito = { mes: number; nombre: string; que: string; tipo: 'lanzamient
 export const HITOS: Hito[] = [
   { mes: 2, nombre: 'Presentación a vecinos y asociaciones', que: 'En los 3 municipios del piloto, en persona, antes de anunciar nada fuera. Se buscan los primeros anfitriones.', tipo: 'hito' },
   { mes: 4, nombre: 'Lanzamiento del piloto', que: 'Cartel de barrio y acción en un mercado del agricultor, con las primeras experiencias ya publicadas.', tipo: 'lanzamiento' },
+  { mes: 6, nombre: 'Primera votación del fondo', que: 'Los vecinos votan en qué se gasta, en la app o en papel en el punto físico. Se anuncia en el tablón, el folleto y la radio local.', tipo: 'hito' },
   { mes: 7, nombre: 'Primer informe trimestral', que: 'Qué ha entrado al fondo y qué se ha hecho, en lenguaje sencillo.', tipo: 'informe' },
-  { mes: 8, nombre: 'Primer proyecto del fondo hecho', que: 'Cartel «esto lo ha pagado Tenique», nota a prensa y radio local, y vídeo con los vecinos que lo votaron. El plan pide el primero antes del mes 9.', tipo: 'hito' },
+  { mes: 9, nombre: 'Primer proyecto del fondo hecho', que: 'El que se votó en el mes 6. Cartel «esto lo ha pagado Tenique», nota a prensa y radio local, y vídeo con los vecinos que lo votaron. Llega antes de decidir si seguimos.', tipo: 'hito' },
   { mes: 9, nombre: 'Resultados del piloto', que: 'Encuesta de cierre y publicación de resultados: seguir, ajustar o parar. Se cuenta igual si sale mal.', tipo: 'decision' },
   { mes: 10, nombre: 'Llegada a nuevos municipios', que: 'Presentación en persona en cada municipio nuevo, con lo aprendido en el piloto.', tipo: 'lanzamiento' },
   { mes: 13, nombre: 'Informe trimestral', que: 'Fondo, proyectos y experiencias por municipio.', tipo: 'informe' },
@@ -105,7 +106,7 @@ export type Pieza = { titulo: string; icono: string; texto: string; cuando: stri
 
 export const CAMPANA = {
   lema: 'Tenerife se cocina entre todos',
-  concepto: 'Un fogón con tres piedras en la calle. No anuncia una promesa: enseña la primera experiencia y el primer proyecto reales, y a la gente que los ha hecho.',
+  concepto: 'Un fogón en la calle: tres piedras (vecinos, visitantes y sector turístico) y Turismo de Tenerife, que lo enciende. No anuncia una promesa: enseña la primera experiencia y el primer proyecto reales, y a la gente que los ha hecho.',
   marca: '«Tenerife! despierta emociones» las despierta; Tenique las hace compartidas. Usa el vocabulario de la marca y le añade lo que sus campañas no cuentan: la convivencia y lo que el turismo deja en el barrio.',
   marcaFuentes: [75],
   piezas: [
@@ -147,8 +148,9 @@ export const HITOS_CALENDARIO: { desde: number; hasta?: number; titulo: string; 
   { desde: 3, titulo: 'Anuncio del convenio y de las primeras aportaciones', que: 'Quién aporta al fondo y cómo se decidirá en qué se gasta.', lidera: 'Cabildo', agentes: ['cabildo', 'tdt', 'empresas', 'vv'] },
   { desde: 4, titulo: 'Lanzamiento del piloto', que: '«Tenerife se cocina entre todos»: cartel de barrio y un fogón en un mercado del agricultor, con las primeras experiencias ya publicadas.', lidera: 'Turismo de Tenerife', agentes: ['tdt', 'ayto', 'local', 'comercio'] },
   { desde: 4, hasta: 9, titulo: 'Folleto mensual, tablón y punto físico', que: 'Agenda de experiencias y votación del fondo también sin conexión.', lidera: 'Turismo de Tenerife (folleto) y ayuntamientos (tablón y votación en papel)', agentes: ['tdt', 'ayto'] },
+  { desde: 6, titulo: 'Primera votación del fondo', que: 'Los vecinos votan en qué se gasta, en la app o en papel. Se anuncia en el tablón, el folleto y la radio local.', lidera: 'Ayuntamientos (organizan la votación); Turismo de Tenerife la difunde', agentes: ['ayto', 'local', 'tdt'] },
   { desde: 7, titulo: 'Primer informe trimestral', que: 'Qué ha entrado al fondo y qué se ha hecho, en lenguaje sencillo.', lidera: 'Turismo de Tenerife, con las cuentas del Cabildo', agentes: ['tdt', 'cabildo'] },
-  { desde: 8, titulo: 'Primer proyecto del fondo hecho', que: 'Cartel «esto lo ha pagado Tenique», prensa y radio local, y los vecinos que lo votaron contándolo.', lidera: 'Turismo de Tenerife (lo publica); el ayuntamiento lo ejecuta', agentes: ['tdt', 'ayto', 'local'] },
+  { desde: 9, titulo: 'Primer proyecto del fondo hecho', que: 'El votado en el mes 6. Cartel «esto lo ha pagado Tenique», prensa y radio local, y los vecinos que lo votaron contándolo.', lidera: 'Turismo de Tenerife (lo publica); el ayuntamiento lo ejecuta', agentes: ['tdt', 'ayto', 'local'] },
   { desde: 9, titulo: 'Resultados del piloto', que: 'Encuesta de cierre y decisión pública: seguir, ajustar o parar. Se cuenta igual si sale mal.', lidera: 'Turismo de Tenerife con el Cabildo', agentes: ['tdt', 'cabildo', 'evaluador'] },
   { desde: 10, hasta: 24, titulo: 'Presentación en cada municipio nuevo e informe trimestral', que: 'Por tandas y comarcas. Cada proyecto pagado, con su cartel.', lidera: 'Turismo de Tenerife', agentes: ['tdt', 'ayto', 'local'] },
   { desde: 22, titulo: 'Primer informe anual del fondo', que: 'En lenguaje cercano y con datos abiertos.', lidera: 'Cabildo (cuentas) y Turismo de Tenerife (publicación)', agentes: ['cabildo', 'tdt'] },

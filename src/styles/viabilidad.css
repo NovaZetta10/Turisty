@@ -2,7 +2,7 @@
 .via-base { display: inline-flex; align-items: center; gap: 4px; flex-wrap: wrap; }
 .via-partida { display: block; color: var(--text); font-weight: 600; }
 .via-ok { color: var(--ok); }
-.via-stop { color: var(--nova-hot); }
+.via-stop { color: var(--warn); }
 
 /* supuestos */
 .via-sup { margin-bottom: 16px; }
@@ -21,7 +21,7 @@
 /* tabla editable + gráfico */
 .via-costes { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
 .via-input { width: 96px; height: 34px; padding: 0 8px; border-radius: 8px; border: 1px solid var(--line-2); background: color-mix(in srgb, var(--text) 4%, transparent); color: var(--text); font: inherit; font-size: 14px; text-align: right; font-variant-numeric: tabular-nums; transition: border-color .15s var(--ease-out), box-shadow .15s var(--ease-out); }
-.via-input:focus { outline: none; border-color: var(--nova); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-red) 15%, transparent); }
+.via-input:focus { outline: none; border-color: var(--nova); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-blue) 35%, transparent); }
 
 /* hoja de ruta: columnas en escritorio, lista vertical en móvil */
 .via-ruta { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; counter-reset: fase; }
@@ -33,7 +33,7 @@
 .via-hitos { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 8px; border-top: 1px solid var(--line); padding-top: 10px; }
 .via-hitos li { display: flex; flex-direction: column; gap: 2px; font-size: 14px; color: var(--text-2); }
 .via-hitos small { color: var(--nova); font-size: 12px; }
-.via-decision { margin: auto 0 0; padding: 8px 10px; border-radius: 8px; background: color-mix(in srgb, var(--brand-red) 8%, transparent); color: var(--text); }
+.via-decision { margin: auto 0 0; padding: 8px 10px; border-radius: 8px; background: color-mix(in srgb, var(--brand-blue) 22%, transparent); color: var(--text); }
 @media (max-width: 1100px) { .via-ruta { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) {
   .via-ruta { grid-template-columns: 1fr; }
@@ -66,7 +66,7 @@
 .via-opcion-head h3 { margin: 4px 0 0; }
 
 /* ─── calendario interactivo ─── */
-.via-cal { display: grid; gap: 12px; }
+.via-cal { position: relative; display: grid; gap: 12px; }
 .via-cal-filtro { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .via-chip { font: inherit; font-size: 13px; padding: 6px 12px; min-height: 32px; border-radius: 999px; border: 1px solid var(--line-2); background: transparent; color: var(--text-2); cursor: pointer; transition: background-color .15s var(--ease-out), border-color .15s var(--ease-out), transform .15s var(--ease-out); }
 .via-chip:hover { border-color: var(--ice); color: var(--text); }
@@ -144,14 +144,19 @@
 }
 
 /* listas plegables y matriz de riesgos */
-.via-lista { margin-top: 12px; min-width: 0; }
-.via-lista summary { cursor: pointer; color: var(--ice); font-size: 14px; padding: 6px 0; }
-.via-lista[open] summary { margin-bottom: 12px; }
-/* Niveles: bajo = verde (--ok), medio = ámbar (--amber, token pendiente; #f5b942 da 8,3–10,2:1 sobre night), alto = rojo de marca. */
+.via-lista { margin-top: 14px; min-width: 0; }
+.via-lista > summary { list-style: none; display: inline-flex; align-items: center; gap: 10px; min-height: 40px; padding: 8px 16px 8px 14px; border: 1px solid color-mix(in srgb, var(--ice) 45%, transparent); border-radius: 999px; background: color-mix(in srgb, var(--ice) 8%, transparent); color: var(--ice); font-size: 14px; font-weight: 600; cursor: pointer; user-select: none; transition: background-color .15s var(--ease-out), border-color .15s var(--ease-out), transform .15s var(--ease-out); }
+.via-lista > summary::-webkit-details-marker { display: none; }
+.via-lista > summary::before { content: ''; flex: none; width: 7px; height: 7px; margin: 0 2px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg); transition: transform .2s var(--ease-out); }
+.via-lista[open] > summary::before { transform: translateY(-2px) rotate(45deg); }
+.via-lista[open] > summary { margin-bottom: 12px; }
+.via-lista > summary:active { transform: scale(.98); }
+@media (hover: hover) and (pointer: fine) { .via-lista > summary:hover { background: color-mix(in srgb, var(--ice) 16%, transparent); border-color: var(--ice); } }
+/* Niveles: bajo = verde (--ok), medio = ámbar (--amber, token pendiente; #f5b942 da 8,3–10,2:1 sobre night), alto = rojo de alerta (--warn). */
 .via-matriz-bloque { margin-bottom: 16px; }
 .tag.via-nivel-bajo { background: var(--ok-bg); color: var(--ok); }
 .tag.via-nivel-medio { background: color-mix(in srgb, var(--amber, #f5b942) 14%, transparent); color: var(--amber, #f5b942); }
-.tag.via-nivel-alto { background: color-mix(in srgb, var(--brand-red) 18%, transparent); color: var(--nova); }
+.tag.via-nivel-alto { background: var(--warn-bg); color: var(--warn); }
 .via-matriz-ley { display: flex; justify-content: space-between; align-items: center; gap: 8px 16px; flex-wrap: wrap; margin-bottom: 10px; }
 .via-matriz-ley p { margin: 0; }
 .via-ley-niveles { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
@@ -165,7 +170,7 @@
 .via-matriz-celda:disabled { cursor: default; opacity: .55; }
 .via-matriz-celda.via-g-bajo { --c: var(--ok); }
 .via-matriz-celda.via-g-medio { --c: var(--amber, #f5b942); }
-.via-matriz-celda.via-g-alto { --c: var(--nova); }
+.via-matriz-celda.via-g-alto { --c: var(--warn); }
 .via-matriz-celda.con { background: color-mix(in srgb, var(--c) 16%, var(--night-3)); }
 .via-matriz-celda.sel { border: 2px solid var(--c); box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 22%, transparent); }
 .via-matriz-celda:active:not(:disabled) { transform: scale(.97); }
@@ -179,7 +184,7 @@
 @media (max-width: 640px) { .via-dafo { grid-template-columns: minmax(0, 1fr); } }
 .via-dafo-c { --c: var(--off); border-radius: var(--radius); border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); background: linear-gradient(160deg, color-mix(in srgb, var(--c) 12%, var(--night-2)), var(--night-2) 70%); padding: 16px 18px; }
 .via-dafo-debilidades { --c: var(--amber, #f5b942); }
-.via-dafo-amenazas { --c: var(--nova); }
+.via-dafo-amenazas { --c: var(--warn); }
 .via-dafo-fortalezas { --c: var(--ok); }
 .via-dafo-oportunidades { --c: var(--ice); }
 .via-dafo-c header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
@@ -188,3 +193,84 @@
 .via-dafo-ico { display: grid; place-items: center; width: 36px; height: 36px; flex: none; border-radius: 10px; color: var(--c); background: color-mix(in srgb, var(--c) 16%, transparent); }
 .via-dafo-c ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; font-size: 14.5px; color: var(--text-2); }
 .via-dafo-c li::marker { color: var(--c); }
+
+/* sentido del fondo: cada euro vuelve a donde se genera */
+.via-sentido { display: grid; gap: 8px; margin-bottom: 16px; border-color: color-mix(in srgb, var(--ok) 30%, transparent); background: linear-gradient(160deg, color-mix(in srgb, var(--ok) 8%, var(--night-2)), var(--night-2) 70%); }
+.via-sentido h3, .via-sentido p { margin: 0; }
+
+/* popover de los rombos del calendario */
+.via-pop { position: absolute; z-index: 30; display: grid; gap: 4px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line-2); background: var(--night-3); box-shadow: var(--shadow-lg); pointer-events: none; transform: translateY(calc(-100% - 12px)); animation: via-pop 180ms var(--ease-out) both; }
+.via-pop::after { content: ''; position: absolute; left: var(--flecha); bottom: -6px; width: 10px; height: 10px; margin-left: -5px; background: var(--night-3); border-right: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2); transform: rotate(45deg); }
+.via-pop b { font-size: 14px; color: var(--text); }
+.via-pop p { margin: 0; font-size: 13px; color: var(--text-2); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.via-pop small { font-size: 12px; color: var(--muted); }
+@keyframes via-pop { from { opacity: 0; transform: translateY(calc(-100% - 12px)) scale(.92); } }
+
+/* sendero del euro (recrea el zigzag del prototipo) */
+.via-euro { position: relative; margin-top: 8px; min-width: 0; }
+.via-euro-h { position: absolute; left: 0; top: 0; width: 100%; height: 100px; overflow: visible; pointer-events: none; }
+.via-euro-base { fill: none; stroke: var(--line-2); stroke-width: 2; stroke-dasharray: 2 6; stroke-linecap: round; }
+.via-euro-traza { fill: none; stroke: var(--ok); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset .9s var(--ease-out); }
+.via-euro.visto .via-euro-traza { stroke-dashoffset: 0; }
+.via-euro-pasos { position: relative; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); }
+.via-euro-pasos li { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 0; padding: 0 6px; text-align: center; opacity: 0; transform: translateY(8px); transition: opacity .25s var(--ease-out), transform .25s var(--ease-out); transition-delay: calc(var(--i) * 140ms + 150ms); }
+.via-euro.visto .via-euro-pasos li { opacity: 1; transform: none; }
+.via-euro-pasos li.arriba { padding-top: 12px; }
+.via-euro-pasos li.abajo { padding-top: 52px; }
+.via-euro-num { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--night-2); border: 2px solid var(--ok); color: var(--text); font-weight: 700; font-size: 14px; }
+.via-euro-txt { display: grid; gap: 4px; }
+.via-euro-txt b { font-size: 14px; color: var(--text); }
+.via-euro-txt small { font-size: 12.5px; color: var(--text-2); line-height: 1.35; }
+@media (max-width: 640px) {
+  .via-euro-h { display: none; }
+  .via-euro-pasos { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .via-euro-pasos::before { content: ''; position: absolute; left: 17px; top: 18px; bottom: 18px; border-left: 2px dashed var(--line-2); }
+  .via-euro-pasos li, .via-euro-pasos li.arriba, .via-euro-pasos li.abajo { flex-direction: row; align-items: flex-start; text-align: left; padding: 0; gap: 12px; }
+  .via-euro-num { position: relative; }
+}
+
+/* árbol de decisiones de las hipótesis */
+.via-arbol { display: grid; gap: 28px; margin-top: 16px; scroll-margin-top: 96px; }
+.via-arbol-ley { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.via-rama-t { --c: var(--off); display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent); }
+.via-rama-t.ok, .via-rama.ok { --c: var(--ok); }
+.via-rama-t.medio, .via-rama.medio { --c: var(--amber, #f5b942); }
+.via-rama-t.no, .via-rama.no { --c: var(--warn); }
+.via-nodo-grupo { display: grid; scroll-margin-top: 96px; border-radius: var(--radius); }
+.via-nodo-grupo:focus { outline: none; }
+.via-nodo { position: relative; justify-self: center; width: min(100%, 680px); display: grid; gap: 4px; margin-bottom: 28px; padding: 12px 16px; text-align: center; border: 1px solid var(--line-2); border-radius: 14px; background: var(--night-3); transition: box-shadow .2s var(--ease-out); }
+.via-nodo h3, .via-nodo p { margin: 0; }
+.via-nodo h3 { font-size: 16px; }
+.via-nodo::after { content: ''; position: absolute; left: 50%; bottom: -15px; height: 14px; border-left: 2px solid var(--line-2); }
+.via-ramas { position: relative; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.via-ramas::before { content: ''; position: absolute; top: -14px; left: 16.6%; right: 16.6%; border-top: 2px solid var(--line-2); }
+.via-rama { position: relative; display: grid; align-content: start; gap: 6px; padding: 12px; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--c) 40%, transparent); background: color-mix(in srgb, var(--c) 7%, var(--night-2)); }
+.via-rama::before { content: ''; position: absolute; left: 50%; top: -15px; height: 14px; border-left: 2px solid color-mix(in srgb, var(--c) 60%, transparent); }
+.via-rama p { margin: 0; font-size: 14px; }
+.via-rama .via-rama-t { justify-self: start; }
+.via-destacado .via-nodo, .via-destacado.via-nodo-grupo > .via-nodo { box-shadow: 0 0 0 3px var(--ice); }
+section.via-destacado { outline: 3px solid var(--ice); outline-offset: 6px; border-radius: var(--radius); }
+@media (max-width: 760px) {
+  .via-nodo { justify-self: stretch; text-align: left; margin-bottom: 14px; }
+  .via-nodo::after { left: 18px; bottom: -15px; }
+  .via-ramas { grid-template-columns: minmax(0, 1fr); gap: 10px; padding-left: 30px; }
+  .via-ramas::before { top: -1px; bottom: 22px; left: 18px; right: auto; border-top: 0; border-left: 2px solid var(--line-2); }
+  .via-rama::before { left: -13px; top: 20px; width: 12px; height: 0; border-left: 0; border-top: 2px solid color-mix(in srgb, var(--c) 60%, transparent); }
+}
+
+/* DAFO → plan de contingencia */
+.via-dafo-ir { display: inline-flex; align-items: center; gap: 4px; margin-left: 6px; padding: 2px 10px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--ice) 45%, transparent); background: transparent; color: var(--ice); font: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer; transition: background-color .15s var(--ease-out), transform .15s var(--ease-out); }
+.via-dafo-ir:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) { .via-dafo-ir:hover { background: color-mix(in srgb, var(--ice) 14%, transparent); } }
+#medioambiente { scroll-margin-top: 96px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .via-pop { animation: none; }
+  .via-euro-traza { transition: none; stroke-dashoffset: 0; }
+  .via-euro-pasos li { transition: none; opacity: 1; transform: none; }
+  .via-lista > summary, .via-lista > summary::before, .via-nodo, .via-dafo-ir { transition: none; }
+}
+
+/* enlace a la pestaña de conexión con Turismo de Tenerife */
+.via-conexion { display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; }
+.via-conexion p { margin: 0; flex: 1 1 280px; }

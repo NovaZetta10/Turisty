@@ -6,6 +6,7 @@
 
 import type { AgenteId } from './responsabilidades'
 import { RETORNO_COMPROMISO } from './investigacion'
+import { CODIGO_CONVIVENCIA } from './responsabilidades'
 
 export type Nivel = 'bajo' | 'medio' | 'alto'
 
@@ -32,12 +33,14 @@ export const FASES: Fase[] = [
     hitos: [
       { que: 'Convenio entre Cabildo y Turismo de Tenerife: el Cabildo crea y gestiona el fondo; Turismo de Tenerife coordina el programa', lidera: 'Cabildo y Turismo de Tenerife' },
       { que: 'Informe jurídico: figura del fondo, fiscalidad de anfitriones, seguros y RGPD', lidera: 'Servicios jurídicos del Cabildo' },
-      { que: 'Elección de los 3 municipios y acuerdo con sus ayuntamientos', lidera: 'Cabildo con los ayuntamientos' },
+      { que: 'Mes 1: elección de los 3 municipios y acuerdo con sus ayuntamientos, antes de presentar nada en ellos', lidera: 'Cabildo con los ayuntamientos' },
       { que: 'Contratación de un dinamizador de barrio por municipio, que trabaja desde el punto físico que cede el ayuntamiento', lidera: 'Cabildo con los ayuntamientos' },
-      { que: 'Captación y formación de anfitriones: vecinos, asociaciones, comercio y productores locales y empresas; protocolo de las tres piedras de validación', lidera: 'Dinamizadores de barrio' },
+      { que: 'Captación y formación de anfitriones: vecinos, asociaciones, comercio y productores locales y empresas; protocolo de los tres sellos', lidera: 'Dinamizadores de barrio' },
       { que: 'Propuesta: invitar a ser anfitriones a los participantes de «Tenerife es tuya», el programa de rutas del Cabildo para residentes', lidera: 'Turismo de Tenerife con el Cabildo', fuentes: [84] },
       { que: 'Acuerdo de aportación con empresas turísticas y con propietarios y gestores de vivienda vacacional', lidera: 'Cabildo con patronales y asociaciones de vivienda vacacional' },
       { que: 'App mínima y un punto físico por municipio (oficina de turismo o centro ciudadano que cede el ayuntamiento)', lidera: 'Turismo de Tenerife con los ayuntamientos' },
+      { que: 'Código de convivencia de cada barrio, escrito por los vecinos; quien reserva lo acepta', lidera: 'Vecinos y asociaciones; Turismo de Tenerife lo aprueba' },
+      { que: 'Prueba de concepto flash de 2 semanas al final del mes 3: primeros resultados medibles antes del piloto', lidera: 'Turismo de Tenerife y Cabildo' },
       { que: 'Encuesta de partida a residentes (antes), con evaluación externa', lidera: 'ISTAC o universidad, por encargo del Cabildo' },
     ],
   },
@@ -48,11 +51,12 @@ export const FASES: Fase[] = [
     objetivo: 'Probar con gente real si vecinos y visitantes comparten experiencias y si el fondo se nota en el barrio.',
     alcance: '3 municipios, 6 meses',
     hitos: [
-      { que: 'Primeras experiencias con las tres piedras: «Garantía Turismo de Tenerife» (revisión de condiciones antes de publicar), «Avalada por el barrio» (aval de la asociación o de los vecinos) y «Valorada por quien la vivió» (todas las personas que asistieron, vecinos y visitantes)', lidera: 'Turismo de Tenerife, con el dinamizador para el aval vecinal' },
+      { que: 'Primeras experiencias con los tres sellos: «Garantía Turismo de Tenerife» (revisión de condiciones antes de publicar), «Avalada por el barrio» (aval de la asociación o de los vecinos) y «Valorada por quien la vivió» (todas las personas que asistieron, vecinos y visitantes)', lidera: 'Turismo de Tenerife, con el dinamizador para el aval vecinal' },
       { que: 'Primeras experiencias: de pago solo si las ofrecen asociaciones, entidades, comercio y productores locales o empresas; los vecinos, gratis o con donación al fondo', lidera: 'Anfitriones y asociaciones' },
       { que: 'Primeras empresas y viviendas vacacionales adheridas con aportación al fondo', lidera: 'Cabildo con las patronales; Turismo de Tenerife las invita' },
-      { que: 'Primera votación del fondo en cada barrio, en la app y en papel', lidera: 'Ayuntamientos' },
-      { que: 'Primer proyecto pagado por el fondo, señalizado en la calle', lidera: 'Ayuntamientos' },
+      { que: 'Primeras propuestas de los vecinos para el fondo, en la app y en papel; en el mes 6 el barrio vota entre las propuestas', lidera: 'Ayuntamientos' },
+      { que: 'Jornadas de cuidado compartido: vecinos y visitantes limpian una playa, arreglan un sendero o cuidan una plaza', lidera: 'Ayuntamientos con vecinos y visitantes' },
+      { que: 'Primer proyecto pagado por el fondo, señalizado en la calle (votado en el mes 6, hecho en el mes 9)', lidera: 'Ayuntamientos' },
       { que: 'Encuesta de cierre a residentes (después)', lidera: 'ISTAC o universidad (evaluación externa)' },
       { que: 'Evaluación con los umbrales y publicación de resultados', lidera: 'Turismo de Tenerife con el Cabildo' },
     ],
@@ -105,7 +109,7 @@ export const FASES: Fase[] = [
 export const RESIDENTE: { que: string; texto: string }[] = [
   { que: 'Su tiempo', texto: 'Como anfitrión de una experiencia o como voluntario en las de su barrio.' },
   { que: 'Su aval', texto: 'Avala, con su asociación o en reunión abierta, las experiencias de su barrio («Avalada por el barrio»).' },
-  { que: 'Su voto', texto: 'Decide en qué se gasta el fondo de su barrio, en la app o en papel.' },
+  { que: 'Su propuesta', texto: 'Propone en qué se gasta el fondo de su barrio, en la app o en papel.' },
   { que: 'Su parte al reservar', texto: 'Paga un precio de residente simbólico y el 10 % va al fondo, como en cualquier reserva (supuesto).' },
   { que: 'O su tiempo, si no puede pagar', texto: 'Quien no puede pagar participa a cambio de horas de voluntariado en el barrio.' },
 ]
@@ -113,6 +117,19 @@ export const RESIDENTE: { que: string; texto: string }[] = [
 export type PiezaFondo = { titulo: string; texto: string; quien: string }
 
 /** Cómo funciona el fondo, de la entrada del dinero a su publicación. */
+/** Por qué existe el fondo: lo que Turismo de Tenerife repitió en la sesión de feedback, en nuestras palabras. */
+export const SENTIDO_FONDO = {
+  titulo: 'Que el turismo sea un pulmón para toda la isla',
+  texto: 'Hoy no se ve si lo que gana el turismo vuelve a donde se genera: lo que se gasta en una playa, ¿vuelve a esa playa? Con Tenique cada euro se puede seguir: lo que deja una experiencia entra en la cuenta de su municipio, los vecinos de ese barrio proponen en qué se gasta y se publica con un cartel en la calle. Y cada año, el informe del retorno cuenta lo que el turismo devuelve en sanidad, educación y limpieza.',
+  pasos: [
+    { titulo: 'Se genera en el barrio', texto: 'Una reserva, una donación o la aportación de una empresa o una vivienda vacacional.' },
+    { titulo: 'Entra en la cuenta de su municipio', texto: 'Cuenta separada por municipio, que gestiona el Cabildo.' },
+    { titulo: 'Los vecinos proponen en qué se gasta', texto: 'En la app o en papel, en el punto físico.' },
+    { titulo: 'Se ve en la calle y se publica', texto: 'Cartel «esto lo ha pagado Tenique» y cuentas abiertas.' },
+    { titulo: 'Informe anual del retorno', texto: 'Lo que el turismo devuelve en sanidad, educación y limpieza, municipio a municipio.' },
+  ],
+}
+
 export const FONDO: PiezaFondo[] = [
   {
     titulo: 'De dónde sale',
@@ -125,8 +142,8 @@ export const FONDO: PiezaFondo[] = [
     quien: 'Cabildo',
   },
   {
-    titulo: 'Quién decide en qué se gasta',
-    texto: 'Los vecinos del barrio, con presupuestos participativos: proponen y votan en la app o en papel en el punto físico. El ayuntamiento comprueba que se puede hacer.',
+    titulo: 'Quién propone en qué se gasta',
+    texto: 'Los vecinos del barrio, con presupuestos participativos: proponen en la app o en papel en el punto físico. El ayuntamiento comprueba que se puede hacer.',
     quien: 'Vecinos y ayuntamiento',
   },
   {
@@ -184,10 +201,32 @@ export function fondoAnual(v: Record<string, number>) {
   return { ventas, reservas, empresas, viviendas, cabildo, privado, total, anfitriones, gestion, pctPublico: total ? (cabildo / total) * 100 : 0 }
 }
 
+// ─── 2b · prueba de concepto ─────────────────────────────────────────────────
+
+/**
+ * Prueba de concepto flash de 2 semanas, al final de la preparación (mes 3), antes del piloto.
+ * Líneas base: 0 solo donde Tenique aún no existe; lo demás se mide el día 1. Objetivos: supuestos.
+ */
+export type IndicadorPrueba = { indicador: string; base: string; objetivo: string; comoSeMide: string; supuesto: boolean }
+export const PRUEBA_CONCEPTO = {
+  lema: 'Si en dos semanas ya se ve, en meses o en años se notará en toda la isla.',
+  donde: 'Los 3 municipios del piloto, con los primeros anfitriones captados y el punto físico abierto.',
+  cuando: '2 semanas al final del mes 3, antes de empezar el piloto en el mes 4.',
+  despues: 'Si se cumplen los objetivos, empieza el piloto de 6 meses. Si no, se ajusta lo que falle antes del mes 4 y se cuenta igual.',
+  indicadores: [
+    { indicador: 'Experiencias publicadas con garantía y aval del barrio', base: '0 (Tenique aún no existe)', objetivo: '10 o más entre los 3 municipios', comoSeMide: 'App (panel de gestión): experiencias con los dos primeros sellos; el tercero llega con la valoración.', supuesto: true },
+    { indicador: 'Reservas', base: '0 (Tenique aún no existe)', objetivo: '50 o más reservas en las 2 semanas', comoSeMide: 'App y punto físico.', supuesto: true },
+    { indicador: 'Valoración media de quien la vivió', base: 'Sin dato: aún no hay valoraciones', objetivo: '4 o más sobre 5', comoSeMide: 'Tercer sello: valoran todas las personas que asistieron, vecinos y visitantes.', supuesto: true },
+    { indicador: 'Visitantes que llegan sin coche propio', base: 'Se mide el día 1', objetivo: 'Más alto el día 14 que el día 1', comoSeMide: 'Pregunta al valorar: guagua, a pie, bici, coche compartido o coche propio.', supuesto: true },
+    { indicador: 'Vecinos que creen que el turismo deja algo bueno en su barrio', base: 'Se mide el día 1', objetivo: 'Más alto el día 14 que el día 1 entre quienes participan', comoSeMide: 'Una pregunta corta en el punto físico y en la app, igual el día 1 y el día 14.', supuesto: true },
+    { indicador: 'Aportación al fondo del barrio', base: '0 € (el fondo aún no existe)', objetivo: 'Primeras aportaciones publicadas: el 10 % de cada reserva y al menos 1 empresa adherida', comoSeMide: 'Cuenta del fondo por municipio (Cabildo), publicada en la app.', supuesto: true },
+  ] as IndicadorPrueba[],
+}
+
 // ─── 3 · piloto ──────────────────────────────────────────────────────────────
 
 /** Hipótesis del piloto con su umbral de éxito y de parada. Los umbrales son supuestos. */
-export type Hipotesis = { hipotesis: string; metrica: string; exito: string; parada: string }
+export type Hipotesis = { id: string; hipotesis: string; metrica: string; exito: string; parada: string; ajuste: string; contingencia: string }
 export type Piloto = { donde: string; duracion: string; conQuien: string; hipotesis: Hipotesis[] }
 
 export const PILOTO: Piloto = {
@@ -195,15 +234,15 @@ export const PILOTO: Piloto = {
   duracion: '6 meses (meses 4–9), después de 3 meses de preparación. Evaluación al cerrar.',
   conQuien: 'Turismo de Tenerife (coordina, da la garantía y promociona), Cabildo (gestiona el fondo y contrata a los dinamizadores con los ayuntamientos), 3 ayuntamientos (ceden el punto físico), ISTAC o universidad (evaluación externa), asociaciones vecinales, comercio y productores locales (mercados del agricultor, bodegas, queserías, artesanos), 30–50 anfitriones y las primeras empresas y viviendas vacacionales adheridas. Los vecinos no cobran en el piloto: ofrecen experiencias gratis o con donación al fondo; cobran asociaciones, entidades, comercio y productores locales y empresas.',
   hipotesis: [
-    { hipotesis: 'Hay vecinos dispuestos a ser anfitriones aunque al principio no cobren.', metrica: 'Anfitriones con al menos una experiencia al mes.', exito: '30 o más anfitriones activos entre los 3 municipios', parada: 'Menos de 10 anfitriones activos' },
-    { hipotesis: 'Los visitantes reservan experiencias locales buscando una emoción.', metrica: 'Reservas al mes y valoración media de quienes participan.', exito: '300 o más reservas al mes al final del piloto', parada: 'Menos de 75 reservas al mes' },
-    { hipotesis: 'Los residentes también participan, no solo los turistas.', metrica: 'Parte de las plazas ocupadas por residentes.', exito: '25 % o más de las plazas, ocupadas por residentes', parada: 'Menos del 10 % de las plazas, ocupadas por residentes' },
-    { hipotesis: 'El gasto se queda en el barrio cuando la experiencia incluye comercio y producto local.', metrica: 'Parte de lo que paga el visitante que cobran anfitriones, comercio y productores del municipio, más lo que el fondo gasta allí.', exito: '85 % o más del gasto, en el municipio', parada: 'Menos del 60 % del gasto, en el municipio' },
-    { hipotesis: 'Llegamos a quien no usa redes.', metrica: 'Reservas, altas y votos hechos en los puntos físicos.', exito: '20 % o más de reservas, altas y votos, en puntos físicos', parada: 'Menos del 5 % de reservas, altas y votos, en puntos físicos' },
-    { hipotesis: 'Un fondo visible mejora cómo ven los vecinos el turismo.', metrica: 'Encuesta externa (ISTAC o universidad) a residentes antes y después, con la misma pregunta.', exito: 'La valoración positiva sube 10 puntos porcentuales o más en la encuesta', parada: 'Sube 0 puntos porcentuales o baja en la encuesta' },
-    { hipotesis: 'Ver en qué se gasta el fondo del barrio mejora la percepción del turismo más que no verlo (transparencia).', metrica: 'Misma encuesta antes y después en un barrio con panel del fondo (cartel en la calle y en la app) y en otro parecido sin panel. Al cerrar el año 1 se repite la comparación con el primer informe del retorno del turismo en el panel.', exito: 'La valoración positiva sube al menos 5 puntos porcentuales más en el barrio con panel que en el barrio sin panel', parada: 'La diferencia entre los dos barrios es de 0 puntos porcentuales o menos' },
-    { hipotesis: 'Comunicación, datos y acción juntos generan más orgullo que una campaña aislada.', metrica: 'Pregunta de orgullo en la misma encuesta, antes y después: residentes que participan en Tenique (experiencia, voto o proyecto del fondo) frente a residentes que solo ven la campaña.', exito: 'El orgullo sube al menos 10 puntos porcentuales más entre quienes participan que entre quienes solo ven la campaña', parada: 'La diferencia entre los dos grupos es de 0 puntos porcentuales o menos' },
-    { hipotesis: 'Las empresas turísticas y la vivienda vacacional aportan si el destino del dinero es visible.', metrica: 'Empresas y viviendas adheridas con aportación firmada, y parte del fondo que es privada.', exito: '15 empresas y 200 viviendas vacacionales adheridas o más; más del 50 % del fondo, privado', parada: 'Menos de 5 empresas adheridas, o más del 50 % del fondo, del Cabildo' },
+    { id: 'anfitriones', hipotesis: 'Hay vecinos dispuestos a ser anfitriones aunque al principio no cobren.', metrica: 'Anfitriones con al menos una experiencia al mes.', exito: '30 o más anfitriones activos entre los 3 municipios', parada: 'Menos de 10 anfitriones activos', ajuste: 'Más captación con asociaciones, comercio y productores locales, y una formación más corta.', contingencia: 'Empezar con experiencias que ya existen (asociaciones, «Tenerife es tuya», mercados del agricultor) y que los vecinos se sumen como acompañantes, no como organizadores.' },
+    { id: 'reservas', hipotesis: 'Los visitantes reservan experiencias locales buscando una emoción.', metrica: 'Reservas al mes y valoración media de quienes participan.', exito: '300 o más reservas al mes al final del piloto', parada: 'Menos de 75 reservas al mes', ajuste: 'Cambiar horarios y fechas, y promocionar en los alojamientos adheridos y en los puntos físicos.', contingencia: 'Concentrar la oferta en menos experiencias con fechas fijas, venderlas también en oficinas de turismo y alojamientos adheridos, y revisar con visitantes si la búsqueda por emoción se entiende.' },
+    { id: 'residentes', hipotesis: 'Los residentes también participan, no solo los turistas.', metrica: 'Parte de las plazas ocupadas por residentes.', exito: '25 % o más de las plazas, ocupadas por residentes', parada: 'Menos del 10 % de las plazas, ocupadas por residentes', ajuste: 'Horarios de tarde y de fin de semana, y difusión en asociaciones y centros ciudadanos.', contingencia: 'Guardar plazas para residentes en cada experiencia y llevar experiencias a las fiestas y los mercados del barrio.' },
+    { id: 'gasto', hipotesis: 'El gasto se queda en el barrio cuando la experiencia incluye comercio y producto local.', metrica: 'Parte de lo que paga el visitante que cobran anfitriones, comercio y productores del municipio, más lo que el fondo gasta allí.', exito: '85 % o más del gasto, en el municipio', parada: 'Menos del 60 % del gasto, en el municipio', ajuste: 'Incluir en cada experiencia una parada en un comercio o un productor del municipio.', contingencia: 'Solo se publican experiencias que compren producto local; a las que no, el dinamizador las acompaña para cambiar de proveedor o salen del programa.' },
+    { id: 'sin-redes', hipotesis: 'Llegamos a quien no usa redes.', metrica: 'Reservas, altas y propuestas hechas en los puntos físicos.', exito: '20 % o más de reservas, altas y propuestas, en puntos físicos', parada: 'Menos del 5 % de reservas, altas y propuestas, en puntos físicos', ajuste: 'Más horas de atención en el punto físico y carteles en el barrio.', contingencia: 'Reserva por teléfono y en papel en asociaciones y centros de mayores, con visitas del dinamizador.' },
+    { id: 'percepcion', hipotesis: 'Un fondo visible mejora cómo ven los vecinos el turismo.', metrica: 'Encuesta externa (ISTAC o universidad) a residentes antes y después, con la misma pregunta.', exito: 'La valoración positiva sube 10 puntos porcentuales o más en la encuesta', parada: 'Sube 0 puntos porcentuales o baja en la encuesta', ajuste: 'Más carteles y proyectos pequeños y rápidos en la calle.', contingencia: 'Preguntar a los vecinos qué no ven o no les convence y cambiar el tipo de proyecto del fondo antes de ampliar a más municipios.' },
+    { id: 'transparencia', hipotesis: 'Ver en qué se gasta el fondo del barrio mejora la percepción del turismo más que no verlo (transparencia).', metrica: 'Misma encuesta antes y después en un barrio con panel del fondo (cartel en la calle y en la app) y en otro parecido sin panel. Al cerrar el año 1 se repite la comparación con el primer informe del retorno del turismo en el panel.', exito: 'La valoración positiva sube al menos 5 puntos porcentuales más en el barrio con panel que en el barrio sin panel', parada: 'La diferencia entre los dos barrios es de 0 puntos porcentuales o menos', ajuste: 'Panel más visible: cartel en la calle además de la app.', contingencia: 'Revisar con los vecinos qué se publica y cómo se cuenta; si el panel no cambia nada, ese esfuerzo pasa a proyectos del fondo.' },
+    { id: 'ejes', hipotesis: 'Comunicación, datos y acción juntos generan más orgullo que una campaña aislada.', metrica: 'Pregunta de orgullo en la misma encuesta, antes y después: residentes que participan en Tenique (experiencia, propuesta o proyecto del fondo) frente a residentes que solo ven la campaña.', exito: 'El orgullo sube al menos 10 puntos porcentuales más entre quienes participan que entre quienes solo ven la campaña', parada: 'La diferencia entre los dos grupos es de 0 puntos porcentuales o menos', ajuste: 'Unir cada pieza de la campaña a una experiencia o a una propuesta concreta del barrio.', contingencia: 'Recortar la campaña aislada y poner el esfuerzo en experiencias y en el fondo, que es lo que se compara.' },
+    { id: 'empresas', hipotesis: 'Las empresas turísticas y la vivienda vacacional aportan si el destino del dinero es visible.', metrica: 'Empresas y viviendas adheridas con aportación firmada, y parte del fondo que es privada.', exito: '15 empresas y 200 viviendas vacacionales adheridas o más; más del 50 % del fondo, privado', parada: 'Menos de 5 empresas adheridas, o más del 50 % del fondo, del Cabildo', ajuste: 'Visitas del Cabildo y Turismo de Tenerife a las patronales con los primeros resultados.', contingencia: 'Tramos de aportación más bajos para los pequeños y reconocimiento público a quien aporta; si el fondo depende sobre todo del Cabildo, no se amplía hasta corregirlo.' },
   ],
 }
 
@@ -215,7 +254,7 @@ export const KPIS: Kpi[] = [
   {
     nombre: 'Residentes que participan',
     criterio: 'Involucración de la sociedad',
-    comoSeMide: 'Residentes que han sido anfitriones, han ido a una experiencia o han votado el fondo, por cada 1.000 habitantes del municipio. Se desglosa por edad y por zona rural o urbana.',
+    comoSeMide: 'Residentes que han sido anfitriones, han ido a una experiencia o han hecho una propuesta al fondo, por cada 1.000 habitantes del municipio. Se desglosa por edad y por zona rural o urbana.',
     fuenteDatos: 'Registros de la app y de los puntos físicos; padrón municipal',
     objetivo: 'Más residentes por cada 1.000 habitantes cada año, en todos los tramos de edad',
     supuesto: true,
@@ -247,9 +286,9 @@ export const KPIS: Kpi[] = [
   {
     nombre: 'Proyectos del fondo hechos y publicados',
     criterio: 'Viabilidad y transparencia',
-    comoSeMide: 'Proyectos votados que se terminan y se publican con su coste, y días desde la votación hasta que se ven en la calle.',
+    comoSeMide: 'Proyectos propuestos por los vecinos que se terminan y se publican con su coste, y días desde que se eligen hasta que se ven en la calle.',
     fuenteDatos: 'Informe del fondo',
-    objetivo: '100 % de los proyectos publicados; primer proyecto en la calle antes del mes 9',
+    objetivo: '100 % de los proyectos publicados; primer proyecto en la calle en el mes 9, antes de decidir si seguimos',
     supuesto: true,
   },
   {
@@ -269,7 +308,7 @@ export type MedidaAmbiental = { tema: string; que: string; quien: string }
 export const MEDIOAMBIENTE: MedidaAmbiental[] = [
   { tema: 'Cupos y aforos', que: 'Cada experiencia tiene un máximo de plazas, acordado con el barrio. En espacios naturales, además, lo valida el área de medio ambiente del Cabildo. Cuando se llena, la app propone otra fecha u otro barrio.', quien: 'Turismo de Tenerife (ficha de la experiencia) con el barrio y el Cabildo' },
   { tema: 'Carga en zonas urbanas', que: 'Los cupos valen también en cascos históricos, plazas, mercados y calles, no solo en la naturaleza. Hay un máximo de plazas por barrio y día, horarios fuera de las horas de más afluencia, y la app reparte la demanda hacia barrios con menos visitantes. Los vecinos pueden pedir pausar una experiencia.', quien: 'Dinamizador de barrio y ayuntamiento' },
-  { tema: 'Transporte', que: 'Cada ficha dice cómo llegar en guagua, a pie o en coche compartido, con el punto de encuentro en una parada. La búsqueda muestra primero las experiencias a las que se llega sin coche propio.', quien: 'Turismo de Tenerife (app) con el Cabildo (transporte)' },
+  { tema: 'Transporte', que: 'Cada ficha de la app dice cómo llegar en guagua, a pie o en coche compartido. La búsqueda muestra primero las experiencias a las que se llega sin coche propio.', quien: 'Turismo de Tenerife (app) con el Cabildo (transporte)' },
   { tema: 'Residuos', que: 'Cero plásticos de un solo uso en las experiencias con producto local: menaje reutilizable, agua en jarra y producto de temporada y de cercanía. Es requisito para la «Garantía Turismo de Tenerife».', quien: 'Anfitriones; lo revisa Turismo de Tenerife' },
 ]
 
@@ -333,10 +372,10 @@ export const RIESGOS: Riesgo[] = [
   { riesgo: 'No sabemos aún si un vecino puede cobrar una experiencia: fiscalidad, alta de actividad, seguro y licencia de actividad turística.', tipo: 'legal', probabilidad: 'alto', impacto: 'alto', porVerificar: true, mitigacion: 'El piloto empieza sin cobro para particulares: pagan solo las experiencias de asociaciones, entidades y empresas; las de vecinos son gratis o con donación al fondo. El cobro llega después, si el informe jurídico lo permite. Seguro colectivo desde el primer día.' },
   { riesgo: 'Datos personales de vecinos, turistas y votos del fondo.', tipo: 'legal', probabilidad: 'medio', impacto: 'alto', mitigacion: 'Evaluación de impacto antes del piloto, servidores en la UE, pedir solo lo necesario y voto sin datos a la vista.' },
   { riesgo: 'Pocos anfitriones, sobre todo en zonas rurales.', tipo: 'adopción', probabilidad: 'medio', impacto: 'alto', mitigacion: 'Dinamizador en cada municipio, asociaciones, comercio y productores locales como anfitriones y empezar con experiencias que ya existen.' },
-  { riesgo: 'La gente mayor o sin móvil se queda fuera.', tipo: 'adopción', probabilidad: 'alto', impacto: 'medio', mitigacion: 'Todo se puede hacer en el punto físico, por teléfono o en papel, también votar el fondo.' },
+  { riesgo: 'La gente mayor o sin móvil se queda fuera.', tipo: 'adopción', probabilidad: 'alto', impacto: 'medio', mitigacion: 'Todo se puede hacer en el punto físico, por teléfono o en papel, también proponer en qué se gasta el fondo.' },
   { riesgo: 'Más visitantes en barrios que ya están cansados, también en zonas urbanas (cascos históricos, plazas, mercados), no solo en espacios naturales.', tipo: 'medioambiental', probabilidad: 'medio', impacto: 'alto', mitigacion: 'Cupo de plazas por experiencia y por barrio y día, acordado con cada barrio; horarios fuera de las horas de más afluencia; la app reparte la demanda hacia barrios con menos visitantes; los vecinos pueden pedir pausar una experiencia.' },
   { riesgo: 'Experiencias en espacios naturales protegidos.', tipo: 'medioambiental', probabilidad: 'medio', impacto: 'medio', mitigacion: 'Validación con el área de medio ambiente del Cabildo y cupos por espacio, como ya se hace con el acceso a los senderos del Teide.' },
-  { riesgo: 'Que se espere de Tenique lo que no puede dar: no resuelve la vivienda, la movilidad ni el saneamiento, que están detrás de buena parte del malestar.', tipo: 'operativo', probabilidad: 'alto', impacto: 'alto', mitigacion: 'Decirlo claro desde el principio y publicar a quién corresponde cada una. Tenique sí puede llevar a esas administraciones lo que digan los vecinos en las votaciones del fondo.' },
+  { riesgo: 'Que se espere de Tenique lo que no puede dar: no resuelve la vivienda, la movilidad ni el saneamiento, que están detrás de buena parte del malestar.', tipo: 'operativo', probabilidad: 'alto', impacto: 'alto', mitigacion: 'Decirlo claro desde el principio y publicar a quién corresponde cada una. Tenique sí puede llevar a esas administraciones lo que propongan los vecinos para el fondo.' },
   { riesgo: 'Que parezca que el fondo lo paga solo la administración.', tipo: 'económico', probabilidad: 'medio', impacto: 'alto', mitigacion: 'Aportación sistemática de empresas turísticas y vivienda vacacional en el convenio; el Cabildo solo suma una parte por cada euro privado y se publica qué parte pone cada uno.' },
   { riesgo: 'El fondo es tan pequeño al principio que no se nota.', tipo: 'económico', probabilidad: 'alto', impacto: 'medio', mitigacion: 'Aportación del Cabildo por cada euro, proyectos pequeños pero muy visibles y publicar desde el primer euro.' },
   { riesgo: 'Pocas asociaciones dispuestas a avalar experiencias, sobre todo en barrios sin asociación activa.', tipo: 'adopción', probabilidad: 'medio', impacto: 'alto', mitigacion: 'Si no hay asociación, el aval lo dan vecinos del barrio en una reunión abierta en el punto físico, con el dinamizador. Avalar es poco trabajo (una ficha y una visita) y la asociación gana voz en el fondo de su barrio.' },
@@ -402,32 +441,32 @@ export const ENCAJE: Encaje[] = [
 
 /** DAFO de Tenique. Resume lo que ya está en el plan; cada dato lleva su fuente. */
 export type CuadranteDafo = 'debilidades' | 'amenazas' | 'fortalezas' | 'oportunidades'
-export type PuntoDafo = { texto: string; fuentes?: number[]; supuesto?: boolean; porVerificar?: boolean }
+export type PuntoDafo = { texto: string; fuentes?: number[]; supuesto?: boolean; porVerificar?: boolean; contingencia?: string; enlace?: string }
 const FONDO_PILOTO = fondoAnual(ESCENARIOS[0].valores)
 const eurDafo = (n: number) => `${Math.round(n).toLocaleString('es-ES')} €`
 export const DAFO: { id: CuadranteDafo; titulo: string; lado: string; puntos: PuntoDafo[] }[] = [
   {
     id: 'debilidades', titulo: 'Debilidades', lado: 'Interno · en contra',
     puntos: [
-      { texto: `El fondo es pequeño al principio: ${eurDafo(FONDO_PILOTO.total)} al año en el piloto.`, supuesto: true },
-      { texto: 'Los vecinos no cobran en el piloto: dependemos de su tiempo y sus ganas.' },
-      { texto: 'Hay barrios sin asociación activa que avale las experiencias.' },
-      { texto: 'Las cifras del plan son supuestos hasta medir el piloto.' },
+      { texto: `El fondo es pequeño al principio: ${eurDafo(FONDO_PILOTO.total)} al año en el piloto.`, supuesto: true, contingencia: 'empresas' },
+      { texto: 'Los vecinos no cobran en el piloto: dependemos de su tiempo y sus ganas.', contingencia: 'anfitriones' },
+      { texto: 'Hay barrios sin asociación activa que avale las experiencias.', contingencia: 'anfitriones' },
+      { texto: 'Las cifras del plan son supuestos hasta medir el piloto.', contingencia: 'arbol', enlace: 'Ver el árbol de decisiones' },
     ],
   },
   {
     id: 'amenazas', titulo: 'Amenazas', lado: 'Externo · en contra',
     puntos: [
-      { texto: 'No sabemos aún si un vecino puede cobrar una experiencia (licencia, impuestos, seguro).', porVerificar: true },
-      { texto: 'El malestar viene sobre todo de la vivienda y la movilidad, que Tenique no resuelve.', fuentes: [74, 71, 72, 73] },
-      { texto: 'Barrios ya cansados de visitantes pueden rechazar más actividad.' },
-      { texto: 'Que se vea el fondo como dinero solo de la administración.' },
+      { texto: 'No sabemos aún si un vecino puede cobrar una experiencia (licencia, impuestos, seguro).', porVerificar: true, contingencia: 'anfitriones' },
+      { texto: 'El malestar viene sobre todo de la vivienda y la movilidad, que Tenique no resuelve.', fuentes: [74, 71, 72, 73], contingencia: 'percepcion' },
+      { texto: 'Barrios ya cansados de visitantes pueden rechazar más actividad.', contingencia: 'medioambiente', enlace: 'Ver cupos y carga en el barrio' },
+      { texto: 'Que se vea el fondo como dinero solo de la administración.', contingencia: 'empresas' },
     ],
   },
   {
     id: 'fortalezas', titulo: 'Fortalezas', lado: 'Interno · a favor',
     puntos: [
-      { texto: 'Triple validación de cada experiencia: Garantía Turismo de Tenerife, aval del barrio y valoración de quien la vivió.' },
+      { texto: 'Tres sellos en cada experiencia: Garantía Turismo de Tenerife, aval del barrio y valoración de quien la vivió.' },
       { texto: `El fondo lo paga sobre todo quien vive del turismo: ${100 - FONDO_PILOTO.pctPublico} % privado en el piloto.`, supuesto: true },
       { texto: 'Experiencias reales entre vecinos y visitantes, nunca inventadas.' },
       { texto: 'Base que ya funciona: «Tenerife es tuya», con unos 2.500 participantes desde 2020, y REGENERATe.', fuentes: [84, 86] },
@@ -500,13 +539,16 @@ const UMBRAL_PILOTO =
 export const CALENDARIO: ItemCalendario[] = [
   // preparación
   { id: 'prep', carril: 'prep', desde: 0, hasta: 3, titulo: 'Preparar', que: 'Dejar listo lo legal, elegir los 3 municipios y abrir un punto físico en cada uno.', lidera: 'Cabildo y Turismo de Tenerife', conQuien: 'Ayuntamientos', agentes: ['cabildo', 'tdt', 'ayto'] },
-  { id: 'convenio', carril: 'prep', desde: 1, titulo: 'Convenio Cabildo–Turismo de Tenerife', que: 'El Cabildo crea y gestiona el fondo; Turismo de Tenerife coordina el programa.', lidera: 'Cabildo y Turismo de Tenerife', agentes: ['cabildo', 'tdt'] },
+  { id: 'convenio', carril: 'prep', desde: 0, titulo: 'Convenio Cabildo–Turismo de Tenerife', que: 'El Cabildo crea y gestiona el fondo; Turismo de Tenerife coordina el programa.', lidera: 'Cabildo y Turismo de Tenerife', agentes: ['cabildo', 'tdt'] },
   { id: 'juridico', carril: 'prep', desde: 2, titulo: 'Informe jurídico', que: 'Figura del fondo, fiscalidad de anfitriones, seguros y protección de datos.', lidera: 'Asesoría jurídica del Cabildo', agentes: ['cabildo'] },
-  { id: 'municipios', carril: 'prep', desde: 3, titulo: 'Acuerdo con 3 ayuntamientos', que: 'Uno turístico, uno rural y uno metropolitano. Cada uno cede un punto físico.', lidera: 'Cabildo', conQuien: 'Ayuntamientos', agentes: ['cabildo', 'ayto'] },
-  { id: 'anfitriones', corto: 'Captación', carril: 'prep', desde: 1, hasta: 4, titulo: 'Captar y formar anfitriones', que: 'Vecinos, asociaciones, comercio y productores locales y empresas. Formación en las tres piedras de validación. Propuesta: invitar a los participantes de «Tenerife es tuya».', lidera: 'Dinamizadores de barrio (los contrata el Cabildo con los ayuntamientos)', conQuien: 'Asociaciones vecinales, comercio y productores, empresas', agentes: ['cabildo', 'ayto', 'local', 'comercio', 'empresas'], fuentes: [84] },
+  { id: 'municipios', carril: 'prep', desde: 1, titulo: 'Acuerdo con 3 ayuntamientos', que: 'Uno turístico, uno rural y uno metropolitano. Cada uno cede un punto físico. Se eligen primero para poder presentar Tenique y captar anfitriones allí desde el mes 2.', lidera: 'Cabildo', conQuien: 'Ayuntamientos', agentes: ['cabildo', 'ayto'] },
+  { id: 'codigo', carril: 'prep', desde: 3, titulo: 'Código de convivencia de cada barrio', que: `Los vecinos y sus asociaciones lo escriben a partir de ${CODIGO_CONVIVENCIA.length} normas comunes: descanso, espacios de todos, fotos, entorno y comercio del barrio. Se acepta en la app antes de reservar.`, lidera: 'Vecinos y asociaciones (lo escriben); Turismo de Tenerife lo aprueba', conQuien: 'Ayuntamientos; se informa a empresas y vivienda vacacional', agentes: ['local', 'tdt', 'ayto', 'vv', 'empresas'] },
+  { id: 'anfitriones', corto: 'Captación', carril: 'prep', desde: 2, hasta: 4, titulo: 'Captar y formar anfitriones', que: 'Vecinos, asociaciones, comercio y productores locales y empresas. Formación en los tres sellos. Propuesta: invitar a los participantes de «Tenerife es tuya».', lidera: 'Dinamizadores de barrio (los contrata el Cabildo con los ayuntamientos)', conQuien: 'Asociaciones vecinales, comercio y productores, empresas', agentes: ['cabildo', 'ayto', 'local', 'comercio', 'empresas'], fuentes: [84] },
   // piloto
   { id: 'piloto', corto: 'Piloto', carril: 'piloto', desde: 4, hasta: 9, titulo: 'Piloto en 3 municipios', que: 'Experiencias reales entre vecinos y visitantes durante 6 meses. Los vecinos no cobran: gratis o con donación al fondo.', lidera: 'Turismo de Tenerife (coordina) y Cabildo (fondo)', conQuien: 'Ayuntamientos, asociaciones, comercio y productores, empresas, vivienda vacacional, turistas', agentes: ['tdt', 'cabildo', 'ayto', 'local', 'comercio', 'empresas', 'vv', 'turistas'], umbral: UMBRAL_PILOTO },
-  { id: 'tres-piedras', carril: 'piloto', desde: 4, titulo: 'Primeras experiencias con las tres piedras', que: '«Garantía Turismo de Tenerife», «Avalada por el barrio» y «Valorada por quien la vivió» (todas las personas que asistieron).', lidera: 'Turismo de Tenerife', conQuien: 'Dinamizador y asociaciones vecinales (aval)', agentes: ['tdt', 'local', 'comercio'] },
+  { id: 'prueba', carril: 'piloto', desde: 3, titulo: 'Prueba de concepto flash (2 semanas)', que: 'Dos semanas al final del mes 3, en los 3 municipios, con los primeros anfitriones. Se mide desde el día 1: experiencias publicadas, reservas, valoración, llegada sin coche, opinión de los vecinos y primeras aportaciones al fondo.', lidera: 'Turismo de Tenerife (coordina) y Cabildo (fondo)', conQuien: 'Ayuntamientos, dinamizadores, primeros anfitriones y visitantes', agentes: ['tdt', 'cabildo', 'ayto', 'local', 'comercio', 'turistas'], umbral: 'Si se cumplen los objetivos de las 2 semanas, empieza el piloto. Si no, se ajusta antes del mes 4 (supuestos).', decision: true },
+  { id: 'tres-sellos', carril: 'piloto', desde: 4, titulo: 'Primeras experiencias con los tres sellos', que: '«Garantía Turismo de Tenerife», «Avalada por el barrio» y «Valorada por quien la vivió» (todas las personas que asistieron).', lidera: 'Turismo de Tenerife', conQuien: 'Dinamizador y asociaciones vecinales (aval)', agentes: ['tdt', 'local', 'comercio'] },
+  { id: 'cuidado', corto: 'Cuidado', carril: 'piloto', desde: 5, hasta: 9, titulo: 'Jornadas de cuidado compartido', que: 'Vecinos y visitantes cuidan juntos el barrio: limpiar una playa, arreglar un sendero, cuidar una plaza. La app invita a sumarse.', lidera: 'Ayuntamientos', conQuien: 'Vecinos y visitantes; Turismo de Tenerife y empresas colaboran', agentes: ['ayto', 'local', 'turistas', 'tdt', 'empresas'] },
   { id: 'decision-9', carril: 'piloto', desde: 9, titulo: 'Mes 9: seguir, ajustar o parar', que: 'Se comparan los resultados con los umbrales del piloto y se decide.', lidera: 'Cabildo y Turismo de Tenerife', conQuien: 'Ayuntamientos; datos de la evaluación externa', agentes: ['cabildo', 'tdt', 'ayto', 'evaluador'], umbral: UMBRAL_PILOTO, decision: true },
   // expansión
   { id: 'diez', carril: 'expansion', desde: 10, hasta: 24, titulo: 'Unos 10 municipios', que: 'Nuevos municipios por comarcas, con zonas rurales en cada tanda, cada uno con su punto físico.', lidera: 'Cabildo', conQuien: 'Ayuntamientos y Turismo de Tenerife', agentes: ['cabildo', 'ayto', 'tdt'] },
@@ -515,9 +557,9 @@ export const CALENDARIO: ItemCalendario[] = [
   { id: 'costumbre', carril: 'expansion', desde: 36, hasta: 60, titulo: 'Hacerlo costumbre', que: 'Tenique dentro de la estrategia turística insular: parte de cómo se vive y se visita Tenerife.', lidera: 'Cabildo y Turismo de Tenerife', agentes: ['cabildo', 'tdt'] },
   // fondo
   { id: 'aportacion', corto: 'Acuerdo', carril: 'fondo', desde: 1, hasta: 4, titulo: 'Acuerdo de aportación', que: 'Aportación fija de empresas turísticas y de vivienda vacacional, más el 10 % de cada reserva (supuestos).', lidera: 'Cabildo', conQuien: 'Patronales y asociaciones de vivienda vacacional; Turismo de Tenerife las invita', agentes: ['cabildo', 'empresas', 'vv', 'tdt'] },
-  { id: 'fondo-piloto', carril: 'fondo', desde: 4, hasta: 10, titulo: 'Fondo en el piloto', que: 'Primeras aportaciones y primera votación de los vecinos. El dinero privado es la mayor parte.', lidera: 'Cabildo (cuenta por municipio)', conQuien: 'Vecinos, ayuntamientos, empresas, vivienda vacacional', agentes: ['cabildo', 'local', 'ayto', 'empresas', 'vv', 'comercio', 'turistas'], umbral: 'Seguimos con 15 empresas y 200 viviendas vacacionales adheridas y más del 50 % del fondo privado. Paramos con menos de 5 empresas adheridas o si más del 50 % del fondo lo pone el Cabildo (supuestos).' },
-  { id: 'votacion', carril: 'fondo', desde: 7, titulo: 'Primera votación del fondo', que: 'Los vecinos votan en qué se gasta, en la app o en papel en el punto físico.', lidera: 'Ayuntamientos', conQuien: 'Vecinos y asociaciones', agentes: ['ayto', 'local'] },
-  { id: 'primer-proyecto', carril: 'fondo', desde: 9, titulo: 'Primer proyecto en la calle', que: 'Señalizado con un cartel: «esto lo ha pagado Tenique».', lidera: 'Ayuntamientos', conQuien: 'Turismo de Tenerife lo publica', agentes: ['ayto', 'tdt', 'local'] },
+  { id: 'fondo-piloto', carril: 'fondo', desde: 4, hasta: 10, titulo: 'Fondo en el piloto', que: 'Primeras aportaciones y primeras propuestas de los vecinos. El dinero privado es la mayor parte.', lidera: 'Cabildo (cuenta por municipio)', conQuien: 'Vecinos, ayuntamientos, empresas, vivienda vacacional', agentes: ['cabildo', 'local', 'ayto', 'empresas', 'vv', 'comercio', 'turistas'], umbral: 'Seguimos con 15 empresas y 200 viviendas vacacionales adheridas y más del 50 % del fondo privado. Paramos con menos de 5 empresas adheridas o si más del 50 % del fondo lo pone el Cabildo (supuestos).' },
+  { id: 'votacion', carril: 'fondo', desde: 6, titulo: 'Primera votación del fondo', que: 'Los vecinos proponen en qué se gasta y el barrio vota entre las propuestas, en la app o en papel en el punto físico.', lidera: 'Ayuntamientos', conQuien: 'Vecinos y asociaciones', agentes: ['ayto', 'local'] },
+  { id: 'primer-proyecto', carril: 'fondo', desde: 9, titulo: 'Primer proyecto en la calle', que: 'Un proyecto pequeño, votado en el mes 6, hecho y señalizado con un cartel: «esto lo ha pagado Tenique». Llega antes de la decisión del mes 9.', lidera: 'Ayuntamientos', conQuien: 'Turismo de Tenerife lo publica', agentes: ['ayto', 'tdt', 'local'] },
   { id: 'tramos', carril: 'fondo', desde: 10, hasta: 24, titulo: 'Aportación por tramos', que: 'La aportación de empresas y vivienda vacacional pasa a ser sistemática, recogida en el convenio.', lidera: 'Cabildo', conQuien: 'Patronales y vivienda vacacional', agentes: ['cabildo', 'empresas', 'vv'] },
   { id: 'informe', carril: 'fondo', desde: 15, titulo: 'Primer informe anual del fondo', que: 'En lenguaje cercano: cuánto entró, quién lo puso y en qué se gastó.', lidera: 'Cabildo (cuentas) y Turismo de Tenerife (publicación)', agentes: ['cabildo', 'tdt'] },
   { id: 'figura', carril: 'fondo', desde: 24, titulo: 'Decisión: figura estable del fondo', que: 'Con lo aprendido, se elige la figura jurídica definitiva.', lidera: 'Cabildo', agentes: ['cabildo'], decision: true },

@@ -2,6 +2,8 @@
 
 La pregunta de la diapositiva 2. El equipo elige una; se cambia en `src/data/presentacion.ts`, en los campos `antes`, `destacado` (sale en rojo) y `despues`.
 
+**En la diapositiva hoy (decisión de Esther, 12-11-2026):** «¿Y si os dijéramos que **en menos de 30 segundos** podéis sentir orgullo de ser tinerfeños?». Es la de la sección F (la 16). Las secciones A–E son el patrón largo anterior; quedan por si el equipo prefiere otra.
+
 ## El modelo: la pregunta de Fred. Olsen Express
 
 Es la pregunta del reto de Fred. Olsen Express en este mismo hackathon (su presentación, página 12):
@@ -16,9 +18,9 @@ El patrón:
 
 Además, separa a quién beneficia (pasajero y tripulación), como nuestras cuatro parejas problema → solución.
 
-**Favorita, ya en la diapositiva:** la 7. Usa el patrón, nombra por separado al vecino y al visitante (lo que luego cuentan las diapositivas 5 a 8) y su «sin…» responde a lo que pidió Turismo de Tenerife: nada de otra campaña.
+**Favorita del patrón largo:** la 7. Usa el patrón, nombra por separado al vecino y al visitante y su «sin…» responde a lo que pidió Turismo de Tenerife: nada de otra campaña. Ya no está en la diapositiva: el pitch abre con una pregunta osada y corta (sección F), al estilo de la de Shiro para Fred. Olsen.
 
-**Remate de la diapositiva 2:** «Con tres piedras». Anticipa la revelación de la diapositiva 4 sin decir el nombre.
+**Remate:** la diapositiva 2 no lleva remate. La pregunta va seguida de «Os lo demostramos. Sacad el móvil y escanead» (diapositiva 3).
 
 Reglas:
 - Se dice despacio, mirando al jurado, con una pausa de 2 segundos antes del remate.
@@ -56,9 +58,25 @@ Reglas:
 14. ¿Y si quien llega **se sentara a vuestra mesa**, y no solo pasara por delante? (la provisional anterior)
 15. ¿Y si cada visita dejara algo que **vuestro barrio pudiera ver, tocar y decidir**, sin pedir más turistas?
 
+## F · ¿Y si os dijéramos…? (preguntas osadas, con demostración)
+
+Patrón: «¿Y si os dijéramos que…?» + una promesa corta y medible + «Os lo demostramos». Sin remate largo. Solo vale una promesa que la demo pueda cumplir en el momento: se comprueba contra el catálogo y los toques de `#/app`.
+
+16. **(En la diapositiva)** ¿Y si os dijéramos que **en menos de 30 segundos** podéis sentir orgullo de ser tinerfeños?
+    Comprobado: la emoción «Orgullo» tiene 8 experiencias verificadas en `src/data/experiencias.ts` (`porEmocion('orgullo')`). Camino: escanear → «Vivo en Tenerife» → «Orgullo» → lista. Son 2 toques tras el QR. Cronometrar en el ensayo, con la conexión del evento.
+17. Variante para el visitante: ¿Y si os dijéramos que **en menos de 30 segundos** podéis sentir orgullo de lo que Tenerife os ofrece?
+    Mismo camino con «Estoy de visita» → «Orgullo» (2 toques).
+18. Alternativa de adrenalina: ¿Y si os dijéramos que podéis encontrar una experiencia de adrenalina con gente de aquí en menos de 30 segundos?
+    **No es demostrable hoy:** «Adrenalina» tiene solo 1 experiencia verificada (el Carnaval de Santa Cruz de Tenerife 2027). Se usa solo si el catálogo crece; si no, la demo se queda corta.
+19. ¿Y si os dijéramos que **podéis vivir Tenerife con un vecino en menos de un minuto**?
+    Camino: «Estoy de visita» → emoción → lista → ficha de una experiencia con anfitrión vecino. Son 3 toques; vale en menos de un minuto.
+20. ¿Y si os dijéramos que **en tres toques podéis saber qué deja el turismo en vuestro municipio**?
+    Camino comprobado en `pantallas.tsx`: «Vivo en Tenerife» → pestaña «Mi barrio» → datos públicos con su fuente y fondo del municipio. Son 2 toques tras el QR (el municipio de partida es Puerto de la Cruz; «Cambiar» abre otro). Vale la promesa de tres toques.
+
 ## Cómo elegir
 
 - **Las del patrón (A y B)** son las más cercanas al modelo que conoce el jurado, porque es el formato de los retos de este hackathon. Son largas: en la diapositiva salen con letra más pequeña, que el código ajusta solo.
 - **Las de C** son las más emocionales, pero prometen menos cosas concretas.
 - **Las de D** repiten un dato que ya sale después. Si se elige una, conviene cambiar la cifra de esa pareja.
 - **Las de E** son las más cortas. Se leen mejor en el proyector y cuestan menos tiempo.
+- **Las de F** son las más cortas y llevan demostración: el jurado comprueba la promesa con su móvil. La 16 es la que va en la diapositiva.

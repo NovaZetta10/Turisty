@@ -1,11 +1,11 @@
-import { useState, type CSSProperties, type ReactNode } from 'react'
+import { useEffect, useState, type CSSProperties, type ReactNode } from 'react'
 import { useDemo, useNav } from './nav'
 import { useIdioma, useT } from './idioma'
 import { Ico } from './iconos'
 import { TabBar, type Pestana } from './piezas'
-import { EMOCIONES, anfitrion, donde, ejemplo, emocion, emocionPortada, iconoDe, iniciales, type Emocion, type Experiencia } from './experiencias'
+import { EMOCIONES, anfitrion, donde, ejemplo, emocion, emocionPortada, esTenerifeEsTuya, iconoDe, iniciales, type Emocion, type Experiencia } from './experiencias'
 
-// Piezas visuales propias de Tenique: portadas ilustradas por emoción, tarjeta de experiencia, las tres piedras
+// Piezas visuales propias de Tenique: portadas ilustradas por emoción, tarjeta de experiencia, los tres sellos
 // con la llama, aviso único de «valores de ejemplo» y barra inferior por perfil.
 // Nada de fotos con derechos: las portadas son degradado + textura canaria en CSS (picón, calado, ondas) + icono.
 
@@ -65,7 +65,9 @@ export function ChipsEmo({ ids }: { ids: string[] }) {
   )
 }
 
-/* ───────── las tres piedras ───────── */
+/* ───────── los tres sellos (triple validación) ─────────
+   Las «tres piedras» del fogón son los agentes (vecinos, visitantes y sector turístico); Turismo de Tenerife enciende el fogón.
+   La validación de cada experiencia se llama «tres sellos». Nombre interno PIEDRAS por compatibilidad. */
 
 export const PIEDRAS = [
   { id: 'garantia', icono: 'sello', titulo: { es: 'Garantía Turismo de Tenerife', en: 'Tenerife Tourism guarantee' }, sub: { es: 'Cumple las condiciones del destino: legalidad, seguro de responsabilidad civil, accesibilidad y respeto al entorno. Antes de publicar.', en: 'Meets the destination’s conditions: legal compliance, public liability insurance, accessibility and respect for the environment. Before publishing.' } },
@@ -78,38 +80,34 @@ export function SelloTT() {
   return <span className="tq-sello-tt"><img src={import.meta.env.BASE_URL + 'img/marca/simbolo-color.png'} alt="Turismo de Tenerife" /></span>
 }
 
-/** Insignia compacta para tarjetas: «3 piedras ✓». */
+/** Insignia compacta para tarjetas: «3 sellos ✓». */
 export function Piedras3() {
   const t = useT()
   return (
     <span className="tq-3p" title={PIEDRAS.map((p) => t(p.titulo)).join(' · ')}>
       <span className="tq-3p-dots" aria-hidden="true"><i /><i /><i /></span>
-      {t({ es: '3 piedras', en: '3 stones' })}
+      {t({ es: '3 sellos', en: '3 seals' })}
       <Ico name="check" size={13} />
     </span>
   )
 }
 
-const Llama = () => (
-  <svg viewBox="0 0 24 32" width="30" height="40" aria-hidden="true">
-    <path className="tq-llama-f1" d="M12 1c2 5 8 8.5 8 16a8 8 0 0 1-16 0c0-4 2-6.5 4-8.5 0 3.5 1.5 5.5 3.5 5.5C11.5 9.5 10 6 12 1z" />
-    <path className="tq-llama-f2" d="M12 13c1 3 4 4.5 4 8a4 4 0 0 1-8 0c0-2 1-3 2-4 0 1.5.8 2.5 2 2.5 0-2.5-1-3.8 0-6.5z" />
-  </svg>
-)
-
-/** Las tres piedras como momento visual: se colocan una a una y prenden la llama. */
+/** Los tres sellos de la experiencia: se estampan uno a uno. */
 export function PiedrasFuego({ e }: { e: Experiencia }) {
   const t = useT()
   const { idioma } = useIdioma()
   const v = ejemplo(e)
   return (
-    <section className="tq-fuego" aria-label={t({ es: 'Las tres piedras', en: 'The three stones' })}>
-      <div className="tq-fuego-esc" aria-hidden="true">
-        <span className="tq-llama"><Llama /></span>
-        {[0, 1, 2].map((i) => <i key={i} className={`tq-pi p${i}`} style={escalon(i)} />)}
+    <section className="tq-fuego" aria-label={t({ es: 'Los tres sellos', en: 'The three seals' })}>
+      <div className="tq-sellos-esc" aria-hidden="true">
+        {PIEDRAS.map((p, i) => (
+          <span key={p.id} className={`tq-sello s${i}`} style={escalon(i)}>
+            {p.id === 'garantia' ? <img src={import.meta.env.BASE_URL + 'img/marca/simbolo-color.png'} alt="" /> : <Ico name={p.icono} size={18} />}
+          </span>
+        ))}
       </div>
       <div className="tq-fuego-txt">
-        <span className="tq-fuego-t">{t({ es: 'Se sostiene sobre tres piedras', en: 'It stands on three stones' })}</span>
+        <span className="tq-fuego-t">{t({ es: 'Lleva tres sellos', en: 'It carries three seals' })}</span>
         {PIEDRAS.map((p, i) => (
           <div key={p.id} className="tq-fuego-fila" style={escalon(i)}>
             {p.id === 'garantia' ? <SelloTT /> : <Ico name={p.icono} size={15} />}
@@ -119,6 +117,35 @@ export function PiedrasFuego({ e }: { e: Experiencia }) {
       </div>
     </section>
   )
+}
+
+/* ───────── contador que sube ───────── */
+
+const sinMovimiento = () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+
+/** Número que sube de 0 a `valor` en 700 ms (una vez). Con reduced-motion sale directo. El lector de pantalla oye solo el valor final. */
+export function Cuenta({ valor, formato = (n: number) => String(Math.round(n)) }: { valor: number; formato?: (n: number) => string }) {
+  const [n, setN] = useState(() => (sinMovimiento() ? valor : 0))
+  useEffect(() => {
+    if (sinMovimiento()) { setN(valor); return }
+    let raf = 0
+    const t0 = performance.now()
+    const paso = (ahora: number) => {
+      const k = Math.min(1, (ahora - t0) / 700)
+      setN(valor * (1 - Math.pow(1 - k, 3)))
+      if (k < 1) raf = requestAnimationFrame(paso)
+    }
+    raf = requestAnimationFrame(paso)
+    return () => cancelAnimationFrame(raf)
+  }, [valor])
+  return <><span aria-hidden="true" className="tq-cuenta">{formato(n)}</span><span className="sr-only">{formato(valor)}</span></>
+}
+
+/** Sello del programa «Tenerife es tuya» (Turismo de Tenerife). */
+export function SelloPrograma({ e }: { e: Experiencia }) {
+  const t = useT()
+  if (!esTenerifeEsTuya(e)) return null
+  return <span className="tq-programa"><SelloTT />{t({ es: 'Tenerife es tuya · programa de Turismo de Tenerife', en: 'Tenerife es tuya · a Turismo de Tenerife programme' })}</span>
 }
 
 /* ───────── guardar con corazón ───────── */
@@ -159,8 +186,10 @@ export function TarjetaExp({ e, i = 0, onAbrir, evitar }: { e: Experiencia; i?: 
         </Portada>
         <span className="tq-card-cuerpo">
           <b className="tq-card-t">{t(e.titulo)}</b>
+          <SelloPrograma e={e} />
           {quien && <span className="tq-ofrece"><Avatar texto={quien} emo={emo} /><span>{t({ es: 'Lo ofrece', en: 'Hosted by' })}: <b>{quien}</b></span></span>}
           <span className="tq-card-meta"><Ico name="pin" size={13} />{donde(e)}{e.cuando && idioma === 'es' && <> · {e.cuando}</>}</span>
+          {e.sinCoche === true && <span className="tq-card-meta tq-sin-coche"><Ico name="bus" size={13} />{t({ es: 'Se llega sin coche propio', en: 'Reachable without your own car' })}</span>}
           <ChipsEmo ids={e.emociones} />
           <span className="tq-card-pie">
             <Piedras3 />

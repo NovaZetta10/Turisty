@@ -1,0 +1,78 @@
+/* «Conexión con Turismo de Tenerife» (src/pages/Conexion.tsx). Solo tokens de :root; movimiento solo con transform/opacity. */
+
+.cx { overflow-wrap: anywhere; }
+.cx .nota { margin: 0 0 20px; }
+.cx-h3 { font-size: 17px; margin: 28px 0 12px; }
+.cx-sub { margin-top: 14px; }
+
+/* Esquema */
+.cx-esquema { display: grid; grid-template-columns: minmax(0, 1fr) minmax(180px, 220px) minmax(0, 1fr); gap: 0; align-items: center; }
+.cx-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.cx-col-t { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--text-2); margin-bottom: 12px; }
+.cx-nodo { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 12px 14px; border: 1px solid var(--line-2); border-radius: var(--radius-sm); background: var(--night-2); transition: transform .2s var(--ease-out), border-color .2s var(--ease-out); }
+.cx-nodo:hover { transform: translateY(-2px); border-color: var(--halo); }
+.cx-nodo b { font-size: 15px; color: var(--text); }
+.cx-nodo > span:not(.tag) { font-size: 13px; color: var(--text-2); }
+.cx-der .cx-nodo { border-color: color-mix(in srgb, var(--halo) 55%, transparent); background: color-mix(in srgb, var(--brand-blue) 28%, var(--night-2)); }
+
+/* Conectores */
+.cx-izq { padding-right: 28px; }
+.cx-der { padding-left: 28px; }
+.cx-izq .cx-nodo::after, .cx-der .cx-nodo::before { content: ''; position: absolute; top: 50%; width: 28px; height: 2px; background: var(--halo); opacity: .7; }
+.cx-izq .cx-nodo::after { left: 100%; transform-origin: left center; animation: cx-linea .25s var(--ease-out) both; }
+.cx-der .cx-nodo::before { right: 100%; transform-origin: right center; animation: cx-linea .25s var(--ease-out) .1s both; }
+@keyframes cx-linea { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+.cx-centro { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; padding: 22px 16px; border-radius: var(--radius); border: 1px solid var(--halo); background: linear-gradient(180deg, color-mix(in srgb, var(--brand-blue) 55%, var(--night-2)), var(--night-2)); box-shadow: var(--glow); }
+.cx-centro b { font-family: var(--display); font-size: 18px; }
+.cx-centro > span:last-child { font-size: 13px; color: var(--text-2); }
+.cx-fuego { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: color-mix(in srgb, var(--halo) 25%, transparent); color: var(--text); }
+
+/* Listas y tarjetas */
+.cx-lista .list { margin-top: 8px; }
+.cx-papel summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; cursor: pointer; list-style-position: inside; }
+.cx-papel summary:focus-visible { outline: 2px solid var(--halo); outline-offset: 4px; border-radius: 6px; }
+.cx-papel p, .cx-papel .list { margin-top: 10px; }
+.cx-flujos { list-style: none; margin: 0 0 12px; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 10px; }
+.cx-flujos .card { padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+.cx-flujos b { font-size: 14px; }
+.cx-flujos span { font-size: 13px; color: var(--text-2); }
+
+.cx-dev { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.cx-dev > p, .cx-dev .list { font-size: 14px; color: var(--text-2); }
+.cx-dev .btn { margin-top: auto; }
+.cx-ico { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: var(--text); background: color-mix(in srgb, var(--brand-blue) 55%, transparent); }
+.cx-pasos { padding-left: 18px; }
+
+.cx-tuya { margin-top: 16px; display: grid; gap: 12px; }
+.cx-tuya p { color: var(--text-2); margin-top: 6px; }
+.cx-tuya-lista summary { cursor: pointer; font-weight: 600; color: var(--ice); }
+.cx-tuya-lista summary:focus-visible { outline: 2px solid var(--halo); outline-offset: 3px; border-radius: 6px; }
+.cx-tuya-lista ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 8px 20px; }
+.cx-tuya-lista li { display: flex; flex-direction: column; gap: 1px; padding-bottom: 8px; border-bottom: 1px solid var(--line); font-size: 14px; }
+.cx-tuya-lista a { color: var(--ice); }
+
+.cx-pidieron { display: flex; flex-direction: column; gap: 8px; }
+.cx-pidieron h3 { font-size: 16px; line-height: 1.35; }
+.cx-pidieron p { font-size: 14px; color: var(--text-2); }
+.cx-enlace { margin-top: auto; padding-top: 6px; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: var(--ice); }
+.cx-enlace:focus-visible { outline: 2px solid var(--halo); outline-offset: 3px; border-radius: 6px; }
+
+.cx-cierre { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+.cx-cierre p { flex: 1 1 320px; color: var(--text-2); }
+.cx-botones { display: flex; flex-wrap: wrap; gap: 10px; }
+
+@media (max-width: 860px) {
+  .cx-esquema { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .cx-centro { order: -1; margin-bottom: 28px; position: relative; }
+  .cx-centro::after { content: ''; position: absolute; top: 100%; left: 50%; width: 2px; height: 28px; background: var(--halo); opacity: .7; }
+  .cx-izq, .cx-der { padding: 0 0 0 18px; border-left: 2px solid color-mix(in srgb, var(--halo) 70%, transparent); margin-left: 12px; }
+  .cx-der { margin-top: 28px; }
+  .cx-izq .cx-nodo::after, .cx-der .cx-nodo::before { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cx-nodo { transition: none; }
+  .cx-nodo:hover { transform: none; }
+  .cx-izq .cx-nodo::after, .cx-der .cx-nodo::before { animation: none; }
+}
+.cx-papeles { align-items: start; }

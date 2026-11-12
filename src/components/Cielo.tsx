@@ -5,11 +5,14 @@ import { useEffect, useRef } from 'react'
  * las cercanas se unen en constelaciones que se desvanecen poco a poco.
  * Con «reducir movimiento» se dibuja un cielo estático.
  */
-type Estrella = { x: number; y: number; r: number; fase: number; vel: number; tono: string }
+type Estrella = { x: number; y: number; r: number; fase: number; vel: number; tono: number }
 
 const RADIO = 130      // px alrededor del ratón en que se forman constelaciones
 const ENLACE = 95      // distancia máxima entre dos estrellas unidas
 const VIDA = 2.2       // segundos que tarda en desvanecerse una línea
+const FPS = 24         // el titileo es lento: 24 fps se ve igual y cuesta menos de la mitad
+const NIVELES = 14     // niveles de opacidad: las estrellas se pintan en lotes (un trazo por tono y nivel)
+const TONOS = ['255,255,255', '214,224,255', '255,205,208']
 
 export function Cielo() {
   const ref = useRef<HTMLCanvasElement>(null)
@@ -23,10 +26,11 @@ export function Cielo() {
     const lineas = new Map<string, number>() // "a-b" → vida 0..1
     const brillo = new Map<number, number>()  // estrella → brillo extra 0..1
     let raton: { x: number; y: number } | null = null
-    let raf = 0, t0 = performance.now()
+    let raf = 0, t0 = performance.now(), ultimo = 0
+    let scrolling = false, tScroll = 0
 
     const crear = () => {
-      dpr = Math.min(2, window.devicePixelRatio || 1)
+      dpr = Math.min(1.5, window.devicePixelRatio || 1)
       w = window.innerWidth; h = window.innerHeight
       cv.width = w * dpr; cv.height = h * dpr
       cv.style.width = w + 'px'; cv.style.height = h + 'px'
@@ -38,7 +42,7 @@ export function Cielo() {
           x: Math.random() * w, y: Math.random() * h,
           r: g > .97 ? 1.6 : g > .85 ? 1.1 : .6 + Math.random() * .4,
           fase: Math.random() * Math.PI * 2, vel: .25 + Math.random() * .6,
-          tono: g > .93 ? '255,205,208' : g > .85 ? '214,224,255' : '255,255,255',
+          tono: g > .93 ? 2 : g > .85 ? 1 : 0,
         }
       })
       lineas.clear(); brillo.clear()
@@ -59,7 +63,11 @@ export function Cielo() {
     }
 
     const pintar = (t: number) => {
-      const dt = Math.min(.05, (t - t0) / 1000); t0 = t
+      if (!quieto) raf = requestAnimationFrame(pintar)
+      // 24 fps, y quieto mientras se hace scroll: así el desenfoque de la cabecera no se recalcula en cada fotograma
+      if (!quieto && (scrolling || t - ultimo < 1000 / FPS - 2)) return
+      ultimo = t
+      const dt = Math.min(.1, (t - t0) / 1000); t0 = t
       ctx.clearRect(0, 0, w, h)
       vecinas()
       // líneas de constelación
@@ -72,8 +80,9 @@ export function Cielo() {
         const nv = v - dt / VIDA
         if (nv <= 0) lineas.delete(k); else lineas.set(k, nv)
       }
-      // estrellas
+      // estrellas: en lotes por tono y nivel de opacidad (≈40 trazos en vez de cientos)
       const s = t / 1000
+      const lotes: Path2D[] = []
       for (let i = 0; i < estrellas.length; i++) {
         const e = estrellas[i]
         const tw = quieto ? .7 : .62 + .18 * Math.sin(s * e.vel + e.fase)
@@ -86,14 +95,20 @@ export function Cielo() {
           const nb = b - dt / VIDA
           if (nb <= 0) brillo.delete(i); else brillo.set(i, nb)
         }
-        ctx.fillStyle = `rgba(${e.tono},${a.toFixed(3)})`
-        ctx.beginPath(); ctx.arc(e.x, e.y, e.r + b * .25, 0, Math.PI * 2); ctx.fill()
+        const k = e.tono * NIVELES + Math.round(a * (NIVELES - 1))
+        const pth = lotes[k] ?? (lotes[k] = new Path2D())
+        const rr = e.r + b * .25
+        pth.moveTo(e.x + rr, e.y); pth.arc(e.x, e.y, rr, 0, Math.PI * 2)
       }
-      if (!quieto) raf = requestAnimationFrame(pintar)
+      lotes.forEach((pth, k) => {
+        ctx.fillStyle = `rgba(${TONOS[Math.floor(k / NIVELES)]},${((k % NIVELES) / (NIVELES - 1)).toFixed(3)})`
+        ctx.fill(pth)
+      })
     }
 
     const mover = (ev: PointerEvent) => { if (ev.pointerType === 'mouse' || ev.pointerType === 'pen') raton = { x: ev.clientX, y: ev.clientY } }
     const salir = () => { raton = null }
+    const alScroll = () => { scrolling = true; window.clearTimeout(tScroll); tScroll = window.setTimeout(() => { scrolling = false }, 140) }
     const visib = () => { cancelAnimationFrame(raf); if (!document.hidden && !quieto) { t0 = performance.now(); raf = requestAnimationFrame(pintar) } }
     let to = 0
     const redim = () => { clearTimeout(to); to = window.setTimeout(() => { crear(); if (quieto) pintar(performance.now()) }, 150) }
@@ -101,6 +116,7 @@ export function Cielo() {
     crear()
     if (quieto) pintar(performance.now()); else raf = requestAnimationFrame(pintar)
     window.addEventListener('pointermove', mover, { passive: true })
+    window.addEventListener('scroll', alScroll, { passive: true })
     document.addEventListener('pointerleave', salir)
     window.addEventListener('blur', salir)
     window.addEventListener('resize', redim)
@@ -108,6 +124,8 @@ export function Cielo() {
     return () => {
       cancelAnimationFrame(raf)
       window.removeEventListener('pointermove', mover)
+      window.removeEventListener('scroll', alScroll)
+      window.clearTimeout(tScroll)
       document.removeEventListener('pointerleave', salir)
       window.removeEventListener('blur', salir)
       window.removeEventListener('resize', redim)
