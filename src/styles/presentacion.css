@@ -314,3 +314,9 @@
    Si se vuelven a grabar a tamaño completo, borrar estas dos reglas. */
 .s-tel { position: relative; }
 .s-tel .s-demo-video { position: absolute; left: 0; top: 0; width: 200%; height: 200%; object-fit: fill; }
+
+/* QR blanco y limpio: sin anillo ni halo azul (anula la regla de styles.css) */
+.slide .s-qr { box-shadow: none; background: #fff; }
+.slide .s-qr-mini, .slide .s-qr-cta { box-shadow: none; }
+/* Sendero: sin la frase naranja; el botón de la app queda pegado a la fricción */
+.s-hito-fric { margin-bottom: .2cqw; }

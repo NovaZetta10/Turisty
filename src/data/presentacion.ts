@@ -22,11 +22,11 @@ export type Slide =
   /** Revelación del nombre, con su definición y fuente, y las tres piedras. */
   | { tipo: 'revelacion'; antes: string; nombre: string; definicion: string; fuente: string; union: string; piedras: { nombre: string; texto: string }[]; fuego: string }
   /** Escena: la voz de un personaje (no es un dato). El pie es opcional y solo lleva datos verificados. */
-  | { tipo: 'escena'; kicker: string; voz: string; quien: string; pie?: string; /** Ilustración animada de src/components/escenas/Escenas.tsx. */ imagen: 'vecino' | 'visitante' | 'gestion' }
+  | { tipo: 'escena'; kicker: string; voz: string; quien?: string; pie?: string; /** Ilustración animada de src/components/escenas/Escenas.tsx. */ imagen: 'vecino' | 'visitante' | 'gestion' }
   /** Solución a la escena anterior: vídeo de la app en un móvil (public/video/demo-*). Solo lo que el prototipo hace hoy. */
   | { tipo: 'solucion'; kicker: string; titulo: string; intro: string; puntos: string[]; nota?: string; video: 'vecino' | 'visitante' }
   /** Los tres sellos con un ejemplo real del catálogo (se resuelve en Presentacion.tsx con src/prototipo/experiencias.ts). */
-  | { tipo: 'sellos'; kicker: string; titulo: string; experienciaId: string; sellos: { nombre: string; texto: string }[]; nota: string }
+  | { tipo: 'sellos'; kicker: string; titulo: string; experienciaId: string; sellos: { nombre: string; texto: string }[]; nota?: string }
   /** Solución de gestión: demo grande (public/video/demo-gestion o captura) con burbujas numeradas que aparecen una tras otra. */
   | { tipo: 'gestion'; kicker: string; titulo: string; burbujas: string[]; nota?: string }
   /** Para qué sirven los datos: datos → propuesta → entidades. */
@@ -65,9 +65,9 @@ export const SLIDES: Slide[] = [
     kicker: 'El sendero',
     titulo: 'Acompañadnos en este sendero: los puntos de fricción que hemos detectado y cómo los resolvemos.',
     paradas: [
-      { quien: 'Vecino', boton: 'Vivo en Tenerife', friccion: 'No nota lo que deja el turismo en su barrio.', solucion: 'Lo de aquí, avalado por su barrio.' },
-      { quien: 'Visitante', boton: 'Estoy de visita', friccion: 'No sabe cómo conocer a gente de aquí.', solucion: 'Elige lo que quiere sentir y lo vive con gente de aquí.' },
-      { quien: 'Gestión', boton: 'Turismo de Tenerife', friccion: 'No ve dónde se queda lo que deja el turismo.', solucion: 'Un panel con garantías y fondo por municipio.' },
+      { quien: 'Vecino', boton: 'Vivo en Tenerife', friccion: 'Su barrio, sucio y con ruido.', solucion: 'Lo de aquí, avalado por su barrio.' },
+      { quien: 'Visitante', boton: 'Estoy de visita', friccion: 'Lo reciben con pancartas.', solucion: 'Elige lo que quiere sentir y lo vive con gente de aquí.' },
+      { quien: 'Gestión', boton: 'Turismo de Tenerife', friccion: 'No sabe a dónde va el dinero.', solucion: 'Un panel con garantías y fondo por municipio.' },
     ],
   },
   {
@@ -89,7 +89,6 @@ export const SLIDES: Slide[] = [
     tipo: 'escena',
     kicker: 'Escena · un vecino',
     voz: 'Muchacho, mi niño… me tienen el barrio hecho un asco, y aquí solo vienen turistas a molestar y a hacer ruido.',
-    quien: 'Voz de un personaje, no un dato',
     imagen: 'vecino',
     // Fuente 49.
     pie: 'El 53,9 % de quienes viven en Tenerife ve tensiones con los turistas. Fuente: ISTAC, ECOSOC, segundo trimestre de 2026.',
@@ -100,32 +99,28 @@ export const SLIDES: Slide[] = [
     titulo: 'Desde Tenique, vemos y entendemos la frustración del vecino.',
     intro: 'Con nuestra iniciativa…',
     puntos: [
-      'Experiencias avaladas por su barrio: comida, oficios y fiestas.',
-      'Parte de cada reserva, al fondo de su municipio, en una cuenta del Cabildo.',
-      'El barrio propone en qué se usa.',
-      'Precio de residente o 2 horas de su tiempo.',
+      'Parte de cada reserva vuelve a su barrio, y el barrio propone en qué: limpieza, papeleras, lo que haga falta.',
+      'Experiencias avaladas por el barrio, y el visitante acepta un código de convivencia antes de reservar: ruido, basura, respeto.',
+      'Cupos por barrio y día, para que no se sature.',
     ],
-    nota: 'En la demo, importes, precios y valoraciones son ejemplos, y las propuestas no se envían.',
     video: 'vecino',
   },
   {
     tipo: 'escena',
     kicker: 'Escena · un visitante',
     voz: 'Llegué al aeropuerto y me recibieron con pancartas diciéndome que me fuera. Así no se puede.',
-    quien: 'Voz de un personaje, no un dato',
     imagen: 'visitante',
   },
   {
     tipo: 'solucion',
     kicker: 'Para los visitantes',
-    titulo: 'Desde Tenique, vemos y entendemos la frustración del visitante.',
+    titulo: 'Desde Tenique, vemos y entendemos la frustración del visitante. Queremos ayudarle a hacer un turismo sostenible, que deje algo bueno donde va.',
     intro: 'Con nuestra iniciativa…',
     puntos: [
-      'Elige la emoción que quiere sentir.',
-      'Encuentra experiencias con gente de aquí.',
-      'Cada experiencia lleva tres sellos.',
+      'Solo hay experiencias que su barrio ha avalado: si está, es porque quieren recibirle.',
+      'Elige lo que quiere sentir y lo vive con gente de aquí, como invitado.',
+      'Un código de convivencia compartido: sabe cómo comportarse y deja algo bueno donde va.',
     ],
-    nota: 'Las emociones están por validar: se enseñan como diseño.',
     video: 'visitante',
   },
   {
@@ -133,19 +128,17 @@ export const SLIDES: Slide[] = [
     tipo: 'sellos',
     kicker: 'Los tres sellos',
     titulo: 'Así queda una experiencia real, con sus tres sellos.',
-    experienciaId: 'juego-del-palo-la-laguna',
+    experienciaId: 'bajada-virgen-del-socorro-guimar',
     sellos: [
       { nombre: 'Avalada por el barrio', texto: 'Los vecinos o su asociación la avalan y lo renuevan. Si retiran el aval, sale.' },
       { nombre: 'Garantía Turismo de Tenerife', texto: 'Cumple las condiciones del destino: legalidad, seguro de responsabilidad civil, accesibilidad y respeto al entorno. Antes de publicar.' },
       { nombre: 'Valorada por quien la vivió', texto: 'Puntúan todas las personas que asistieron, vecinos y visitantes.' },
     ],
-    nota: 'Experiencia real del catálogo. Los sellos y la valoración son ejemplos de la demo.',
   },
   {
     tipo: 'escena',
     kicker: 'Escena · Turismo de Tenerife',
     voz: 'Pero oíste… ¿y todo este dinero para dónde va? Porque aquí se mueve muchísimo.',
-    quien: 'Voz de un personaje, no un dato',
     imagen: 'gestion',
   },
   {
@@ -154,12 +147,11 @@ export const SLIDES: Slide[] = [
     kicker: 'Para Turismo de Tenerife',
     titulo: 'Desde Tenique, vemos y entendemos la frustración de Turismo de Tenerife.',
     burbujas: [
-      'Garantías pendientes: qué espera su visto bueno.',
-      'Fondo publicado por municipio.',
+      'Fondo publicado por municipio: cuánto entra en cada uno.',
+      'De dónde sale y en qué se gasta, proyecto a proyecto.',
       'Mapa de experiencias por municipio.',
-      'Un día en Tenique, en directo.',
+      'Un día en Tenique en directo: reservas y fondo, municipio a municipio.',
     ],
-    nota: 'Datos del panel simulados, con títulos y municipios reales del catálogo.',
   },
   {
     tipo: 'datos',

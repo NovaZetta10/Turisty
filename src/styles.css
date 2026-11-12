@@ -740,3 +740,6 @@ th.num, td.num { text-align: right; }
 
 /* ---------- rendimiento: animaciones infinitas en pausa cuando no se ven (components/PausaFueraDePantalla.tsx) ---------- */
 .fuera, .fuera *, .fuera *::before, .fuera *::after { animation-play-state: paused !important; }
+
+/* Menú con 9 entradas: más compacto en pantallas medianas para que «Tenique» no se corte */
+@media (max-width: 1400px) { .nav a { padding: 7px 9px; font-size: 13.5px; } .nav a.nav-destacada { margin-left: 2px; } }

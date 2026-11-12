@@ -79,6 +79,8 @@ const vacia = {
 for (const s of P.SECCIONES.filter((s) => s.visible)) {
   if (s.estado === 'listo' && vacia[s.id]?.()) errores.push(`SECCIONES «${s.id}» está en «listo» pero sigue vacía o con relleno.`)
   const archivo = s.id[0].toUpperCase() + s.id.slice(1) + '.tsx'
+  // #/gestion es una ruta a pantalla completa con su código en src/gestion/ (App.tsx), no en src/pages.
+  if (s.id === 'gestion' && existsSync(join(raiz, 'src/gestion/Gestion.tsx'))) continue
   if (!readdirSync(join(raiz, 'src/pages')).some((f) => f.toLowerCase() === archivo.toLowerCase())) errores.push(`SECCIONES «${s.id}» no tiene página: falta src/pages/${archivo}.`)
 }
 

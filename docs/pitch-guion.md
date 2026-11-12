@@ -67,7 +67,7 @@ Si no cabe (más de 4:45 en el ensayo), por orden y sin borrar ninguna diapositi
 Reglas:
 - Una sola persona por diapositiva. Se cambia de persona en el corte entre diapositivas.
 - No se lee la diapositiva: la diapositiva da el titular y la persona lo cuenta.
-- Las citas de las escenas (6, 8 y 11) las interpreta un compañero en roleplay, en voz de personaje; **justo después, Tenique responde**: las soluciones empiezan «Desde Tenique, vemos y entendemos…». No son datos.
+- Las citas de las escenas (6, 8 y 11) las interpreta un compañero en roleplay, en voz de personaje; no llevan etiqueta en la diapositiva y quien presenta dice de palabra que son voces, no datos. **Justo después, Tenique responde**: las soluciones empiezan «Desde Tenique, vemos y entendemos…».
 - Desde la diapositiva 4, el QR a la demo está en la esquina de todas, salvo en la 15, que lleva un QR por petición.
 - Abajo a la derecha sale el número de diapositiva y una barra fina de progreso al pie; abajo, «Reto de» y el logo de Turismo de Tenerife.
 - Las escenas de problema (6, 8 y 11), el sendero (4) y el fogón (14) tienen fondo cálido; las soluciones, azul noche. El cambio de tono es a propósito.
@@ -114,8 +114,8 @@ Reglas:
 - Si preguntan después qué es real y qué es simulado: pregunta 10 de `docs/pitch-preguntas.md`.
 
 ### 4 · Sendero (0:12) · Javier
-- Diapositiva: «Acompañadnos en este sendero…». Tres paradas en zigzag. En cada una, la fricción, la solución y el botón de la portada de la app que se pulsa para seguir como ese perfil: «Vivo en Tenerife», «Estoy de visita» y «Turismo de Tenerife».
-- Se dice: «Este es el sendero. Tres paradas: el vecino, el visitante y quien gestiona. Cada una tiene su botón en la app: pulsad el vuestro. Antes, de dónde viene el nombre».
+- Diapositiva: «Acompañadnos en este sendero…». Tres paradas en zigzag con número, perfil, fricción y el botón de la portada de la app que se pulsa para seguir como ese perfil: «Vivo en Tenerife», «Estoy de visita» y «Turismo de Tenerife».
+- Se dice: «Este es el sendero. Tres paradas: el vecino, el visitante y quien gestiona. Cada una tiene su botón en la app: pulsad el vuestro. Y cada fricción tiene su solución, que ahora os contamos. Antes, de dónde viene el nombre».
 - Es una transición: no se lee cada parada.
 
 ### 5 · Os presentamos… Tenique (0:35) · Marcelo
@@ -123,34 +123,44 @@ Reglas:
 - Se dice: «Os presentamos… Tenique. En Canarias, un tenique es cada una de las tres piedras del fogón que sostienen la olla. Con una no se cocina. Con dos, tampoco. Tenique es una iniciativa que une las tres piedras que hacen funcionar Tenerife: los vecinos, que quieren saber cómo se mueve el turismo y cómo pueden aportar; los visitantes, que quieren sentirse parte de la comunidad; y el sector turístico: hostelería, gastronomía, comercio y anfitriones, las empresas asociadas a Turismo de Tenerife y quienes viven del turismo». (Pausa.) «Y Turismo de Tenerife no es una cuarta piedra: es quien enciende el fogón, porque garantiza y coordina».
 
 ### 6 · Escena · un vecino (0:12) · Esther y compañero en roleplay
-- Diapositiva (fondo cálido, ilustración animada a la izquierda): la voz de un personaje, «no un dato», y el dato verificado: el 53,9 % ve tensiones (ISTAC, ECOSOC, segundo trimestre de 2026; fuente 49).
+- Diapositiva (fondo cálido, ilustración animada a la izquierda): la cita y el dato verificado: el 53,9 % ve tensiones (ISTAC, ECOSOC, segundo trimestre de 2026; fuente 49).
 - Lo interpreta el compañero, en voz de vecino: «Muchacho, mi niño… me tienen el barrio hecho un asco, y aquí solo vienen turistas a molestar y a hacer ruido.»
-- Esther añade: «No es una cita: es una voz. Y no está solo: el 53,9 % de quienes viven en Tenerife ve tensiones con los turistas». Y pasa a la solución.
+- Esther añade, de palabra: «Es una voz de personaje, no un dato. Y no está solo: el 53,9 % de quienes viven en Tenerife ve tensiones con los turistas». Y pasa a la solución.
 
 ### 7 · Solución · vecinos (0:25) · Esther
-- Diapositiva: «Desde Tenique, vemos y entendemos la frustración del vecino. Con nuestra iniciativa…», cuatro puntos y a la derecha un móvil con el vídeo de la demo (`public/video/demo-vecino`). Si el vídeo no carga, se ve la app en vivo.
-- Se dice: «Desde Tenique, vemos y entendemos la frustración del vecino. Con nuestra iniciativa, las experiencias las avala su barrio: comida, oficios y fiestas. Parte de cada reserva va al fondo de su municipio, en una cuenta del Cabildo, y el barrio propone en qué se usa. Y participa con precio de residente o con dos horas de su tiempo».
+- Diapositiva: «Desde Tenique, vemos y entendemos la frustración del vecino. Con nuestra iniciativa…» y tres ventajas que responden a la escena (barrio sucio, turistas que molestan y hacen ruido), con el vídeo de la demo a la derecha (`public/video/demo-vecino`).
+  1. Parte de cada reserva vuelve a su barrio y el barrio propone en qué: limpieza, papeleras, lo que haga falta. En la app: «Qué deja aquí» y «Proponer un proyecto para el barrio» (`pantallas.tsx`).
+  2. Experiencias avaladas por el barrio, y el visitante acepta un código de convivencia antes de reservar: ruido, basura, respeto. En la app: sello «Avalada por el barrio» y `Compromiso` / `CODIGO_CONVIVENCIA` en la reserva del visitante.
+  3. Cupos por barrio y día, para que no se sature. **La app no los muestra hoy**: es parte de la iniciativa (`MEDIOAMBIENTE` en `src/data/viabilidad.ts`) y no se enseña en el vídeo.
+- Se dice: «Desde Tenique, vemos y entendemos la frustración del vecino. Con nuestra iniciativa, parte de cada reserva vuelve a su barrio, y el barrio propone en qué: limpieza, papeleras, lo que haga falta. Las experiencias las avala su barrio, y el visitante acepta un código de convivencia antes de reservar: ruido, basura, respeto. Y ponemos cupos por barrio y día, para que no se sature».
+- Notas para las preguntas (no están en la diapositiva): en la demo, importes, precios y valoraciones son ejemplos y las propuestas no se envían. El dinero lo guarda el Cabildo en una cuenta por municipio.
 
 ### 8 · Escena · un visitante (0:10) · Giulia y compañero en roleplay
-- Diapositiva (fondo cálido, ilustración animada del aeropuerto): voz de un personaje, «no un dato».
+- Diapositiva (fondo cálido, ilustración animada del aeropuerto): la cita.
 - Lo interpreta el compañero, en voz de visitante: «Llegué al aeropuerto y me recibieron con pancartas diciéndome que me fuera. Así no se puede.» Giulia pasa enseguida a la solución.
 
 ### 9 · Solución · visitantes (0:22) · Giulia
-- Diapositiva: «Desde Tenique, vemos y entendemos la frustración del visitante. Con nuestra iniciativa…», tres puntos y el vídeo de la demo (`demo-visitante`).
-- Se dice: «Desde Tenique, vemos y entendemos la frustración del visitante. Con nuestra iniciativa elige la emoción que quiere sentir y encuentra experiencias con gente de aquí. Las emociones las estamos validando: hoy las enseñamos como diseño. Y cada experiencia lleva tres sellos. Os los enseñamos con un ejemplo».
+- Diapositiva: «Desde Tenique, vemos y entendemos la frustración del visitante. Queremos ayudarle a hacer un turismo sostenible, que deje algo bueno donde va. Con nuestra iniciativa…», tres ventajas que responden a «no me quieren aquí» y el vídeo de la demo (`demo-visitante`).
+  1. Solo hay experiencias que su barrio ha avalado: si está, es porque quieren recibirle.
+  2. Elige lo que quiere sentir y lo vive con gente de aquí, como invitado (`Sentir` y `Lista`).
+  3. Un código de convivencia compartido: sabe cómo comportarse y deja algo bueno donde va (`Compromiso`; «Qué dejas en la isla» en `Estancia`).
+- Se dice: «Desde Tenique, vemos y entendemos la frustración del visitante, y queremos ayudarle a hacer un turismo sostenible, que deje algo bueno donde va. Con nuestra iniciativa, solo hay experiencias que su barrio ha avalado: si está, es porque quieren recibirle. Elige lo que quiere sentir y lo vive con gente de aquí, como invitado. Y todos compartimos un código de convivencia. Os enseñamos qué lleva cada experiencia».
+- Notas para las preguntas: las emociones están por validar y se enseñan como diseño.
 
 ### 10 · Los tres sellos (0:18) · Giulia
-- Diapositiva: una experiencia real y verificada del catálogo (Escuelas municipales de juego del palo canario, San Cristóbal de La Laguna) y tres sellos grandes que se estampan uno tras otro, con los textos de `PIEDRAS` (`tenique-piezas.tsx`) y, debajo de cada uno, cómo lo cumple el ejemplo. Los sellos y la valoración son ejemplos de la demo, y la diapositiva lo dice.
+- Diapositiva: una experiencia real y verificada del catálogo de **Güímar**: «Bajada de la Virgen del Socorro» (`bajada-virgen-del-socorro-guimar`; la ofrece la parroquia y las fiestas de Güímar). Tres sellos grandes que se estampan uno tras otro, con los textos de `PIEDRAS` (`tenique-piezas.tsx`) y, debajo de cada uno, cómo lo cumple el ejemplo. La valoración sale marcada «de ejemplo».
 - Se dice: «Primero, la avala el barrio: los vecinos o su asociación, y si retiran el aval, la experiencia sale. Segundo, la garantía de Turismo de Tenerife: legalidad, seguro, accesibilidad y respeto al entorno, antes de publicar. Tercero, la valoran quienes la vivieron, vecinos y visitantes».
+- Notas para las preguntas: es una experiencia real del catálogo; los sellos y la valoración son ejemplos de la demo (no hay aval ni valoraciones reales todavía).
 
 ### 11 · Escena · Turismo de Tenerife (0:10) · Esther y compañero en roleplay
-- Diapositiva (fondo cálido, ilustración animada del dinero): voz de un personaje, «no un dato».
+- Diapositiva (fondo cálido, ilustración animada del dinero): la cita.
 - Lo interpreta el compañero: «Pero oíste… ¿y todo este dinero para dónde va? Porque aquí se mueve muchísimo.»
 
 ### 12 · Solución · gestión (0:20) · Esther
-- Diapositiva: «Desde Tenique, vemos y entendemos la frustración de Turismo de Tenerife». La demo en primer plano y grande (`demo-gestion`; si no carga, la captura de `#/gestion`) con cuatro marcas numeradas que aparecen una tras otra y sus burbujas: 1 garantías pendientes, 2 fondo publicado por municipio, 3 mapa de experiencias por municipio, 4 un día en Tenique. Esther completará esta diapositiva más adelante.
+- Diapositiva: «Desde Tenique, vemos y entendemos la frustración de Turismo de Tenerife». La demo en primer plano (`demo-gestion`; si no carga, la captura de `#/gestion`) y cuatro burbujas que responden a «¿para dónde va el dinero?»: fondo publicado por municipio, de dónde sale y en qué se gasta proyecto a proyecto, mapa de experiencias por municipio y un día en Tenique en directo (reservas y fondo, municipio a municipio). Esther completará esta diapositiva más adelante.
 - Aquí proyectamos #/gestion y damos a play (Un día en Tenique).
-- Se dice: «Desde Tenique, vemos y entendemos la frustración de Turismo de Tenerife. Con nuestra iniciativa ve qué garantías esperan su visto bueno, el fondo publicado en cada municipio y un mapa de experiencias por municipio. Y os lo enseñamos en directo». No se habla de flujo de turistas. Los datos del panel son simulados y la diapositiva lo dice.
+- Se dice: «Desde Tenique, vemos y entendemos la frustración de Turismo de Tenerife. Con nuestra iniciativa se ve cuánto entra en cada municipio, de dónde sale y en qué se gasta, proyecto a proyecto. Y os lo enseñamos en directo». No se habla de flujo de turistas.
+- Notas para las preguntas: los datos del panel son simulados, con títulos y municipios reales del catálogo.
 
 ### 13 · Los datos sirven para algo más (0:12) · Esther
 - Diapositiva: datos → propuesta → entidades (Gobierno de Canarias, Cabildo, Universidad, cualquier entidad), sin cifras, y la frase: «Estos son nuestros datos, así se mueve nuestro turismo, y esto es lo que os proponemos; no porque nos apetezca, sino porque los datos nos avalan».

@@ -109,7 +109,6 @@ function Contenido({ s }: { s: Slide }) {
       return (
         <div className="s-action">
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <A i={0} className="s-badge"><span>●</span> Punto de acción</A>
             <A i={1}><span className="s-kicker">{s.kicker}</span></A>
             <A i={2}><div className="s-title">{s.titulo}</div></A>
             <A i={3}><p className="s-lead">{s.texto}</p></A>
@@ -198,7 +197,6 @@ function Contenido({ s }: { s: Slide }) {
                   <div className="s-hito-txt">
                     <b>{p.quien}</b>
                     <span className="s-hito-fric">{p.friccion}</span>
-                    <span className="s-hito-sol"><Icon name="arrow" size={14} />{p.solucion}</span>
                     <span className="s-boton-app" aria-label={`Botón de la app: ${p.boton}`}><span>{p.boton}</span><Icon name="right" size={16} /></span>
                   </div>
                 </li>
@@ -215,7 +213,6 @@ function Contenido({ s }: { s: Slide }) {
           <div className="s-escena-txt">
             <A i={0}><span className="s-kicker">{s.kicker}</span></A>
             <blockquote className="s-voz">{('«' + s.voz + '»').split(' ').map((w, n) => <span key={n} className="s-pal" style={{ ['--w' as string]: n }}>{w}{' '}</span>)}</blockquote>
-            <A i={2}><span className="s-voz-quien">{s.quien}</span></A>
             {s.pie && <A i={3}><p className="s-fuente">{s.pie}</p></A>}
           </div>
         </div>
@@ -231,7 +228,7 @@ function Contenido({ s }: { s: Slide }) {
           <ul className="s-solucion-lista">
             {s.puntos.map((p, n) => <A key={p} i={3 + n} className="s-solucion-p"><Icon name="check" size={20} /><span>{p}</span></A>)}
           </ul>
-          {s.nota && <A i={8}><p className="s-fuente">{s.nota}</p></A>}
+          
         </div>
       )
     case 'sellos': {
@@ -247,7 +244,7 @@ function Contenido({ s }: { s: Slide }) {
         <div className="s-sellos-slide">
           <A i={0}><span className="s-kicker">{s.kicker}</span></A>
           <A i={1}><div className="s-title s-sellos-tit">{s.titulo}</div></A>
-          {e && <A i={2}><div className="s-sellos-exp"><b>{typeof e.titulo === 'string' ? e.titulo : e.titulo.es}</b><span>{e.municipio} · experiencia real del catálogo</span></div></A>}
+          {e && <A i={2}><div className="s-sellos-exp"><b>{typeof e.titulo === 'string' ? e.titulo : e.titulo.es}</b><span>{e.municipio}</span></div></A>}
           <div className="s-sellos-fila">
             {s.sellos.map((x, n) => (
               <div key={x.nombre} className="s-sello-g" style={{ ['--k' as string]: n }}>
@@ -258,7 +255,7 @@ function Contenido({ s }: { s: Slide }) {
               </div>
             ))}
           </div>
-          <A i={8}><p className="s-fuente">{s.nota}</p></A>
+          {s.nota && <A i={8}><p className="s-fuente">{s.nota}</p></A>}
         </div>
       )
     }
@@ -273,7 +270,6 @@ function Contenido({ s }: { s: Slide }) {
                           </A>
             <div className="s-burbujas">
               {s.burbujas.map((b, n) => <div key={b} className="s-burbuja" style={{ ['--k' as string]: n }}><i>{n + 1}</i><span>{b}</span></div>)}
-              {s.nota && <p className="s-fuente s-gestion-nota">{s.nota}</p>}
             </div>
           </div>
         </div>
