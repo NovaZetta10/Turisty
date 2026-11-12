@@ -1,4 +1,4 @@
-import { useState, type ComponentType } from 'react'
+import { useEffect, useRef, useState, type ComponentType } from 'react'
 import { Link } from 'react-router-dom'
 import { PROTOTIPO, SITIO_URL, rutaDe } from '../config/proyecto'
 import { Refs } from '../components/Refs'
@@ -30,15 +30,38 @@ function Notas() {
 
 /** Prototipo hecho en esta web (src/prototipo): «Pruébalo» (teléfono + QR) o «Los 4 perfiles» (cuatro teléfonos a la vez). */
 function Interno() {
-  const [vista, setVista] = useState<'prueba' | 'perfiles'>('prueba')
+  const [vista, setVista] = useState<'prueba' | 'perfiles' | 'dia'>('prueba')
   return (
     <>
       <div className="chips proto-vistas" role="tablist" aria-label="Vista del prototipo">
         <button role="tab" aria-selected={vista === 'prueba'} className={`chip ${vista === 'prueba' ? 'on' : ''}`} onClick={() => setVista('prueba')}>Pruébalo</button>
         <button role="tab" aria-selected={vista === 'perfiles'} className={`chip ${vista === 'perfiles' ? 'on' : ''}`} onClick={() => setVista('perfiles')}>Los 4 perfiles</button>
+        <button role="tab" aria-selected={vista === 'dia'} className={`chip ${vista === 'dia' ? 'on' : ''}`} onClick={() => setVista('dia')}>Un día en Tenique</button>
       </div>
-      {vista === 'prueba' ? <Prueba /> : <CuatroPerfiles />}
+      {vista === 'prueba' ? <Prueba /> : vista === 'perfiles' ? <CuatroPerfiles /> : <UnDia />}
     </>
+  )
+}
+
+/** Tercera vista: la simulación «Un día en Tenique» del panel de gestión (#/gestion), en horizontal. */
+function UnDia() {
+  const src = import.meta.env.BASE_URL + '#/gestion'
+  // El panel se pinta a 1440×810 y se escala al ancho disponible, para que se vea igual que a pantalla completa.
+  const marco = useRef<HTMLDivElement>(null)
+  const [k, setK] = useState(0.75)
+  useEffect(() => {
+    const el = marco.current
+    if (!el) return
+    const ro = new ResizeObserver(([e]) => setK(e.contentRect.width / 1440))
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+  return (
+    <div className="tq-dia">
+      <p className="small muted">La simulación de un día con todos los perfiles a la vez, vista desde el panel de Turismo de Tenerife. Pulsa «Un día en Tenique» y luego «Demo». Datos simulados.</p>
+      <div className="tq-dia-marco" ref={marco} style={{ ['--k' as string]: k }}><iframe src={src} title="Simulación: un día en Tenique" loading="lazy" /></div>
+      <Link className="btn primary" to="/gestion">Abrir a pantalla completa <Icon name="expand" size={14} /></Link>
+    </div>
   )
 }
 

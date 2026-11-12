@@ -743,3 +743,8 @@ th.num, td.num { text-align: right; }
 
 /* Menú con 9 entradas: más compacto en pantallas medianas para que «Tenique» no se corte */
 @media (max-width: 1400px) { .nav a { padding: 7px 9px; font-size: 13.5px; } .nav a.nav-destacada { margin-left: 2px; } }
+
+/* Tenique · tercera vista «Un día en Tenique» (panel #/gestion embebido, horizontal) */
+.tq-dia { display: grid; gap: 14px; justify-items: start; margin-top: 8px; }
+.tq-dia-marco { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; border: 1px solid var(--line-2); background: var(--night); box-shadow: 0 20px 50px -20px rgba(0, 0, 0, .6); }
+.tq-dia-marco iframe { position: absolute; top: 0; left: 0; width: 1440px; height: 810px; border: 0; display: block; transform: scale(var(--k, .75)); transform-origin: 0 0; }

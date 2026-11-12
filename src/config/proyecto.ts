@@ -161,16 +161,6 @@ export const SECCIONES: Seccion[] = [
     visible: true,
   },
   {
-    // Panel de gestión a pantalla completa (src/gestion/, ruta fija en App.tsx). Pedido por Esther: que la simulación esté en el menú.
-    id: 'gestion',
-    ruta: '/gestion',
-    titulo: 'Simulación · Un día en Tenique',
-    corto: 'Simulación',
-    resumen: 'El panel de gestión de Turismo de Tenerife en horizontal: mapa de la isla, capas, indicadores y un día en Tenique simulado con todos los perfiles.',
-    estado: 'listo',
-    visible: true,
-  },
-  {
     id: 'prototipo',
     ruta: '/tenique',
     titulo: 'Tenique',
