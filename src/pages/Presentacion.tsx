@@ -5,15 +5,22 @@ import { Icon } from '../components/Icon'
 import { NovaMark } from '../components/NovaMark'
 import { Qr, urlBase } from '../components/Qr'
 import { tieneRelleno } from '../config/relleno'
+import '../styles/presentacion.css'
 
 const A = ({ i, children, className = '', style }: { i: number; children: React.ReactNode; className?: string; style?: CSSProperties }) => (
   <div className={`a ${className}`} style={{ ...style, ['--i' as string]: i }}>{children}</div>
 )
 
-const nombreSlide = (s: Slide) => (s.tipo === 'portada' ? 'Portada' : s.tipo === 'pregunta' ? 'Pregunta' : s.kicker)
+const nombreSlide = (s: Slide) =>
+  s.tipo === 'portada' ? 'Portada' : s.tipo === 'pregunta' ? 'Pregunta' : s.tipo === 'revelacion' ? s.nombre : s.tipo === 'final' ? s.titulo : s.kicker
 
-function urlDemo() {
+/** Desde la revelación del nombre, el QR a la demo se queda en una esquina (salvo en la llamada final, que lleva el QR a la web). */
+const INICIO_QR_ESQUINA = SLIDES.findIndex((s) => s.tipo === 'revelacion')
+const conQrEsquina = (s: Slide, i: number) => INICIO_QR_ESQUINA >= 0 && i >= INICIO_QR_ESQUINA && s.tipo !== 'cta'
+
+function urlDemo(destino: 'app' | 'prototipo' = 'prototipo') {
   const base = urlBase(SITIO_URL)
+  if (destino === 'app') return base + '#/app' // portada de perfiles del prototipo
   if (PROTOTIPO.url.startsWith('http')) return PROTOTIPO.url
   if (PROTOTIPO.url.startsWith('#')) return base + PROTOTIPO.url // prototipo dentro de la web (#/app)
   return base + '#' + rutaDe('prototipo') // pestaña del prototipo, siga la ruta que siga
@@ -36,12 +43,17 @@ function Contenido({ s }: { s: Slide }) {
     case 'pregunta':
       return (
         <div className="s-question" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-          <A i={0}><div className="s-mega">{s.antes} <em>{s.destacado}</em>{s.despues ? ` ${s.despues}` : ''}</div></A>
+          <A i={0}>
+            {/* Las preguntas largas (patrón «¿Cómo podemos…?») bajan de tamaño para caber; tras una coma no va espacio delante */}
+            <div className={`s-mega ${(s.antes + s.destacado + (s.despues ?? '')).length > 110 ? 's-mega-largo' : ''}`}>
+              {s.antes} <em>{s.destacado}</em>{s.despues ? (/^[,.;:?]/.test(s.despues) ? s.despues : ` ${s.despues}`) : ''}
+            </div>
+          </A>
           <div className="s-answer a"><NovaMark size="1em" className="" />{s.remate}</div>
         </div>
       )
     case 'accion': {
-      const url = s.destino === 'prototipo' ? urlDemo() : urlBase(SITIO_URL)
+      const url = s.destino === 'web' ? urlBase(SITIO_URL) : urlDemo(s.destino)
       return (
         <div className="s-action">
           <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -98,6 +110,62 @@ function Contenido({ s }: { s: Slide }) {
           {s.fuente && <A i={6}><p className="s-lead" style={{ fontSize: '1.3cqw', color: 'var(--muted)', maxWidth: '100%' }}>{s.fuente}</p></A>}
         </>
       )
+    case 'revelacion':
+      return (
+        <div className="s-reveal">
+          <A i={0}><span className="s-reveal-antes">{s.antes}</span></A>
+          <A i={1}><div className="s-reveal-nombre">{s.nombre}</div></A>
+          <A i={2} className="s-reveal-piedras" ><span /><span /><span /></A>
+          <A i={3}><p className="s-reveal-def">{s.definicion}</p></A>
+          <A i={4}><p className="s-fuente">{s.fuente}</p></A>
+        </div>
+      )
+    case 'pareja':
+      return (
+        <div className="s-pareja">
+          <A i={0}><span className="s-kicker">{s.kicker}</span></A>
+          <div className="s-pareja-cols">
+            <A i={1} className="s-pareja-prob">
+              <span className="s-pareja-et">El problema</span>
+              <b className="s-pareja-tit">{s.problema.titulo}</b>
+              <span className="s-pareja-valor">{s.problema.valor}</span>
+              <span className="s-pareja-etq">{s.problema.etiqueta}</span>
+            </A>
+            <A i={2} className="s-pareja-flecha"><Icon name="arrow" size={28} /></A>
+            <A i={3} className="s-pareja-sol">
+              <span className="s-pareja-et">Con Tenique</span>
+              <b className="s-pareja-tit">{s.solucion.titulo}</b>
+              <ul>{s.solucion.puntos.map((p) => <li key={p}>{p}</li>)}</ul>
+            </A>
+          </div>
+          <A i={4}><p className="s-fuente">{s.fuente}</p></A>
+        </div>
+      )
+    case 'fogon':
+      return (
+        <div className="s-fogon">
+          <div className="s-fogon-txt">
+            <A i={0}><span className="s-kicker">{s.kicker}</span></A>
+            <A i={1}><div className="s-title">{s.titulo}</div></A>
+            <div className="s-fogon-piedras">
+              {s.piedras.map((p, n) => <A key={p.nombre} i={2 + n} className="s-fogon-p"><b>{p.nombre}</b><span>{p.texto}</span></A>)}
+            </div>
+            <A i={6}><div className="s-fogon-lema">{s.lema}</div></A>
+          </div>
+          <A i={5} className="s-fogon-dibujo"><FogonDibujo nombres={s.piedras.map((p) => p.nombre)} /></A>
+        </div>
+      )
+    case 'final':
+      return (
+        <div className="s-final">
+          <A i={0}><div className="s-mega">{s.titulo}</div></A>
+          <A i={1}><div className="s-final-sub">{s.subtitulo}</div></A>
+          <A i={2} className="s-final-equipo">
+            <b>Equipo {EQUIPO_NOMBRE}</b>
+            <span>{EQUIPO.map((m) => m.nombre.split(' ').slice(0, 1).join(' ')).join(' · ')}</span>
+          </A>
+        </div>
+      )
     case 'cta': {
       const base = urlBase(SITIO_URL)
       const picks = DESTACADOS.map((d) => ({ ...d, s: SECCIONES.find((x) => x.id === d.id) })).filter((d) => d.s)
@@ -112,7 +180,6 @@ function Contenido({ s }: { s: Slide }) {
                 <A key={p.id} i={3 + n} className="s-pick"><i>{n + 1}</i><div><b>{p.s!.titulo}</b>{!tieneRelleno(p.motivo) && <span>{p.motivo}</span>}</div></A>
               ))}
             </div>
-            <A i={7} className="s-team"><b>Equipo {EQUIPO_NOMBRE}</b> · {EQUIPO.map((m) => m.nombre.split(' ')[0]).join(' · ')}</A>
           </div>
           <A i={6} style={{ alignSelf: 'center' }}>
             <Qr url={base} />
@@ -124,11 +191,53 @@ function Contenido({ s }: { s: Slide }) {
   }
 }
 
+/** Caldero sobre tres piedras con el fuego encendido. Solo SVG y tokens de marca. */
+function FogonDibujo({ nombres }: { nombres: string[] }) {
+  return (
+    <svg viewBox="0 0 320 260" role="img" aria-label={`Caldero sobre tres piedras: ${nombres.join(', ')}`}>
+      <defs>
+        <radialGradient id="s-fuego" cx="50%" cy="70%" r="60%">
+          <stop offset="0" stopColor="#ffffff" />
+          <stop offset=".35" stopColor="var(--nova-hot)" />
+          <stop offset=".7" stopColor="var(--accent-fill)" />
+          <stop offset="1" stopColor="var(--accent-fill)" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <ellipse cx="160" cy="196" rx="70" ry="44" fill="url(#s-fuego)" className="s-fogon-llama" />
+      <path d="M78 92h164l-14 72c-4 20-24 32-68 32s-64-12-68-32z" fill="var(--night-2)" stroke="var(--text-2)" strokeWidth="3" />
+      <path d="M70 92h180" stroke="var(--text-2)" strokeWidth="6" strokeLinecap="round" />
+      <path d="M128 70c0-14 10-18 6-30M160 66c0-14 10-18 6-30M192 70c0-14 10-18 6-30" stroke="var(--muted)" strokeWidth="3" fill="none" strokeLinecap="round" className="s-fogon-vapor" />
+      <g fill="var(--line-2)" stroke="var(--text-2)" strokeWidth="2">
+        <ellipse cx="66" cy="214" rx="42" ry="26" />
+        <ellipse cx="254" cy="214" rx="42" ry="26" />
+        <ellipse cx="160" cy="232" rx="42" ry="22" />
+      </g>
+      <g fontFamily="var(--font)" fontSize="13" fontWeight="600" fill="var(--text)" textAnchor="middle">
+        <text x="66" y="219">{nombres[0]}</text>
+        <text x="254" y="219">{nombres[2]}</text>
+        <text x="160" y="237">{nombres[1]}</text>
+      </g>
+    </svg>
+  )
+}
+
+/** QR pequeño a la demo, fijo en la esquina superior derecha. */
+function QrEsquina() {
+  const url = urlDemo('app')
+  return (
+    <div className="s-qr-esquina" aria-label="Demo de Tenique">
+      <Qr url={url} className="s-qr-mini" />
+      <span>Demo</span>
+    </div>
+  )
+}
+
 function SlideView({ s, i, dir }: { s: Slide; i: number; dir?: number }) {
-  const sinPie = s.tipo === 'portada' || s.tipo === 'pregunta'
+  const sinPie = s.tipo === 'portada' || s.tipo === 'pregunta' || s.tipo === 'final'
   return (
     <div className={`slide ${dir && dir < 0 ? 'back' : ''}`}>
-      {(s.tipo === 'portada' || s.tipo === 'cta') && (
+      {conQrEsquina(s, i) && <QrEsquina />}
+      {(s.tipo === 'portada' || s.tipo === 'cta' || s.tipo === 'final') && (
         <img className="s-logo" src={import.meta.env.BASE_URL + 'img/marca/turismo-tenerife-blanco.png'} alt="Turismo de Tenerife" />
       )}
       <Contenido s={s} />
@@ -182,7 +291,7 @@ export default function Presentacion() {
       <header className="page-head enter no-print">
         <span className="kicker">Entregable · pitch</span>
         <h1>Presentación</h1>
-        <p>Pitch de 5 minutos: portada del reto, pregunta-gancho, la demo en el móvil del jurado, problema, solución y qué revisar. Flechas para avanzar, <span className="code">F</span> pantalla completa.</p>
+        <p>Pitch de 5 minutos: pregunta-gancho, la demo en el móvil del jurado, Tenique, cuatro problemas con su solución, las tres piedras y qué revisar. Flechas para avanzar, <span className="code">F</span> pantalla completa.</p>
       </header>
 
       <div className="deck-bar">

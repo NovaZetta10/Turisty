@@ -1,0 +1,56 @@
+/* Plan de comunicación (src/secciones/Comunicacion.tsx). Dueño: subagente de pitch. Prefijo cm-. Solo tokens. */
+.cm { margin-top: 48px; }
+.cm-sub { font-size: 17px; margin: 28px 0 10px; }
+.cm .kicker { display: inline-flex; align-items: center; gap: 6px; }
+.cm p { color: var(--text-2); }
+
+.cm-publicos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.cm-publico { display: flex; flex-direction: column; gap: 8px; }
+.cm .cm-frase { font-family: var(--display); font-size: 17px; line-height: 1.35; color: var(--text); }
+
+.cm-ico { display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--brand-red) 14%, transparent); color: var(--nova); flex: none; }
+.cm-quien { display: inline-block; margin-top: 6px; font-size: 12px; color: var(--muted); }
+
+.cm-canales { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.cm-canal { display: flex; gap: 12px; padding: 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.cm-canal p { font-size: 14px; margin-top: 2px; }
+
+.cm-hitos { list-style: none; margin: 0; padding: 0 0 0 18px; border-left: 2px solid var(--line-2); display: grid; gap: 14px; }
+.cm-hito { position: relative; }
+.cm-hito::before { content: ""; position: absolute; left: -25px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--line-2); }
+.cm-t-lanzamiento::before, .cm-t-hito::before { background: var(--nova); }
+.cm-t-decision::before { background: var(--warn); }
+.cm-mes { display: inline-block; min-width: 64px; font-size: 12px; font-weight: 600; color: var(--nova); }
+.cm-hito p { font-size: 14px; }
+
+.cm-campana { margin-top: 28px; }
+.cm .cm-lema { font-family: var(--display); font-size: clamp(24px, 4vw, 36px); font-weight: 700; letter-spacing: -0.02em; color: var(--text); margin: 6px 0 8px; }
+.cm-piezas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+.cm-pieza { display: flex; flex-direction: column; gap: 6px; padding: 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.cm-pieza p { font-size: 14px; }
+
+.cm-offline { margin-top: 28px; padding: 20px; border-radius: var(--radius); border: 1px solid color-mix(in srgb, var(--nova) 45%, transparent); background: color-mix(in srgb, var(--brand-red) 8%, var(--night)); }
+.cm-offline-head h3 { font-size: 20px; margin: 4px 0 6px; }
+.cm-offline-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-top: 16px; }
+.cm-off { display: flex; flex-direction: column; gap: 6px; padding: 14px; border-radius: var(--radius-sm); background: var(--night-2); border: 1px solid var(--line); }
+.cm-off b { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.cm-off p { font-size: 14px; }
+.cm-off dl { margin: 4px 0 0; display: grid; gap: 2px; font-size: 13px; }
+.cm-off dt { color: var(--muted); font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; margin-top: 4px; }
+.cm-off dd { margin: 0; color: var(--text-2); }
+.cm-tag { height: 20px; font-size: 11px; }
+
+.cm-indicadores { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.cm-ind { display: flex; flex-direction: column; gap: 6px; }
+
+@media (max-width: 900px) {
+  .cm-publicos, .cm-canales, .cm-piezas, .cm-indicadores { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .cm-publicos, .cm-canales, .cm-piezas, .cm-indicadores { grid-template-columns: 1fr; }
+  .cm-offline { padding: 16px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cm-canal, .cm-pieza, .cm-off { transition: border-color 200ms var(--ease-out); }
+  .cm-canal:hover, .cm-pieza:hover, .cm-off:hover { border-color: var(--line-2); }
+}

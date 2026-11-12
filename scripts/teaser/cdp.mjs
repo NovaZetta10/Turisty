@@ -20,7 +20,7 @@ export function chromePath() {
 export async function lanzar() {
   const perfil = mkdtempSync(join(tmpdir(), 'teaser-chrome-'))
   const proc = spawn(chromePath(), [
-    '--headless=new', '--remote-debugging-port=0', `--user-data-dir=${perfil}`,
+    '--headless=new', '--no-sandbox', '--remote-debugging-port=0', `--user-data-dir=${perfil}`,
     '--no-first-run', '--no-default-browser-check', '--hide-scrollbars', '--mute-audio',
     '--force-color-profile=srgb', '--font-render-hinting=none', 'about:blank',
   ], { stdio: ['ignore', 'ignore', 'pipe'] })
@@ -66,7 +66,8 @@ export async function lanzar() {
   const ir = async (url) => {
     const cargada = once('Page.loadEventFired')
     await send('Page.navigate', { url })
-    await cargada
+    // una navegación solo de #hash no dispara «load»: no esperar más de 5 s
+    await Promise.race([cargada, new Promise((r) => setTimeout(r, 5000))])
   }
   await send('Page.enable')
   await send('Runtime.enable')

@@ -301,16 +301,17 @@ function DetalleExperiencia() {
           )}
           <ul className="app-meta tq-meta">
             <li><Ico name="pin" size={15} />{donde(e)}</li>
-            {e.cuando && <li><Ico name="clock" size={15} />{e.cuando}</li>}
-            {e.precioFuente && <li><Ico name="ticket" size={15} />{e.precioFuente}</li>}
+            {e.cuando && idioma === 'es' && <li><Ico name="clock" size={15} />{e.cuando}</li>}
+            {e.precioFuente && idioma === 'es' && <li><Ico name="ticket" size={15} />{e.precioFuente}</li>}
             {e.idiomas?.length ? <li><Ico name="globe" size={15} />{e.idiomas.join(' · ')}</li> : null}
           </ul>
           <ChipsEmo ids={e.emociones} />
         </div>
         <PiedrasFuego e={e} />
         <p className="app-texto">
-          {t(e.descripcion)}
-          {idioma === 'en' && typeof e.descripcion === 'string' && <small className="tq-en"> (in Spanish)</small>}
+          {idioma === 'en' && typeof e.descripcion === 'string'
+            ? <span className="tq-en">The source publishes the description, dates and prices in Spanish (link below).</span>
+            : t(e.descripcion)}
         </p>
         <QueDejaAqui e={e} />
         {e.fuente && <a className="tq-fuente" href={e.fuente.url} target="_blank" rel="noreferrer">{t({ es: 'Fuente', en: 'Source' })}: {e.fuente.titulo} <Ico name="external" size={12} /></a>}

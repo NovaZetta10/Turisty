@@ -1,0 +1,28 @@
+/* «Más allá del piloto» (src/pages/Futuro.tsx). Solo tokens de :root; movimiento solo con transform/opacity. */
+
+.fut-aviso { margin: 0 0 20px; }
+
+.fut-linea { list-style: none; margin: 0 0 8px; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.fut-linea a { display: grid; grid-template-columns: auto 1fr; grid-template-areas: 'n t' 'n c'; column-gap: 12px; align-items: center; padding: 14px 16px; border: 1px solid var(--line-2); border-radius: var(--radius); background: var(--night-2); color: var(--text); text-decoration: none; transition: transform .2s var(--ease-out), border-color .2s var(--ease-out); }
+.fut-linea a:hover { transform: translateY(-2px); border-color: var(--nova); }
+.fut-linea a:focus-visible { outline: 2px solid var(--nova); outline-offset: 2px; }
+.fut-n { grid-area: n; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-weight: 600; background: var(--accent-fill); color: var(--on-accent); }
+.fut-linea b { grid-area: t; font-size: 15px; }
+.fut-linea small { grid-area: c; color: var(--muted); font-size: 12.5px; }
+
+.fut-idea { display: flex; flex-direction: column; gap: 10px; }
+.fut-idea h3 { font-size: 17px; }
+.fut-idea > p { font-size: 14px; color: var(--text-2); }
+.fut-ico { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: var(--nova); background: color-mix(in srgb, var(--brand-red) 14%, transparent); }
+.fut-sueno .fut-ico { color: var(--text); background: color-mix(in srgb, var(--brand-blue) 45%, transparent); }
+.fut-bloque .list { margin-top: 6px; }
+.fut-riesgo { color: var(--text-2); }
+.fut-riesgo b { color: var(--warn); }
+.fut-ref { margin-top: auto; display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-left: 2px solid var(--nova); background: var(--night-3); border-radius: 0 8px 8px 0; }
+.fut-ref b { font-size: 14px; }
+
+.fut-cierre { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+.fut-cierre p { flex: 1 1 320px; color: var(--text-2); }
+
+@media (max-width: 640px) { .fut-linea { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .fut-linea a { transition: none; } .fut-linea a:hover { transform: none; } }

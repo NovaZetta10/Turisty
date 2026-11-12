@@ -2,8 +2,8 @@
 // El default export es una SECCIÓN (sin .wrap ni cabecera de página): Diagnóstico la importa con
 //   import Usuarios from './Usuarios'   →   <Usuarios />
 // Datos en src/data/usuarios.ts. Todo es hipótesis hasta que lo validen entrevistas reales.
-import { useState } from 'react'
-import { EMOCIONES, EMOCION_TXT, ENCUESTA, ENTREVISTAS, FASES, FRASE_PROBLEMA, JOURNEY, PERSONAS, estadoHipotesis, type PasoJourney } from '../data/usuarios'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { EMOCIONES, EMOCION_TXT, ENCUESTA, ENTREVISTAS, FRASE_PROBLEMA, JOURNEY, PERSONAS, RECORRIDOS, estadoHipotesis, type Emocion, type PasoJourney } from '../data/usuarios'
 import { HIPOTESIS } from '../data/investigacion'
 import { Refs } from '../components/Refs'
 import { iniciales } from '../components/Avatar'
@@ -28,7 +28,8 @@ function Estado({ ok }: { ok: boolean }) {
 function Curva({ pasos }: { pasos: PasoJourney[] }) {
   const n = pasos.length
   const y = (e: number) => 40 - e * 12.5 // % desde arriba; -2..2 → 65..15 (deja sitio a la etiqueta)
-  const pts = pasos.map((p, i) => `${((i + 0.5) / n) * 100},${y(p.emocion)}`).join(' ')
+  const e = (p: PasoJourney) => (p.emocion ?? 0) as Emocion
+  const pts = pasos.map((p, i) => `${((i + 0.5) / n) * 100},${y(e(p))}`).join(' ')
   return (
     <div className="emo" style={{ gridColumn: `2 / span ${n}` }}>
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
@@ -36,8 +37,8 @@ function Curva({ pasos }: { pasos: PasoJourney[] }) {
         <polyline points={pts} fill="none" stroke="var(--text)" strokeWidth="2" vectorEffect="non-scaling-stroke" strokeLinejoin="round" />
       </svg>
       {pasos.map((p, i) => (
-        <span key={i} className={`emo-dot e${p.emocion}`} style={{ left: `${((i + 0.5) / n) * 100}%`, top: `${y(p.emocion)}%` }} title={EMOCION_TXT[p.emocion]}>
-          <i>{EMOCION_TXT[p.emocion]}</i>
+        <span key={i} className={`emo-dot e${e(p)}`} style={{ left: `${((i + 0.5) / n) * 100}%`, top: `${y(e(p))}%` }} title={EMOCION_TXT[e(p)]}>
+          <i>{EMOCION_TXT[e(p)]}</i>
         </span>
       ))}
     </div>
@@ -117,46 +118,68 @@ function Personas() {
 }
 
 function Recorrido() {
-  const claves = Object.keys(JOURNEY)
-  const [jid, setJid] = useState(claves[0])
+  const lista = RECORRIDOS.filter((r) => (JOURNEY[r.id] ?? []).length > 0)
+  const [jid, setJid] = useState(lista[0]?.id ?? '')
   const pasos = JOURNEY[jid] ?? []
+  const rec = RECORRIDOS.find((r) => r.id === jid)
   const pj = PERSONAS.find((x) => x.id === jid)
+  const conCurva = pasos.length > 0 && pasos.every((s) => s.emocion != null)
+  const todoTenique = pasos.every((s) => s.tenique)
+  const marco = useRef<HTMLDivElement>(null)
+  const [borde, setBorde] = useState({ izq: false, der: false })
+  const medir = () => {
+    const m = marco.current
+    if (!m) return
+    setBorde({ izq: m.scrollLeft > 4, der: m.scrollLeft + m.clientWidth < m.scrollWidth - 4 })
+  }
+  useEffect(() => {
+    medir()
+    window.addEventListener('resize', medir)
+    return () => window.removeEventListener('resize', medir)
+  }, [jid])
   return (
     <section id="recorrido" className="section">
       <div className="section-head">
         <div>
           <h2>Su recorrido de convivencia</h2>
-          <p>Del roce diario al orgullo compartido. Las columnas marcadas son donde actúa Tenique. Desplaza en horizontal en el móvil.</p>
+          <p>Paso a paso, de quien vive el turismo a quien lo organiza. {todoTenique ? 'Todo el recorrido pasa dentro de Tenique.' : 'Las columnas marcadas son donde actúa Tenique.'}</p>
         </div>
-        {claves.length > 1 && (
-          <div className="chips">{claves.map((k) => <button key={k} className={`chip ${k === jid ? 'on' : ''}`} onClick={() => setJid(k)}>{PERSONAS.find((x) => x.id === k)?.nombre ?? k}</button>)}</div>
+        {lista.length > 1 && (
+          <div className="chips">{lista.map((r) => <button key={r.id} className={`chip ${r.id === jid ? 'on' : ''}`} onClick={() => setJid(r.id)}>{r.nombre}</button>)}</div>
         )}
       </div>
       {pasos.length === 0 ? (
-        <Vacio titulo="Recorrido en preparación" icono={null} interno={<>Añádelo en <span className="code">src/data/usuarios.ts</span>, dentro de JOURNEY.</>}>El recorrido de esta persona se publicará cuando lo tengamos contrastado.</Vacio>
+        <Vacio titulo="Recorrido en preparación" icono={null} interno={<>Añádelo en <span className="code">src/data/usuarios.ts</span>, dentro de JOURNEY.</>}>El recorrido se publicará cuando lo tengamos contrastado.</Vacio>
       ) : (
         <>
           <div className="us-leyenda small muted">
-            <Estado ok={!!pj?.validado} />
-            <span><span className="us-marca" aria-hidden="true" /> Actúa Tenique</span>
-            <span>Emoción estimada, por validar</span>
+            <Estado ok={rec?.persona ? !!pj?.validado : false} />
+            {!todoTenique && <span><span className="us-marca" aria-hidden="true" /> Actúa Tenique</span>}
+            {conCurva && <span>Emoción estimada, por validar</span>}
+            {borde.der || borde.izq ? <span className="us-desliza" aria-hidden="true">Desliza →</span> : null}
           </div>
-          <div className="journey">
-            <div className="journey-grid" style={{ gridTemplateColumns: `140px repeat(${pasos.length}, minmax(160px, 1fr))` }}>
-              <div className="rowh">Fase</div>
-              {pasos.map((s, i) => (
-                <div key={i} className={`colh ${s.tenique ? 'us-ten' : ''}`}>
-                  <span className="muted tnum small">{FASES.indexOf(s.fase) + 1}</span> {s.fase}
-                  {s.tenique && <span className="us-chip">Tenique</span>}
-                </div>
-              ))}
-              <div className="rowh">Emoción</div>
-              <Curva pasos={pasos} />
-              {FILAS.map(([k, t]) => (
-                <Fila key={k} titulo={t} clase={k === 'oportunidad' ? 'opp' : ''} pasos={pasos} valores={pasos.map((s) => String(s[k]))} />
-              ))}
-              <div className="rowh">Canales</div>
-              {pasos.map((s, i) => <div key={i} className={s.tenique ? 'us-ten' : ''}><div className="chips">{s.canales.map((c) => <span key={c} className="tag">{c}</span>)}</div></div>)}
+          <div className={`us-journey-marco ${borde.izq ? 'sombra-izq' : ''} ${borde.der ? 'sombra-der' : ''}`}>
+            <div className="journey us-journey" ref={marco} onScroll={medir} tabIndex={0} aria-label={`Recorrido: ${rec?.nombre ?? ''}`}>
+              <div className="journey-grid" style={{ ['--n' as string]: pasos.length } as CSSProperties}>
+                <div className="rowh">Fase</div>
+                {pasos.map((s, i) => (
+                  <div key={i} className={`colh ${s.tenique && !todoTenique ? 'us-ten' : ''}`}>
+                    <span className="muted tnum small">{i + 1}</span> {s.fase}
+                    {s.tenique && !todoTenique && <span className="us-chip">Tenique</span>}
+                  </div>
+                ))}
+                {conCurva && (
+                  <>
+                    <div className="rowh">Emoción</div>
+                    <Curva pasos={pasos} />
+                  </>
+                )}
+                {FILAS.map(([k, t]) => (
+                  <Fila key={k} titulo={t} clase={k === 'oportunidad' ? 'opp' : ''} marcar={!todoTenique} pasos={pasos} valores={pasos.map((s) => String(s[k]))} />
+                ))}
+                <div className="rowh">Canales</div>
+                {pasos.map((s, i) => <div key={i} className={s.tenique && !todoTenique ? 'us-ten' : ''}><div className="chips">{s.canales.map((c) => <span key={c} className="tag">{c}</span>)}</div></div>)}
+              </div>
             </div>
           </div>
         </>
@@ -165,11 +188,11 @@ function Recorrido() {
   )
 }
 
-function Fila({ titulo, valores, clase, pasos }: { titulo: string; valores: string[]; clase: string; pasos: PasoJourney[] }) {
+function Fila({ titulo, valores, clase, pasos, marcar }: { titulo: string; valores: string[]; clase: string; pasos: PasoJourney[]; marcar: boolean }) {
   return (
     <>
       <div className="rowh">{titulo}</div>
-      {valores.map((v, i) => <div key={i} className={`${clase} ${pasos[i].tenique ? 'us-ten' : ''}`}>{v}</div>)}
+      {valores.map((v, i) => <div key={i} className={`${clase} ${marcar && pasos[i].tenique ? 'us-ten' : ''}`}>{v}</div>)}
     </>
   )
 }

@@ -82,8 +82,11 @@ export const PERSONAS: Persona[] = [
 ]
 
 /** Fases del recorrido de convivencia (no de un viaje genérico). Sirven para las dos personas. */
-export type Fase = 'Día a día' | 'Roce' | 'Descubre' | 'Participa' | 'Comparte' | 'Ve el retorno' | 'Orgullo'
-export const FASES: Fase[] = ['Día a día', 'Roce', 'Descubre', 'Participa', 'Comparte', 'Ve el retorno', 'Orgullo']
+export type FasePersona = 'Día a día' | 'Roce' | 'Descubre' | 'Participa' | 'Comparte' | 'Ve el retorno' | 'Orgullo'
+/** Fases de las dos personas (vecina y visitante). Los recorridos de anfitrión y de Turismo de Tenerife tienen las suyas. */
+export const FASES: FasePersona[] = ['Día a día', 'Roce', 'Descubre', 'Participa', 'Comparte', 'Ve el retorno', 'Orgullo']
+/** Nombre de la fase: libre en los recorridos de agentes. */
+export type Fase = string
 
 export type Emocion = -2 | -1 | 0 | 1 | 2
 
@@ -93,31 +96,64 @@ export type PasoJourney = {
   piensa: string
   dolor: string
   oportunidad: string
-  emocion: Emocion
+  /** Emoción estimada (hipótesis). Sin ella no se dibuja la curva: los recorridos de instituciones no la llevan. */
+  emocion?: Emocion
   canales: string[]
   /** true si en este paso actúa Tenique. */
   tenique: boolean
+  /** id de la pantalla de la app que ilustra el paso */
+  pantalla?: PantallaApp
+  /** id de EMOCIONES para la portada ilustrada del paso */
+  emocionApp?: string
 }
 
-/** Un recorrido por persona, con la clave del `id` de la persona. Emociones estimadas: hipótesis. */
+/** Ids de PANTALLAS en src/prototipo/pantallas.tsx (fijados por Prototipo para el sendero de la pestaña Tenique). */
+export type PantallaApp = 'inicio' | 'municipio' | 'sentir' | 'lista' | 'experiencia' | 'reserva' | 'confirmacion' | 'planes' | 'estancia' | 'barrio' | 'anfitrion' | 'turismo'
+
+/** Recorridos que se muestran (y en este orden). `persona`: tiene ficha en PERSONAS. */
+export const RECORRIDOS: { id: string; nombre: string; persona: boolean }[] = [
+  { id: 'vecina', nombre: 'Vecina de zona turística', persona: true },
+  { id: 'visitante', nombre: 'Visitante', persona: true },
+  { id: 'anfitrion', nombre: 'Anfitrión o asociación', persona: false },
+  { id: 'turismo', nombre: 'Turismo de Tenerife', persona: false },
+]
+
+/** Un recorrido por clave de RECORRIDOS. Todo es hipótesis, fiel al plan de acción. */
 export const JOURNEY: Record<string, PasoJourney[]> = {
   vecina: [
-    { fase: 'Día a día', hace: 'Va al trabajo y hace recados en un barrio con mucho visitante.', piensa: '«Esto ya no parece mi pueblo».', dolor: 'Tráfico, alquileres altos, sitios de siempre llenos.', oportunidad: 'Reconocer el malestar sin culpar al turista.', emocion: -1, canales: ['Calle', 'Prensa local'], tenique: false },
-    { fase: 'Roce', hace: 'Choca con el turismo: aparcar, una fiesta llena, un vecino que se va.', piensa: '«El beneficio se lo llevan otros».', dolor: 'No ve el retorno del turismo en su entorno.', oportunidad: 'Explicar con datos cercanos qué deja el turismo y dónde.', emocion: -2, canales: ['Conversaciones', 'Redes'], tenique: false },
-    { fase: 'Descubre', hace: 'Se entera de Tenique por su asociación, su ayuntamiento o un vecino.', piensa: '«¿Otra campaña?».', dolor: 'Desconfianza hacia iniciativas institucionales.', oportunidad: 'Que se lo cuente alguien cercano y que haya vecinos ya dentro.', emocion: 0, canales: ['Asociación de vecinos', 'Punto físico', 'WhatsApp'], tenique: true },
-    { fase: 'Participa', hace: 'Propone una experiencia (cocina, ruta, oficio) o se apunta a una.', piensa: '«Esto lo sé hacer yo».', dolor: 'Trámites, tiempo, miedo a no estar a la altura.', oportunidad: 'Alta sencilla, acompañamiento del dinamizador y aval del barrio.', emocion: 1, canales: ['App', 'Punto físico'], tenique: true },
-    { fase: 'Comparte', hace: 'Recibe a visitantes y vecinos en su experiencia.', piensa: '«Les interesa de verdad lo nuestro».', dolor: 'Idioma, grupos difíciles.', oportunidad: 'Grupos pequeños, apoyo de idioma, experiencias mixtas con locales.', emocion: 2, canales: ['En persona'], tenique: true },
-    { fase: 'Ve el retorno', hace: 'Ve en un cartel, en la app y en el informe trimestral en qué se ha usado el fondo que ayudó a decidir.', piensa: '«Esto sí se nota».', dolor: 'Si el fondo no se ve, vuelve la desconfianza.', oportunidad: 'Uso del fondo visible, decidido con el barrio.', emocion: 2, canales: ['App', 'Cartel en el barrio', 'Asamblea'], tenique: true },
-    { fase: 'Orgullo', hace: 'Avala experiencias de su barrio y anima a otros vecinos.', piensa: '«Mi barrio tiene mucho que enseñar».', dolor: 'Cansancio si todo depende de los mismos.', oportunidad: 'Reconocimiento público y relevo de anfitriones.', emocion: 2, canales: ['Boca a boca', 'App'], tenique: true },
+    { fase: 'Día a día', hace: 'Va al trabajo y hace recados en un barrio con mucho visitante.', piensa: '«Esto ya no parece mi pueblo».', dolor: 'Tráfico, alquileres altos, sitios de siempre llenos.', oportunidad: 'Reconocer el malestar sin culpar al turista.', emocion: -1, canales: ['Calle', 'Prensa local'], tenique: false, emocionApp: 'raices' },
+    { fase: 'Roce', hace: 'Choca con el turismo: aparcar, una fiesta llena, un vecino que se va.', piensa: '«El beneficio se lo llevan otros».', dolor: 'No ve el retorno del turismo en su entorno.', oportunidad: 'Explicar con datos cercanos qué deja el turismo y dónde.', emocion: -2, canales: ['Conversaciones', 'Redes'], tenique: false, emocionApp: 'pertenencia' },
+    { fase: 'Descubre', hace: 'Se entera de Tenique por su asociación, su ayuntamiento o un vecino.', piensa: '«¿Otra campaña?».', dolor: 'Desconfianza hacia iniciativas institucionales.', oportunidad: 'Que se lo cuente alguien cercano y que haya vecinos ya dentro.', emocion: 0, canales: ['Asociación de vecinos', 'Punto físico', 'WhatsApp'], tenique: true, pantalla: 'municipio', emocionApp: 'orgullo' },
+    { fase: 'Participa', hace: 'Propone una experiencia (cocina, ruta, oficio) o se apunta a una.', piensa: '«Esto lo sé hacer yo».', dolor: 'Trámites, tiempo, miedo a no estar a la altura.', oportunidad: 'Alta sencilla, acompañamiento del dinamizador y aval del barrio.', emocion: 1, canales: ['App', 'Punto físico'], tenique: true, pantalla: 'lista', emocionApp: 'sabor' },
+    { fase: 'Comparte', hace: 'Recibe a visitantes y vecinos en su experiencia.', piensa: '«Les interesa de verdad lo nuestro».', dolor: 'Idioma, grupos difíciles.', oportunidad: 'Grupos pequeños, apoyo de idioma, experiencias mixtas con locales.', emocion: 2, canales: ['En persona'], tenique: true, pantalla: 'planes', emocionApp: 'celebracion' },
+    { fase: 'Ve el retorno', hace: 'Ve en un cartel, en la app y en el informe trimestral en qué se ha usado el fondo que ayudó a decidir.', piensa: '«Esto sí se nota».', dolor: 'Si el fondo no se ve, vuelve la desconfianza.', oportunidad: 'Uso del fondo visible, decidido con el barrio.', emocion: 2, canales: ['App', 'Cartel en el barrio', 'Asamblea'], tenique: true, pantalla: 'barrio', emocionApp: 'pertenencia' },
+    { fase: 'Orgullo', hace: 'Avala experiencias de su barrio y anima a otros vecinos.', piensa: '«Mi barrio tiene mucho que enseñar».', dolor: 'Cansancio si todo depende de los mismos.', oportunidad: 'Reconocimiento público y relevo de anfitriones.', emocion: 2, canales: ['Boca a boca', 'App'], tenique: true, pantalla: 'anfitrion', emocionApp: 'orgullo' },
   ],
   visitante: [
-    { fase: 'Día a día', hace: 'Pasa la estancia entre alojamiento, playa y restaurantes de la zona.', piensa: '«Esto podría ser cualquier sitio».', dolor: 'Burbuja turística, poco contacto real.', oportunidad: 'Abrir la puerta a la isla fuera del circuito.', emocion: 0, canales: ['Alojamiento', 'Mapas'], tenique: false },
-    { fase: 'Roce', hace: 'Nota el malestar: pintadas, noticias, miradas.', piensa: '«¿Molesto aquí?».', dolor: 'Se siente culpable o rechazado.', oportunidad: 'Ofrecerle una forma clara de aportar.', emocion: -1, canales: ['Calle', 'Noticias'], tenique: false },
-    { fase: 'Descubre', hace: 'Busca por emoción («Quiero sentir… calma, sabor») en la app o en una oficina.', piensa: '«Esto lo recomiendan los de aquí».', dolor: 'Demasiadas webs de actividades iguales.', oportunidad: 'Triple validación: garantía de Turismo de Tenerife, aval del barrio y valoración de quien la vivió.', emocion: 1, canales: ['App', 'Oficina de turismo', 'Recepción'], tenique: true },
-    { fase: 'Participa', hace: 'Reserva una experiencia con un anfitrión.', piensa: '«Sé a quién beneficia lo que pago».', dolor: 'Pagos, idioma, ubicación.', oportunidad: 'Reserva en su idioma y aviso claro del reparto (anfitrión y fondo).', emocion: 1, canales: ['App'], tenique: true },
-    { fase: 'Comparte', hace: 'Cocina, camina o celebra con vecinos.', piensa: '«Me han tratado como a uno más».', dolor: 'Que parezca un espectáculo montado.', oportunidad: 'Experiencias reales, con vecinos también como participantes.', emocion: 2, canales: ['En persona'], tenique: true },
-    { fase: 'Ve el retorno', hace: 'Recibe qué se ha hecho en el barrio con el fondo.', piensa: '«Mi viaje ha dejado algo».', dolor: 'Si no recibe nada, lo olvida.', oportunidad: 'Mensaje sencillo con el uso del fondo.', emocion: 1, canales: ['Correo', 'App'], tenique: true },
-    { fase: 'Orgullo', hace: 'Recomienda la experiencia y vuelve.', piensa: '«Tengo amigos en Tenerife».', dolor: 'Nada que le haga volver a esa zona.', oportunidad: 'Invitarle a otras experiencias del mismo barrio.', emocion: 2, canales: ['Boca a boca', 'Reseñas'], tenique: true },
+    { fase: 'Día a día', hace: 'Pasa la estancia entre alojamiento, playa y restaurantes de la zona.', piensa: '«Esto podría ser cualquier sitio».', dolor: 'Burbuja turística, poco contacto real.', oportunidad: 'Abrir la puerta a la isla fuera del circuito.', emocion: 0, canales: ['Alojamiento', 'Mapas'], tenique: false, emocionApp: 'calma' },
+    { fase: 'Roce', hace: 'Nota el malestar: pintadas, noticias, miradas.', piensa: '«¿Molesto aquí?».', dolor: 'Se siente culpable o rechazado.', oportunidad: 'Ofrecerle una forma clara de aportar.', emocion: -1, canales: ['Calle', 'Noticias'], tenique: false, emocionApp: 'pertenencia' },
+    { fase: 'Descubre', hace: 'Busca por emoción («Quiero sentir… calma, sabor») en la app o en una oficina.', piensa: '«Esto lo recomiendan los de aquí».', dolor: 'Demasiadas webs de actividades iguales.', oportunidad: 'Triple validación: garantía de Turismo de Tenerife, aval del barrio y valoración de quien la vivió.', emocion: 1, canales: ['App', 'Oficina de turismo', 'Recepción'], tenique: true, pantalla: 'sentir', emocionApp: 'asombro' },
+    { fase: 'Participa', hace: 'Reserva una experiencia con un anfitrión.', piensa: '«Sé a quién beneficia lo que pago».', dolor: 'Pagos, idioma, ubicación.', oportunidad: 'Reserva en su idioma y aviso claro del reparto (anfitrión y fondo).', emocion: 1, canales: ['App'], tenique: true, pantalla: 'reserva', emocionApp: 'sabor' },
+    { fase: 'Comparte', hace: 'Cocina, camina o celebra con vecinos.', piensa: '«Me han tratado como a uno más».', dolor: 'Que parezca un espectáculo montado.', oportunidad: 'Experiencias reales, con vecinos también como participantes.', emocion: 2, canales: ['En persona'], tenique: true, pantalla: 'confirmacion', emocionApp: 'celebracion' },
+    { fase: 'Ve el retorno', hace: 'Recibe qué se ha hecho en el barrio con el fondo.', piensa: '«Mi viaje ha dejado algo».', dolor: 'Si no recibe nada, lo olvida.', oportunidad: 'Mensaje sencillo con el uso del fondo.', emocion: 1, canales: ['Correo', 'App'], tenique: true, pantalla: 'estancia', emocionApp: 'pertenencia' },
+    { fase: 'Orgullo', hace: 'Recomienda la experiencia y vuelve.', piensa: '«Tengo amigos en Tenerife».', dolor: 'Nada que le haga volver a esa zona.', oportunidad: 'Invitarle a otras experiencias del mismo barrio.', emocion: 2, canales: ['Boca a boca', 'Reseñas'], tenique: true, emocionApp: 'orgullo' },
+  ],
+  anfitrion: [
+    { fase: 'Se entera', hace: 'El dinamizador de barrio le cuenta Tenique en el punto físico o en su asociación.', piensa: '«¿Y yo qué puedo enseñar?».', dolor: 'No ve qué tiene de especial lo suyo.', oportunidad: 'Ejemplos de otros barrios y acompañamiento cercano.', emocion: 0, canales: ['Punto físico', 'Asociación', 'Dinamizador'], tenique: true, pantalla: 'inicio', emocionApp: 'raices' },
+    { fase: 'Propone', hace: 'Da de alta su experiencia: qué, cuándo y para cuántos. En el piloto, si es particular, gratis o con donación; si es una asociación, puede cobrar.', piensa: '«¿Tengo que darme de alta como negocio?».', dolor: 'Dudas legales, seguros y tiempo.', oportunidad: 'Alta guiada por el dinamizador; seguros y fiscalidad, según el informe jurídico.', emocion: -1, canales: ['App', 'Punto físico'], tenique: true, pantalla: 'anfitrion', emocionApp: 'orgullo' },
+    { fase: 'Recibe el aval', hace: 'La asociación vecinal la avala y Turismo de Tenerife comprueba que cumple sus condiciones.', piensa: '«Mi barrio respalda lo que hago».', dolor: 'Esperar sin saber en qué punto está.', oportunidad: 'Estado visible: nueva, avalada por el barrio, con garantía.', emocion: 1, canales: ['App', 'Asociación'], tenique: true, pantalla: 'anfitrion', emocionApp: 'pertenencia' },
+    { fase: 'Recibe a gente', hace: 'Recibe a visitantes y vecinos en un grupo pequeño.', piensa: '«Les interesa de verdad».', dolor: 'Idioma, cancelaciones.', oportunidad: 'Apoyo de idioma y aviso de cada reserva.', emocion: 2, canales: ['En persona'], tenique: true, pantalla: 'experiencia', emocionApp: 'sabor' },
+    { fase: 'Le valoran', hace: 'Lee lo que puntúan quienes asistieron, vecinos y visitantes.', piensa: '«Puedo hacerlo mejor».', dolor: 'Una mala valoración pesa mucho.', oportunidad: 'Valoraciones con contexto y derecho a responder.', emocion: 1, canales: ['App'], tenique: true, pantalla: 'anfitrion', emocionApp: 'orgullo' },
+    { fase: 'Ve el retorno', hace: 'Ve en qué proyecto del barrio se usa lo recaudado, en la cuenta del municipio que gestiona el Cabildo.', piensa: '«Esto se queda en mi barrio».', dolor: 'Si no se ve, se desanima.', oportunidad: 'Cartel en la calle, app e informe trimestral.', emocion: 2, canales: ['App', 'Cartel en el barrio'], tenique: true, pantalla: 'barrio', emocionApp: 'pertenencia' },
+    { fase: 'Sigue', hace: 'Repite, invita a otro vecino o lo deja.', piensa: '«¿Compensa el tiempo que pongo?».', dolor: 'Cansancio. En el piloto, el particular no cobra.', oportunidad: 'Reconocimiento público y, en la expansión, cobro si el informe jurídico lo permite.', emocion: 1, canales: ['Boca a boca', 'Asociación'], tenique: true, emocionApp: 'celebracion' },
+  ],
+  turismo: [
+    { fase: 'Prepara', hace: 'Con el Cabildo y los ayuntamientos, fija las condiciones de la garantía y pone en marcha la app.', piensa: '«Esto no puede ser otra campaña».', dolor: 'Hay que encontrar y comprobar experiencias reales.', oportunidad: 'Partir de lo que ya hacen las asociaciones y el comercio de cada barrio.', canales: ['Convenio', 'Reuniones'], tenique: true, emocionApp: 'raices' },
+    { fase: 'Garantiza', hace: 'Comprueba cada experiencia que el barrio ya ha avalado.', piensa: '«¿Cumple las condiciones de calidad y seguridad?».', dolor: 'Muchas solicitudes a la vez.', oportunidad: 'Una lista única con el estado de cada experiencia.', canales: ['App'], tenique: true, pantalla: 'turismo', emocionApp: 'calma' },
+    { fase: 'Coordina', hace: 'Coordina a anfitriones, dinamizadores (que contratan el Cabildo y los ayuntamientos) y puntos físicos.', piensa: '«Que nadie se quede fuera por no usar el móvil».', dolor: 'Muchos agentes, cada uno con su ritmo.', oportunidad: 'Un panel común por municipio.', canales: ['App', 'Punto físico'], tenique: true, pantalla: 'turismo', emocionApp: 'pertenencia' },
+    { fase: 'Promociona', hace: 'Da a conocer Tenique a visitantes y residentes, con las empresas y la vivienda vacacional.', piensa: '«Que llegue también a quien no está en redes».', dolor: 'Competir con las plataformas de actividades.', oportunidad: 'Recepciones, oficinas de turismo y puntos físicos.', canales: ['Oficinas de turismo', 'Recepción', 'Redes'], tenique: true, pantalla: 'inicio', emocionApp: 'asombro' },
+    { fase: 'Publica', hace: 'Publica cada proyecto pagado por el fondo: cartel en la calle, app e informe trimestral.', piensa: '«Que se vea en la calle».', dolor: 'Depende de que el Cabildo y los ayuntamientos le pasen los datos.', oportunidad: 'Los datos del fondo, que gestiona el Cabildo, en lenguaje cercano.', canales: ['Cartel en el barrio', 'App', 'Informe'], tenique: true, pantalla: 'barrio', emocionApp: 'orgullo' },
+    { fase: 'Aprende', hace: 'Recibe la encuesta de percepción del ISTAC o de la universidad y ajusta el programa.', piensa: '«¿Está cambiando la convivencia?».', dolor: 'La percepción cambia despacio.', oportunidad: 'Evaluación externa, no autoevaluación.', canales: ['Informe'], tenique: true, emocionApp: 'calma' },
   ],
 }
 

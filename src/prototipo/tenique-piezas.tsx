@@ -68,7 +68,7 @@ export function ChipsEmo({ ids }: { ids: string[] }) {
 /* ───────── las tres piedras ───────── */
 
 export const PIEDRAS = [
-  { id: 'garantia', icono: 'sello', titulo: { es: 'Garantía Turismo de Tenerife', en: 'Tenerife Tourism guarantee' }, sub: { es: 'Seguridad, legalidad, seguro y accesibilidad. Antes de publicar.', en: 'Safety, legality, insurance and accessibility. Before publishing.' } },
+  { id: 'garantia', icono: 'sello', titulo: { es: 'Garantía Turismo de Tenerife', en: 'Tenerife Tourism guarantee' }, sub: { es: 'Cumple las condiciones del destino: legalidad, seguro de responsabilidad civil, accesibilidad y respeto al entorno. Antes de publicar.', en: 'Meets the destination’s conditions: legal compliance, public liability insurance, accessibility and respect for the environment. Before publishing.' } },
   { id: 'aval', icono: 'users', titulo: { es: 'Avalada por el barrio', en: 'Backed by the neighbourhood' }, sub: { es: 'Los vecinos o su asociación la avalan y lo renuevan. Si retiran el aval, sale.', en: 'Neighbours or their association back it and renew it. If they withdraw, it goes.' } },
   { id: 'valorada', icono: 'star', titulo: { es: 'Valorada por quien la vivió', en: 'Rated by those who lived it' }, sub: { es: 'Puntúan todas las personas que asistieron, vecinos y visitantes.', en: 'Everyone who attended rates it, locals and visitors.' } },
 ]
@@ -160,7 +160,7 @@ export function TarjetaExp({ e, i = 0, onAbrir, evitar }: { e: Experiencia; i?: 
         <span className="tq-card-cuerpo">
           <b className="tq-card-t">{t(e.titulo)}</b>
           {quien && <span className="tq-ofrece"><Avatar texto={quien} emo={emo} /><span>{t({ es: 'Lo ofrece', en: 'Hosted by' })}: <b>{quien}</b></span></span>}
-          <span className="tq-card-meta"><Ico name="pin" size={13} />{donde(e)}{e.cuando && <> · {e.cuando}</>}</span>
+          <span className="tq-card-meta"><Ico name="pin" size={13} />{donde(e)}{e.cuando && idioma === 'es' && <> · {e.cuando}</>}</span>
           <ChipsEmo ids={e.emociones} />
           <span className="tq-card-pie">
             <Piedras3 />

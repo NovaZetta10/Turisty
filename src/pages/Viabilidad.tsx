@@ -1,9 +1,11 @@
 import { useMemo, useState, type ReactNode } from 'react'
 import { Barras } from '../components/Grafico'
 import { Tabla, type Columna } from '../components/Tabla'
-import { Rejilla, Tarjeta } from '../components/Tarjeta'
+import { Cifra, Rejilla, Tarjeta } from '../components/Tarjeta'
 import { Refs, Verificado } from '../components/Refs'
+import { AGENTES, type AgenteId } from '../data/responsabilidades'
 import {
+  CALENDARIO, CARRILES, type ItemCalendario,
   CATEGORIA_TXT, COSTES, ENCAJE, ESCENARIOS, FASES, FONDO, KPIS, LEGAL, LIMITES, OPCIONES, RESIDENTE, PILOTO, RIESGOS, SUPUESTOS, SUPUESTOS_FONDO, fondoAnual, importe, totales,
   type Categoria, type Coste, type Pagador, type Hipotesis, type Nivel, type Riesgo,
 } from '../data/viabilidad'
@@ -53,6 +55,166 @@ function HojaDeRuta() {
         </li>
       ))}
     </ol>
+  )
+}
+
+// ─── calendario interactivo ──────────────────────────────────────────────────
+// Escala: los meses 0–24 ocupan el 74 % del ancho; del 24 al 60, el resto (comprimida).
+const CORTE = 24
+const PARTE = 74
+const pos = (m: number) => (m <= CORTE ? (m / CORTE) * PARTE : PARTE + ((m - CORTE) / (60 - CORTE)) * (100 - PARTE))
+const MARCAS = [0, 3, 6, 9, 12, 18, 24, 36, 48, 60]
+const cuando = (it: ItemCalendario) => (it.hasta === undefined ? `Mes ${it.desde}` : `Meses ${it.desde}–${it.hasta}`)
+
+// Carril «Comunicación»: hitos del pitch si existe src/data/comunicacion.ts con HITOS_CALENDARIO.
+type HitoCom = { desde?: number; mes?: number; hasta?: number; titulo: string; que?: string; lidera?: string; agentes?: AgenteId[] }
+const MOD_COM = import.meta.glob<{ HITOS_CALENDARIO?: HitoCom[] }>('../data/comunicacion.ts', { eager: true })
+const COMUNICACION: ItemCalendario[] = Object.values(MOD_COM).flatMap((m) => m.HITOS_CALENDARIO ?? []).map((h, i) => ({
+  id: `com-${i}`, carril: 'comunicacion', desde: h.desde ?? h.mes ?? 0, hasta: h.hasta, titulo: h.titulo,
+  que: h.que ?? '', lidera: h.lidera ?? 'Turismo de Tenerife', agentes: h.agentes ?? ['tdt'],
+}))
+const ITEMS = [...CALENDARIO, ...COMUNICACION]
+
+/** Reparte las barras de un carril en filas para que no se solapen. */
+function filasDeBarras(barras: ItemCalendario[]) {
+  const filas: ItemCalendario[][] = []
+  for (const b of [...barras].sort((a, c) => a.desde - c.desde)) {
+    const f = filas.find((x) => (x[x.length - 1].hasta ?? 0) <= b.desde)
+    if (f) f.push(b)
+    else filas.push([b])
+  }
+  return filas
+}
+
+function Calendario() {
+  const [sel, setSel] = useState('piloto')
+  const [agente, setAgente] = useState<AgenteId | ''>('')
+  const actual = ITEMS.find((i) => i.id === sel)
+  const suyo = (it: ItemCalendario) => !agente || it.agentes.includes(agente)
+  const nombreAgente = AGENTES.find((a) => a.id === agente)?.corto
+  const cuantos = ITEMS.filter(suyo).length
+
+  // Flechas: mueven el foco entre barras e hitos, en el orden de lectura.
+  const teclas = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const botones = [...e.currentTarget.querySelectorAll<HTMLButtonElement>('[data-gantt]')]
+    const i = botones.indexOf(document.activeElement as HTMLButtonElement)
+    if (i < 0) return
+    const destino = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: botones.length - 1 }[e.key]
+    if (destino === undefined) return
+    e.preventDefault()
+    botones[Math.max(0, Math.min(botones.length - 1, destino))].focus()
+  }
+
+  let orden = 0
+  return (
+    <div className="via-cal">
+      <div className="via-cal-filtro" role="group" aria-label="Ver lo que hace cada agente">
+        <span className="small muted">Ver por agente:</span>
+        <button className={`via-chip ${agente === '' ? 'on' : ''}`} aria-pressed={agente === ''} onClick={() => setAgente('')}>Todos</button>
+        {AGENTES.map((a) => (
+          <button key={a.id} className={`via-chip ${agente === a.id ? 'on' : ''}`} aria-pressed={agente === a.id} onClick={() => setAgente(a.id)}>{a.corto}</button>
+        ))}
+      </div>
+      <p className="small muted via-cal-cuenta" aria-live="polite">
+        {agente ? <><b>{nombreAgente}</b> participa en {cuantos} de {ITEMS.length} acciones. El resto se ve atenuado y marcado.</> : <>Toca una barra o un hito para ver qué es, quién lo lidera y cuándo se decide seguir. Con el teclado: tabulador o flechas.</>}
+      </p>
+
+      <div className="via-cal-marco">
+        <div className="via-cal-in" onKeyDown={teclas}>
+          {/* eje */}
+          <div className="via-cal-fila via-cal-eje" aria-hidden="true">
+            <div className="via-cal-nombre" />
+            <div className="via-cal-pista">
+              <span className="via-cal-ano" style={{ left: '0%', width: `${pos(12)}%` }}>Año 1</span>
+              <span className="via-cal-ano" style={{ left: `${pos(12)}%`, width: `${pos(24) - pos(12)}%` }}>Año 2</span>
+              <span className="via-cal-ano via-cal-comp" style={{ left: `${pos(24)}%`, width: `${100 - pos(24)}%` }}>Años 3 a 5 · escala comprimida</span>
+              {MARCAS.map((m) => <span key={m} className={`via-cal-marca tnum ${m === 0 ? 'ini' : m === 60 ? 'fin' : ''}`} style={{ left: `${pos(m)}%` }}>{m === 0 ? 'Hoy · mes 0' : m}</span>)}
+            </div>
+          </div>
+
+          {CARRILES.map((c) => {
+            const items = ITEMS.filter((i) => i.carril === c.id)
+            const filas = filasDeBarras(items.filter((i) => i.hasta !== undefined))
+            const hitos = items.filter((i) => i.hasta === undefined).sort((a, b) => a.desde - b.desde)
+            return (
+              <div key={c.id} className="via-cal-fila" role="group" aria-label={`Carril ${c.nombre}`}>
+                <div className="via-cal-nombre">{c.nombre}</div>
+                <div className="via-cal-pista">
+                  <span className="via-cal-guia via-cal-hoy" style={{ left: '0%' }} aria-hidden="true" />
+                  <span className="via-cal-guia via-cal-m9" style={{ left: `${pos(9)}%` }} aria-hidden="true" />
+                  <span className="via-cal-guia via-cal-corte" style={{ left: `${pos(CORTE)}%` }} aria-hidden="true" />
+                  {items.length === 0 && <span className="via-cal-vacio small muted">Pendiente: hitos de comunicación del pitch</span>}
+                  {filas.map((fila, fi) => (
+                    <div key={fi} className="via-cal-sub">
+                      {fila.map((it) => {
+                        const n = orden++
+                        return (
+                          <button
+                            key={it.id} data-gantt type="button"
+                            className={`via-g-barra ${sel === it.id ? 'sel' : ''} ${suyo(it) ? '' : 'off'}`}
+                            style={{ left: `${pos(it.desde)}%`, width: `${pos(it.hasta!) - pos(it.desde)}%`, ['--i' as string]: Math.min(n, 12) }}
+                            aria-pressed={sel === it.id}
+                            aria-label={`${it.titulo}. ${cuando(it)}. Lidera: ${it.lidera}.${suyo(it) ? '' : ` No participa ${nombreAgente}.`}`}
+                            title={`${it.titulo} · ${cuando(it)}`}
+                            onClick={() => setSel(it.id)}
+                          >
+                            <span>{it.corto ?? it.titulo}</span>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  ))}
+                  {hitos.length > 0 && (
+                    <div className="via-cal-sub via-cal-hitos">
+                      {hitos.map((it) => {
+                        const n = orden++
+                        return (
+                          <button
+                            key={it.id} data-gantt type="button"
+                            className={`via-g-hito ${it.decision ? 'decision' : ''} ${sel === it.id ? 'sel' : ''} ${suyo(it) ? '' : 'off'}`}
+                            style={{ left: `${pos(it.desde)}%`, ['--i' as string]: Math.min(n, 12) }}
+                            aria-pressed={sel === it.id}
+                            aria-label={`${it.decision ? 'Decisión' : 'Hito'}: ${it.titulo}. ${cuando(it)}. Lidera: ${it.lidera}.${suyo(it) ? '' : ` No participa ${nombreAgente}.`}`}
+                            title={`${it.titulo} · ${cuando(it)}`}
+                            onClick={() => setSel(it.id)}
+                          ><span aria-hidden="true" /></button>
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      <div className="via-cal-leyenda small muted" aria-hidden="true">
+        <span><i className="via-ley-barra" /> Fase o trabajo continuo</span>
+        <span><i className="via-ley-hito" /> Hito</span>
+        <span><i className="via-ley-decision" /> Decisión de seguir o cambiar</span>
+        <span><i className="via-ley-m9" /> Mes 9: seguir o parar</span>
+        <span>Los meses de cada hito son supuestos de planificación.</span>
+      </div>
+
+      {actual && (
+        <div className="card via-cal-panel" aria-live="polite">
+          <div className="via-cal-panel-top">
+            <span className="kicker">{CARRILES.find((c) => c.id === actual.carril)?.nombre} · {cuando(actual)}</span>
+            {actual.decision && <span className="tag warn"><span className="dot" />Decisión</span>}
+            {!suyo(actual) && <span className="tag off"><span className="dot" />Sin {nombreAgente}</span>}
+          </div>
+          <h3>{actual.titulo}<Refs ids={actual.fuentes ?? []} /></h3>
+          <p>{actual.que}</p>
+          <dl className="via-cal-dl">
+            <div><dt>Lidera</dt><dd>{actual.lidera}</dd></div>
+            {actual.conQuien && <div><dt>Con quién</dt><dd>{actual.conQuien}</dd></div>}
+            <div><dt>Participan</dt><dd className="via-cal-chips">{actual.agentes.map((a) => <span key={a} className="tag">{AGENTES.find((x) => x.id === a)?.corto ?? a}</span>)}</dd></div>
+            {actual.umbral && <div><dt>Seguir o parar</dt><dd>{actual.umbral}</dd></div>}
+          </dl>
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -204,6 +366,47 @@ const COL_RIESGOS: Columna<Riesgo>[] = [
   { clave: 'mitigacion', titulo: 'Cómo lo mitigamos' },
 ]
 
+/** Cuatro cifras de arranque, calculadas con los mismos supuestos que los simuladores. */
+function Resumen() {
+  const fondo = fondoAnual(ESCENARIOS[0].valores)
+  const piloto = totales(COSTES, SUPUESTOS.find((s) => s.id === 'meses')?.valor ?? 6, SUPUESTOS.find((s) => s.id === 'colchon')?.valor ?? 0)
+  return (
+    <Rejilla cols={4}>
+      <Cifra valor="60 meses" etiqueta="Hoja de ruta" detalle="De 3 municipios a toda la isla en el año 3" />
+      <Cifra valor="Mes 9" etiqueta="Primera decisión" detalle="Seguir, ajustar o parar con umbrales" />
+      <Cifra valor={eur.format(fondo.total)} etiqueta="Fondo del barrio al año" detalle={`Piloto · ${n0.format(100 - fondo.pctPublico)} % privado · supuesto`} />
+      <Cifra valor={eur.format(piloto.piloto)} etiqueta="Coste del piloto" detalle="6 meses con margen · supuesto" />
+    </Rejilla>
+  )
+}
+
+/** Riesgos en una matriz probabilidad × impacto: cuántos hay en cada casilla. */
+function MatrizRiesgos() {
+  const niveles: Nivel[] = ['alto', 'medio', 'bajo']
+  return (
+    <div className="via-matriz" role="table" aria-label="Riesgos por probabilidad e impacto">
+      <div role="row" className="via-matriz-fila">
+        <span role="columnheader" className="small muted">Probabilidad ↓ · impacto →</span>
+        {[...niveles].reverse().map((i) => <span key={i} role="columnheader" className="small muted">Impacto {i}</span>)}
+      </div>
+      {niveles.map((p) => (
+        <div key={p} role="row" className="via-matriz-fila">
+          <span role="rowheader" className="small muted">Probabilidad {p}</span>
+          {[...niveles].reverse().map((i) => {
+            const n = RIESGOS.filter((r) => r.probabilidad === p && r.impacto === i).length
+            const grave = p !== 'bajo' && i === 'alto'
+            return (
+              <span key={i} role="cell" className={`via-matriz-celda ${n ? 'con' : ''} ${grave && n ? 'grave' : ''}`} aria-label={`${n} riesgos con probabilidad ${p} e impacto ${i}`}>
+                <b className="tnum">{n || '–'}</b>{grave && n > 0 && <small>prioridad</small>}
+              </span>
+            )
+          })}
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export default function Viabilidad() {
   return (
     <div className="wrap">
@@ -213,8 +416,14 @@ export default function Viabilidad() {
         <p>Cómo se pone en marcha Tenique en Tenerife: de un piloto en tres municipios a toda la isla en tres años, con un fondo para cada barrio. Los números son supuestos de trabajo salvo los marcados como precio oficial.</p>
       </header>
 
-      <Bloque id="ruta" n={1} titulo="Hoja de ruta" texto="Cinco fases. Cada una con sus hitos y quién los lidera. Al cerrar el piloto se decide si seguir.">
-        <HojaDeRuta />
+      <Resumen />
+
+      <Bloque id="ruta" n={1} titulo="Hoja de ruta" texto="Cinco años en un calendario. Toca cualquier barra o hito para ver quién lo lidera y cuándo se decide seguir.">
+        <Calendario />
+        <details className="via-lista">
+          <summary>Ver las fases en lista</summary>
+          <HojaDeRuta />
+        </details>
       </Bloque>
 
       <Bloque id="fondo" n={2} titulo="El fondo del barrio" texto="Lo pagan sobre todo quienes viven del turismo: empresas turísticas, vivienda vacacional y cada reserva. El Cabildo suma, no sostiene. Los vecinos deciden en qué se gasta y se ve en la calle.">
@@ -242,11 +451,20 @@ export default function Viabilidad() {
       </Bloque>
 
       <Bloque id="piloto" n={3} titulo="Piloto" texto="Dónde, cuánto tiempo, con quién y qué tiene que pasar para seguir. Los umbrales son supuestos que se fijan con Turismo de Tenerife y el Cabildo.">
-        <Rejilla cols={3}>
-          <Tarjeta kicker="Dónde" titulo="3 municipios"><p>{PILOTO.donde}</p></Tarjeta>
-          <Tarjeta kicker="Cuánto tiempo" titulo="6 meses"><p>{PILOTO.duracion}</p></Tarjeta>
-          <Tarjeta kicker="Con quién" titulo="Todos los que sostienen el fogón"><p>{PILOTO.conQuien}</p></Tarjeta>
+        <Rejilla cols={4}>
+          <Cifra valor="3" etiqueta="Municipios" detalle="Uno turístico, uno rural y uno metropolitano" />
+          <Cifra valor="6 meses" etiqueta="Duración" detalle="Meses 4–9, tras 3 de preparación" />
+          <Cifra valor="30–50" etiqueta="Anfitriones" detalle="Vecinos, asociaciones, comercio y empresas" />
+          <Cifra valor={String(PILOTO.hipotesis.length)} etiqueta="Hipótesis" detalle="Cada una con umbral para seguir o parar" />
         </Rejilla>
+        <details className="via-lista">
+          <summary>Dónde, cuándo y con quién, en detalle</summary>
+          <dl className="via-cal-dl">
+            <div><dt>Dónde</dt><dd>{PILOTO.donde}</dd></div>
+            <div><dt>Cuánto tiempo</dt><dd>{PILOTO.duracion}</dd></div>
+            <div><dt>Con quién</dt><dd>{PILOTO.conQuien}</dd></div>
+          </dl>
+        </details>
         <div style={{ marginTop: 16 }}>
           <Tabla<Hipotesis> titulo="Hipótesis y umbrales" columnas={COL_HIPOTESIS} filas={PILOTO.hipotesis} minAncho={720} />
         </div>
@@ -299,6 +517,7 @@ export default function Viabilidad() {
       </Bloque>
 
       <Bloque id="riesgos" n={8} titulo="Riesgos" texto="Legales, de adopción, operativos, medioambientales y económicos, con su mitigación. Y los límites de lo que Tenique puede hacer.">
+        <MatrizRiesgos />
         <Tabla<Riesgo> columnas={COL_RIESGOS} filas={RIESGOS} minAncho={760} />
         <div className="card via-limites">
           <div className="col-t">Lo que Tenique no resuelve</div>

@@ -48,6 +48,8 @@
 /* Qué deja el turismo en tu municipio */
 .tu-muni-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
 .tu-muni-head h2 { margin-top: 4px; }
-.tu-muni-sel { display: block; margin-top: 4px; min-width: 240px; max-width: 100%; }
+select.search.tu-muni-sel { display: block; margin-top: 4px; min-width: 240px; max-width: 100%; color-scheme: dark; background-color: var(--night-2); color: var(--text); }
+/* Las opciones del desplegable nativo no heredan el fondo transparente: colores explícitos (texto 14,6:1 sobre night-2). */
+select.search.tu-muni-sel option { background-color: var(--night-2); color: var(--text); }
 .tu-muni-datos .senal b { font-size: 26px; }
 .no-existe li::marker { color: var(--nova-hot); }

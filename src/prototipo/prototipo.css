@@ -84,3 +84,75 @@ button.app-tarjeta:active { transform: scale(.98); }
   .proto-4-pista { display: flex; gap: 14px; width: 100%; max-width: 100%; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; margin: 0; padding: 0 0 4px; }
   .proto-4-tel { flex: 0 0 auto; scroll-snap-align: center; }
 }
+
+/* ─────────── Sendero de la experiencia (pestaña Tenique) ─────────── */
+.sendero-bloque { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.sendero-chips { flex-wrap: wrap; }
+.sendero { position: relative; min-width: 0; }
+.sendero svg { position: absolute; pointer-events: none; overflow: visible; }
+.sendero-h { left: 0; top: 0; width: 100%; height: 100px; }
+.sendero-v { display: none; }
+.sendero-base { fill: none; stroke: var(--line-2); stroke-width: 2; stroke-dasharray: 2 6; stroke-linecap: round; }
+.sendero-traza { fill: none; stroke: var(--nova); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset .9s var(--ease-out); }
+.sendero.dibujado .sendero-traza { stroke-dashoffset: 0; }
+.sendero-hitos { position: relative; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 8px; }
+.sendero-hitos li { min-width: 0; opacity: 0; transform: translateY(8px); transition: opacity .25s var(--ease-out), transform .25s var(--ease-out); transition-delay: calc(var(--i) * var(--paso)); }
+.sendero.dibujado .sendero-hitos li { opacity: 1; transform: none; }
+.sendero-hitos li.arriba { padding-top: 12px; }
+.sendero-hitos li.abajo { padding-top: 52px; }
+.hito { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: center; cursor: pointer; }
+.hito-num { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; flex: none; font-weight: 700; font-size: 14px; background: var(--night-2); color: var(--text-2); border: 2px solid var(--line-2); transition: transform .15s var(--ease-out), background-color .15s var(--ease-out), border-color .15s var(--ease-out); }
+.hito.tq .hito-num { border-color: var(--nova); color: var(--text); }
+.hito.on .hito-num { background: var(--nova); border-color: var(--nova); color: var(--night); transform: scale(1.08); }
+.hito:active .hito-num { transform: scale(.94); }
+.hito-txt { display: flex; flex-direction: column; gap: 4px; align-items: center; padding: 10px 8px; border-radius: 12px; border: 1px solid transparent; min-width: 0; width: 100%; transition: border-color .15s var(--ease-out), background-color .15s var(--ease-out); }
+.hito.on .hito-txt { border-color: var(--line-2); background: rgba(255, 255, 255, .03); }
+.hito-txt b { font-size: 14.5px; }
+.hito-hace { font-size: 12.5px; color: var(--text-2); line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.hito-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+.hito-emo, .hito-tq { display: inline-block; padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.hito-emo { background: rgba(255, 255, 255, .06); color: var(--text-2); }
+.hito-emo.e-2, .hito-emo.e-1 { background: var(--warn-bg); color: var(--warn); }
+.hito-emo.e1, .hito-emo.e2 { background: var(--ok-bg); color: var(--ok); }
+.hito-tq { background: var(--nova); color: var(--night); }
+
+.sendero-detalle { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 24px; align-items: start; animation: sendero-entra .25s var(--ease-out) both; }
+@keyframes sendero-entra { from { opacity: 0; transform: translateY(8px); } }
+.sendero-imagen { display: flex; justify-content: center; }
+.sendero-tel { --s: .62; }
+.sendero-portada { width: 233px; aspect-ratio: 375 / 480; border-radius: 22px; }
+.sendero-portada-t { position: absolute; left: 14px; bottom: 12px; font-weight: 800; font-size: 18px; color: #fff; }
+.sendero-cinta { aspect-ratio: auto; height: 72px; border-radius: 14px; margin-bottom: 14px; place-items: center end; padding-right: 16px; }
+.sendero-cinta .tq-portada-ico { width: 52px; height: 52px; }
+.sendero-cinta .sendero-portada-t { bottom: auto; top: 50%; transform: translateY(-50%); }
+.sendero-dl { display: grid; gap: 12px; margin: 0 0 12px; }
+.sendero-dl dt { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--nova); }
+.sendero-dl dd { margin: 3px 0 0; color: var(--text); font-size: 15px; }
+.sendero-vacio { padding: 40px 20px; }
+
+@media (max-width: 900px) {
+  .sendero-h { display: none; }
+  .sendero-v { display: block; left: 0; top: 0; width: 36px; height: 100%; }
+  .sendero-hitos { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .sendero-hitos li.arriba, .sendero-hitos li.abajo { padding-top: 0; }
+  .hito { flex-direction: row; align-items: flex-start; text-align: left; gap: 12px; }
+  .hito-txt { align-items: flex-start; padding: 6px 10px; }
+  .hito-tags { justify-content: flex-start; }
+  .sendero-detalle { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sendero-traza { transition: none; stroke-dashoffset: 0; }
+  .sendero-hitos li { transition: none; opacity: 1; transform: none; }
+  .sendero-detalle { animation: none; }
+}
+
+/* Pestaña Tenique: demo arriba (cabecera centrada en todos los tamaños) y cuatro piezas */
+.tq-demo-head { justify-content: center; text-align: center; }
+.tq-demo-head > div { margin: 0 auto; }
+.tq-demo-head p { margin-left: auto; margin-right: auto; }
+.proto-vistas { justify-content: center; }
+.proto-4-barra { justify-content: center; }
+.tq-pieza { position: relative; }
+.tq-pieza-ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: rgba(255, 255, 255, .06); color: var(--nova); margin-bottom: 4px; }
+.tq-pieza-link { align-self: flex-start; margin-top: auto; padding: 8px 0 0; border: 0; background: none; color: var(--nova); font: inherit; font-size: 14px; font-weight: 600; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.tq-pieza-link:hover { text-decoration: underline; text-underline-offset: 3px; }

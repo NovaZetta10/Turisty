@@ -55,7 +55,7 @@ export default function App() {
           </Link>
           <nav className="nav" aria-label="Secciones">
             <NavLink to="/" end>Inicio</NavLink>
-            {visibles.map((s) => <NavLink key={s.id} to={s.ruta}>{s.corto}</NavLink>)}
+            {visibles.map((s) => <NavLink key={s.id} to={s.ruta} className={s.destacada ? 'nav-destacada' : undefined}>{s.destacada && <NovaMark size={14} className="nav-destacada-ic" />}{s.corto}</NavLink>)}
           </nav>
         </div>
       </header>

@@ -663,3 +663,22 @@ th.num, td.num { text-align: right; }
 .tq-mas a { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: var(--nova); }
 /* si el vídeo no está, la tarjeta del reto ocupa todo el ancho */
 .split:not(:has(> .preview)) { grid-template-columns: 1fr; }
+
+/* menú: la propuesta (Tenique) al final, destacada, con un pequeño «meneo» cada pocos segundos */
+.nav a.nav-destacada { display: inline-flex; align-items: center; gap: 6px; margin-left: 6px; color: var(--on-accent); background: color-mix(in srgb, var(--brand-blue) 85%, transparent); box-shadow: 0 0 0 1px color-mix(in srgb, var(--on-accent) 25%, transparent); font-weight: 700; animation: nav-menea 6s var(--ease-out) 2s infinite; transform-origin: 50% 60%; }
+.nav a.nav-destacada:hover { background: var(--brand-blue); color: var(--on-accent); }
+.nav a.nav-destacada.active { background: var(--accent-fill); color: var(--on-accent); animation: none; }
+.nav-destacada-ic { flex: none; }
+/* 300 ms de meneo dentro de un ciclo de 6 s; solo transform */
+@keyframes nav-menea {
+  0%, 95%, 100% { transform: none; }
+  96% { transform: rotate(-4deg) scale(1.04); }
+  97.5% { transform: rotate(4deg) scale(1.04); }
+  99% { transform: rotate(-2deg); }
+}
+@media (prefers-reduced-motion: reduce) { .nav a.nav-destacada { animation: none; } }
+/* en el móvil el menú se desplaza: Tenique queda fijo al borde derecho para que siempre se vea */
+@media (max-width: 760px) {
+  .nav a.nav-destacada { position: sticky; right: 0; z-index: 1; background: var(--brand-blue); box-shadow: -10px 0 12px -4px var(--night), 0 0 0 1px color-mix(in srgb, var(--on-accent) 25%, transparent); }
+  .nav a.nav-destacada.active { background: var(--accent-fill); }
+}

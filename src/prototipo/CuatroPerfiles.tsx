@@ -1,21 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 import { Movil } from './Movil'
+import { PERFILES_DEMO } from './perfiles-demo'
 
 // «Así lo ve cada perfil»: cuatro teléfonos independientes, cada uno en la portada de su perfil.
 // Escritorio: los cuatro en fila. Móvil: carrusel con scroll-snap y chips para saltar a cada uno.
 // «Ver recorrido»: cada teléfono avanza solo por sus pantallas clave (2,5 s) y se para al tocarlo. Sin autoplay con reduced-motion.
 
-const PERFILES = [
-  { id: 'vecino', nombre: 'Vecino', pantalla: 'sentir', datos: { perfil: 'vecino', municipio: 'Tacoronte', emocion: 'sabor', experiencia: 'mercadillo-agricultor-tacoronte' }, recorrido: ['sentir', 'lista', 'experiencia', 'barrio'] },
-  { id: 'turista', nombre: 'Visitante', pantalla: 'sentir', datos: { perfil: 'turista', emocion: 'celebracion', experiencia: 'embarcacion-carmen-puerto-de-la-cruz' }, recorrido: ['sentir', 'lista', 'experiencia', 'estancia'] },
-  { id: 'anfitrion', nombre: 'Anfitrión o asociación', pantalla: 'anfitrion', datos: { perfil: 'anfitrion', municipio: 'Tacoronte', emocion: 'raices', experiencia: 'juego-del-palo-la-laguna' }, recorrido: ['anfitrion', 'experiencia', 'barrio'] },
-  { id: 'turismo', nombre: 'Turismo de Tenerife', pantalla: 'turismo', datos: { perfil: 'turismo', municipio: 'Puerto de la Cruz', experiencia: 'puertas-abiertas-observatorio-teide' }, recorrido: ['turismo', 'barrio', 'experiencia'] },
-]
+const PERFILES = PERFILES_DEMO
 
 export function CuatroPerfiles() {
   const [auto, setAuto] = useState(false)
   const [reducido, setReducido] = useState(false)
-  const [activo, setActivo] = useState(PERFILES[0].id)
+  const [activo, setActivo] = useState<string>(PERFILES[0].id)
   const pista = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

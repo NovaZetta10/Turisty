@@ -82,6 +82,7 @@ export const EQUIPO: Miembro[] = [
     rol: 'Telecomunicaciones, logística & cocina',
     estudios: 'FP media y superior de Telecomunicaciones, dos especializaciones en logística; cursando FP superior de Dirección de Cocina',
     linkedin: 'https://www.linkedin.com/in/marcelo-l%C3%B3pez-gonz%C3%A1lez-672957240',
+    foto: 'img/equipo/marcelo.jpg',
   },
 ]
 
@@ -95,26 +96,20 @@ export type Seccion = {
   resumen: string
   estado: Estado
   visible: boolean // pon false para ocultar una sección que el reto no pida
+  /** Se pinta distinta en el menú (nuestra propuesta). */
+  destacada?: boolean
 }
 
 /** Las secciones (tabs) de la web. Cambia el estado o la visibilidad según avance el reto. */
 export const SECCIONES: Seccion[] = [
   // El `id` es el nombre del archivo de src/pages (en minúsculas); la `ruta` y el `titulo` pueden cambiar sin renombrar archivos.
+  // Orden del menú: los tres entregables oficiales, ideas a futuro, presentación y, al final y destacada, la propuesta.
   {
     id: 'investigacion',
     ruta: '/diagnostico',
     titulo: 'Diagnóstico',
     corto: 'Diagnóstico',
     resumen: 'Qué pasa de verdad hoy en la convivencia entre turistas y población local en Tenerife, y sus causas reales, con datos y con quien lo vive.',
-    estado: 'listo',
-    visible: true,
-  },
-  {
-    id: 'prototipo',
-    ruta: '/tenique',
-    titulo: 'Tenique',
-    corto: 'Tenique',
-    resumen: 'Nuestra propuesta: experiencias reales que vecinos y visitantes comparten en toda la isla. Tenerife se cocina entre todos.',
     estado: 'listo',
     visible: true,
   },
@@ -137,6 +132,15 @@ export const SECCIONES: Seccion[] = [
     visible: true,
   },
   {
+    id: 'futuro',
+    ruta: '/futuro',
+    titulo: 'Más allá del piloto',
+    corto: 'Futuro',
+    resumen: 'Ideas y ambiciones para cuando Tenique funcione: lo que queda fuera del primer piloto y hacia dónde puede crecer.',
+    estado: 'listo',
+    visible: true,
+  },
+  {
     id: 'presentacion',
     ruta: '/presentacion',
     titulo: 'Presentación',
@@ -144,6 +148,16 @@ export const SECCIONES: Seccion[] = [
     resumen: 'Las diapositivas del pitch, en el navegador y a pantalla completa.',
     estado: 'listo',
     visible: true,
+  },
+  {
+    id: 'prototipo',
+    ruta: '/tenique',
+    titulo: 'Tenique',
+    corto: 'Tenique',
+    resumen: 'Nuestra propuesta: experiencias reales que vecinos y visitantes comparten en toda la isla. Tenerife se cocina entre todos.',
+    estado: 'listo',
+    visible: true,
+    destacada: true,
   },
   {
     // Integrado en Diagnóstico («A quién le pasa»); no es pestaña propia.
@@ -179,7 +193,7 @@ export const SITIO_URL = 'https://novazetta10.github.io/Turisty/'
  * `id` es el de SECCIONES; `motivo` es una frase de por qué mirarlo.
  */
 export const DESTACADOS: { id: string; motivo: string }[] = [
-  { id: 'prototipo', motivo: 'Pruébalo: elige qué quieres sentir y descubre una experiencia real de Tenerife avalada por su barrio.' },
-  { id: 'investigacion', motivo: 'El 62,2 % de los residentes cree que el turismo es beneficioso, pero solo el 35,9 % nota que mejora su vida (ISTAC, 2026).' },
-  { id: 'viabilidad', motivo: 'Cómo se pone en marcha: piloto en 3 municipios, fondo pagado sobre todo por quien se beneficia del turismo, e hitos hasta el año 5.' },
+  { id: 'viabilidad', motivo: 'El calendario del plan de acción: qué pasa cada mes, quién lo lidera y cuándo se decide seguir, ajustar o parar.' },
+  { id: 'prototipo', motivo: 'El sendero de Tenique: cómo una experiencia real llega a la app, sobre sus tres piedras.' },
+  { id: 'responsabilidades', motivo: 'Lo que Tenique no resuelve: vivienda, movilidad y saneamiento, y de quién es cada competencia, con su ley.' },
 ]

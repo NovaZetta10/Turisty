@@ -25,20 +25,20 @@ const VV: FuenteDato = { medio: 'ISTAC', titulo: 'Viviendas vacacionales por mun
 const EMP: FuenteDato = { medio: 'ISTAC', titulo: 'ECOSOC 2026: vínculo económico del hogar con el sector turístico, por comarcas', url: 'https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=dataset&agencyId=ISTAC&resourceId=C00086A_000491&version=1.0' }
 
 /** Hogares con vínculo económico con el turismo, por comarca (ECOSOC 2026). Es el desglose más fino que publica el ISTAC. */
-const COMARCA: Record<string, string> = {
-  Norte: 'Comarca Norte: el 12,8 % de los hogares tiene vínculo económico con el turismo',
-  Sur: 'Comarca Sur: el 44,6 % de los hogares tiene vínculo económico con el turismo',
-  'Área metropolitana': 'Comarca Área metropolitana: el 11,5 % de los hogares tiene vínculo económico con el turismo',
+const COMARCA: Record<string, T> = {
+  Norte: { es: 'Comarca Norte: el 12,8 % de los hogares tiene vínculo económico con el turismo', en: 'North district: 12.8% of households are economically linked to tourism' },
+  Sur: { es: 'Comarca Sur: el 44,6 % de los hogares tiene vínculo económico con el turismo', en: 'South district: 44.6% of households are economically linked to tourism' },
+  'Área metropolitana': { es: 'Comarca Área metropolitana: el 11,5 % de los hogares tiene vínculo económico con el turismo', en: 'Metropolitan district: 11.5% of households are economically linked to tourism' },
 }
 
-/** Verificados por Investigación (12-11-2026), tal cual. */
-const VERIFICADOS: Record<string, { vv: string; empleo: string }> = {
-  'Puerto de la Cruz': { vv: '1.108 viviendas vacacionales disponibles (3.807 plazas)', empleo: COMARCA.Norte },
-  Adeje: { vv: '4.232 viviendas vacacionales disponibles (18.753 plazas)', empleo: COMARCA.Sur },
-  Arona: { vv: '4.810 viviendas vacacionales disponibles (18.270 plazas)', empleo: COMARCA.Sur },
-  'San Cristóbal de La Laguna': { vv: '551 viviendas vacacionales disponibles (2.016 plazas)', empleo: COMARCA['Área metropolitana'] },
-  'Santa Cruz de Tenerife': { vv: '903 viviendas vacacionales disponibles (3.345 plazas)', empleo: COMARCA['Área metropolitana'] },
-  'Buenavista del Norte': { vv: '90 viviendas vacacionales disponibles (350 plazas)', empleo: COMARCA.Norte },
+/** Verificados por Investigación (12-11-2026): viviendas vacacionales disponibles, plazas y comarca. */
+const VERIFICADOS: Record<string, { viviendas: number; plazas: number; comarca: string }> = {
+  'Puerto de la Cruz': { viviendas: 1108, plazas: 3807, comarca: 'Norte' },
+  Adeje: { viviendas: 4232, plazas: 18753, comarca: 'Sur' },
+  Arona: { viviendas: 4810, plazas: 18270, comarca: 'Sur' },
+  'San Cristóbal de La Laguna': { viviendas: 551, plazas: 2016, comarca: 'Área metropolitana' },
+  'Santa Cruz de Tenerife': { viviendas: 903, plazas: 3345, comarca: 'Área metropolitana' },
+  'Buenavista del Norte': { viviendas: 90, plazas: 350, comarca: 'Norte' },
 }
 
 const fuentesInv = (...ids: number[]): FuenteDato[] =>
@@ -63,8 +63,12 @@ export function datosDe(municipio: string, idioma: 'es' | 'en'): FilaDato[] {
   const v = VERIFICADOS[municipio]
   const pendiente = (id: keyof typeof ETQ): FilaDato => ({ id, etiqueta: ETQ[id], fuentes: [] })
 
-  const vv = v?.vv ?? (p ? `${n(p.plazasVV)} plazas de vivienda vacacional disponibles` : undefined)
-  const empleo = v?.empleo ?? (p ? COMARCA[p.zona] : undefined)
+  const es = idioma === 'es'
+  const vv = v
+    ? (es ? `${n(v.viviendas)} viviendas vacacionales disponibles (${n(v.plazas)} plazas)` : `${n(v.viviendas)} holiday rentals available (${n(v.plazas)} places)`)
+    : p ? (es ? `${n(p.plazasVV)} plazas de vivienda vacacional disponibles` : `${n(p.plazasVV)} holiday rental places available`) : undefined
+  const comarca = COMARCA[v?.comarca ?? p?.zona ?? '']
+  const empleo = comarca ? comarca[idioma] : undefined
 
   const filas: FilaDato[] = [
     { id: 'turistas', etiqueta: ETQ.turistas, noSePublica: true, fuentes: [] },

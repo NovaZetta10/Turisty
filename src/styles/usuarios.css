@@ -34,3 +34,21 @@
 .us-enc-fila { display: flex; justify-content: space-between; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--line); }
 .us-enc-fila:last-child { border-bottom: 0; }
 .us-enc-n { flex: none; font-weight: 700; color: var(--text); }
+
+/* Recorrido: cabe entero en escritorio; en el móvil se desliza dentro de su marco con pista visible */
+.us-journey-marco { position: relative; }
+.us-journey { overflow-x: auto; border-radius: var(--radius); scrollbar-width: thin; }
+.us-journey:focus-visible { outline: 2px solid var(--nova); outline-offset: 2px; }
+.us-journey .journey-grid { min-width: 0; overflow: clip; grid-template-columns: 118px repeat(var(--n), minmax(0, 1fr)); }
+.us-journey .journey-grid > div { padding: 10px 10px; font-size: 13px; overflow-wrap: anywhere; hyphens: auto; }
+.us-journey .colh { font-size: 13.5px; }
+.us-journey .journey-grid > .rowh { overflow-wrap: normal; hyphens: manual; letter-spacing: .04em; font-size: 11px; }
+.us-journey .us-chip { display: block; width: max-content; margin: 6px 0 0; }
+.us-desliza { display: none; }
+@media (max-width: 959px) {
+  .us-journey .journey-grid { width: max-content; grid-template-columns: 114px repeat(var(--n), 168px); }
+  .us-journey .rowh { position: sticky; left: 0; z-index: 2; background-color: color-mix(in srgb, var(--text) 4%, var(--night)); box-shadow: 1px 0 0 var(--line); }
+  .us-desliza { display: inline; color: var(--nova); font-weight: 600; }
+  .us-journey-marco::after { content: ''; position: absolute; top: 1px; bottom: 1px; right: 0; width: 36px; pointer-events: none; border-radius: 0 var(--radius) var(--radius) 0; background: linear-gradient(to right, transparent, var(--night)); opacity: 0; transition: opacity .2s var(--ease-out); }
+  .us-journey-marco.sombra-der::after { opacity: 1; }
+}

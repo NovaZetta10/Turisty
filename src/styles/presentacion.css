@@ -1,0 +1,72 @@
+/* Diapositivas nuevas del pitch (Presentacion.tsx). Dueño: subagente de pitch. Medidas en cqw para que escalen igual
+   en la pestaña, a pantalla completa y en el PDF (1280×720). Solo tokens de la marca. */
+
+/* Fuente al pie, común a las diapositivas nuevas */
+.s-fuente { font-size: 1.25cqw; color: var(--muted); line-height: 1.4; margin-top: 1.4cqw; max-width: 82%; }
+
+/* QR a la demo en la esquina: pequeño pero escaneable (≈ 128 px en el PDF). El contenido de la pareja deja libre esa esquina. */
+.slide > .s-qr-esquina { position: absolute; top: 2.2cqw; right: 2.4cqw; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: .4cqw; }
+.s-qr-mini { width: 10cqw; padding: .5cqw; border-radius: .8cqw; background: #f4f6fb; }
+.s-qr-mini svg { display: block; width: 100%; height: auto; }
+.s-qr-esquina span { font-size: 1cqw; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+
+/* Revelación: «Os presentamos… Tenique» */
+.s-reveal { display: flex; flex-direction: column; justify-content: center; height: 100%; max-width: 78%; }
+.s-reveal-antes { font-family: var(--display); font-size: 3cqw; color: var(--text-2); }
+.s-reveal-nombre { font-family: var(--display); font-weight: 700; font-size: 13cqw; letter-spacing: -0.05em; line-height: .95; color: var(--text); margin-top: .6cqw; }
+.s-reveal-piedras { display: flex; gap: 1.6cqw; margin: 2cqw 0 1.4cqw; }
+.s-reveal-piedras span { width: 5.2cqw; height: 3cqw; border-radius: 50%; background: var(--line-2); border: .2cqw solid var(--text-2); }
+.s-reveal-piedras span:nth-child(2) { background: var(--accent-fill); border-color: var(--nova-hot); }
+.s-reveal-def { font-size: 2.1cqw; line-height: 1.4; color: var(--text-2); max-width: 90%; }
+
+/* Pareja problema → solución */
+.s-pareja { display: flex; flex-direction: column; height: 100%; }
+.s-pareja-cols { display: grid; grid-template-columns: 1fr auto 1fr; gap: 2.4cqw; align-items: stretch; margin-top: 2cqw; margin-right: 7cqw; flex: 1; min-height: 0; padding-bottom: 1cqw; }
+.s-pareja-prob, .s-pareja-sol { display: flex; flex-direction: column; gap: 1cqw; padding: 2.2cqw; border-radius: 1.6cqw; border: 1px solid var(--line); }
+.s-pareja-prob { background: rgba(255, 255, 255, .03); }
+.s-pareja-sol { background: color-mix(in srgb, var(--brand-red) 10%, transparent); border-color: color-mix(in srgb, var(--brand-red) 40%, transparent); }
+.s-pareja-et { font-size: 1.2cqw; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.s-pareja-sol .s-pareja-et { color: var(--nova); }
+.s-pareja-tit { font-family: var(--display); font-size: 2.5cqw; font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; }
+.s-pareja-valor { font-family: var(--display); font-size: 6.4cqw; font-weight: 700; letter-spacing: -0.05em; line-height: 1; color: var(--nova); margin-top: auto; font-variant-numeric: tabular-nums; }
+.s-pareja-etq { font-size: 1.5cqw; line-height: 1.4; color: var(--text-2); }
+.s-pareja-sol ul { margin: auto 0 0; padding-left: 1.8cqw; display: grid; gap: .8cqw; font-size: 1.6cqw; line-height: 1.4; color: var(--text-2); }
+.s-pareja-sol li::marker { color: var(--nova); }
+.s-pareja-flecha { align-self: center; color: var(--nova); }
+.s-pareja-flecha svg { width: 3cqw; height: 3cqw; }
+
+/* Las tres piedras, contentas */
+.s-fogon { display: grid; grid-template-columns: 1.1fr 1fr; gap: 3cqw; align-items: center; height: 100%; padding-right: 7cqw; }
+.s-fogon .s-title { max-width: 100%; }
+.s-fogon-piedras { display: grid; gap: 1cqw; margin-top: 2.4cqw; }
+.s-fogon-p { display: grid; grid-template-columns: 14cqw 1fr; gap: 1.4cqw; align-items: baseline; padding-top: 1cqw; border-top: 1px solid var(--line-2); }
+.s-fogon-p b { font-family: var(--display); font-size: 2cqw; }
+.s-fogon-p span { font-size: 1.6cqw; color: var(--text-2); line-height: 1.4; }
+.s-fogon-lema { font-family: var(--display); font-size: 3.4cqw; font-weight: 700; letter-spacing: -0.03em; color: var(--nova); margin-top: 2.6cqw; }
+.s-fogon-dibujo svg { display: block; width: 100%; height: auto; }
+
+/* Gracias y preguntas */
+.s-final { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+.s-final .s-mega { font-size: 11cqw; }
+.s-final-sub { font-family: var(--display); font-size: 5cqw; font-weight: 600; color: var(--nova); margin-top: 1cqw; }
+.s-final-equipo { margin-top: 4cqw; display: flex; flex-direction: column; gap: .4cqw; font-size: 1.8cqw; color: var(--text-2); }
+.s-final-equipo b { color: var(--text); font-family: var(--display); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .slide .s-fogon-llama { animation: s-fogon-llama 2.4s ease-in-out infinite; transform-origin: 50% 80%; transform-box: fill-box; }
+  .slide .s-fogon-vapor { animation: s-fogon-vapor 3s ease-in-out infinite; }
+}
+@keyframes s-fogon-llama { 50% { transform: scale(1.06, 1.12); opacity: .85; } }
+@keyframes s-fogon-vapor { 50% { opacity: .35; transform: translateY(-4px); } }
+@media print {
+  .slide .s-fogon-llama, .slide .s-fogon-vapor { animation: none !important; }
+}
+
+/* En la vista del móvil (diapositiva de menos de 520 px de ancho), los navegadores no bajan de un tamaño mínimo de letra
+   y los motivos de DESTACADOS, los detalles de las parejas y las fuentes no caben. Se ocultan solo ahí; en el proyector y en el PDF se ven completos. */
+@container (max-width: 520px) {
+  .s-pick span, .s-pareja-etq, .s-pareja-sol ul, .s-fuente { display: none; }
+}
+
+/* Pregunta-gancho larga (patrón «¿Cómo podemos…?»): más pequeña para que quepa */
+.s-question .s-mega.s-mega-largo { font-size: 4.3cqw; line-height: 1.08; max-width: 92%; }

@@ -4,6 +4,8 @@
 //  - `fuentes` son ids de FUENTES (src/data/investigacion.ts). Los pide el coordinador a investigación.
 //  - Las referencias de precios con fecha y URL están en docs/negocio-costes.md.
 
+import type { AgenteId } from './responsabilidades'
+
 export type Nivel = 'bajo' | 'medio' | 'alto'
 
 // ─── 1 · hoja de ruta ────────────────────────────────────────────────────────
@@ -392,3 +394,71 @@ export const CATEGORIA_TXT: Record<Categoria, string> = {
   infraestructura: 'Infraestructura',
   mantenimiento: 'Mantenimiento y seguros',
 }
+
+// ─── calendario interactivo (Gantt de 0 a 60 meses) ─────────────────────────
+// Los meses concretos de cada hito son supuestos de planificación.
+// El carril «Comunicación» se rellena solo si existe src/data/comunicacion.ts con `HITOS_CALENDARIO` (ver la página).
+
+export type CarrilId = 'prep' | 'piloto' | 'expansion' | 'fondo' | 'comunicacion' | 'evaluacion'
+export const CARRILES: { id: CarrilId; nombre: string }[] = [
+  { id: 'prep', nombre: 'Preparación y convenio' },
+  { id: 'piloto', nombre: 'Piloto' },
+  { id: 'expansion', nombre: 'Expansión' },
+  { id: 'fondo', nombre: 'Fondo del barrio' },
+  { id: 'comunicacion', nombre: 'Comunicación' },
+  { id: 'evaluacion', nombre: 'Evaluación externa' },
+]
+
+export type ItemCalendario = {
+  id: string
+  carril: CarrilId
+  /** Mes de inicio; si falta `hasta`, es un hito. */
+  desde: number
+  hasta?: number
+  titulo: string
+  /** Texto corto para la barra cuando el título no cabe. */
+  corto?: string
+  que: string
+  lidera: string
+  conQuien?: string
+  agentes: AgenteId[]
+  umbral?: string
+  decision?: boolean
+  fuentes?: number[]
+}
+
+const UMBRAL_PILOTO =
+  'Seguimos si se cumplen las metas del piloto: 30 o más anfitriones activos, 300 reservas al mes, 25 % de plazas para residentes, 20 % de la actividad en puntos físicos, +10 puntos de percepción y 15 empresas. Paramos o cambiamos si hay menos de 10 anfitriones, menos de 75 reservas al mes o la percepción no sube (supuestos).'
+
+export const CALENDARIO: ItemCalendario[] = [
+  // preparación
+  { id: 'prep', carril: 'prep', desde: 0, hasta: 3, titulo: 'Preparar', que: 'Dejar listo lo legal, elegir los 3 municipios y abrir un punto físico en cada uno.', lidera: 'Cabildo y Turismo de Tenerife', conQuien: 'Ayuntamientos', agentes: ['cabildo', 'tdt', 'ayto'] },
+  { id: 'convenio', carril: 'prep', desde: 1, titulo: 'Convenio Cabildo–Turismo de Tenerife', que: 'El Cabildo crea y gestiona el fondo; Turismo de Tenerife coordina el programa.', lidera: 'Cabildo y Turismo de Tenerife', agentes: ['cabildo', 'tdt'] },
+  { id: 'juridico', carril: 'prep', desde: 2, titulo: 'Informe jurídico', que: 'Figura del fondo, fiscalidad de anfitriones, seguros y protección de datos.', lidera: 'Asesoría jurídica del Cabildo', agentes: ['cabildo'] },
+  { id: 'municipios', carril: 'prep', desde: 3, titulo: 'Acuerdo con 3 ayuntamientos', que: 'Uno turístico, uno rural y uno metropolitano. Cada uno cede un punto físico.', lidera: 'Cabildo', conQuien: 'Ayuntamientos', agentes: ['cabildo', 'ayto'] },
+  { id: 'anfitriones', corto: 'Captación', carril: 'prep', desde: 1, hasta: 4, titulo: 'Captar y formar anfitriones', que: 'Vecinos, asociaciones, comercio y productores locales y empresas. Formación en las tres piedras de validación. Propuesta: invitar a los participantes de «Tenerife es tuya».', lidera: 'Dinamizadores de barrio (los contrata el Cabildo con los ayuntamientos)', conQuien: 'Asociaciones vecinales, comercio y productores, empresas', agentes: ['cabildo', 'ayto', 'local', 'comercio', 'empresas'], fuentes: [84] },
+  // piloto
+  { id: 'piloto', corto: 'Piloto', carril: 'piloto', desde: 4, hasta: 9, titulo: 'Piloto en 3 municipios', que: 'Experiencias reales entre vecinos y visitantes durante 6 meses. Los vecinos no cobran: gratis o con donación al fondo.', lidera: 'Turismo de Tenerife (coordina) y Cabildo (fondo)', conQuien: 'Ayuntamientos, asociaciones, comercio y productores, empresas, vivienda vacacional, turistas', agentes: ['tdt', 'cabildo', 'ayto', 'local', 'comercio', 'empresas', 'vv', 'turistas'], umbral: UMBRAL_PILOTO },
+  { id: 'tres-piedras', carril: 'piloto', desde: 4, titulo: 'Primeras experiencias con las tres piedras', que: '«Garantía Turismo de Tenerife», «Avalada por el barrio» y «Valorada por quien la vivió» (todas las personas que asistieron).', lidera: 'Turismo de Tenerife', conQuien: 'Dinamizador y asociaciones vecinales (aval)', agentes: ['tdt', 'local', 'comercio'] },
+  { id: 'decision-9', carril: 'piloto', desde: 9, titulo: 'Mes 9: seguir, ajustar o parar', que: 'Se comparan los resultados con los umbrales del piloto y se decide.', lidera: 'Cabildo y Turismo de Tenerife', conQuien: 'Ayuntamientos; datos de la evaluación externa', agentes: ['cabildo', 'tdt', 'ayto', 'evaluador'], umbral: UMBRAL_PILOTO, decision: true },
+  // expansión
+  { id: 'diez', carril: 'expansion', desde: 10, hasta: 24, titulo: 'Unos 10 municipios', que: 'Nuevos municipios por comarcas, con zonas rurales en cada tanda, cada uno con su punto físico.', lidera: 'Cabildo', conQuien: 'Ayuntamientos y Turismo de Tenerife', agentes: ['cabildo', 'ayto', 'tdt'] },
+  { id: 'cobro', carril: 'expansion', desde: 12, titulo: 'Vecinos anfitriones pueden cobrar', que: 'Solo si el informe jurídico deja clara la figura (alta, impuestos, seguro).', lidera: 'Cabildo', agentes: ['cabildo', 'local'], umbral: 'Condición: informe jurídico favorable.' },
+  { id: 'isla', carril: 'expansion', desde: 24, hasta: 36, titulo: 'Toda la isla', que: 'Todos los municipios de Tenerife dentro.', lidera: 'Cabildo', conQuien: 'Ayuntamientos y Turismo de Tenerife', agentes: ['cabildo', 'ayto', 'tdt'] },
+  { id: 'costumbre', carril: 'expansion', desde: 36, hasta: 60, titulo: 'Hacerlo costumbre', que: 'Tenique dentro de la estrategia turística insular: parte de cómo se vive y se visita Tenerife.', lidera: 'Cabildo y Turismo de Tenerife', agentes: ['cabildo', 'tdt'] },
+  // fondo
+  { id: 'aportacion', corto: 'Acuerdo', carril: 'fondo', desde: 1, hasta: 4, titulo: 'Acuerdo de aportación', que: 'Aportación fija de empresas turísticas y de vivienda vacacional, más el 10 % de cada reserva (supuestos).', lidera: 'Cabildo', conQuien: 'Patronales y asociaciones de vivienda vacacional; Turismo de Tenerife las invita', agentes: ['cabildo', 'empresas', 'vv', 'tdt'] },
+  { id: 'fondo-piloto', carril: 'fondo', desde: 4, hasta: 10, titulo: 'Fondo en el piloto', que: 'Primeras aportaciones y primera votación de los vecinos. El dinero privado es la mayor parte.', lidera: 'Cabildo (cuenta por municipio)', conQuien: 'Vecinos, ayuntamientos, empresas, vivienda vacacional', agentes: ['cabildo', 'local', 'ayto', 'empresas', 'vv', 'comercio', 'turistas'], umbral: 'Seguimos con 15 empresas y 200 viviendas adheridas y la mayor parte del fondo privada. Paramos si hay menos de 5 empresas o el fondo depende sobre todo del Cabildo (supuestos).' },
+  { id: 'votacion', carril: 'fondo', desde: 7, titulo: 'Primera votación del fondo', que: 'Los vecinos votan en qué se gasta, en la app o en papel en el punto físico.', lidera: 'Ayuntamientos', conQuien: 'Vecinos y asociaciones', agentes: ['ayto', 'local'] },
+  { id: 'primer-proyecto', carril: 'fondo', desde: 9, titulo: 'Primer proyecto en la calle', que: 'Señalizado con un cartel: «esto lo ha pagado Tenique».', lidera: 'Ayuntamientos', conQuien: 'Turismo de Tenerife lo publica', agentes: ['ayto', 'tdt', 'local'] },
+  { id: 'tramos', carril: 'fondo', desde: 10, hasta: 24, titulo: 'Aportación por tramos', que: 'La aportación de empresas y vivienda vacacional pasa a ser sistemática, recogida en el convenio.', lidera: 'Cabildo', conQuien: 'Patronales y vivienda vacacional', agentes: ['cabildo', 'empresas', 'vv'] },
+  { id: 'informe', carril: 'fondo', desde: 15, titulo: 'Primer informe anual del fondo', que: 'En lenguaje cercano: cuánto entró, quién lo puso y en qué se gastó.', lidera: 'Cabildo (cuentas) y Turismo de Tenerife (publicación)', agentes: ['cabildo', 'tdt'] },
+  { id: 'figura', carril: 'fondo', desde: 24, titulo: 'Decisión: figura estable del fondo', que: 'Con lo aprendido, se elige la figura jurídica definitiva.', lidera: 'Cabildo', agentes: ['cabildo'], decision: true },
+  { id: 'consolidado', carril: 'fondo', desde: 24, hasta: 60, titulo: 'Fondo consolidado', que: 'Cuentas auditadas y presupuestos participativos cada año en cada barrio.', lidera: 'Cabildo', conQuien: 'Ayuntamientos y vecinos', agentes: ['cabildo', 'ayto', 'local'] },
+  // evaluación
+  { id: 'enc-antes', carril: 'evaluacion', desde: 3, titulo: 'Encuesta de partida (antes)', que: 'Percepción de los residentes antes del piloto, en papel y en línea.', lidera: 'ISTAC o universidad, por encargo del Cabildo', agentes: ['evaluador', 'cabildo'] },
+  { id: 'enc-despues', carril: 'evaluacion', desde: 9, titulo: 'Encuesta de cierre (después)', que: 'Misma pregunta que al principio, para comparar.', lidera: 'ISTAC o universidad', agentes: ['evaluador'], umbral: 'Seguimos si la percepción sube 10 puntos o más; paramos si no sube o baja (supuesto).' },
+  { id: 'anual-24', carril: 'evaluacion', desde: 24, titulo: 'Medición anual de percepción', que: 'Comparable año a año.', lidera: 'ISTAC o universidad', agentes: ['evaluador'] },
+  { id: 'anual-36', carril: 'evaluacion', desde: 36, titulo: 'Medición anual de percepción', que: 'Comparable año a año.', lidera: 'ISTAC o universidad', agentes: ['evaluador'] },
+  { id: 'impacto', corto: 'Impacto', carril: 'evaluacion', desde: 48, hasta: 60, titulo: 'Evaluación externa del impacto', que: 'Evaluación independiente y ajuste del modelo.', lidera: 'ISTAC, universidad o entidad independiente', conQuien: 'Cabildo y Turismo de Tenerife', agentes: ['evaluador', 'cabildo', 'tdt'] },
+]

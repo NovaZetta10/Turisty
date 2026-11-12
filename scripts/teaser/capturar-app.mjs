@@ -31,7 +31,7 @@ try {
   const rect = (txt, sel = 'button') => b.evaluar(`(() => {
     const el = [...document.querySelectorAll(${JSON.stringify(sel)})].find(e => e.offsetParent && e.textContent.includes(${JSON.stringify(txt)}))
     if (!el) return null
-    el.scrollIntoView({ block: 'center' })
+    el.scrollIntoView({ block: 'nearest' })
     const r = el.getBoundingClientRect(); return { x: r.x, y: r.y, w: r.width, h: r.height }
   })()`)
   const pulsar = async (nombre, txt, sel = 'button') => {
@@ -48,13 +48,13 @@ try {
   await pulsar('01-inicio', 'Vivo en Tenerife')
   await pulsar('02-municipio', 'Tacoronte')
   await pulsar('03-sentir', 'Sabor')
-  await pulsar('04-lista', 'Mercadillo del Agricultor de Tacoronte', 'button, a, [role=button], article, div.tq-tarjeta')
+  await pulsar('04-lista', 'Mercadillo del Agricultor de Tacoronte', 'button.tq-card-btn')
   await foto('05-ficha')
 
   // Desplazamiento real de la ficha, fotograma a fotograma, hasta las piedras y «Qué deja aquí»
   const scroller = `(() => { const els = [...document.querySelectorAll('*')].filter(e => e.scrollHeight > e.clientHeight + 40 && /auto|scroll/.test(getComputedStyle(e).overflowY)); return els.sort((a,b) => b.clientHeight - a.clientHeight)[0] || document.scrollingElement })()`
   const destino = async (sel) => b.evaluar(`(() => { const s = ${scroller}; const el = document.querySelector(${JSON.stringify(sel)}); if (!el) return null; return Math.max(0, Math.min(s.scrollHeight - s.clientHeight, s.scrollTop + el.getBoundingClientRect().top - 90)) })()`)
-  const yPiedras = await destino('.tq-piedras, .tq-fuego, [class*=piedra]')
+  const yPiedras = await destino('.tq-fuego')
   const yDeja = await destino('.tq-deja')
   meta.scroll = { piedras: yPiedras, deja: yDeja }
   console.log('scroll', meta.scroll)
@@ -75,3 +75,5 @@ try {
 } finally {
   b.cerrar()
 }
+
+process.exit(0)
