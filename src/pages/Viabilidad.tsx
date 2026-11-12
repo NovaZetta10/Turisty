@@ -5,8 +5,8 @@ import { Cifra, Rejilla, Tarjeta } from '../components/Tarjeta'
 import { Refs, Verificado } from '../components/Refs'
 import { AGENTES, type AgenteId } from '../data/responsabilidades'
 import {
-  CALENDARIO, CARRILES, type ItemCalendario,
-  CATEGORIA_TXT, COSTES, ENCAJE, ESCENARIOS, FASES, FONDO, KPIS, LEGAL, LIMITES, OPCIONES, RESIDENTE, PILOTO, RIESGOS, SUPUESTOS, SUPUESTOS_FONDO, fondoAnual, importe, totales,
+  CALENDARIO, CARRILES, type ItemCalendario, DAFO,
+  CATEGORIA_TXT, COSTES, ENCAJE, MEDIOAMBIENTE, ESCENARIOS, FASES, FONDO, KPIS, LEGAL, LIMITES, OPCIONES, RESIDENTE, PILOTO, RIESGOS, SUPUESTOS, SUPUESTOS_FONDO, fondoAnual, importe, totales,
   type Categoria, type Coste, type Pagador, type Hipotesis, type Nivel, type Riesgo,
 } from '../data/viabilidad'
 import '../styles/viabilidad.css'
@@ -19,15 +19,16 @@ const num = (v: string) => (Number.isFinite(Number(v)) ? Math.max(0, Number(v)) 
 function SupuestoTag({ si }: { si: boolean }) {
   return si ? <span className="tag warn"><span className="dot" />Supuesto</span> : <span className="tag ok"><span className="dot" />Precio oficial</span>
 }
-const NIVEL_TAG: Record<Nivel, string> = { bajo: 'ok', medio: 'warn', alto: 'off' }
+// Niveles: bajo = verde, medio = ámbar, alto = rojo. Siempre con el texto visible.
+const NIVEL_TXT: Record<Nivel, string> = { bajo: 'Bajo', medio: 'Medio', alto: 'Alto' }
 function NivelTag({ n }: { n: Nivel }) {
-  return <span className={`tag ${NIVEL_TAG[n]} via-nivel-${n}`}>{n}</span>
+  return <span className={`tag via-nivel-${n}`}><span className="dot" />{NIVEL_TXT[n]}</span>
 }
 
 function Bloque({ id, n, titulo, texto, children }: { id: string; n: number; titulo: string; texto: string; children: ReactNode }) {
   return (
     <section className="section" id={id}>
-      <div className="section-head"><div><span className="kicker">0{n}</span><h2>{titulo}</h2><p>{texto}</p></div></div>
+      <div className="section-head"><div><span className="kicker">{String(n).padStart(2, '0')}</span><h2>{titulo}</h2><p>{texto}</p></div></div>
       {children}
     </section>
   )
@@ -315,8 +316,7 @@ function Simulador() {
     { clave: 'supuesto', titulo: 'Base', render: (c) => <span className="via-base"><SupuestoTag si={c.supuesto} /><Refs ids={c.fuentes} /></span> },
   ]
 
-  return (
-    <>
+  const supuestos = (
       <div className="via-sup card">
         <div className="via-sup-head">
           <div><div className="col-t">Supuestos del simulador</div><p className="small muted">Para el piloto de 3 municipios. Cambia cantidades y precios en la tabla.</p></div>
@@ -331,7 +331,10 @@ function Simulador() {
           ))}
         </div>
       </div>
+  )
 
+  return (
+    <>
       <div className="via-totales" aria-live="polite">
         <div className="hero-stat"><small>Implantación (una vez)</small><b className="tnum">{eur.format(t.implantacion)}</b></div>
         <div className="hero-stat"><small>Coste mensual</small><b className="tnum">{eur.format(t.mensual)}</b></div>
@@ -339,11 +342,15 @@ function Simulador() {
       </div>
 
       <div className="via-costes">
-        <Tabla<Coste> titulo="Partidas" columnas={columnas} filas={costes} minAncho={900} nota="Precios sin IVA ni IGIC. Los servicios en dólares se pasan a euros 1 a 1 (supuesto). Lo marcado «Supuesto» no tiene fuente y no se presenta como dato." />
         <div className="via-dos">
           {porPagador.length > 0 && <Barras titulo={`Quién paga (${meses} ${meses === 1 ? 'mes' : 'meses'}, sin margen)`} datos={porPagador} />}
           {porCategoria.length > 0 && <Barras titulo={`Coste por tipo (${meses} ${meses === 1 ? 'mes' : 'meses'}, sin margen)`} datos={porCategoria} />}
         </div>
+        <details className="via-lista">
+          <summary>Ver y cambiar los supuestos y las {costes.length} partidas</summary>
+          {supuestos}
+          <Tabla<Coste> titulo="Partidas" columnas={columnas} filas={costes} minAncho={900} nota="Precios sin IVA ni IGIC. Los servicios en dólares se pasan a euros 1 a 1 (supuesto). Lo marcado «Supuesto» no tiene fuente y no se presenta como dato." />
+        </details>
       </div>
     </>
   )
@@ -380,28 +387,100 @@ function Resumen() {
   )
 }
 
-/** Riesgos en una matriz probabilidad × impacto: cuántos hay en cada casilla. */
+/** Gravedad de una casilla: probabilidad × impacto (1–3 cada uno). */
+const PESO: Record<Nivel, number> = { bajo: 1, medio: 2, alto: 3 }
+const gravedad = (p: Nivel, i: Nivel): Nivel => { const g = PESO[p] * PESO[i]; return g >= 6 ? 'alto' : g >= 3 ? 'medio' : 'bajo' }
+const riesgosDe = (p: Nivel, i: Nivel) => RIESGOS.filter((r) => r.probabilidad === p && r.impacto === i)
+
+/** Riesgos en una matriz probabilidad × impacto: cuántos hay en cada casilla. Al tocarla, se listan. */
 function MatrizRiesgos() {
   const niveles: Nivel[] = ['alto', 'medio', 'bajo']
+  const [sel, setSel] = useState<{ p: Nivel; i: Nivel }>({ p: 'alto', i: 'alto' })
+  const lista = riesgosDe(sel.p, sel.i)
   return (
-    <div className="via-matriz" role="table" aria-label="Riesgos por probabilidad e impacto">
-      <div role="row" className="via-matriz-fila">
-        <span role="columnheader" className="small muted">Probabilidad ↓ · impacto →</span>
-        {[...niveles].reverse().map((i) => <span key={i} role="columnheader" className="small muted">Impacto {i}</span>)}
-      </div>
-      {niveles.map((p) => (
-        <div key={p} role="row" className="via-matriz-fila">
-          <span role="rowheader" className="small muted">Probabilidad {p}</span>
-          {[...niveles].reverse().map((i) => {
-            const n = RIESGOS.filter((r) => r.probabilidad === p && r.impacto === i).length
-            const grave = p !== 'bajo' && i === 'alto'
-            return (
-              <span key={i} role="cell" className={`via-matriz-celda ${n ? 'con' : ''} ${grave && n ? 'grave' : ''}`} aria-label={`${n} riesgos con probabilidad ${p} e impacto ${i}`}>
-                <b className="tnum">{n || '–'}</b>{grave && n > 0 && <small>prioridad</small>}
-              </span>
-            )
-          })}
+    <div className="via-matriz-bloque">
+      <div className="via-matriz-ley">
+        <p className="small"><b>Cada número es cuántos riesgos tienen esa probabilidad y ese impacto.</b> Toca una casilla para verlos.</p>
+        <div className="via-ley-niveles small" aria-label="Gravedad">
+          <span className="muted">Gravedad:</span>
+          {(['bajo', 'medio', 'alto'] as Nivel[]).map((n) => <NivelTag key={n} n={n} />)}
         </div>
+      </div>
+      <div className="via-matriz-cols">
+        <div className="via-matriz" role="table" aria-label="Número de riesgos por probabilidad e impacto">
+          <div role="row" className="via-matriz-fila">
+            <span role="columnheader" className="small muted">Probabilidad ↓ · impacto →</span>
+            {[...niveles].reverse().map((i) => <span key={i} role="columnheader" className="small muted">Impacto {i}</span>)}
+          </div>
+          {niveles.map((p) => (
+            <div key={p} role="row" className="via-matriz-fila">
+              <span role="rowheader" className="small muted">Probabilidad {p}</span>
+              {[...niveles].reverse().map((i) => {
+                const n = riesgosDe(p, i).length
+                const g = gravedad(p, i)
+                const etiqueta = `${n} ${n === 1 ? 'riesgo' : 'riesgos'} · probabilidad ${p} · impacto ${i} · gravedad ${g}`
+                const activa = sel.p === p && sel.i === i
+                return (
+                  <span key={i} role="cell">
+                    <button
+                      type="button"
+                      className={`via-matriz-celda via-g-${g} ${n ? 'con' : ''} ${activa ? 'sel' : ''}`}
+                      aria-label={etiqueta}
+                      title={etiqueta}
+                      aria-pressed={activa}
+                      disabled={!n}
+                      onClick={() => setSel({ p, i })}
+                    >
+                      <b className="tnum">{n || '–'}</b>
+                      <small>{NIVEL_TXT[g]}</small>
+                    </button>
+                  </span>
+                )
+              })}
+            </div>
+          ))}
+        </div>
+        <div className="card via-matriz-lista" aria-live="polite">
+          <div className="col-t">Probabilidad {sel.p} · impacto {sel.i} <NivelTag n={gravedad(sel.p, sel.i)} /></div>
+          {lista.length ? (
+            <ul className="list">{lista.map((r) => <li key={r.riesgo}>{r.riesgo}{r.porVerificar && <> <Verificado ok={false} /></>}</li>)}</ul>
+          ) : <p className="small muted">Ningún riesgo en esta casilla.</p>}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const DAFO_ICONO: Record<string, string> = {
+  debilidades: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM8 12h8',
+  amenazas: 'M12 8v5M12 16.5v.5M10.3 3.9L2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z',
+  fortalezas: 'M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6zM8.5 12l2.5 2.5 4.5-5',
+  oportunidades: 'M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z',
+}
+
+/** DAFO en cuadrícula 2×2: arriba lo que juega en contra, abajo lo que juega a favor. */
+function Dafo() {
+  return (
+    <div className="via-dafo">
+      {DAFO.map((c) => (
+        <section key={c.id} className={`via-dafo-c via-dafo-${c.id}`} aria-labelledby={`dafo-${c.id}`}>
+          <header>
+            <span className="via-dafo-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d={DAFO_ICONO[c.id]} /></svg>
+            </span>
+            <div><h3 id={`dafo-${c.id}`}>{c.titulo}</h3><small>{c.lado}</small></div>
+          </header>
+          <ul>
+            {c.puntos.map((pt) => (
+              <li key={pt.texto}>
+                {pt.texto}
+                {pt.fuentes && <Refs ids={pt.fuentes} />}
+                {pt.supuesto && <> <span className="tag warn"><span className="dot" />Supuesto</span></>}
+                {pt.porVerificar && <> <Verificado ok={false} /></>}
+              </li>
+            ))}
+          </ul>
+        </section>
       ))}
     </div>
   )
@@ -470,7 +549,7 @@ export default function Viabilidad() {
         </div>
       </Bloque>
 
-      <Bloque id="kpis" n={4} titulo="Cómo sabremos si funciona" texto="Cinco indicadores, cada uno ligado a un criterio del reto. Los objetivos son supuestos.">
+      <Bloque id="kpis" n={4} titulo="Cómo sabremos si funciona" texto={`${KPIS.length} indicadores, cada uno ligado a un criterio del reto. Los objetivos son supuestos.`}>
         <Rejilla cols={3}>
           {KPIS.map((k) => (
             <Tarjeta key={k.nombre} kicker={k.criterio} titulo={k.nombre}>
@@ -482,11 +561,22 @@ export default function Viabilidad() {
         </Rejilla>
       </Bloque>
 
-      <Bloque id="costes" n={5} titulo="Costes" texto="Implantación (una vez) y coste mensual del piloto. Cambia los supuestos y mira cómo se mueve el total.">
+      <Bloque id="medioambiente" n={5} titulo="Viabilidad medioambiental" texto="Cuidar el entorno en todos los ámbitos: en la ciudad y en la naturaleza. Son medidas propuestas; los cupos concretos se fijan con cada barrio.">
+        <Rejilla cols={4}>
+          {MEDIOAMBIENTE.map((m) => (
+            <Tarjeta key={m.tema} kicker="Propuesta" titulo={m.tema}>
+              <p>{m.que}</p>
+              <p className="small muted" style={{ marginTop: 6 }}>{m.quien}</p>
+            </Tarjeta>
+          ))}
+        </Rejilla>
+      </Bloque>
+
+      <Bloque id="costes" n={6} titulo="Costes" texto="Implantación (una vez) y coste mensual del piloto. Cambia los supuestos y mira cómo se mueve el total.">
         <Simulador />
       </Bloque>
 
-      <Bloque id="encaje" n={6} titulo="Encaje con lo que ya existe" texto="Tenique no empieza de cero: se apoya en programas que ya funcionan en Tenerife.">
+      <Bloque id="encaje" n={7} titulo="Encaje con lo que ya existe" texto="Tenique no empieza de cero: se apoya en programas que ya funcionan en Tenerife.">
         <div className="via-encaje">
           {ENCAJE.map((e) => (
             <Tarjeta key={e.programa} kicker={e.quien} titulo={e.programa} fuentes={e.fuentes}>
@@ -497,28 +587,40 @@ export default function Viabilidad() {
         </div>
       </Bloque>
 
-      <Bloque id="opciones" n={7} titulo="Opciones estudiadas" texto="Ideas que hemos analizado y que no entran en el plan base, con nuestra recomendación.">
+      <Bloque id="opciones" n={8} titulo="Opciones estudiadas" texto="Ideas que hemos analizado y que no entran en el plan base, con nuestra recomendación.">
         {OPCIONES.map((o) => (
           <div key={o.titulo} className="card via-opcion">
             <div className="via-opcion-head">
               <div><span className="kicker">Opción estudiada</span><h3>{o.titulo}</h3></div>
               <span className="tag warn"><span className="dot" />Recomendación: {o.recomendacion}</span>
             </div>
-            <p className="small muted">{o.origen}</p>
             <p>{o.queEs}</p>
-            <div className="via-dos">
-              <div><div className="col-t via-ok">A favor</div><ul className="list">{o.pros.map((x) => <li key={x}>{x}</li>)}</ul></div>
-              <div><div className="col-t via-stop">En contra</div><ul className="list">{o.contras.map((x) => <li key={x}>{x}</li>)}</ul></div>
-            </div>
-            <p><b>Nuestra recomendación.</b> {o.porque}</p>
-            <p className="small"><Verificado ok={false} /> Riesgo legal: {o.riesgoLegal}</p>
+            <details className="via-lista">
+              <summary>Ver a favor, en contra y por qué lo recomendamos así</summary>
+              <div className="via-opcion">
+                <p className="small muted">{o.origen}</p>
+                <div className="via-dos">
+                  <div><div className="col-t via-ok">A favor</div><ul className="list">{o.pros.map((x) => <li key={x}>{x}</li>)}</ul></div>
+                  <div><div className="col-t via-stop">En contra</div><ul className="list">{o.contras.map((x) => <li key={x}>{x}</li>)}</ul></div>
+                </div>
+                <p><b>Nuestra recomendación.</b> {o.porque}</p>
+                <p className="small"><Verificado ok={false} /> Riesgo legal: {o.riesgoLegal}</p>
+              </div>
+            </details>
           </div>
         ))}
       </Bloque>
 
-      <Bloque id="riesgos" n={8} titulo="Riesgos" texto="Legales, de adopción, operativos, medioambientales y económicos, con su mitigación. Y los límites de lo que Tenique puede hacer.">
+      <Bloque id="dafo" n={9} titulo="DAFO" texto="Debilidades, amenazas, fortalezas y oportunidades de Tenique, en una vista.">
+        <Dafo />
+      </Bloque>
+
+      <Bloque id="riesgos" n={10} titulo="Riesgos" texto="Legales, de adopción, operativos, medioambientales y económicos, con su mitigación. Y los límites de lo que Tenique puede hacer.">
         <MatrizRiesgos />
-        <Tabla<Riesgo> columnas={COL_RIESGOS} filas={RIESGOS} minAncho={760} />
+        <details className="via-lista">
+          <summary>Ver los {RIESGOS.length} riesgos con su mitigación</summary>
+          <Tabla<Riesgo> columnas={COL_RIESGOS} filas={RIESGOS} minAncho={760} />
+        </details>
         <div className="card via-limites">
           <div className="col-t">Lo que Tenique no resuelve</div>
           <p className="small muted">Tenique mejora la convivencia, pero no arregla las causas principales del malestar. Cada una corresponde a otras administraciones; el detalle está en el diagnóstico.</p>

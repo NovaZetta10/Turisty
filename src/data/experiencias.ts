@@ -39,6 +39,13 @@ export type Experiencia = {
   accesibilidad?: string
   /** Extra: fuente de apoyo (prensa u otra) y el dato que aporta. */
   apoyo?: { titulo: string; url: string; dato: string }
+  /**
+   * CRITERIO_JOVENES (src/data/usuarios.ts): true solo si la FUENTE confirma los 2 obligatorios
+   * (tarde, noche o fin de semana; gratis, donación o precio de residente) y al menos 2 de los 4 opcionales.
+   */
+  paraJovenes?: boolean
+  /** Qué criterios cumple según la fuente y, si no llega, qué falta. */
+  motivoJovenes?: string
 }
 
 const HOY = '12-11-2026'
@@ -480,6 +487,8 @@ export const EXPERIENCIAS: Experiencia[] = [
     tipo: 'asociacion',
     quienOfrece: 'Proyecto cultural de Pinolere (nombre exacto de la entidad por verificar)',
     cuando: 'Primer fin de semana de septiembre. En 2026: del 4 al 6 de septiembre, desde las 10:00',
+    paraJovenes: false,
+    motivoJovenes: 'Cumple: fin de semana · para hacer (talleres). A medias: solo el ecomercado y el mercado gastronómico son gratis. Falta: la fuente no habla de grupo mixto, idiomas ni anfitriones jóvenes',
     emociones: ['raices', 'orgullo'],
     mixta: true,
     fuente: {
@@ -657,6 +666,8 @@ export const EXPERIENCIAS: Experiencia[] = [
     cuando: 'Una vez al año. En 2026: 20 y 21 de junio',
     duracion: 'Unas 3 horas',
     idiomas: ['es'],
+    paraJovenes: false,
+    motivoJovenes: 'Cumple: fin de semana · gratis. Falta: es una visita para mirar y escuchar, solo en español, sin grupo mixto ni anfitrión joven en la fuente',
     emociones: ['asombro', 'orgullo'],
     mixta: true,
     fuente: { titulo: 'Open days at the Teide Observatory 2026 · IAC', url: 'https://www.iac.es/en/events/open-days-teide-observatory-2026', consultado: HOY },
@@ -681,6 +692,188 @@ export const EXPERIENCIAS: Experiencia[] = [
     fuente: {
       titulo: 'Guided visit of the Teide Observatory · Volcano Teide',
       url: 'https://www.volcanoteide.com/en/volcano_teide/stars/guided_visit_of_the_observatory',
+      consultado: HOY,
+    },
+    verificado: true,
+  },
+
+  // ───────── Urbanas: comercio local y cultura ─────────
+  {
+    id: 'mercado-municipal-la-laguna',
+    titulo: 'Mercado Municipal de La Laguna',
+    descripcion:
+      'El mercado de abastos de la plaza del Cristo: fruta, carne, quesos y vinos canarios, flores y especias. En 2026 sumó puestos de cerveza artesanal y zumos naturales, y amplió pasillos y aseos para personas con movilidad reducida.',
+    municipio: 'San Cristóbal de La Laguna',
+    lugar: 'Plaza del Cristo',
+    zona: 'metropolitana',
+    quienOfrece: 'Ayuntamiento de La Laguna y los comerciantes del mercado',
+    tipo: 'entidad',
+    cuando: 'Domingos y lunes desde las 7:00; de martes a sábado desde las 6:00',
+    mixta: true,
+    emociones: ['sabor', 'pertenencia'],
+    accesibilidad: 'Pasillos laterales ampliados y un aseo totalmente adaptado (obras de 2026)',
+    fuente: {
+      titulo: 'El Mercado de La Laguna cambia por completo · Diario de Avisos, 25-04-2026 (prensa)',
+      url: 'https://diariodeavisos.elespanol.com/2026/04/mercado-de-la-laguna-cambios/',
+      consultado: HOY,
+    },
+    apoyo: {
+      titulo: 'Mercado municipal accesible · Guía La Laguna Inclusiva (Ayuntamiento de La Laguna)',
+      url: 'https://www.aytolalaguna.es/CDN/files/servicios/servicios-sociales/.galleries/DOCUMENTOS-La-Laguna-inclusiva/9.-Mercado-municipal-accesible-de-La-Laguna.pdf',
+      dato: 'Accesibilidad del mercado y aparcamientos reservados',
+    },
+    verificado: true,
+  },
+  {
+    id: 'noche-en-blanco-la-laguna',
+    titulo: 'La Noche en Blanco de La Laguna',
+    descripcion:
+      'Un día entero de cultura, música y comercio en la ciudad: teatro de calle, actividades en museos, Canary Market, zona inclusiva y concierto de noche en la plaza del Cristo. El Ayuntamiento la plantea para visitar el comercio local y comer en sus restaurantes.',
+    municipio: 'San Cristóbal de La Laguna',
+    zona: 'metropolitana',
+    quienOfrece: 'Ayuntamiento de La Laguna, con el comercio y la hostelería local',
+    tipo: 'entidad',
+    cuando: 'Sábado 28 de noviembre de 2026, de la mañana a la noche. Programa completo por publicar',
+    mixta: true,
+    emociones: ['celebracion', 'pertenencia', 'orgullo'],
+    fuente: {
+      titulo: 'La Laguna celebrará el encendido navideño el 20 de noviembre y La Noche en Blanco el sábado 28 · Ayuntamiento de La Laguna',
+      url: 'https://www.aytolalaguna.es/actualidad/noticias/La-Laguna-celebrara-el-encendido-navideno-el-20-de-noviembre-y-La-Noche-en-Blanco-el-sabado-28/',
+      consultado: HOY,
+    },
+    apoyo: {
+      titulo: 'La Noche en Blanco de La Laguna ya tiene fecha · Diario de Avisos, 2026',
+      url: 'https://diariodeavisos.elespanol.com/2026/10/noche-en-blanco-la-laguna-2026-m-clan/',
+      dato: 'Actividades que vuelven y concierto en la plaza del Cristo',
+    },
+    verificado: true,
+  },
+  {
+    id: 'ruta-bocadillazo-suroeste-santa-cruz',
+    titulo: 'Ruta del Bocadillazo del Distrito Suroeste',
+    descripcion:
+      'Ruta por bares y cafeterías de barrio de Santa Cruz: El Sobradillo, Añaza, Tíncer, El Tablero, Barranco Grande, El Chorrillo y La Gallega. Cada local presenta su bocadillo; votan un jurado y el público. Es parte de «Disfruta en los distritos», que lleva el gasto al comercio de los barrios.',
+    municipio: 'Santa Cruz de Tenerife',
+    lugar: 'Distrito Suroeste',
+    zona: 'metropolitana',
+    quienOfrece: 'Sociedad de Desarrollo de Santa Cruz de Tenerife (Ayuntamiento) y bares del distrito',
+    tipo: 'entidad',
+    cuando: 'Del 12 de noviembre al 6 de diciembre de 2026',
+    mixta: true,
+    emociones: ['sabor', 'pertenencia'],
+    fuente: {
+      titulo: 'Pre-inscripción para la Ruta del Bocadillazo (Distrito Suroeste) · Sociedad de Desarrollo de Santa Cruz de Tenerife',
+      url: 'https://sociedad-desarrollo.com/la-sociedad-de-desarrollo-de-santa-cruz-de-tenerife-abre-la-pre-inscripcion-para-la-ruta-del-bocadillazo-distrito-suroeste/',
+      consultado: HOY,
+    },
+    apoyo: {
+      titulo: 'Veinte establecimientos participan en la Ruta del Bocadillazo del Distrito Suroeste · El Burgado, 2026',
+      url: 'https://elburgado.com/veinte-establecimientos-participan-en-la-ruta-del-bocadillazo-del-distrito-suroeste/',
+      dato: 'Fechas de 2026, barrios y unos 20 locales',
+    },
+    verificado: true,
+  },
+  {
+    id: 'rutas-historico-comerciales-santa-cruz',
+    titulo: 'Rutas histórico-comerciales por la Rambla y Salamanca',
+    descripcion:
+      'Paseos guiados de unas dos horas por dos zonas comerciales de Santa Cruz, la Rambla y Salamanca, con guías profesionales. Cuentan la historia y la arquitectura de la ciudad a través de sus calles y tiendas. Para residentes y visitantes, con inscripción previa y 20 plazas por paseo.',
+    municipio: 'Santa Cruz de Tenerife',
+    lugar: 'Rambla y Salamanca',
+    zona: 'metropolitana',
+    quienOfrece: 'Sociedad de Desarrollo de Santa Cruz de Tenerife (Ayuntamiento)',
+    tipo: 'entidad',
+    cuando: 'Del 15 de noviembre al 13 de diciembre de 2025, sobre todo sábados por la mañana y algún viernes a las 17:00. Si hay edición en 2026, por verificar',
+    duracion: 'Unas 2 horas',
+    paraJovenes: false,
+    motivoJovenes: 'Cumple: fin de semana · gratis · residentes y visitantes. Falta: es para mirar y escuchar, sin idiomas ni anfitrión joven en la fuente; además, solo consta 2025',
+    mixta: true,
+    emociones: ['raices', 'pertenencia'],
+    fuente: {
+      titulo: 'Santa Cruz inicia las rutas histórico-comerciales por las zonas de la Rambla y Salamanca · Ayuntamiento de Santa Cruz de Tenerife',
+      url: 'https://www.santacruzdetenerife.es/web/noticias-y-agenda/noticias/detalle-noticia/santa-cruz-inicia-las-rutas-historico-comerciales-por-las-zonas-de-la-rambla-y-salamanca',
+      consultado: HOY,
+    },
+    verificado: false,
+  },
+  {
+    id: 'artenerife-casa-de-la-aduana',
+    titulo: 'Artesanía de Tenerife en la Casa de la Aduana',
+    descripcion:
+      'Tienda de la red Artenerife del Cabildo en un edificio de hacia 1620, junto al muelle pesquero. Tiene un espacio de artesanía con programación propia y comparte edificio con el Museo de Arte Contemporáneo Eduardo Westerdahl.',
+    municipio: 'Puerto de la Cruz',
+    lugar: 'Calle Las Lonjas, junto al muelle pesquero',
+    zona: 'norte',
+    quienOfrece: 'Artenerife, Empresa Insular de Artesanía (Cabildo de Tenerife)',
+    tipo: 'entidad',
+    cuando: 'Horario de la tienda por verificar',
+    mixta: true,
+    emociones: ['raices', 'orgullo'],
+    fuente: { titulo: 'Casa de la Aduana · Artenerife (Cabildo de Tenerife)', url: 'https://artenerife.com/casa-de-la-aduana/', consultado: HOY },
+    verificado: false,
+  },
+  {
+    id: 'feria-del-pescado-los-cristianos',
+    titulo: 'Feria del Pescado de Los Cristianos',
+    descripcion:
+      'La cofradía de pescadores de Los Cristianos expone su pesca en la plaza de La Pescadora. Hay cocina en directo con pescadores locales, degustación de recetas marineras al estilo de los pescadores del pueblo, talleres infantiles y folclore.',
+    municipio: 'Arona',
+    lugar: 'Los Cristianos, plaza de La Pescadora y Muelle Viejo',
+    zona: 'sur',
+    quienOfrece: 'Ayuntamiento de Arona, con la Cofradía de Pescadores Nuestra Señora de Las Mercedes',
+    tipo: 'entidad',
+    cuando: 'Cada verano. En 2026, XII edición: sábado 29 de agosto, de 17:00 a 23:00',
+    mixta: true,
+    emociones: ['sabor', 'raices', 'celebracion'],
+    fuente: { titulo: 'XII Feria del Pescado · Agenda del Ayuntamiento de Arona', url: 'https://www.arona.org/Agenda/ctl/Ver/mid/429?id=91587', consultado: HOY },
+    verificado: true,
+  },
+
+  // ───────── Programas de juventud ─────────
+  {
+    id: 'meet-and-talk-cij-santa-cruz',
+    titulo: 'Meet and Talk: grupo de conversación en inglés',
+    descripcion:
+      'Grupo informal para practicar inglés y conocer a otros jóvenes, de cualquier nivel. No es una academia: el personal del Centro de Información Juvenil propone retos, juegos y dinámicas para conversar.',
+    municipio: 'Santa Cruz de Tenerife',
+    lugar: 'TEA – Espacio Puente, calle Fuente Morales',
+    zona: 'metropolitana',
+    quienOfrece: 'Centro de Información Juvenil del Cabildo de Tenerife (Tenerife Joven y Educa)',
+    tipo: 'entidad',
+    cuando: 'Todos los martes de 17:00 a 18:30, con inscripción previa y plazas limitadas',
+    duracion: 'Hora y media',
+    idiomas: ['en'],
+    mixta: false,
+    emociones: ['pertenencia'],
+    paraJovenes: false,
+    motivoJovenes:
+      'Cumple: tarde · para hacer · en inglés. Falta: la fuente no dice el precio ni que participen jóvenes de fuera. Es para 12 a 35 años',
+    fuente: {
+      titulo: 'Meet and Talk: grupo de conversación en inglés · Centro de Información Juvenil (Cabildo de Tenerife)',
+      url: 'https://tenerifejovenyeduca.com/cij/grupos-juveniles/grupo-de-conversacion-en-ingles-meet-talk/',
+      consultado: HOY,
+    },
+    verificado: true,
+  },
+  {
+    id: 'distrito-joven-sendero-nocturno-santa-cruz',
+    titulo: 'Distrito Joven: Sendero Nocturno Navideño',
+    descripcion:
+      'Ruta a pie de noche por el centro de Santa Cruz dentro de la agenda de otoño de Distrito Joven, el programa juvenil del municipio. Esa agenda incluye también senderos por Anaga, talleres y torneos.',
+    municipio: 'Santa Cruz de Tenerife',
+    lugar: 'Centro',
+    zona: 'metropolitana',
+    quienOfrece: 'Distrito Joven (programa juvenil de Santa Cruz de Tenerife)',
+    tipo: 'entidad',
+    cuando: 'Viernes 4 de diciembre de 2026. Hay que inscribirse antes en Distrito Joven y reservar plaza',
+    mixta: false,
+    emociones: ['pertenencia', 'celebracion'],
+    paraJovenes: false,
+    motivoJovenes:
+      'Cumple: noche · gratis · para hacer. Falta un segundo opcional: la fuente no dice que participen jóvenes de fuera, ni idiomas, ni quién guía',
+    fuente: {
+      titulo: 'Halloween, gaming y senderos: actividades gratis para jóvenes este otoño en Santa Cruz · Diario de Avisos, 09-2026 (prensa)',
+      url: 'https://diariodeavisos.elespanol.com/2026/09/actividades-jovenes-santa-cruz-tenerife/',
       consultado: HOY,
     },
     verificado: true,

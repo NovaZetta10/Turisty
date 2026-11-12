@@ -1,13 +1,12 @@
 // Entregable 3 · Mapeo de responsabilidades. Dueño: subagente de usuarios.
 // Datos en src/data/responsabilidades.ts. Aquí solo maquetación.
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { SECCIONES, rutaDe } from '../config/proyecto'
+import { SECCIONES } from '../config/proyecto'
 import { Tabla, type Columna } from '../components/Tabla'
 import { Icon } from '../components/Icon'
 import { Refs, Verificado } from '../components/Refs'
 import { Fogon, Piedra } from '../components/Piedra'
-import { ACCIONES, AGENTES, COMPETENCIAS, FLUJOS, FLUJO_TXT, PIEDRAS, RACI_TXT, VALIDACION, type Accion, type AgenteId, type Competencia, type Raci } from '../data/responsabilidades'
+import { ACCIONES, AGENTES, CODIGO_CONVIVENCIA, COMPETENCIAS, CUIDADO_COMPARTIDO, FLUJOS, FLUJO_TXT, PIEDRAS, RACI_TXT, VALIDACION, type Accion, type AgenteId, type Competencia, type Raci } from '../data/responsabilidades'
 import '../styles/responsabilidades.css'
 
 const ID = 'responsabilidades'
@@ -22,12 +21,9 @@ export default function Responsabilidades() {
         <h1>Tenerife se cocina entre todos</h1>
         <p>{s?.resumen}</p>
       </header>
-      <div className="callout enter enter-2" style={{ marginBottom: 8 }}>
-        <Icon name="alert" size={16} />
-        <span>Este reparto de papeles es nuestra propuesta. Se acordará con cada entidad en los primeros meses del plan (convenio con el Cabildo, patronales y asociaciones). Los plazos y lo que falta por revisar en lo legal están en el <Link to={rutaDe('viabilidad')}>plan de acción</Link>.</span>
-      </div>
       <TresPiedras />
       <PorAgente />
+      <Compromiso />
       <Matriz />
       <NoResuelve />
     </div>
@@ -166,6 +162,29 @@ function NoResuelve() {
       </div>
       <div className="rs-comp">
         <Tabla<Fila> columnas={columnas} filas={COMPETENCIAS as Fila[]} minAncho={760} nota="Competencias según la normativa citada." />
+      </div>
+    </section>
+  )
+}
+
+/** Compromisos del visitante: código de convivencia del barrio y cuidado compartido. */
+function Compromiso() {
+  return (
+    <section id="compromiso" className="section">
+      <div className="section-head">
+        <div>
+          <h2>El compromiso del visitante</h2>
+          <p>Quien visita no solo paga y valora. Antes de reservar acepta el código de convivencia del barrio, que cada asociación vecinal adapta a su zona. Es una propuesta: la validamos con vecinos.</p>
+        </div>
+      </div>
+      <ol className="rs-codigo">
+        {CODIGO_CONVIVENCIA.map((c, i) => (
+          <li key={c.id} className="card"><span className="rs-val-n tnum">{i + 1}</span><p>{c.es}</p></li>
+        ))}
+      </ol>
+      <div className="card rs-cuidado">
+        <Icon name="heart" size={18} />
+        <p><b>Cuidado compartido.</b> {CUIDADO_COMPARTIDO.es}</p>
       </div>
     </section>
   )

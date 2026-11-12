@@ -252,3 +252,93 @@ export type Encuesta = {
 
 /** null hasta que el equipo pase los resultados. */
 export const ENCUESTA: Encuesta | null = null
+
+// ─── Tipos de usuario (segmentación) ───────────────────────────────────────────
+// Quién usa Tenique, más allá de las dos personas tipo. TODO hipótesis hasta contrastarlo (entrevistas y encuesta).
+// Sin cifras: si se añade alguna, con su fuente de FUENTES.
+
+export type Canal = 'app' | 'punto físico' | 'los dos'
+
+export type Segmento = {
+  id: string
+  nombre: string
+  /** De dónde es: residente, visitante o ambos. */
+  quien: 'residente' | 'visitante' | 'residente y visitante'
+  icono: string
+  busca: string[]
+  frena: string[]
+  /** Tipos de experiencia que le encajan (genéricos, no experiencias concretas). */
+  encaja: string[]
+  canal: Canal
+  /** Cómo le llega Tenique, en una frase. */
+  llega: string
+  /** Papel en Tenique además de asistir. */
+  papel: string
+  validado: boolean
+}
+
+export const SEGMENTOS: Segmento[] = [
+  {
+    id: 'jovenes', nombre: 'Jóvenes', quien: 'residente y visitante', icono: 'star',
+    busca: ['Planes de tarde, noche o fin de semana', 'Hacer, no solo mirar', 'Conocer a gente de su edad, de aquí y de fuera', 'Precio bajo o gratis'],
+    frena: ['Horarios de mañana entre semana', 'Planes pensados para mayores o para turistas', 'Precio', 'Sentir que no pinta nada en su barrio'],
+    encaja: ['Deporte y naturaleza con un club local', 'Música, fiestas y cultura del barrio', 'Cocina sencilla en grupo', 'Oficios y tradiciones aprendidos de un mayor'],
+    canal: 'app', llega: 'Por la app, redes y boca a boca; en el instituto, la universidad o el club.',
+    papel: 'También anfitrión: enseña lo suyo (su barrio, su deporte, su música) y toma el relevo de los mayores.',
+    validado: false,
+  },
+  {
+    id: 'familias', nombre: 'Familias', quien: 'residente y visitante', icono: 'home',
+    busca: ['Planes para todas las edades', 'Horarios compatibles con niños', 'Seguridad y sitios accesibles'],
+    frena: ['Grupos que no admiten niños', 'Precio por persona', 'Desplazamientos largos'],
+    encaja: ['Cocina y producto local', 'Rutas cortas y fáciles', 'Fiestas del barrio', 'Jornadas de cuidado de playas o plazas'],
+    canal: 'los dos', llega: 'Por la app y por el colegio, la asociación de vecinos o la recepción del alojamiento.',
+    papel: 'Asiste en grupo y puede ofrecer experiencias en familia.',
+    validado: false,
+  },
+  {
+    id: 'mayores', nombre: 'Personas mayores', quien: 'residente', icono: 'user',
+    busca: ['Que se escuche y se valore lo que saben', 'Compañía', 'Planes cerca de casa'],
+    frena: ['No usan apps', 'Movilidad', 'Desconfianza hacia lo nuevo'],
+    encaja: ['Contar la historia del barrio', 'Enseñar un oficio, una receta o una tradición', 'Paseos tranquilos por el barrio'],
+    canal: 'punto físico', llega: 'Por el punto físico del ayuntamiento, la asociación, el centro de mayores o un familiar.',
+    papel: 'Sobre todo anfitriones: guardan la memoria y el saber que se transmite a los jóvenes.',
+    validado: false,
+  },
+  {
+    id: 'larga', nombre: 'Larga estancia y nómadas digitales', quien: 'visitante', icono: 'globe',
+    busca: ['Sentirse parte del barrio, no turista', 'Rutina y planes repetidos', 'Practicar el idioma'],
+    frena: ['No saber cómo entrar en la vida del barrio', 'Idioma', 'Recelo de los vecinos por la vivienda'],
+    encaja: ['Voluntariado con vecinos', 'Clases y talleres con gente local', 'Clubs y grupos que quedan cada semana'],
+    canal: 'app', llega: 'Por la app, los espacios de trabajo compartido y la vivienda vacacional.',
+    papel: 'Puede repetir y comprometerse más: voluntariado y cuidado compartido del barrio.',
+    validado: false,
+  },
+  {
+    id: 'corta', nombre: 'Visitantes de pocos días y cruceristas', quien: 'visitante', icono: 'map',
+    busca: ['Algo auténtico en poco tiempo', 'Cerca del puerto o del alojamiento', 'Reservar fácil'],
+    frena: ['Poco tiempo', 'No conocer la isla', 'Ofertas iguales en todas partes'],
+    encaja: ['Experiencias cortas, de 1 a 2 horas', 'Comercio y producto local', 'Paseos con un vecino por el casco'],
+    canal: 'los dos', llega: 'Por la app, la oficina de turismo o un punto en el puerto o el alojamiento.',
+    papel: 'Asiste y aporta al fondo; es la puerta para que vuelva.',
+    validado: false,
+  },
+]
+
+// ─── Criterio «para jóvenes» ───────────────────────────────────────────────────
+// Lo usan Experiencias (para etiquetar) y Prototipo (para el filtro de la app). Hipótesis por validar.
+
+export const CRITERIO_JOVENES = {
+  edad: 'Orientativo: de 18 a 35 años, residentes y visitantes.',
+  regla: 'Una experiencia es «para jóvenes» si cumple los 2 obligatorios y al menos 2 de los 4 opcionales.',
+  obligatorios: [
+    'Horario compatible con estudiar o trabajar: tarde, noche o fin de semana.',
+    'Precio asequible: gratis, con donación o a precio de residente.',
+  ],
+  opcionales: [
+    'Es para hacer, no solo para mirar o escuchar.',
+    'Grupo mixto: jóvenes de aquí y de fuera.',
+    'Se ofrece en español y en inglés.',
+    'La ofrece una persona joven, o un mayor que enseña a jóvenes (relevo generacional).',
+  ],
+}

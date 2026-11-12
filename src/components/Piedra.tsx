@@ -35,11 +35,19 @@ export function Piedra({ tipo, size = 64, titulo }: { tipo: TipoPiedra; size?: n
   )
 }
 
-/** Las tres piedras alrededor de la llama: el fogón que sostiene a Tenique. */
+/**
+ * El fogón (como en el teaser): el caldero se sostiene sobre tres piedras con la llama debajo.
+ * Dos piedras atrás (visitantes, instituciones) y una delante (vecinos).
+ */
 export function Fogon({ size = 72, leyenda = true }: { size?: number; leyenda?: boolean }) {
   return (
-    <figure className="fogon" style={{ ['--fs' as string]: `${size}px` }} aria-label="Tres piedras alrededor del fuego: vecinos, visitantes y sector turístico, e instituciones">
-      <div className="fogon-llama" aria-hidden="true"><Icon name="llama" size={Math.round(size * 0.85)} fill /></div>
+    <figure className={`fogon ${leyenda ? 'con-leyenda' : ''}`} style={{ ['--fs' as string]: `${size}px` }} aria-label="Un caldero sostenido por tres piedras sobre el fuego: vecinos, visitantes y sector turístico, e instituciones">
+      <svg className="fogon-caldero" viewBox="0 0 220 80" aria-hidden="true">
+        <path d="M60 14 h100 l-8 36 a42 22 0 0 1 -84 0 z" />
+        <rect x="52" y="6" width="116" height="10" rx="5" />
+        <path className="fogon-vapor" d="M90 4 q-6 -8 0 -14 M110 4 q-6 -8 0 -14 M130 4 q-6 -8 0 -14" fill="none" />
+      </svg>
+      <div className="fogon-llama" aria-hidden="true"><Icon name="llama" size={Math.round(size * 0.55)} fill /></div>
       <div className="fogon-p fogon-p1"><Piedra tipo="vecinos" size={size} />{leyenda && <span>Vecinos</span>}</div>
       <div className="fogon-p fogon-p2"><Piedra tipo="visitantes" size={size} />{leyenda && <span>Visitantes y sector</span>}</div>
       <div className="fogon-p fogon-p3"><Piedra tipo="instituciones" size={size} />{leyenda && <span>Instituciones</span>}</div>

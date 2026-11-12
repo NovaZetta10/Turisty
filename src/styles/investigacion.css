@@ -53,3 +53,48 @@ select.search.tu-muni-sel { display: block; margin-top: 4px; min-width: 240px; m
 select.search.tu-muni-sel option { background-color: var(--night-2); color: var(--text); }
 .tu-muni-datos .senal b { font-size: 26px; }
 .no-existe li::marker { color: var(--nova-hot); }
+
+/* Filtro de causas */
+.causa-filtro { margin-bottom: 16px; }
+.causa-n { margin-left: 4px; font-size: 12px; opacity: .75; font-variant-numeric: tabular-nums; }
+.zona-pie { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+
+/* Códigos del guion de entrevista */
+.guion-leyenda { margin-top: 6px; }
+.guion { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.guion-cod { font: inherit; font-size: 12px; font-weight: 600; min-height: 26px; padding: 0 9px; border-radius: 999px; border: 1px dashed var(--line-2); background: transparent; color: var(--text); cursor: help; transition: border-color .15s var(--ease-out), transform .15s var(--ease-out); }
+.guion-cod:hover, .guion-cod[aria-expanded='true'] { border-color: var(--nova); border-style: solid; }
+.guion-cod:active { transform: scale(.96); }
+.guion-cod:focus-visible { outline: 2px solid var(--nova); outline-offset: 2px; }
+.guion-txt { flex-basis: 100%; margin: 2px 0 0; color: var(--text-2); }
+@media (prefers-reduced-motion: reduce) { .guion-cod { transition: none; } .guion-cod:active { transform: none; } }
+
+/* Grupos de causas: lo que pasa / lo que atacamos */
+.causa-grupo + .causa-grupo { margin-top: 28px; }
+.causa-grupo-head { margin-bottom: 12px; }
+.causa-grupo-head h3 { font-size: 18px; }
+.causa-grupo-head p { margin-top: 4px; max-width: 68ch; }
+
+/* Compromiso de publicar el retorno */
+.compromiso { margin-top: 20px; padding: 16px 18px; border: 1px solid color-mix(in srgb, var(--ok) 45%, transparent); border-radius: var(--radius); background: color-mix(in srgb, var(--ok) 8%, transparent); display: flex; flex-direction: column; gap: 8px; }
+.compromiso .kicker { display: inline-flex; align-items: center; gap: 6px; color: var(--ok); }
+.compromiso-frase { font-size: 16px; font-weight: 600; color: var(--text); }
+
+/* Antes y después */
+.ad { display: flex; flex-direction: column; gap: 10px; }
+.ad h3 { font-size: 17px; }
+.ad-cifras { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: stretch; gap: 8px; }
+.ad-antes, .ad-despues { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: 10px; background: var(--night-3); min-width: 0; }
+.ad-antes small, .ad-despues small { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.ad-antes b, .ad-despues b { font-family: var(--display); font-size: 24px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.ad-antes b { color: var(--text-2); }
+.ad-despues b { color: var(--ok); }
+.ad.aviso .ad-despues b { color: var(--nova-hot); }
+.ad-antes span, .ad-despues span { font-size: 12px; color: var(--text-2); }
+.ad-flecha { align-self: center; color: var(--muted); }
+.ad-sin { margin-top: 16px; }
+
+/* Hallazgo de nuestra búsqueda (jóvenes) */
+.hallazgo { margin-top: 28px; display: flex; flex-direction: column; gap: 8px; border-color: color-mix(in srgb, var(--warn) 40%, transparent); }
+.hallazgo h3 { font-size: 18px; }
+.hallazgo p.small { max-width: 80ch; }

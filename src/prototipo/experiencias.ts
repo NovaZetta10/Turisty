@@ -7,7 +7,19 @@ import type { Texto } from './idioma'
 
 export type Textura = 'picon' | 'calado' | 'ondas'
 /** `color`: degradado propio [claro, oscuro], texto blanco encima (≥ 5:1 en ambos extremos). */
-export type Emocion = { id: string; es: string; en: string; icono: string; color: [string, string]; textura: Textura; frase?: string }
+export type Emocion = { id: string; es: string; en: string; icono: string; color: [string, string]; textura: Textura; frase?: string; fraseEn?: string }
+
+/** Traducción del «ejemplo» de cada emoción de Usuarios (que solo está en español). */
+const FRASE_EN: Record<string, string> = {
+  pertenencia: 'An afternoon with a residents’ association',
+  orgullo: 'A craft or tradition told by those who keep it alive',
+  raices: 'Neighbourhood stories from those who lived them',
+  sabor: 'Cooking at home or in a local spot',
+  calma: 'A walk along a rural path with a local',
+  asombro: 'Looking at the sky or the landscape with someone from the area',
+  adrenalina: 'A sea or mountain activity with a local club',
+  celebracion: 'Living a neighbourhood festival from the inside',
+}
 
 /** Paleta de las emociones, en armonía con la marca (marino #27336D, azul #1A4F9D, rojo #E20612): blanco encima ≥ 6:1. */
 const ESTILO_EMOCION: Record<string, { color: [string, string]; textura: Textura }> = {
@@ -62,6 +74,10 @@ export type Experiencia = {
   /** Fiesta, romería o acto religioso o institucional: no se vende; se vive acompañado por un vecino (gratis o donación voluntaria). */
   fiesta: boolean
   fuente?: { titulo: string; url: string }
+  /** Cumple el criterio «para jóvenes» (CRITERIO_JOVENES, src/data/usuarios.ts). Lo etiqueta Experiencias. */
+  paraJovenes?: boolean
+  /** Qué criterios cumple (texto de Experiencias, en español). */
+  motivoJovenes?: string
 }
 
 /** Valores de demostración (no reales). */
@@ -98,6 +114,8 @@ function normalizar(x: Crudo, i: number): Experiencia | null {
     mixta: x.mixta !== false,
     verificado: x.verificado !== false,
     fiesta: FIESTA.test(String(x.titulo ?? '')),
+    paraJovenes: x.paraJovenes === true,
+    motivoJovenes: str(x.motivoJovenes),
     fuente: url ? { titulo: str(f.titulo) ?? url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0], url } : undefined,
   }
 }
@@ -117,7 +135,7 @@ const crudasEmo = [modUsuarios.EMOCIONES, mod.EMOCIONES].find((x) => Array.isArr
 export const EMOCIONES: Emocion[] = crudasEmo
   ? crudasEmo.map((e) => {
       const id = String(e.id)
-      return { id, es: String(e.es ?? e.nombre ?? id), en: String(e.en ?? e.es ?? e.nombre ?? id), icono: ICONO_EMOCION[id] ?? String(e.icono ?? 'heart'), ...estilo(id), frase: typeof e.ejemplo === 'string' ? e.ejemplo : undefined }
+      return { id, es: String(e.es ?? e.nombre ?? id), en: String(e.en ?? e.es ?? e.nombre ?? id), icono: ICONO_EMOCION[id] ?? String(e.icono ?? 'heart'), ...estilo(id), frase: typeof e.ejemplo === 'string' ? e.ejemplo : undefined, fraseEn: typeof e.ejemploEn === 'string' ? e.ejemploEn : FRASE_EN[id] }
     })
   : EMOCIONES_PROVISIONALES
 

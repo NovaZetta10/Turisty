@@ -98,7 +98,13 @@ export type DatosReserva = { fecha: string; personas: number; franja: string; co
  * Formulario de reserva: fecha, personas y franja. Guarda la reserva en useDemo().datos[clave] y va a `destino`.
  * `precio` (por persona) solo si es un dato real con fuente o un ejemplo marcado como tal.
  */
-export function Reserva({ franjas, destino, precio, maxPersonas = 8, clave = 'reserva', textoBoton }: { franjas: string[]; destino: string; precio?: number; maxPersonas?: number; clave?: string; textoBoton?: string }) {
+export function Reserva({ franjas, destino, precio, maxPersonas = 8, clave = 'reserva', textoBoton, bloqueo, children }: {
+  franjas: string[]; destino: string; precio?: number; maxPersonas?: number; clave?: string; textoBoton?: string
+  /** Si se pasa, el botón queda desactivado con este texto (p. ej. «Acepta el código de convivencia»). */
+  bloqueo?: string
+  /** Contenido entre el total y el botón (p. ej. el compromiso de convivencia). */
+  children?: ReactNode
+}) {
   const t = useT()
   const { ir } = useNav()
   const { guardar } = useDemo()
@@ -108,7 +114,7 @@ export function Reserva({ franjas, destino, precio, maxPersonas = 8, clave = 're
   const [franja, setFranja] = useState<string>()
   const total = precio != null ? precio * personas : undefined
   const reservar = () => {
-    if (!franja) return
+    if (!franja || bloqueo) return
     const codigo = `TQ-${fecha.replace(/-/g, '').slice(2)}-${String(Math.floor(Math.random() * 9000) + 1000)}`
     guardar(clave, { fecha, personas, franja, codigo, total } satisfies DatosReserva)
     ir(destino)
@@ -122,8 +128,9 @@ export function Reserva({ franjas, destino, precio, maxPersonas = 8, clave = 're
       <ContadorApp etiqueta={t({ es: 'Personas', en: 'People' })} valor={personas} max={maxPersonas} onCambio={setPersonas} />
       <div className="app-campo"><span>{t({ es: 'Hora', en: 'Time' })}</span><ChipsApp opciones={franjas} activa={franja} onCambio={setFranja} /></div>
       {total != null && <div className="app-total"><span>{t({ es: 'Total', en: 'Total' })}</span><b className="tnum">{total.toLocaleString(t({ es: 'es-ES', en: 'en-GB' }))} €</b></div>}
-      <button className="app-boton principal" disabled={!franja} onClick={reservar}>
-        {franja ? textoBoton ?? t({ es: 'Reservar', en: 'Book' }) : t({ es: 'Elige una hora', en: 'Choose a time' })}
+      {children}
+      <button className="app-boton principal" disabled={!franja || !!bloqueo} onClick={reservar}>
+        {!franja ? t({ es: 'Elige una hora', en: 'Choose a time' }) : bloqueo ?? textoBoton ?? t({ es: 'Reservar', en: 'Book' })}
       </button>
     </div>
   )

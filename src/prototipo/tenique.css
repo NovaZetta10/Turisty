@@ -60,6 +60,10 @@
 .tq-municipios button { display: flex; align-items: center; gap: 6px; min-height: 48px; padding: 10px 12px; border-radius: 14px; border: 1px solid var(--tq-borde); background: var(--app-surface); color: var(--app-ink); font: inherit; font-size: 14px; font-weight: 600; text-align: left; cursor: pointer; box-shadow: var(--tq-sombra); transition: transform .15s var(--ease-out); }
 .tq-municipios button svg { color: var(--app-accent); flex: none; }
 .tq-municipios button:active { transform: scale(.97); }
+.tq-municipios button.on { border-color: var(--app-accent); box-shadow: inset 0 0 0 1px var(--app-accent); }
+/* «Vives en X · Cambiar» en Explorar: abre el selector de municipio */
+.tq-cambiar { align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; min-height: 32px; padding: 0; border: 0; background: none; font-family: inherit; cursor: pointer; text-align: left; }
+.tq-cambiar u { text-underline-offset: 3px; }
 
 /* ───────── «Quiero sentir…» ───────── */
 .tq-emos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }

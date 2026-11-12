@@ -19,11 +19,15 @@
 /* Fogón común (src/components/Piedra.tsx) a escala de diapositiva: sus medidas son en px, aquí se pasan a cqw
    para que escale igual en la pestaña, a pantalla completa y en el PDF. */
 .s-fogon-comun .fogon { --fs: 7.5cqw !important; }
+.s-fogon-comun .fogon.con-leyenda { --lab: 2.6cqw; }
 .s-fogon-comun .piedra { width: 7.5cqw !important; height: 7.5cqw !important; }
 .s-fogon-comun .piedra-ic svg { width: 3cqw; height: 3cqw; }
 .s-fogon-comun .fogon-llama svg { width: 6.4cqw; height: 6.4cqw; }
 .s-fogon-comun .fogon-p { gap: .5cqw; }
-.s-fogon-comun .fogon-p span:not(.piedra):not(.piedra-ic) { font-size: 1.5cqw; }
+.s-fogon-comun .fogon-p span:not(.piedra):not(.piedra-ic) { font-size: 1.3cqw; }
+/* Las etiquetas de las piedras de atrás se apartan hacia fuera para no pisar la piedra de los vecinos, que va delante */
+.s-fogon-comun .fogon-p2 > span:last-child { translate: calc(var(--fs) * -0.3) 0; }
+.s-fogon-comun .fogon-p3 > span:last-child { translate: calc(var(--fs) * 0.3) 0; }
 
 /* Pareja problema → solución */
 .s-pareja { display: flex; flex-direction: column; height: 100%; }
@@ -67,4 +71,4 @@
 .s-question .s-mega.s-mega-largo { font-size: 4.3cqw; line-height: 1.08; max-width: 92%; }
 
 /* El PDF no debe heredar la animación de entrada del fogón común: sin esto, las piedras podrían imprimirse invisibles */
-.print-deck .fogon-p, .print-deck .fogon-llama { animation: none !important; }
+.print-deck .fogon-p, .print-deck .fogon-llama, .print-deck .fogon-caldero, .print-deck .fogon-vapor { animation: none !important; }

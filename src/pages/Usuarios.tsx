@@ -3,7 +3,7 @@
 //   import Usuarios from './Usuarios'   →   <Usuarios />
 // Datos en src/data/usuarios.ts. Todo es hipótesis hasta que lo validen entrevistas reales.
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { EMOCIONES, EMOCION_TXT, ENCUESTA, ENTREVISTAS, FRASE_PROBLEMA, JOURNEY, PERSONAS, RECORRIDOS, estadoHipotesis, type Emocion, type PasoJourney } from '../data/usuarios'
+import { CRITERIO_JOVENES, EMOCIONES, EMOCION_TXT, ENCUESTA, ENTREVISTAS, FRASE_PROBLEMA, JOURNEY, PERSONAS, RECORRIDOS, SEGMENTOS, estadoHipotesis, type Emocion, type PasoJourney } from '../data/usuarios'
 import { HIPOTESIS } from '../data/investigacion'
 import { Refs } from '../components/Refs'
 import { iniciales } from '../components/Avatar'
@@ -59,6 +59,7 @@ export default function Usuarios() {
   return (
     <>
       <Personas />
+      <Segmentos />
       <Recorrido />
       <Emociones />
       <Contrastado />
@@ -323,5 +324,45 @@ function ResultadoEncuesta() {
         </>
       )}
     </>
+  )
+}
+
+const CANAL_TXT = { app: 'Le llega por la app', 'punto físico': 'Le llega por el punto físico', 'los dos': 'App y punto físico' } as const
+
+/** Tipos de usuario de Tenique (hipótesis) y criterio «para jóvenes». */
+function Segmentos() {
+  if (SEGMENTOS.length === 0) return null
+  return (
+    <section id="segmentos" className="section">
+      <div className="section-head">
+        <div>
+          <h2>Quién usa Tenique</h2>
+          <p>Cinco tipos de usuario, residentes y visitantes. Es nuestra segmentación de partida: la contrastamos con entrevistas y la encuesta.</p>
+        </div>
+      </div>
+      <div className="grid g3 us-segs">
+        {SEGMENTOS.map((s) => (
+          <article key={s.id} className="card us-seg">
+            <div className="us-seg-top">
+              <span className="us-emo-ic"><Icon name={s.icono} size={16} /></span>
+              <div><h3>{s.nombre}</h3><span className="small muted">{s.quien[0].toUpperCase() + s.quien.slice(1)}</span></div>
+            </div>
+            <div className="chips"><span className="tag">{CANAL_TXT[s.canal]}</span>{!s.validado && <span className="tag warn"><span className="dot" />Hipótesis</span>}</div>
+            <div><div className="col-t">Busca</div><ul className="list">{s.busca.map((x) => <li key={x}>{x}</li>)}</ul></div>
+            <div><div className="col-t">Le frena</div><ul className="list">{s.frena.map((x) => <li key={x}>{x}</li>)}</ul></div>
+            <div><div className="col-t">Le encaja</div><ul className="list">{s.encaja.map((x) => <li key={x}>{x}</li>)}</ul></div>
+            <p className="us-seg-papel"><b>Su papel:</b> {s.papel}</p>
+            <p className="small muted">{s.llega}</p>
+          </article>
+        ))}
+        <article className="card us-seg us-jovenes">
+          <span className="kicker">Filtro de la app</span>
+          <h3>Experiencias para jóvenes</h3>
+          <p className="small muted">{CRITERIO_JOVENES.edad} {CRITERIO_JOVENES.regla}</p>
+          <div><div className="col-t">Obligatorios</div><ul className="list">{CRITERIO_JOVENES.obligatorios.map((x) => <li key={x}>{x}</li>)}</ul></div>
+          <div><div className="col-t">Al menos 2 de estos</div><ul className="list">{CRITERIO_JOVENES.opcionales.map((x) => <li key={x}>{x}</li>)}</ul></div>
+        </article>
+      </div>
+    </section>
   )
 }

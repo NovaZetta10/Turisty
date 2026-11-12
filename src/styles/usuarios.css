@@ -52,3 +52,13 @@
   .us-journey-marco::after { content: ''; position: absolute; top: 1px; bottom: 1px; right: 0; width: 36px; pointer-events: none; border-radius: 0 var(--radius) var(--radius) 0; background: linear-gradient(to right, transparent, var(--night)); opacity: 0; transition: opacity .2s var(--ease-out); }
   .us-journey-marco.sombra-der::after { opacity: 1; }
 }
+
+/* Quién usa Tenique */
+.us-seg { display: flex; flex-direction: column; gap: 10px; }
+.us-seg-top { display: flex; align-items: center; gap: 10px; }
+.us-seg-top h3 { font-size: 18px; }
+.us-seg .list { font-size: 13.5px; margin-top: 4px; }
+.us-seg-papel { font-size: 13.5px; color: var(--text-2); margin-top: auto; padding-top: 8px; border-top: 1px solid var(--line); }
+.us-seg-papel b { color: var(--text); }
+.us-jovenes { border-color: color-mix(in srgb, var(--nova) 45%, transparent); }
+.us-jovenes h3 { font-size: 18px; }

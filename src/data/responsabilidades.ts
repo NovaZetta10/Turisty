@@ -30,7 +30,7 @@ export type Agente = {
 
 export const PIEDRAS: { id: Piedra; nombre: string; texto: string }[] = [
   { id: 'vecinos', nombre: 'Vecinos', texto: 'Ponen su tiempo y lo suyo, avalan las experiencias de su barrio y deciden en qué se gasta el fondo.' },
-  { id: 'visitantes', nombre: 'Visitantes y sector turístico', texto: 'Los turistas y quienes viven de recibirlos: empresas turísticas y vivienda vacacional. Van juntos porque el turismo les beneficia directamente: participan, difunden y pagan al fondo de forma sistemática.' },
+  { id: 'visitantes', nombre: 'Visitantes y sector turístico', texto: 'Los turistas y quienes viven de recibirlos: empresas asociadas de Turismo de Tenerife y vivienda vacacional. Van juntos porque el turismo les beneficia directamente: participan, difunden y pagan al fondo de forma sistemática.' },
   { id: 'instituciones', nombre: 'Instituciones', texto: 'Dan el marco: el Cabildo gestiona el fondo, Turismo de Tenerife coordina y garantiza, los ayuntamientos abren el punto físico y ejecutan, y una entidad independiente mide.' },
 ]
 
@@ -57,7 +57,7 @@ export const AGENTES: Agente[] = [
     coordina: ['cabildo', 'tdt', 'local'],
   },
   {
-    id: 'empresas', nombre: 'Empresas turísticas y patronales', corto: 'Empresas turísticas', icono: 'box', piedra: 'visitantes',
+    id: 'empresas', nombre: 'Empresas asociadas de Turismo de Tenerife y patronales', corto: 'Empresas asociadas', icono: 'box', piedra: 'visitantes',
     aporta: ['Cuota anual al fondo, por tramos según su tamaño (fijada en el convenio con el Cabildo)', 'Experiencias propias con gente local (pueden cobrarlas)', 'Difusión de Tenique entre sus clientes'],
     recibe: ['Sello de empresa corresponsable', 'Clientes más satisfechos y que repiten', 'Mejor relación con los barrios donde operan'],
     decide: ['Qué experiencias propone', 'Cómo lo cuenta a sus clientes'],
@@ -86,9 +86,9 @@ export const AGENTES: Agente[] = [
   },
   {
     id: 'turistas', nombre: 'Turistas', corto: 'Turistas', icono: 'search', piedra: 'visitantes',
-    aporta: ['El 10 % de cada reserva de pago, que va al fondo', 'Donaciones en las experiencias gratuitas, que van enteras al fondo', 'Su presencia como invitado, no como cliente', 'Valoración de las experiencias a las que asiste'],
+    aporta: ['El 10 % de cada reserva de pago, que va al fondo', 'Donaciones en las experiencias gratuitas, que van enteras al fondo', 'Su compromiso con el código de convivencia del barrio, que acepta antes de reservar', 'Cuidado compartido: jornadas de voluntariado con vecinos en playas, senderos y plazas', 'Valoración de las experiencias a las que asiste'],
     recibe: ['Experiencias auténticas con gente de la isla', 'Saber qué ha dejado su viaje en el barrio'],
-    decide: ['Qué experiencia elige y cómo se comporta'],
+    decide: ['Qué experiencia elige', 'Si se suma a una jornada de cuidado compartido'],
     coordina: ['local', 'empresas', 'vv'],
   },
   {
@@ -122,6 +122,9 @@ export const ACCIONES: Accion[] = [
   { accion: 'Ofrecer experiencias (vecinos particulares: gratis o con donación en el piloto)', desde: ETAPAS[1], papeles: { local: 'R', comercio: 'R', empresas: 'R', tdt: 'A' } },
   { accion: 'Abrir y atender los puntos físicos', desde: ETAPAS[1], papeles: { ayto: 'A/R', tdt: 'C', local: 'I' } },
   { accion: 'Promocionar Tenique entre visitantes y residentes', desde: ETAPAS[1], papeles: { tdt: 'A/R', empresas: 'R', vv: 'R', ayto: 'C', turistas: 'I', local: 'I' } },
+  { accion: 'Escribir el código de convivencia de cada barrio', desde: ETAPAS[0], papeles: { local: 'R', tdt: 'A', ayto: 'C', vv: 'I', empresas: 'I' } },
+  { accion: 'Aceptar el código de convivencia antes de reservar', desde: ETAPAS[1], papeles: { turistas: 'R', tdt: 'A', vv: 'R', empresas: 'I' } },
+  { accion: 'Organizar jornadas de cuidado compartido (playas, senderos, plazas)', desde: ETAPAS[1], papeles: { ayto: 'A', local: 'R', turistas: 'R', tdt: 'C', empresas: 'C' } },
   { accion: 'Reservar y participar (residentes a precio simbólico o con tiempo)', desde: ETAPAS[1], papeles: { turistas: 'R', local: 'R', tdt: 'A' } },
   { accion: 'Pagar las cuotas anuales al fondo', desde: ETAPAS[1], papeles: { empresas: 'R', vv: 'R', cabildo: 'A', local: 'I' } },
   { accion: 'Aportar el 10 % de cada reserva y las donaciones', desde: ETAPAS[1], papeles: { turistas: 'R', local: 'R', cabildo: 'A' } },
@@ -142,11 +145,12 @@ export const ACCIONES: Accion[] = [
 export type Flujo = { de: string; a: string; que: string; tipo: 'dinero' | 'experiencia' | 'decision' | 'informacion' }
 
 export const FLUJOS: Flujo[] = [
-  { de: 'Empresas turísticas', a: 'Fondo del barrio', que: 'Cuota anual por tramos, fijada en el convenio', tipo: 'dinero' },
+  { de: 'Empresas asociadas', a: 'Fondo del barrio', que: 'Cuota anual por tramos, fijada en el convenio', tipo: 'dinero' },
   { de: 'Vivienda vacacional', a: 'Fondo del barrio', que: 'Cuota anual por vivienda adherida (supuesto: 50 € al año), fijada en el convenio', tipo: 'dinero' },
   { de: 'Quien reserva', a: 'Fondo del barrio', que: 'El 10 % de cada reserva de pago y las donaciones de las experiencias gratuitas', tipo: 'dinero' },
   { de: 'Cabildo', a: 'Fondo del barrio', que: 'Un 25 % más por cada euro privado (nunca la mayor parte). Lo gestiona, con una cuenta por municipio', tipo: 'dinero' },
   { de: 'Turistas', a: 'Asociaciones, entidades y empresas', que: 'Pago por la experiencia (en el piloto, los vecinos particulares no cobran)', tipo: 'dinero' },
+  { de: 'Turistas', a: 'Barrio', que: 'Respeto al código de convivencia y jornadas de cuidado compartido con vecinos', tipo: 'experiencia' },
   { de: 'Anfitriones y comercio', a: 'Turistas y vecinos', que: 'Experiencias reales compartidas', tipo: 'experiencia' },
   { de: 'Asociaciones vecinales', a: 'Turismo de Tenerife', que: 'Aval del barrio a cada experiencia (y su retirada)', tipo: 'decision' },
   { de: 'Quien asistió (vecinos y visitantes)', a: 'Turismo de Tenerife', que: 'Valoración de la experiencia', tipo: 'decision' },
@@ -162,6 +166,24 @@ export const VALIDACION: { sello: string; quien: string; que: string }[] = [
   { sello: 'Avalada por el barrio', quien: 'Asociación vecinal o vecinos', que: 'Avalan que es real y de aquí. Pueden retirar el aval.' },
   { sello: 'Valorada por quien la vivió', quien: 'Todas las personas que asistieron, vecinos y visitantes', que: 'Puntúan después de vivirla.' },
 ]
+
+/**
+ * Código de convivencia del barrio: lo acepta el visitante antes de reservar (Prototipo lo muestra en la app).
+ * Base común; cada barrio lo adapta con su asociación vecinal. Propuesta del equipo, por validar con vecinos.
+ */
+export const CODIGO_CONVIVENCIA: { id: string; es: string; en: string }[] = [
+  { id: 'descanso', es: 'Respeta el descanso: de noche, baja la voz en la calle y en las zonas de casas.', en: 'Respect people\'s rest: at night, keep your voice down in the street and near homes.' },
+  { id: 'espacios', es: 'Las plazas, las playas y los senderos son de todos: úsalos y déjalos como los encontraste.', en: 'Squares, beaches and trails belong to everyone: enjoy them and leave them as you found them.' },
+  { id: 'gente', es: 'Pregunta antes de fotografiar a personas, casas o fiestas.', en: 'Ask before taking photos of people, homes or local festivities.' },
+  { id: 'entorno', es: 'No salgas de los senderos, no te lleves piedras ni plantas y llévate tu basura.', en: 'Stay on the trails, don\'t take stones or plants, and take your rubbish with you.' },
+  { id: 'barrio', es: 'Compra en el comercio del barrio y trata a quien te recibe como anfitrión, no como servicio.', en: 'Shop locally and treat the people who welcome you as hosts, not as a service.' },
+]
+
+/** Cuidado compartido: además del código, se invita al visitante a cuidar el barrio con los vecinos. */
+export const CUIDADO_COMPARTIDO = {
+  es: 'Súmate a una jornada de cuidado compartido con vecinos: limpiar una playa, arreglar un sendero, cuidar una plaza.',
+  en: 'Join a shared care day with locals: clean a beach, repair a trail, look after a square.',
+}
 
 export const FLUJO_TXT: Record<Flujo['tipo'], string> = { dinero: 'Dinero', experiencia: 'Experiencia', decision: 'Decisión', informacion: 'Información' }
 

@@ -90,6 +90,11 @@ export const FUENTES: Fuente[] = [
   { id: 84, titulo: 'El Cabildo ofrece hasta 60 actividades y rutas para que mayores y personas en situación de vulnerabilidad disfruten de los atractivos de la isla («Tenerife es tuya»)', medio: 'Turismo de Tenerife · blog corporativo', fecha: '02-09-2025', url: 'https://www.webtenerife.com/blogcorporativo/2025/09/el-cabildo-ofrece-hasta-60-actividades-y-rutas-para-que-mayores-y-personas-en-situacion-de-vulnerabilidad-disfruten-de-los-atractivos-de-la-isla/', abierta: true },
   { id: 85, titulo: 'Ley 12/1990, de 26 de julio, de Aguas de Canarias (art. 9: Consejos Insulares de Aguas; art. 40: planes hidrológicos insulares)', medio: 'BOE · texto consolidado', fecha: '27-07-1990', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-1990-23087', abierta: true },
   { id: 86, titulo: 'REGENERATe, presentado como caso de éxito en el Foro Mundial de Ecoturismo 2025 de Barcelona', medio: 'Turismo de Tenerife · blog corporativo', fecha: '25-10-2025', url: 'https://www.webtenerife.com/blogcorporativo/2025/10/regenerate-presentado-como-caso-de-exito-en-el-foro-mundial-de-ecoturismo-2025-de-barcelona/', abierta: true },
+  { id: 87, titulo: 'Once Overrun, Dubrovnik Plans for Sustainability (Destination Stewardship Report, vol. 1, n.º 4; texto de la Alcaldía de Dubrovnik)', medio: 'GSTC Knowledge Hub', fecha: 's. f.', url: 'https://knowledge.gstc.org/once-overrun-dubrovnik-plans-for-sustainability/', abierta: true },
+  { id: 88, titulo: '«Respect the City»: how Dubrovnik is managing overtourism without losing its charm', medio: 'Euronews', fecha: '24-07-2026', url: 'https://www.euronews.com/2026/07/24/respect-the-city-how-dubrovnik-is-managing-overtourism-without-losing-its-charm', abierta: true },
+  { id: 89, titulo: 'Audit of the Hawai‘i Tourism Authority (Report No. 25-07)', medio: 'Office of the Auditor, State of Hawai‘i', fecha: '2025', url: 'https://files.hawaii.gov/auditor/Reports/2025/25-07.pdf', abierta: true },
+  { id: 90, titulo: 'Meet and Talk: grupo de conversación en inglés · Centro de Información Juvenil (Cabildo de Tenerife)', medio: 'Tenerife Joven y Educa', fecha: 'consultado el 12-11-2026', url: 'https://tenerifejovenyeduca.com/cij/grupos-juveniles/grupo-de-conversacion-en-ingles-meet-talk/', abierta: true },
+  { id: 91, titulo: 'Halloween, gaming y senderos: actividades gratis para jóvenes este otoño en Santa Cruz (Distrito Joven)', medio: 'Diario de Avisos', fecha: '09-2026', url: 'https://diariodeavisos.elespanol.com/2026/09/actividades-jovenes-santa-cruz-tenerife/', abierta: true },
 ]
 
 export type Dato = { etiqueta: string; valor: string; detalle?: string; fuentes: number[]; verificado: boolean }
@@ -213,15 +218,15 @@ export const ZONAS: Zona[] = [
     fuentes: [49, 51, 55, 56, 57],
   },
   {
-    id: 'norte', nombre: 'Norte', ejemplos: 'Puerto de la Cruz, La Orotava, Icod, Garachico',
+    id: 'norte', nombre: 'Norte', ejemplos: 'Puerto de la Cruz, La Orotava, Icod de los Vinos',
     resumen: 'Turismo antiguo en el Puerto y naturaleza muy visitada. Lo que más preocupa es el entorno.',
     datos: ['74,9 % cree que el turismo genera demasiados residuos o aguas residuales (la cifra más alta).', 'Solo el 16,6 % cree que ayuda a conservar los espacios naturales.', '12,8 % de los hogares con vínculo económico con el turismo.', 'Puerto de la Cruz: 78 plazas turísticas por cada 100 vecinos.'],
     fuentes: [49, 51, 55, 56, 57],
   },
   {
-    id: 'rural', nombre: 'Zonas rurales', ejemplos: 'Arico, Garachico, Vilaflor, Teno, Anaga',
-    resumen: 'Sin hoteles, pero la vivienda vacacional ya llega. La encuesta no las separa: lo validamos con entrevistas.',
-    datos: ['Arico: 21 plazas de vivienda vacacional por cada 100 vecinos; Garachico: 15. Santa Cruz: 1,6.', 'Masca: el 95 % de quien recorre el barranco es visitante.'],
+    id: 'rural', nombre: 'Interior rural', ejemplos: 'Arico, Garachico, Buenavista del Norte (Masca)',
+    resumen: 'Pueblos sin hoteles, en el norte y en el sur, a los que ya llega la vivienda vacacional. La encuesta no los separa: lo validamos con entrevistas.',
+    datos: ['Arico: 21 plazas de vivienda vacacional por cada 100 vecinos; Garachico: 15. Santa Cruz: 1,6.', 'Masca (Buenavista del Norte): el 95 % de quien recorre el barranco es visitante.'],
     fuentes: [55, 57, 59],
     hipotesis: true,
   },
@@ -262,6 +267,8 @@ export const PRESION_TENERIFE = { poblacion: 966469, plazasRegladas: 129113, pla
 
 export type Causa = {
   titulo: string; resumen: string; evidencia: string[]; fuentes: number[]; principal?: boolean
+  /** Etiqueta corta de la tarjeta para las causas que no son principales. */
+  tema?: string
   /** Qué hace Tenique con esta causa. */
   tenique: 'aborda' | 'en parte' | 'no aborda'
   queHace: string
@@ -269,10 +276,39 @@ export type Causa = {
   quien?: { texto: string; fuentes: number[] }
 }
 
-/** Causas con evidencia. Las tres `principal` son las que devolvemos al equipo. */
+/** Causas con evidencia. `principal` = las que más pesan según el reto y los datos (vivienda y movilidad); Tenique no las resuelve. Después, las que sí ataca. */
 export const CAUSAS: Causa[] = [
   {
-    titulo: 'El retorno no se ve',
+    titulo: 'Vivienda y coste de la vida', tema: 'Vivienda',
+    resumen: 'Es lo que más pesa en el malestar, como señala el propio reto. Sigue creciendo y explica la sensación de expulsión.',
+    evidencia: [
+      'El 81,2 % cree que el turismo encarece la vivienda y el 71,4 % ve cambios de residencia no deseados (63,5 % en 2024).',
+      'La vivienda vacacional es el 49 % de las plazas inscritas en la isla (130.283 de 266.480 en 2025).',
+      'Incluso en el área metropolitana, que apenas aloja turistas, el 83,3 % cree que el turismo encarece la vivienda.',
+      'En septiembre de 2026 había 19.148 viviendas vacacionales disponibles en Tenerife, el 41 % de Canarias.',
+    ],
+    fuentes: [49, 50, 8, 55],
+    principal: true,
+    tenique: 'no aborda',
+    queHace: 'No la resuelve ni lo pretende: es competencia de otras instituciones. Al menos no la empeora, porque no crea plazas turísticas: las experiencias no necesitan alojamiento.',
+    quien: { texto: 'Gobierno de Canarias: competencia exclusiva en vivienda (Estatuto, art. 143) y ley de vivienda vacacional (Ley 6/2025). Ayuntamientos: su planeamiento decide si se admite el uso turístico y hacen las inspecciones.', fuentes: [74, 71, 11] },
+  },
+  {
+    titulo: 'Movilidad y servicios tensionados', tema: 'Movilidad',
+    resumen: 'La otra causa que señala el reto: el residente comparte carreteras y servicios pensados para menos gente.',
+    evidencia: [
+      'El 68,5 % cree que el turismo perjudica el tráfico y la movilidad.',
+      'El 51,7 % cree que colapsa los servicios sanitarios (Canarias: 42,8 %).',
+      'En 2025 llegaron 7,56 millones de turistas: unos 7,8 al año por cada residente.',
+    ],
+    fuentes: [49, 8, 57],
+    principal: true,
+    tenique: 'no aborda',
+    queHace: 'No la resuelve: es competencia de otras instituciones. Prioriza experiencias a pie o en guagua, pero eso no cambia el tráfico.',
+    quien: { texto: 'Cabildo: carreteras insulares y transporte por carretera (Ley 8/2015, art. 6.2). Gobierno de Canarias: carreteras de interés autonómico. Ayuntamientos: tráfico, aparcamiento y transporte urbano (Ley 7/1985, art. 25.2).', fuentes: [72, 73] },
+  },
+  {
+    titulo: 'El retorno no se ve', tema: 'Retorno',
     resumen: 'El turismo deja dinero en la isla, pero el vecino no lo nota en su barrio ni en sus servicios.',
     evidencia: [
       'Solo el 31,4 % cree que el turismo mejora los servicios de su comarca (38,8 % en 2024).',
@@ -281,12 +317,11 @@ export const CAUSAS: Causa[] = [
       'Comparación: en Barcelona, el 75,7 % conoce la tasa turística, pero menos de la mitad sabe que financia proyectos.',
     ],
     fuentes: [49, 50, 52, 53, 66],
-    principal: true,
     tenique: 'aborda',
-    queHace: 'Cada reserva deja dinero en un fondo del barrio, y en qué se gasta se ve en la calle y en la app.',
+    queHace: 'Es el centro de la propuesta. Cada reserva deja dinero en un fondo del barrio y en qué se gasta se ve en la calle y en la app. Y nos comprometemos a publicar, por municipio, lo que el turismo aporta a sanidad, educación y limpieza.',
   },
   {
-    titulo: 'El beneficio se concentra en pocos',
+    titulo: 'El beneficio se concentra en pocos', tema: 'Reparto del beneficio',
     resumen: 'El empleo turístico existe, pero se percibe precario y llega a pocos hogares, sobre todo fuera del sur.',
     evidencia: [
       'El turismo da el 23,2 % de las afiliaciones (100.665 en octubre de 2026) y el 44,4 % de los contratos de 2025.',
@@ -295,12 +330,11 @@ export const CAUSAS: Causa[] = [
       'La facturación de 2025 creció un 2,2 % por la llegada de más turistas, no porque cada uno gastara más.',
     ],
     fuentes: [8, 49, 51, 58],
-    principal: true,
     tenique: 'en parte',
-    queHace: 'Abre una vía de ingreso a vecinos anfitriones, asociaciones y comercio local. No cambia los salarios del sector.',
+    queHace: 'Lo atacamos en parte porque podemos sumar ingreso fuera del sur: vecinos anfitriones, asociaciones y comercio local. No cambia los salarios del sector.',
   },
   {
-    titulo: 'La identidad y la convivencia se erosionan',
+    titulo: 'La identidad y la convivencia se erosionan', tema: 'Convivencia',
     resumen: 'Cada vez menos gente siente que el turismo cuida lo propio, y crece la sensación de tensión.',
     evidencia: [
       'Solo el 36,8 % cree que el turismo mantiene la identidad y las tradiciones (44,5 % en 2024).',
@@ -311,12 +345,11 @@ export const CAUSAS: Causa[] = [
       'Observación de nuestro catálogo de experiencias reales (29 revisadas, no es una cifra de la isla): casi todo lo que hoy comparten vecinos y visitantes son fiestas, romerías y actividades institucionales. Apenas hay experiencias con un vecino como anfitrión.',
     ],
     fuentes: [49, 50, 60],
-    principal: true,
     tenique: 'aborda',
-    queHace: 'Encuentros reales en los que el vecino enseña lo suyo y en sus términos; los locales validan y puntúan.',
+    queHace: 'Lo atacamos porque el encuentro se valora pero apenas existe: encuentros reales en los que el vecino enseña lo suyo y en sus términos; los locales validan y puntúan.',
   },
   {
-    titulo: 'Presión sobre el entorno natural',
+    titulo: 'Presión sobre el entorno natural', tema: 'Entorno natural',
     resumen: 'Residuos, agua y espacios naturales saturados. Es una de las preocupaciones que más crecen.',
     evidencia: [
       'El 69,6 % cree que el turismo genera demasiados residuos o aguas residuales (74,9 % en el norte).',
@@ -330,20 +363,7 @@ export const CAUSAS: Causa[] = [
     quien: { texto: 'Cabildo de Tenerife: gestiona los espacios naturales y sus ecotasas (Teide, Masca).', fuentes: [12, 59] },
   },
   {
-    titulo: 'Vivienda y coste de la vida',
-    resumen: 'La causa conocida. La incluimos porque sigue creciendo y explica la sensación de expulsión.',
-    evidencia: [
-      'El 81,2 % cree que el turismo encarece la vivienda y el 71,4 % ve cambios de residencia no deseados (63,5 % en 2024).',
-      'La vivienda vacacional es el 49 % de las plazas inscritas en la isla (130.283 de 266.480 en 2025).',
-      'En septiembre de 2026 había 19.148 viviendas vacacionales disponibles en Tenerife, el 41 % de Canarias.',
-    ],
-    fuentes: [49, 50, 8, 55],
-    tenique: 'no aborda',
-    queHace: 'No la resuelve. No crea plazas turísticas: las experiencias no necesitan alojamiento.',
-    quien: { texto: 'Gobierno de Canarias: competencia exclusiva en vivienda (Estatuto, art. 143) y ley de vivienda vacacional (Ley 6/2025). Ayuntamientos: su planeamiento decide si se admite el uso turístico y hacen las inspecciones.', fuentes: [74, 71, 11] },
-  },
-  {
-    titulo: 'Vertidos y playas cerradas',
+    titulo: 'Vertidos y playas cerradas', tema: 'Agua y costa',
     resumen: 'El saneamiento no da abasto en parte de la costa. El vecino lo vive como playas que pierde.',
     evidencia: [
       'El 69,6 % cree que el turismo genera demasiados residuos, contaminación o aguas residuales (74,9 % en el norte).',
@@ -356,18 +376,6 @@ export const CAUSAS: Causa[] = [
     tenique: 'no aborda',
     queHace: 'No lo resuelve. Puede mostrar con transparencia el estado de las playas del municipio.',
     quien: { texto: 'Ayuntamientos: evacuación y tratamiento de aguas residuales (Ley 7/1985, art. 25.2 c). Gobierno de Canarias: censo y autorización de vertidos al mar. Consejo Insular de Aguas (adscrito al Cabildo): planificación hidrológica de la isla (Ley 12/1990, arts. 9 y 40). El Cabildo declara no ser el competente del problema.', fuentes: [73, 80, 85, 83] },
-  },
-  {
-    titulo: 'Movilidad y servicios tensionados',
-    resumen: 'El residente siente que comparte carreteras y servicios pensados para menos gente.',
-    evidencia: [
-      'El 68,5 % cree que el turismo perjudica el tráfico y la movilidad.',
-      'El 51,7 % cree que colapsa los servicios sanitarios (Canarias: 42,8 %).',
-    ],
-    fuentes: [49],
-    tenique: 'no aborda',
-    queHace: 'No la resuelve. Puede priorizar experiencias a pie o en guagua, pero eso no cambia el tráfico.',
-    quien: { texto: 'Cabildo: carreteras insulares y transporte por carretera (Ley 8/2015, art. 6.2). Gobierno de Canarias: carreteras de interés autonómico. Ayuntamientos: tráfico, aparcamiento y transporte urbano (Ley 7/1985, art. 25.2).', fuentes: [72, 73] },
   },
 ]
 
@@ -390,6 +398,39 @@ export const HIPOTESIS: Hipotesis[] = [
   { id: 'H10', texto: 'Los jóvenes son los más críticos porque son los que más sufren la vivienda.', porQue: 'El informe de Turismo de Tenerife sobre la encuesta de 2024 dice que los jóvenes son los más críticos.', pregunta: '¿Te ves viviendo en tu municipio dentro de diez años? ¿Qué tiene que ver el turismo con eso?', aQuien: 'Jóvenes de 18 a 34 años' },
   { id: 'H11', texto: 'Las depuradoras de las zonas turísticas no están dimensionadas para la población flotante.', porQue: 'Varias aglomeraciones condenadas por el TJUE son turísticas, pero no hay un dato público de la carga que suponen los turistas.', pregunta: 'Para técnicos municipales: ¿para cuánta población se diseñó la depuradora? ¿Y cuánta recibe en temporada alta?', aQuien: 'Técnicos de ayuntamientos y del Consejo Insular de Aguas' },
 ]
+
+/**
+ * Hallazgo de nuestra búsqueda (equipo de experiencias, 12-11-2026), no una estadística oficial.
+ * Método y detalle en docs/experiencias-criterios.md. Sin cifras nuevas.
+ */
+export const HALLAZGO_JOVENES = {
+  titulo: 'Para los jóvenes, casi no hay dónde encontrarse',
+  texto: 'En 7 programas de juventud de Tenerife y 11 fuentes (Centro de Información Juvenil del Cabildo, La Laguna, Distrito Joven de Santa Cruz, Adeje, Arona, Carné Joven Canarias y agenda de la ULL) no aparece ninguna actividad que, según su fuente, sea a la vez asequible, en horario compatible y abierta a compartir entre jóvenes de aquí y de fuera.',
+  falta: [
+    'Precio: la mayoría de las fichas no lo dicen.',
+    'Apertura a visitantes: ningún programa dice que reciba a jóvenes de fuera.',
+    'Idioma: solo una actividad es en inglés.',
+  ],
+  tenique: 'Es un hueco que Tenique puede cubrir: experiencias de tarde o de fin de semana, con precio claro, en más de un idioma y pensadas para que jóvenes de aquí y de fuera las hagan juntos.',
+  fuentes: [90, 91],
+}
+
+/**
+ * Preguntas del guion de entrevista que citan las hipótesis (campo `guion`). V = vecinos, T = turistas.
+ * Texto abreviado de docs/usuarios-guion-tenique.md (subagente de usuarios). Si cambia el guion, actualizar aquí.
+ */
+export const GUION: Record<string, string> = {
+  V2: 'Piensa en la última vez que trataste con un turista fuera del trabajo. ¿Qué pasó?',
+  V3: '¿Qué es lo que más te molesta del turismo en tu día a día? ¿Sientes que alguien os escucha?',
+  V4: '¿Y qué te aporta? ¿Notas que el dinero del turismo se quede en tu barrio?',
+  V5: '¿Hay algo de tu zona o tuyo que te gustaría que un visitante conociera?',
+  V6: 'Reacción a la idea de Tenique: ¿participarías aunque no cobraras? ¿Qué te frenaría?',
+  V7: 'Si buscaras algo así por cómo quieres sentirte, ¿qué emociones elegirías?',
+  V8: '¿Cómo te enterarías tú de algo así? ¿Y tus padres o tus abuelos?',
+  T2: 'En este viaje, ¿has hablado con alguien de aquí que no te estuviera vendiendo nada?',
+  T3: '¿Qué te ha hecho sentir que estabas en Tenerife y no en cualquier otro sitio?',
+  T5: 'Si la buscaras por cómo quieres sentirte, ¿qué emociones elegirías?',
+}
 
 /** Lo que devuelve el turismo a Tenerife, con lo que hay publicado. */
 export const RETORNO: Dato[] = [
@@ -420,11 +461,24 @@ export const MUNICIPIO_NO_EXISTE: string[] = [
 
 /** Lo que no está publicado (y es parte del diagnóstico). */
 export const RETORNO_HUECOS: string[] = [
-  'No hay datos por isla de lo que el turismo aporta a sanidad, educación o limpieza.',
+  'No hay datos por isla ni por municipio de lo que el turismo aporta a sanidad, educación o limpieza. Tenique se compromete a publicarlos: ver «Nuestro compromiso», arriba.',
   'No hay un dato acumulado y publicado de lo recaudado por la ecotasa del Teide en 2026.',
   'No hemos encontrado ninguna encuesta del Cabildo ni de Turismo de Tenerife sobre convivencia o sobre si la gente se siente escuchada.',
   'Para comparar: en Canarias, el turismo supone el 37,7 % del PIB y el 42,3 % del empleo (Exceltur, 2024). No hay cifra por isla.',
 ]
+
+/**
+ * Compromiso de la propuesta: publicar el retorno por municipio. Es una propuesta, sin cifras:
+ * los datos tendrían que salir del Cabildo y del ISTAC.
+ */
+export const RETORNO_COMPROMISO = {
+  frase: 'Tenique se compromete a publicar, municipio a municipio y en lenguaje cercano, lo que el turismo devuelve en sanidad, educación y limpieza, junto con el Cabildo y el ISTAC.',
+  pasos: [
+    'Cabildo e ISTAC: calcular por municipio cuánto de lo que pagan los turistas en impuestos vuelve en servicios públicos.',
+    'Tenique: contarlo en la app y en la web de cada municipio con frases cortas y ejemplos (por ejemplo, qué parte de la limpieza de tu barrio pagan los impuestos del turismo), sin tecnicismos.',
+    'Una vez al año, junto al barómetro de convivencia, y en papel en ayuntamientos y asociaciones para quien no usa el móvil.',
+  ],
+}
 
 export type Referente = { nombre: string; lugar: string; categoria: string; que: string; resultado?: string; leccion?: string; fuentes: number[]; verificado: boolean }
 
@@ -441,6 +495,32 @@ export const REFERENTES: Referente[] = [
   { nombre: 'Airbnb Social Impact Experiences', lugar: 'Varios países', categoria: 'Fondo con uso visible', que: 'Experiencias organizadas por ONG; la plataforma renuncia a su comisión.', resultado: 'Casi 4 M€ recaudados por ONG (2019).', leccion: 'Cada reserva puede financiar a una entidad local de forma directa.', fuentes: [67], verificado: true },
   { nombre: 'Mālama Hawaiʻi', lugar: 'Hawái', categoria: 'Corresponsabilidad', que: 'Panel de la autoridad turística que conecta visitantes con voluntariado local.', resultado: '36 organizaciones en el programa (2024).', leccion: 'Sin participación real, la campaña no cambia la percepción: hay que medir cuánta gente participa, no solo cuánta oferta hay.', fuentes: [40], verificado: true },
   { nombre: 'Contributo di accesso', lugar: 'Venecia', categoria: 'Retorno visible', que: 'Tasa para excursionistas de un día en las jornadas punta.', resultado: '2025: 723.497 pagos y 5,4 M€; al menos 1,5 M€ para bajar la tasa de basuras a los residentes.', leccion: 'Devolver al residente algo que nota en su bolsillo.', fuentes: [68], verificado: false },
+]
+
+export type AntesDespues = {
+  caso: string; lugar: string; que: string
+  antes: { valor: string; texto: string }
+  despues: { valor: string; texto: string }
+  extra?: string; leccion: string; fuentes: number[]
+  /** true si el «después» no mejora: sirve de aviso, no de modelo. */
+  aviso?: boolean
+}
+
+/** Iniciativas parecidas con una cifra de antes y otra de después, comprobadas en su fuente. */
+export const ANTES_DESPUES: AntesDespues[] = [
+  { caso: 'Ecotasa y aforo de Masca', lugar: 'Tenerife', que: 'Reserva, 275 personas al día y tasa para no residentes; gratis para residentes.', antes: { valor: '+100.000', texto: 'visitas al año' }, despues: { valor: '24.000', texto: 'visitas al año (−76 %)' }, extra: '652.000 € reinvertidos en el barranco y 17 empleos, sobre todo de vecinos del entorno.', leccion: 'El dinero se queda donde se genera y se ve.', fuentes: [59] },
+  { caso: 'Ecotasa del Teide', lugar: 'Tenerife', que: 'Reserva y ecotasa para subir por Montaña Blanca y Telesforo Bravo, desde enero de 2026.', antes: { valor: '38.200', texto: 'visitas del 19 de diciembre al 19 de enero' }, despues: { valor: '10.893', texto: 'visitas en el primer mes con ecotasa' }, extra: 'El 94,3 % de quien reservó no era residente.', leccion: 'La isla ya sabe regular el acceso a un espacio saturado.', fuentes: [12] },
+  { caso: 'CopenPay', lugar: 'Copenhague', que: 'Experiencias gratis como premio a acciones verdes, para turistas y residentes.', antes: { valor: '5.000', texto: 'participantes en 2024 (26 socios)' }, despues: { valor: '25.000', texto: 'participantes en 2025 (100 socios)' }, extra: 'El alquiler de bicis subió un 59 % frente al mismo periodo de 2024.', leccion: 'Si la experiencia es la recompensa, la gente participa, y crece rápido.', fuentes: [64] },
+  { caso: 'Respect the City', lugar: 'Dubrovnik', que: 'Desde 2017: máximo dos cruceros a la vez, escalas de al menos 8 horas y 80 % menos de puestos de recuerdos.', antes: { valor: '+10.000', texto: 'visitantes a la vez en el casco histórico (2013)' }, despues: { valor: '4.000', texto: 'cruceristas como máximo a la vez dentro de las murallas' }, extra: 'Cruceristas al año: más de un millón en 2013; 661.000 previstos en 2026.', leccion: 'Poner por delante a los vecinos cuesta ingresos (unos 660.000 € al año), pero se puede pactar con el sector.', fuentes: [87, 88] },
+  { caso: 'Campañas sin participación', lugar: 'Hawái', que: 'Mālama Hawaiʻi conecta visitantes con voluntariado desde 2020; la percepción se mide cada año.', antes: { valor: '80 %', texto: 'de residentes: el turismo trae más beneficios que problemas (2010)' }, despues: { valor: '56 %', texto: 'opina lo mismo en 2024' }, leccion: 'Una campaña sola no frena el malestar. Hay que medir cuánta gente participa y si lo nota.', fuentes: [89, 40], aviso: true },
+]
+
+/** Casos del benchmark sin un «antes y después» fiable: no lo inventamos. */
+export const SIN_ANTES_DESPUES: { caso: string; motivo: string }[] = [
+  { caso: 'Closed for Maintenance (Feroe)', motivo: 'Solo publica totales acumulados desde 2019, sin serie por año.' },
+  { caso: 'Tasa turística a los barrios (Barcelona)', motivo: 'Publica lo invertido, no cómo cambió la percepción de esos barrios.' },
+  { caso: '«Tenerife es tuya» y REGENERATe', motivo: 'Dan participantes y actividades, sin medición antes y después.' },
+  { caso: 'Contributo di accesso (Venecia)', motivo: 'Las cifras de 2025 vienen de prensa; la página oficial no carga. Por verificar.' },
 ]
 
 export type DatoAbierto = { nombre: string; que: string; acceso: string; fuentes: number[] }

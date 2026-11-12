@@ -7,14 +7,15 @@ import { IDIOMAS, useIdioma, useT } from './idioma'
 // Más piezas: piezas-flujo.tsx (Ficha, Mapa, Reserva, Confirmacion, Panel) y estados.tsx (carga, vacío, error).
 
 /** Barra superior. Muestra «volver» si hay pantalla anterior. `accion`: hueco a la derecha (p. ej. <SelectorIdioma />). */
+/** Barra superior. El selector de idioma (ES/EN) va siempre, en todas las pantallas; `accion` se añade a su izquierda. */
 export function BarraApp({ titulo, accion }: { titulo: string; accion?: ReactNode }) {
   const { atras, puedeVolver } = useNav()
   const t = useT()
   return (
     <header className="app-barra">
-      {puedeVolver ? <button className="app-icono" aria-label={t({ es: 'Volver', en: 'Back' })} onClick={atras}><Icon name="left" size={20} /></button> : <span className="app-icono" />}
+      <span className="app-barra-lado">{puedeVolver && <button className="app-icono" aria-label={t({ es: 'Volver', en: 'Back' })} onClick={atras}><Icon name="left" size={20} /></button>}</span>
       <h1>{titulo}</h1>
-      <span className="app-icono">{accion}</span>
+      <span className="app-barra-lado fin">{accion}<SelectorIdioma /></span>
     </header>
   )
 }

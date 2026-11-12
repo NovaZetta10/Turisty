@@ -3,7 +3,6 @@
 .via-partida { display: block; color: var(--text); font-weight: 600; }
 .via-ok { color: var(--ok); }
 .via-stop { color: var(--nova-hot); }
-.tag.via-nivel-alto { background: color-mix(in srgb, var(--brand-red) 14%, transparent); color: var(--nova-hot); }
 
 /* supuestos */
 .via-sup { margin-bottom: 16px; }
@@ -20,7 +19,7 @@
 @media (max-width: 640px) { .via-totales { grid-template-columns: 1fr; } }
 
 /* tabla editable + gráfico */
-.via-costes { display: grid; gap: 16px; }
+.via-costes { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
 .via-input { width: 96px; height: 34px; padding: 0 8px; border-radius: 8px; border: 1px solid var(--line-2); background: color-mix(in srgb, var(--text) 4%, transparent); color: var(--text); font: inherit; font-size: 14px; text-align: right; font-variant-numeric: tabular-nums; transition: border-color .15s var(--ease-out), box-shadow .15s var(--ease-out); }
 .via-input:focus { outline: none; border-color: var(--nova); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-red) 15%, transparent); }
 
@@ -145,14 +144,47 @@
 }
 
 /* listas plegables y matriz de riesgos */
-.via-lista { margin-top: 12px; }
+.via-lista { margin-top: 12px; min-width: 0; }
 .via-lista summary { cursor: pointer; color: var(--ice); font-size: 14px; padding: 6px 0; }
 .via-lista[open] summary { margin-bottom: 12px; }
-.via-matriz { display: grid; gap: 4px; margin-bottom: 16px; max-width: 560px; }
+/* Niveles: bajo = verde (--ok), medio = ámbar (--amber, token pendiente; #f5b942 da 8,3–10,2:1 sobre night), alto = rojo de marca. */
+.via-matriz-bloque { margin-bottom: 16px; }
+.tag.via-nivel-bajo { background: var(--ok-bg); color: var(--ok); }
+.tag.via-nivel-medio { background: color-mix(in srgb, var(--amber, #f5b942) 14%, transparent); color: var(--amber, #f5b942); }
+.tag.via-nivel-alto { background: color-mix(in srgb, var(--brand-red) 18%, transparent); color: var(--nova); }
+.via-matriz-ley { display: flex; justify-content: space-between; align-items: center; gap: 8px 16px; flex-wrap: wrap; margin-bottom: 10px; }
+.via-matriz-ley p { margin: 0; }
+.via-ley-niveles { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.via-matriz-cols { display: grid; grid-template-columns: minmax(0, 560px) minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 860px) { .via-matriz-cols { grid-template-columns: minmax(0, 1fr); } }
+.via-matriz { display: grid; gap: 4px; }
 .via-matriz-fila { display: grid; grid-template-columns: 1.3fr repeat(3, 1fr); gap: 4px; align-items: stretch; }
 .via-matriz-fila > span:first-child { display: flex; align-items: center; }
-.via-matriz-celda { display: grid; place-items: center; align-content: center; min-height: 52px; border-radius: 8px; border: 1px solid var(--line); background: var(--night-2); color: var(--muted); }
-.via-matriz-celda b { font-size: 20px; }
-.via-matriz-celda.con { color: var(--text); background: var(--night-3); }
-.via-matriz-celda.grave { border: 2px solid var(--nova); color: var(--nova-hot); }
-.via-matriz-celda small { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
+.via-matriz-fila > [role="cell"] { display: grid; }
+.via-matriz-celda { --c: var(--off); display: grid; place-items: center; align-content: center; gap: 2px; min-height: 56px; width: 100%; padding: 4px; border-radius: 8px; border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); background: color-mix(in srgb, var(--c) 6%, var(--night-2)); color: var(--c); font: inherit; cursor: pointer; transition: transform .16s var(--ease-out), background-color .16s var(--ease-out); }
+.via-matriz-celda:disabled { cursor: default; opacity: .55; }
+.via-matriz-celda.via-g-bajo { --c: var(--ok); }
+.via-matriz-celda.via-g-medio { --c: var(--amber, #f5b942); }
+.via-matriz-celda.via-g-alto { --c: var(--nova); }
+.via-matriz-celda.con { background: color-mix(in srgb, var(--c) 16%, var(--night-3)); }
+.via-matriz-celda.sel { border: 2px solid var(--c); box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 22%, transparent); }
+.via-matriz-celda:active:not(:disabled) { transform: scale(.97); }
+.via-matriz-celda b { font-size: 20px; color: var(--text); }
+.via-matriz-celda small { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+.via-matriz-lista .col-t { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.via-matriz-lista .list { margin: 8px 0 0; }
+
+/* DAFO 2×2 */
+.via-dafo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 640px) { .via-dafo { grid-template-columns: minmax(0, 1fr); } }
+.via-dafo-c { --c: var(--off); border-radius: var(--radius); border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); background: linear-gradient(160deg, color-mix(in srgb, var(--c) 12%, var(--night-2)), var(--night-2) 70%); padding: 16px 18px; }
+.via-dafo-debilidades { --c: var(--amber, #f5b942); }
+.via-dafo-amenazas { --c: var(--nova); }
+.via-dafo-fortalezas { --c: var(--ok); }
+.via-dafo-oportunidades { --c: var(--ice); }
+.via-dafo-c header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.via-dafo-c h3 { margin: 0; color: var(--c); }
+.via-dafo-c header small { color: var(--muted); font-size: 12px; }
+.via-dafo-ico { display: grid; place-items: center; width: 36px; height: 36px; flex: none; border-radius: 10px; color: var(--c); background: color-mix(in srgb, var(--c) 16%, transparent); }
+.via-dafo-c ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; font-size: 14.5px; color: var(--text-2); }
+.via-dafo-c li::marker { color: var(--c); }

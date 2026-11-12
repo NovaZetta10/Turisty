@@ -69,13 +69,14 @@ export const EQUIPO: Miembro[] = [
     rol: 'Turismo',
     estudios: 'Grado en Turismo (cuarto curso)',
     linkedin: 'https://www.linkedin.com/in/giulia-gottardo-8a44223aa',
+    foto: 'img/equipo/giulia.jpg',
   },
   {
     nombre: 'Javier Domínguez Parras',
     rol: 'Telecomunicaciones & Ciberseguridad',
     estudios: 'Grado y máster en Ingeniería de Telecomunicaciones; cursando el máster de Ciberseguridad',
-    // Búsqueda en LinkedIn: sustituir por la URL exacta del perfil (linkedin.com/in/…) cuando la tengamos
-    linkedin: 'https://www.linkedin.com/search/results/people/?keywords=Javier%20Dom%C3%ADnguez%20Parras',
+    linkedin: 'https://www.linkedin.com/in/javierdominguezparras',
+    foto: 'img/equipo/javier.jpg',
   },
   {
     nombre: 'Marcelo',

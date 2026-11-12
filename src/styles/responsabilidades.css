@@ -75,3 +75,13 @@
 .rs-val-n { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--accent-fill); color: var(--on-accent); font-weight: 700; font-size: 13px; }
 @media (max-width: 760px) { .rs-val { grid-template-columns: 1fr; } }
 .rs-pv { display: block; margin-top: 6px; }
+
+/* Compromiso del visitante */
+.rs-codigo { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.rs-codigo li { display: flex; gap: 10px; align-items: flex-start; padding: 14px; }
+.rs-codigo p { font-size: 14px; color: var(--text); }
+.rs-cuidado { display: flex; gap: 12px; align-items: flex-start; margin-top: 12px; padding: 16px; color: var(--nova); }
+.rs-cuidado p { color: var(--text-2); font-size: 14.5px; }
+.rs-cuidado b { color: var(--text); }
+/* Nombres largos (p. ej. «Empresas asociadas de Turismo de Tenerife y patronales»): que los chips se ajusten */
+.rs-piedra .tag, .rs-link { white-space: normal; height: auto; min-height: 22px; padding-top: 3px; padding-bottom: 3px; text-align: left; line-height: 1.3; }

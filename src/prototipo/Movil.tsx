@@ -67,12 +67,13 @@ export function Movil({ completo = false, compacto = false, pantalla, datosInici
     return () => window.clearInterval(t)
   }, [auto, recorrido])
 
-  // Reinicio por inactividad: solo si la demo se ha tocado (no está ya en el inicio limpio).
+  // Reinicio por inactividad: solo en la demo enmarcada de la web (puesto compartido) y si se ha tocado.
+  // A pantalla completa (#/app, el móvil de cada persona por el QR) no se reinicia: leer sin tocar no debe devolverte al inicio.
   const marco = useRef<HTMLDivElement>(null)
   const sucio = pila.length > 1 || actual !== inicio || idioma !== DEMO.idioma || datos !== datos0
   useEffect(() => {
     const el = marco.current
-    if (!el || !sucio || !DEMO.reinicioSegundos || auto) return
+    if (!el || !sucio || !DEMO.reinicioSegundos || auto || completo) return
     let t = 0
     const armar = () => {
       window.clearTimeout(t)
@@ -82,7 +83,7 @@ export function Movil({ completo = false, compacto = false, pantalla, datosInici
     eventos.forEach((e) => el.addEventListener(e, armar, { capture: true, passive: true }))
     armar()
     return () => { window.clearTimeout(t); eventos.forEach((e) => el.removeEventListener(e, armar, { capture: true })) }
-  }, [sucio, reiniciar, auto])
+  }, [sucio, reiniciar, auto, completo])
 
   const Vista = PANTALLAS.find((x) => x.id === actual)?.render // se monta como componente: cada pantalla tiene sus propios hooks
   return (

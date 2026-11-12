@@ -1,8 +1,9 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import {
-  AVISO_SERIES, AVISO_TENERIFE, CAUSAS, CIFRAS_2026, CIFRAS_TENERIFE, DATOS_ABIERTOS, FUENTES, HIPOTESIS,
-  MUNICIPIO_EXISTE, MUNICIPIO_NO_EXISTE, PERCEPCION, PRESION, PRESION_TENERIFE, REFERENTES, RESPUESTA_RETO, RETORNO, RETORNO_HUECOS,
+  AVISO_SERIES, AVISO_TENERIFE, CAUSAS, CIFRAS_2026, CIFRAS_TENERIFE, DATOS_ABIERTOS, FUENTES, GUION, HALLAZGO_JOVENES, HIPOTESIS,
+  ANTES_DESPUES, MUNICIPIO_EXISTE, MUNICIPIO_NO_EXISTE, PERCEPCION, PRESION, PRESION_TENERIFE, REFERENTES, RESPUESTA_RETO, RETORNO, RETORNO_COMPROMISO, RETORNO_HUECOS,
+  SIN_ANTES_DESPUES,
   TURISTAS_TF_ENE_SEP, ZONAS, type Municipio, type Percepcion,
 } from '../data/investigacion'
 import { rutaDe } from '../config/proyecto'
@@ -132,13 +133,108 @@ function TuMunicipio() {
           <ul className="list small no-existe">{MUNICIPIO_NO_EXISTE.map((d) => <li key={d}>{d}</li>)}</ul>
         </div>
       </div>
-      <p className="nota"><Icon name="alert" size={14} /> El reto lo señala: no hay cifras desglosadas de lo que el turismo devuelve en sanidad, educación o limpieza. Publicarlas por municipio es parte de la propuesta.</p>
+      <Compromiso />
+    </div>
+  )
+}
+
+/** Compromiso de publicar el retorno por municipio (propuesta, sin cifras). */
+function Compromiso() {
+  return (
+    <div className="compromiso">
+      <div className="kicker"><Icon name="check" size={13} /> Nuestro compromiso</div>
+      <p className="compromiso-frase">{RETORNO_COMPROMISO.frase}</p>
+      <ol className="list small">{RETORNO_COMPROMISO.pasos.map((x) => <li key={x}>{x}</li>)}</ol>
+      <p className="small muted">Es una propuesta: hoy nadie publica estas cifras y no las inventamos. El reto lo señala como carencia.</p>
     </div>
   )
 }
 
 type FilaPresion = Municipio & { porCien: number } & Record<string, unknown>
 const porCien = (m: { poblacion: number; plazasRegladas: number | null; plazasVV: number }) => ((m.plazasRegladas ?? 0) + m.plazasVV) / m.poblacion * 100
+
+const FILTROS_CAUSA = [['todas', 'Todas'], ['principales', 'Principales'], ['otras', 'Otras causas']] as const
+type FiltroCausa = (typeof FILTROS_CAUSA)[number][0]
+const GRUPOS_CAUSA = [
+  { id: 'principales', titulo: 'Esto es lo que pasa', texto: 'Las causas que más pesan. Tenique no las resuelve: son de otras instituciones, y decimos cuáles.' },
+  { id: 'otras', titulo: 'Esto es lo que atacamos', texto: 'Otras causas con evidencia. Aquí una plataforma de encuentro sí puede mover algo: que el retorno se vea, que el beneficio llegue a más gente y que el encuentro sea real.' },
+] as const
+
+function Causas() {
+  const [filtro, setFiltro] = useState<FiltroCausa>('todas')
+  const cuenta = (f: FiltroCausa) => (f === 'todas' ? CAUSAS.length : CAUSAS.filter((c) => (f === 'principales') === !!c.principal).length)
+  return (
+    <section id="causas">
+      <div className="section-head"><div><h2>Causas, con evidencia</h2><p>Primero, lo que pasa: el malestar va ligado sobre todo a la vivienda y la movilidad, como dice el reto. Tenique no las resuelve. Después, las causas que sí atacamos y por qué.</p></div></div>
+      <div className="chips causa-filtro" role="group" aria-label="Filtrar causas">
+        {FILTROS_CAUSA.map(([id, txt]) => (
+          <button key={id} type="button" className={`chip ${filtro === id ? 'on' : ''}`} aria-pressed={filtro === id} onClick={() => setFiltro(id)}>
+            {txt} <span className="causa-n">{cuenta(id)}</span>
+          </button>
+        ))}
+      </div>
+      {GRUPOS_CAUSA.filter((g) => filtro === 'todas' || filtro === g.id).map((g) => (
+        <div key={g.id} className="causa-grupo">
+          <div className="causa-grupo-head"><h3>{g.titulo}</h3><p className="small muted">{g.texto}</p></div>
+          <div className="grid g3">
+            {CAUSAS.map((c, n) => ({ c, n })).filter(({ c }) => !!c.principal === (g.id === 'principales')).map(({ c, n }) => (
+              <div key={c.titulo} className={`card causa ${c.principal ? 'principal' : ''}`}>
+                <div className="ref-top">{c.principal ? <span className="tag warn">Causa principal {n + 1}</span> : <span className="tag">{c.tema ?? 'Otra causa'}</span>}</div>
+                <h3>{c.titulo}</h3>
+                <p className="small">{c.resumen}</p>
+                <ul className="list small">{c.evidencia.map((e) => <li key={e}>{e}</li>)}</ul>
+                <div className="small muted"><Refs ids={c.fuentes} /></div>
+                <div className={`causa-tq ${c.tenique.replace(' ', '-')}`}>
+                  <b>Tenique {c.tenique === 'aborda' ? 'lo aborda' : c.tenique === 'en parte' ? 'lo aborda en parte' : 'no lo aborda'}.</b> {c.queHace}
+                  {c.quien && <div className="causa-quien"><b>Quién debe resolverlo:</b> {c.quien.texto} <Refs ids={c.quien.fuentes} /></div>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <div className="card hallazgo">
+        <div className="ref-top"><span className="tag">Jóvenes</span><span className="tag warn">Hallazgo de nuestra búsqueda</span></div>
+        <h3>{HALLAZGO_JOVENES.titulo}</h3>
+        <p className="small">{HALLAZGO_JOVENES.texto}</p>
+        <div className="kicker">Lo que más falta</div>
+        <ul className="list small">{HALLAZGO_JOVENES.falta.map((x) => <li key={x}>{x}</li>)}</ul>
+        <p className="leccion"><b>Para Tenique:</b> {HALLAZGO_JOVENES.tenique}</p>
+        <div className="small muted">No es una estadística oficial: es lo que encontró el equipo el 12-11-2026. Ejemplos <Refs ids={HALLAZGO_JOVENES.fuentes} /></div>
+      </div>
+
+      <div className="section-head" style={{ marginTop: 36 }}><div><h2>Hipótesis a validar con entrevistas</h2><p>Sin evidencia todavía. No las damos por hechas. H1–H7 son las mismas del guion de entrevistas.</p><p className="small muted guion-leyenda">V2 = pregunta 2 del guion para vecinos; T = turistas. Las hipótesis se contrastan en las entrevistas y la encuesta. Toca un código para ver la pregunta.</p></div></div>
+      <div className="acordeon">
+        {HIPOTESIS.map((h) => (
+          <details key={h.id}>
+            <summary><span>{h.id} · {h.texto}</span><small>{h.aQuien}</small></summary>
+            <p className="small"><b>Por qué lo pensamos:</b> {h.porQue}</p>
+            <p className="quote" style={{ fontSize: 16, marginTop: 8 }}>{h.pregunta}</p>
+            {h.guion && <Guion codigos={h.guion} extra={h.id === 'H6' ? <> · marca <Refs ids={[75]} /></> : null} />}
+          </details>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+/** Códigos del guion (V2, T5…): cada uno abre el texto de su pregunta al pasar el ratón o al tocarlo. */
+function Guion({ codigos, extra }: { codigos: string; extra?: ReactNode }) {
+  const [abierto, setAbierto] = useState<string | null>(null)
+  const lista = codigos.split(',').map((x) => x.trim())
+  return (
+    <div className="small muted guion">
+      <span>Preguntas del guion: </span>
+      {lista.map((cod) => (
+        <button key={cod} type="button" className="guion-cod" title={GUION[cod]} aria-expanded={abierto === cod}
+          onClick={() => setAbierto(abierto === cod ? null : cod)}>{cod}</button>
+      ))}
+      {extra}
+      {abierto && GUION[abierto] && <p className="guion-txt"><b>{abierto}</b> · {GUION[abierto]}</p>}
+    </div>
+  )
+}
 
 export default function Investigacion() {
   const [params, setParams] = useSearchParams()
@@ -215,11 +311,11 @@ export default function Investigacion() {
               <div className="grid g4 zonas">
                 {ZONAS.map((z) => (
                   <div key={z.id} className="card zona">
-                    <div className="ref-top"><span className="tag">{z.ejemplos}</span>{z.hipotesis && <span className="tag warn">Hipótesis</span>}</div>
+                    <div className="ref-top"><span className="tag">{z.ejemplos}</span></div>
                     <h3>{z.nombre}</h3>
                     <p className="small">{z.resumen}</p>
                     <ul className="list small">{z.datos.map((d) => <li key={d}>{d}</li>)}</ul>
-                    <div className="small muted" style={{ marginTop: 'auto' }}><Refs ids={z.fuentes} /></div>
+                    <div className="small muted zona-pie">{z.hipotesis && <span className="tag warn">Hipótesis</span>}<Refs ids={z.fuentes} /></div>
                   </div>
                 ))}
               </div>
@@ -263,38 +359,7 @@ export default function Investigacion() {
             </section>
           )}
 
-          {tab === 'causas' && (
-            <section id="causas">
-              <div className="section-head"><div><h2>Causas, con evidencia</h2><p>Más allá de la vivienda y la movilidad. Las tres primeras son las que más pesan en la propuesta.</p></div></div>
-              <div className="grid g3">
-                {CAUSAS.map((c, n) => (
-                  <div key={c.titulo} className={`card causa ${c.principal ? 'principal' : ''}`}>
-                    <div className="ref-top">{c.principal ? <span className="tag ok">Causa principal {n + 1}</span> : <span className="tag">Causa</span>}</div>
-                    <h3>{c.titulo}</h3>
-                    <p className="small">{c.resumen}</p>
-                    <ul className="list small">{c.evidencia.map((e) => <li key={e}>{e}</li>)}</ul>
-                    <div className="small muted"><Refs ids={c.fuentes} /></div>
-                    <div className={`causa-tq ${c.tenique.replace(' ', '-')}`}>
-                      <b>Tenique {c.tenique === 'aborda' ? 'lo aborda' : c.tenique === 'en parte' ? 'lo aborda en parte' : 'no lo aborda'}.</b> {c.queHace}
-                      {c.quien && <div className="causa-quien"><b>Quién debe resolverlo:</b> {c.quien.texto} <Refs ids={c.quien.fuentes} /></div>}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="section-head" style={{ marginTop: 36 }}><div><h2>Hipótesis a validar con entrevistas</h2><p>Sin evidencia todavía. No las damos por hechas. H1–H7 son las mismas del guion de entrevistas.</p></div></div>
-              <div className="acordeon">
-                {HIPOTESIS.map((h) => (
-                  <details key={h.id}>
-                    <summary><span>{h.id} · {h.texto}</span><small>{h.aQuien}</small></summary>
-                    <p className="small"><b>Por qué lo pensamos:</b> {h.porQue}</p>
-                    <p className="quote" style={{ fontSize: 16, marginTop: 8 }}>{h.pregunta}</p>
-                    {h.guion && <p className="small muted">Preguntas del guion: {h.guion}{h.id === 'H6' && <> · marca <Refs ids={[75]} /></>}</p>}
-                  </details>
-                ))}
-              </div>
-            </section>
-          )}
+          {tab === 'causas' && <Causas />}
 
           {tab === 'personas' && <UsuariosSeccion />}
 
@@ -321,9 +386,32 @@ export default function Investigacion() {
 
           {tab === 'benchmark' && (
             <section id="benchmark">
-              <div className="section-head"><div><h2>Quién lo ha resuelto antes</h2><p>Convivencia y corresponsabilidad, con resultado medido. Y qué aprendemos para Tenique.</p></div></div>
+              <div className="section-head"><div><h2>Antes y después</h2><p>Iniciativas parecidas con una cifra de antes y otra de después, comprobadas en su fuente.</p></div></div>
+              <div className="grid g2 ad-grid">
+                {ANTES_DESPUES.map((c) => (
+                  <article key={c.caso} className={`card ad ${c.aviso ? 'aviso' : ''}`}>
+                    <div className="ref-top"><span className="tag">{c.lugar}</span>{c.aviso && <span className="tag warn">Aviso</span>}</div>
+                    <h3>{c.caso}</h3>
+                    <p className="small">{c.que}</p>
+                    <div className="ad-cifras">
+                      <div className="ad-antes"><small>Antes</small><b>{c.antes.valor}</b><span>{c.antes.texto}</span></div>
+                      <span className="ad-flecha" aria-hidden="true"><Icon name="right" size={18} /></span>
+                      <div className="ad-despues"><small>Después</small><b>{c.despues.valor}</b><span>{c.despues.texto}</span></div>
+                    </div>
+                    {c.extra && <p className="small">{c.extra}</p>}
+                    <p className="leccion"><b>Para Tenique:</b> {c.leccion}</p>
+                    <div className="small muted" style={{ marginTop: 'auto' }}><Refs ids={c.fuentes} /></div>
+                  </article>
+                ))}
+              </div>
+              <div className="card ad-sin">
+                <div className="kicker">Sin antes y después fiable</div>
+                <ul className="list small">{SIN_ANTES_DESPUES.map((x) => <li key={x.caso}><b>{x.caso}:</b> {x.motivo}</li>)}</ul>
+              </div>
+
+              <div className="section-head" style={{ marginTop: 36 }}><div><h2>Quién lo ha resuelto antes</h2><p>Convivencia y corresponsabilidad, con resultado medido. Y qué aprendemos para Tenique.</p></div></div>
               <div className="chips" style={{ marginBottom: 14 }}>
-                {categorias.map((c) => <button key={c} className={`chip ${cat === c ? 'on' : ''}`} onClick={() => setCat(c)}>{c}</button>)}
+                {categorias.map((c) => <button key={c} type="button" className={`chip ${cat === c ? 'on' : ''}`} aria-pressed={cat === c} onClick={() => setCat(c)}>{c}</button>)}
               </div>
               <div className="grid g3">
                 {refs.map((r) => (

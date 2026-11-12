@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useDemo, useNav } from './nav'
 import { useIdioma, useT, type Idioma } from './idioma'
 import { Ico } from './iconos'
-import { BarraApp, BotonApp, BotonReinicio, CampoApp, ChipsApp, Cuerpo, SelectorIdioma, Segmentos } from './piezas'
+import { BarraApp, BotonApp, BotonReinicio, CampoApp, ChipsApp, Cuerpo, Segmentos } from './piezas'
 import { Confirmacion, Reserva, type DatosReserva } from './piezas-flujo'
 import { VacioApp } from './estados'
 import { EMOCIONES, EXPERIENCIAS, MARCA, POR_VALIDAR, anfitrion, barrio, buscar, donde, ejemplo, emocion, emocionDe, emocionPortada, emocionesProvisionales, iconoDe, porEmocion, type Experiencia } from './experiencias'
@@ -12,7 +12,7 @@ import './tenique.css'
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  TENIQUE · pieza digital del programa «Tenerife se cocina entre todos»
-//  Flujo del jurado: inicio → municipio (vecino) → sentir → lista → experiencia → reserva → confirmacion.
+//  Flujo del jurado: inicio → sentir (el vecino arranca en Puerto de la Cruz; «Cambiar» abre municipio) → lista → experiencia → reserva → confirmacion.
 //  Por perfil: vecino (Explorar · Mis planes · Mi barrio), visitante (Explorar · Mis planes · Tu estancia),
 //  anfitrión (alta, avales, valoraciones) y Turismo de Tenerife (panel, garantía, fondo por municipio).
 //  Experiencias: SOLO reales (src/data/experiencias.ts). Las «Por verificar» van a la cola de garantía.
@@ -34,6 +34,8 @@ export type Pantalla = { id: string; ejemplo?: boolean; render: () => JSX.Elemen
 
 /** Municipios de las experiencias y los que tienen datos públicos. */
 const MUNICIPIOS = [...new Set([...EXPERIENCIAS.map((e) => e.municipio), ...MUNICIPIOS_CON_DATOS])].sort((a, b) => a.localeCompare(b, 'es'))
+/** Municipio con el que arranca el vecino (editable). Tiene datos públicos verificados. */
+const MUNICIPIO_POR_DEFECTO = MUNICIPIOS.includes('Puerto de la Cruz') ? 'Puerto de la Cruz' : MUNICIPIOS[0]
 const BRASA = MARCA
 
 /** Fondo de ejemplo de un municipio: lo que aportan sus experiencias (valores de demostración). */
@@ -103,11 +105,17 @@ function SinMovil() {
 function Inicio() {
   const t = useT()
   const { ir } = useNav()
-  const { guardar } = useDemo()
-  const elegir = (perfil: string, destino: string) => { guardar('perfil', perfil); ir(destino) }
+  const { datos, guardar } = useDemo()
+  // Elegir perfil lleva directo a su primera pantalla útil, como raíz del historial y sin borrar lo ya hecho (planes, guardados).
+  // El vecino arranca con un municipio por defecto, que cambia desde «Explorar» o «Mi barrio»: nunca un formulario vacío.
+  const elegir = (perfil: string, destino: string) => {
+    guardar('perfil', perfil)
+    if (perfil === 'vecino' && !MUNICIPIOS.includes(datos.municipio as string)) guardar('municipio', MUNICIPIO_POR_DEFECTO)
+    ir(destino, true)
+  }
   return (
     <>
-      <BarraApp titulo="" accion={<SelectorIdioma />} />
+      <BarraApp titulo="" />
       <Cuerpo>
         <Portada emo={BRASA} icono="fogon" className="tq-hero tq-inicio-hero">
           <span className="tq-hero-txt">
@@ -118,7 +126,7 @@ function Inicio() {
         </Portada>
         <h3 className="app-subt">{t({ es: '¿Quién eres?', en: 'Who are you?' })}</h3>
         <div className="tq-stagger tq-perfiles">
-          <button className="tq-perfil dest" style={escalon(0)} onClick={() => elegir('vecino', 'municipio')}>
+          <button className="tq-perfil dest" style={escalon(0)} onClick={() => elegir('vecino', 'sentir')}>
             <span className="tq-perfil-ico"><Ico name="home" size={24} /></span>
             <span><b>{t({ es: 'Vivo en Tenerife', en: 'I live in Tenerife' })}</b><small>{t({ es: 'Vive tu isla y decide en tu barrio', en: 'Live your island, have a say in your area' })}</small></span>
             <Ico name="right" size={18} />
@@ -152,26 +160,63 @@ function Inicio() {
 
 function Municipio() {
   const t = useT()
-  const { ir } = useNav()
-  const { guardar } = useDemo()
+  const { ir, atras, puedeVolver } = useNav()
+  const { datos, guardar } = useDemo()
+  const vecino = datos.perfil === 'vecino'
+  const actual = (vecino ? datos.municipio : datos.zona) as string | undefined
+  // Se llega desde «Cambiar» (Explorar o la lista): al elegir, vuelve atrás sin perder lo demás.
+  // El vecino cambia su municipio (y deja de mirar otra zona); el visitante elige la zona por la que se mueve.
+  const elegir = (m: string) => {
+    if (vecino) { guardar('municipio', m); guardar('zona', undefined) } else guardar('zona', m)
+    if (puedeVolver) atras(); else ir('sentir', true)
+  }
   return (
     <>
-      <BarraApp titulo="" accion={<SelectorIdioma />} />
+      <BarraApp titulo="" />
       <Cuerpo>
         <div className="tq-cab">
-          <span className="tq-kicker">{t({ es: 'Vivo en Tenerife', en: 'I live in Tenerife' })}</span>
-          <h2 className="tq-h1">{t({ es: '¿En qué municipio vives?', en: 'Which town do you live in?' })}</h2>
-          <p className="app-texto">{t({ es: 'Verás lo que pasa en tu barrio y qué deja allí el turismo.', en: 'You will see what happens in your area and what tourism leaves there.' })}</p>
+          <span className="tq-kicker">{vecino ? t({ es: 'Vivo en Tenerife', en: 'I live in Tenerife' }) : t({ es: 'Estoy de visita', en: "I'm visiting" })}</span>
+          <h2 className="tq-h1">{vecino ? t({ es: '¿En qué municipio vives?', en: 'Which town do you live in?' }) : t({ es: '¿Por qué zona te mueves?', en: 'Which area are you in?' })}</h2>
+          <p className="app-texto">{vecino ? t({ es: 'Verás lo que pasa en tu barrio y qué deja allí el turismo.', en: 'You will see what happens in your area and what tourism leaves there.' }) : t({ es: 'Te enseñamos primero lo que tienes cerca, y después el resto de la isla.', en: 'We show you what is nearby first, then the rest of the island.' })}</p>
         </div>
         <div className="tq-municipios tq-stagger">
+          {!vecino && (
+            <button style={escalon(0)} aria-pressed={!actual || actual === '*'} className={!actual || actual === '*' ? 'on' : ''} onClick={() => elegir('*')}>
+              <Ico name={!actual || actual === '*' ? 'check' : 'globe'} size={15} />{t({ es: 'Toda la isla', en: 'Whole island' })}
+            </button>
+          )}
           {MUNICIPIOS.map((m, i) => (
-            <button key={m} style={escalon(i)} onClick={() => { guardar('municipio', m); ir('sentir') }}>
-              <Ico name="pin" size={15} />{m}
+            <button key={m} style={escalon(i + 1)} aria-pressed={m === actual} className={m === actual ? 'on' : ''} onClick={() => elegir(m)}>
+              <Ico name={m === actual ? 'check' : 'pin'} size={15} />{m}
             </button>
           ))}
         </div>
       </Cuerpo>
     </>
+  )
+}
+
+/** Zona activa para filtrar: la elegida (mapa o selector) o, si es vecino, su municipio. «*» = toda la isla. */
+function zonaDe(datos: Record<string, unknown>): string | undefined {
+  const z = datos.zona as string | undefined
+  if (z === '*') return undefined
+  return z ?? (datos.perfil === 'vecino' ? (datos.municipio as string | undefined) : undefined)
+}
+
+/** «📍 Tacoronte · Cambiar»: siempre visible en Explorar y en la lista; abre el selector sin perder lo demás. */
+function ChipZona() {
+  const t = useT()
+  const { ir } = useNav()
+  const { datos } = useDemo()
+  const vecino = datos.perfil === 'vecino'
+  const z = zonaDe(datos)
+  const texto = vecino && z === datos.municipio
+    ? t({ es: `Vives en ${z}`, en: `You live in ${z}` })
+    : z ?? t({ es: 'Toda la isla', en: 'Whole island' })
+  return (
+    <button className="tq-kicker tq-cambiar" onClick={() => ir('municipio')}>
+      <Ico name="pin" size={13} />{texto} · <u>{z || vecino ? t({ es: 'Cambiar', en: 'Change' }) : t({ es: 'Elegir zona', en: 'Choose area' })}</u>
+    </button>
   )
 }
 
@@ -182,13 +227,12 @@ function Sentir() {
   const { ir } = useNav()
   const { datos, guardar } = useDemo()
   const vecino = datos.perfil === 'vecino'
-  const m = datos.municipio as string | undefined
   return (
     <>
-      <BarraApp titulo="Tenique" accion={<SelectorIdioma />} />
+      <BarraApp titulo="Tenique" />
       <Cuerpo>
         <div className="tq-cab">
-          <span className="tq-kicker">{vecino && m ? t({ es: `Vives en ${m}`, en: `You live in ${m}` }) : t({ es: 'Te damos la bienvenida a Tenerife', en: 'Welcome to Tenerife' })}</span>
+          {vecino || datos.perfil === 'turista' || !datos.perfil ? <ChipZona /> : <span className="tq-kicker">{t({ es: 'Te damos la bienvenida a Tenerife', en: 'Welcome to Tenerife' })}</span>}
           <h2 className="tq-h1">{vecino ? t({ es: '¿Qué quieres sentir hoy?', en: 'What do you want to feel today?' }) : t({ es: 'Quiero sentir…', en: 'I want to feel…' })}</h2>
         </div>
         <div className="tq-emos tq-stagger">
@@ -199,7 +243,7 @@ function Sentir() {
                 <span className="tq-emo-ico"><Ico name={e.icono} size={i === 0 ? 30 : 24} /></span>
                 {n > 0 && <span className="tq-emo-n tnum">{n}</span>}
                 <b>{t(e)}</b>
-                {e.frase && <small>{t({ es: e.frase, en: `${n} experience${n === 1 ? '' : 's'}` })}</small>}
+                {e.frase && <small>{t({ es: e.frase, en: e.fraseEn ?? `${n} experience${n === 1 ? '' : 's'}` })}</small>}
               </button>
             )
           })}
@@ -222,7 +266,7 @@ function Lista() {
   const abrir = (e: Experiencia) => { guardar('experiencia', e.id); ir('experiencia') }
   return (
     <>
-      <BarraApp titulo={emo ? t(emo) : t({ es: 'Experiencias', en: 'Experiences' })} accion={<SelectorIdioma />} />
+      <BarraApp titulo={emo ? t(emo) : t({ es: 'Experiencias', en: 'Experiences' })} />
       <Cuerpo>
         {emo && (
           <Portada emo={emo} className="tq-hero tq-lista-hero">
@@ -430,7 +474,7 @@ function Planes() {
   const abrir = (e: Experiencia) => { guardar('experiencia', e.id); ir('experiencia') }
   return (
     <>
-      <BarraApp titulo={t({ es: 'Mis planes', en: 'My plans' })} accion={<SelectorIdioma />} />
+      <BarraApp titulo={t({ es: 'Mis planes', en: 'My plans' })} />
       <Cuerpo>
         {planes.length === 0 && guardadas.length === 0 ? (
           <VacioApp icono="calendar" titulo={t({ es: 'Aún no tienes planes', en: 'No plans yet' })} texto={t({ es: 'Apúntate a una experiencia o guárdala con el corazón.', en: 'Sign up for an experience or save it with the heart.' })} accion={<IrExplorar />} />
@@ -478,7 +522,7 @@ function Estancia() {
   const max = Math.max(1, ...porMunicipio.values())
   return (
     <>
-      <BarraApp titulo={t({ es: 'Tu estancia', en: 'Your stay' })} accion={<SelectorIdioma />} />
+      <BarraApp titulo={t({ es: 'Tu estancia', en: 'Your stay' })} />
       <Cuerpo>
         <Portada emo={BRASA} icono="euro" className="tq-hero">
           <span className="tq-hero-txt">
@@ -513,14 +557,14 @@ function Barrio() {
   const t = useT()
   const { idioma } = useIdioma()
   const { datos, guardar } = useDemo()
-  const m = (MUNICIPIOS.includes(datos.municipio as string) ? datos.municipio : MUNICIPIOS[0]) as string | undefined
+  const m = (MUNICIPIOS.includes(datos.municipio as string) ? datos.municipio : MUNICIPIO_POR_DEFECTO) as string | undefined
   if (!m) return <><BarraApp titulo="" /><Cuerpo><SinExperiencias /></Cuerpo></>
   const fondo = Math.round(fondoDe(m))
   const n = EXPERIENCIAS.filter((e) => e.municipio === m).length
   const vecino = datos.perfil === 'vecino'
   return (
     <>
-      <BarraApp titulo={vecino ? t({ es: 'Mi barrio', en: 'My area' }) : t({ es: 'Municipios', en: 'Towns' })} accion={<SelectorIdioma />} />
+      <BarraApp titulo={vecino ? t({ es: 'Mi barrio', en: 'My area' }) : t({ es: 'Municipios', en: 'Towns' })} />
       <Cuerpo>
         <Portada emo={BRASA} icono="home" className="tq-hero">
           <span className="tq-hero-txt">
@@ -759,7 +803,7 @@ function Anfitrion() {
   const t = useT()
   return (
     <>
-      <BarraApp titulo={t({ es: 'Anfitriones y barrio', en: 'Hosts and area' })} accion={<SelectorIdioma />} />
+      <BarraApp titulo={t({ es: 'Anfitriones y barrio', en: 'Hosts and area' })} />
       <Cuerpo>
         <div className="tq-cab">
           <span className="tq-kicker">{t({ es: 'Anfitrión o asociación', en: 'Host or association' })}</span>
@@ -817,7 +861,7 @@ function Turismo() {
   const municipios = new Set(EXPERIENCIAS.map((e) => e.municipio)).size
   return (
     <>
-      <BarraApp titulo="Turismo de Tenerife" accion={<SelectorIdioma />} />
+      <BarraApp titulo="Turismo de Tenerife" />
       <Cuerpo>
         <div className="tq-cab">
           <img className="tq-logo-tt" src={import.meta.env.BASE_URL + 'img/marca/turismo-tenerife-color.png'} alt="Turismo de Tenerife" />
