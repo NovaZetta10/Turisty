@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "revisar": "node scripts/revisar.mjs",
+    "revisar:entrega": "node scripts/revisar.mjs --entrega"
   },
   "dependencies": {
     "qrcode": "^1.5.4",

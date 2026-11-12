@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { SLIDES, type Slide } from '../data/presentacion'
-import { DESTACADOS, EQUIPO, EQUIPO_NOMBRE, EVENTO, PROTOTIPO, RETO, SECCIONES, SITIO_URL } from '../config/proyecto'
+import { DESTACADOS, EQUIPO, EQUIPO_NOMBRE, EVENTO, PROTOTIPO, RETO, SECCIONES, SITIO_URL, rutaDe } from '../config/proyecto'
 import { Icon } from '../components/Icon'
 import { NovaMark } from '../components/NovaMark'
 import { Qr, urlBase } from '../components/Qr'
+import { tieneRelleno } from '../config/relleno'
 
 const A = ({ i, children, className = '', style }: { i: number; children: React.ReactNode; className?: string; style?: CSSProperties }) => (
   <div className={`a ${className}`} style={{ ...style, ['--i' as string]: i }}>{children}</div>
@@ -14,7 +15,8 @@ const nombreSlide = (s: Slide) => (s.tipo === 'portada' ? 'Portada' : s.tipo ===
 function urlDemo() {
   const base = urlBase(SITIO_URL)
   if (PROTOTIPO.url.startsWith('http')) return PROTOTIPO.url
-  return base + '#/prototipo'
+  if (PROTOTIPO.url.startsWith('#')) return base + PROTOTIPO.url // prototipo dentro de la web (#/app)
+  return base + '#' + rutaDe('prototipo') // pestaña del prototipo, siga la ruta que siga
 }
 
 function Contenido({ s }: { s: Slide }) {
@@ -64,6 +66,7 @@ function Contenido({ s }: { s: Slide }) {
           <div className="s-cols">
             {s.columnas.map((c, n) => <A key={n} i={3 + n} className="s-col"><i>0{n + 1}</i><b>{c.titulo}</b><p>{c.texto}</p></A>)}
           </div>
+          {s.fuente && <A i={6}><p className="s-lead" style={{ fontSize: '1.3cqw', color: 'var(--muted)', maxWidth: '100%' }}>{s.fuente}</p></A>}
         </>
       )
     case 'frase':
@@ -106,7 +109,7 @@ function Contenido({ s }: { s: Slide }) {
             <A i={2}><div className="s-title" style={{ fontSize: '3.4cqw' }}>{s.titulo}</div></A>
             <div className="s-picks">
               {picks.map((p, n) => (
-                <A key={p.id} i={3 + n} className="s-pick"><i>{n + 1}</i><div><b>{p.s!.titulo}</b><span>{p.motivo}</span></div></A>
+                <A key={p.id} i={3 + n} className="s-pick"><i>{n + 1}</i><div><b>{p.s!.titulo}</b>{!tieneRelleno(p.motivo) && <span>{p.motivo}</span>}</div></A>
               ))}
             </div>
             <A i={7} className="s-team"><b>Equipo {EQUIPO_NOMBRE}</b> · {EQUIPO.map((m) => m.nombre.split(' ')[0]).join(' · ')}</A>
@@ -167,6 +170,10 @@ export default function Presentacion() {
 
   const x0 = useRef<number | null>(null)
 
+  // La portada sale de RETO: sin reto definido muestra [Empresa] y [Nombre del reto].
+  const conRelleno = SLIDES.map((sl, n) => (tieneRelleno(sl) || (sl.tipo === 'portada' && !RETO.definido) ? n + 1 : 0)).filter(Boolean)
+  // Sin SITIO_URL, los QR usan la dirección actual: si es local, el móvil del jurado no puede abrirlos.
+  const qrLocal = !SITIO_URL && /^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname)
   return (
     <div className="wrap">
       <header className="page-head enter no-print">
@@ -182,6 +189,16 @@ export default function Presentacion() {
         <button className="btn sm" onClick={pantalla}><Icon name="expand" size={14} />Pantalla completa</button>
         <button className="btn sm" onClick={() => window.print()}><Icon name="print" size={14} />Exportar PDF</button>
       </div>
+      {qrLocal && (
+        <p className="callout no-print" style={{ marginBottom: 14 }}>
+          <Icon name="alert" /> Los QR apuntan a esta dirección local y no abrirán en otro móvil. Presenta desde la web publicada o pide al coordinador que rellene SITIO_URL.
+        </p>
+      )}
+      {conRelleno.length > 0 && (
+        <p className="callout no-print" style={{ marginBottom: 14 }}>
+          <Icon name="alert" /> Texto de relleno [entre corchetes] en {conRelleno.length === 1 ? 'la diapositiva' : 'las diapositivas'} {conRelleno.join(', ')}. No se presenta así.
+        </p>
+      )}
 
       <div
         className="stage screen-only"
@@ -203,7 +220,10 @@ export default function Presentacion() {
       </div>
 
       <div className="print-deck">
-        {SLIDES.map((s, n) => <div key={n} className="stage"><SlideView s={s} i={n} /></div>)}
+        {SLIDES.map((s, n) => (
+          // sin salto tras la última: evita una página en blanco al final del PDF
+          <div key={n} className="stage" style={n === SLIDES.length - 1 ? { breakAfter: 'auto' } : undefined}><SlideView s={s} i={n} /></div>
+        ))}
       </div>
     </div>
   )

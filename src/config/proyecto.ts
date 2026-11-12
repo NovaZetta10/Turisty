@@ -9,18 +9,32 @@ export const EQUIPO_NOMBRE = 'Nova'
 export const EVENTO = {
   nombre: 'Hackathon Talento Canario · Turismo',
   organiza: 'Talento Canario · Gobierno de Canarias',
-  fecha: 'Noviembre de 2026',
+  fecha: '12 y 13 de noviembre de 2026 · Santa Cruz de Tenerife',
 }
 
-/** El reto. Mientras `definido` sea false, la web muestra «Reto por anunciar». */
+/**
+ * El reto. Mientras `definido` sea false, la web muestra «Reto por anunciar».
+ * Fuente: presentación oficial del reto 1 (Turismo de Tenerife), entregada al equipo el 12-11-2026.
+ */
 export const RETO = {
-  definido: false,
-  empresa: 'Empresa por anunciar',
-  titulo: 'El reto se anuncia el jueves',
-  pregunta: '¿Cómo podemos…? (copia aquí la pregunta del reto tal cual la plantea la empresa)',
-  contexto: 'Resumen del reto en dos o tres frases: qué problema tiene la empresa, para quién y por qué ahora.',
-  criterios: [] as { nombre: string; peso: number }[], // p. ej. { nombre: 'Experiencia de usuario', peso: 40 }
-  entregablesPedidos: [] as string[], // copia la lista oficial de entregables
+  definido: true,
+  empresa: 'Turismo de Tenerife',
+  titulo: 'Convivencia entre turismo y población local',
+  pregunta: '¿Cómo podríamos convertir la relación entre población local y turistas en una convivencia que sea, para ambos, identidad, bienestar y orgullo compartido?',
+  contexto: 'El debate sobre el turismo crece en Tenerife. Rara vez se cuestiona el turismo en sí: el malestar suele ir ligado a la vivienda y la movilidad, y faltan datos claros sobre lo que el turismo devuelve a la isla. Turismo de Tenerife busca acciones tangibles y sostenidas, no otra campaña de comunicación.',
+  /** Los criterios oficiales no publican pesos: `peso` solo si la organización lo da. */
+  criterios: [
+    { nombre: 'Viabilidad de implementación (legal, medioambiental, económica y presupuestaria)' },
+    { nombre: 'Involucración de la sociedad tinerfeña en su conjunto' },
+    { nombre: 'Factor humano: la persona en el centro, no solo lo digital' },
+    { nombre: 'Impacto del turismo responsable en la economía local' },
+    { nombre: 'Innovación frente a lo que ya se hace' },
+  ] as { nombre: string; peso?: number }[],
+  entregablesPedidos: [
+    'Diagnóstico: qué pasa realmente hoy en la convivencia y sus causas reales',
+    'Plan de acción: hoja de ruta y plazos realistas, a medio y largo plazo',
+    'Mapeo de responsabilidades: el papel de cada agente y cómo colaboran',
+  ],
 }
 
 /** Vídeo corto de preview (el que se enseña en la sesión de feedback). Déjalo en public/video/. */
@@ -83,31 +97,41 @@ export type Seccion = {
 
 /** Las secciones (tabs) de la web. Cambia el estado o la visibilidad según avance el reto. */
 export const SECCIONES: Seccion[] = [
+  // El `id` es el nombre del archivo de src/pages (en minúsculas); la `ruta` y el `titulo` pueden cambiar sin renombrar archivos.
   {
     id: 'investigacion',
-    ruta: '/investigacion',
-    titulo: 'Investigación previa',
-    corto: 'Investigación',
-    resumen: 'El turismo en Canarias en 2026: cifras con fuente, debates abiertos, retos tipo, quién innova y referentes.',
-    estado: 'listo',
-    visible: true,
-  },
-  {
-    id: 'usuarios',
-    ruta: '/usuarios',
-    titulo: 'Análisis de usuario',
-    corto: 'Usuarios',
-    resumen: 'Para quién es la solución. Se construye cuando conozcamos el reto: perfiles, journey u otro análisis que pida.',
-    estado: 'pendiente',
+    ruta: '/diagnostico',
+    titulo: 'Diagnóstico',
+    corto: 'Diagnóstico',
+    resumen: 'Qué pasa de verdad hoy en la convivencia entre turistas y población local en Tenerife, y sus causas reales, con datos y con quien lo vive.',
+    estado: 'en-curso',
     visible: true,
   },
   {
     id: 'prototipo',
-    ruta: '/prototipo',
-    titulo: 'Prototipo',
-    corto: 'Prototipo',
-    resumen: 'La solución, navegable. Se enlaza aquí en cuanto exista.',
-    estado: 'pendiente',
+    ruta: '/tenique',
+    titulo: 'Tenique',
+    corto: 'Tenique',
+    resumen: 'Nuestra propuesta: experiencias reales que vecinos y visitantes comparten en toda la isla. Tenerife se cocina entre todos.',
+    estado: 'en-curso',
+    visible: true,
+  },
+  {
+    id: 'viabilidad',
+    ruta: '/plan',
+    titulo: 'Plan de acción',
+    corto: 'Plan de acción',
+    resumen: 'Cómo se pone en marcha: hoja de ruta a corto, medio y largo plazo, piloto, costes, fondo de barrio, indicadores y riesgos.',
+    estado: 'en-curso',
+    visible: true,
+  },
+  {
+    id: 'responsabilidades',
+    ruta: '/responsabilidades',
+    titulo: 'Mapeo de responsabilidades',
+    corto: 'Responsabilidades',
+    resumen: 'Qué papel juega cada agente (Turismo de Tenerife, Cabildo, empresas, vivienda vacacional, población local y turistas) y cómo colaboran.',
+    estado: 'en-curso',
     visible: true,
   },
   {
@@ -119,18 +143,31 @@ export const SECCIONES: Seccion[] = [
     estado: 'en-curso',
     visible: true,
   },
+  {
+    // Integrado en Diagnóstico («A quién le pasa»); no es pestaña propia.
+    id: 'usuarios',
+    ruta: '/usuarios',
+    titulo: 'Análisis de usuario',
+    corto: 'Usuarios',
+    resumen: 'Para quién es la solución: persona y journey.',
+    estado: 'en-curso',
+    visible: false,
+  },
 ]
+
+/** Ruta de una sección por su id (para enlaces y QR que no deben romperse si cambia la ruta). */
+export const rutaDe = (id: string) => SECCIONES.find((s) => s.id === id)?.ruta ?? '/'
 
 export const ESTADO_TXT: Record<Estado, string> = { listo: 'Listo', 'en-curso': 'En curso', pendiente: 'Pendiente' }
 
 /** Prototipo: pega aquí la URL (Figma, otra web, Codespaces…) cuando exista. */
 export const PROTOTIPO = {
-  url: '', // p. ej. 'https://www.figma.com/proto/…' o '#/app'
+  url: '#/app', // '#/app' = prototipo hecho en esta web (src/prototipo/pantallas.tsx); o una URL externa (Figma…)
   embebible: true, // false si la web no se puede mostrar dentro de un iframe
   notas: [] as string[],
 }
 
-export const REPO_URL = ''
+export const REPO_URL = '' // p. ej. 'https://github.com/usuario/repo'
 
 /** Dirección pública de la web (para los QR de la presentación). Vacía = se usa la dirección actual. */
 export const SITIO_URL = ''
@@ -140,7 +177,7 @@ export const SITIO_URL = ''
  * `id` es el de SECCIONES; `motivo` es una frase de por qué mirarlo.
  */
 export const DESTACADOS: { id: string; motivo: string }[] = [
-  { id: 'prototipo', motivo: 'Pruébalo: [qué puede hacer el jurado en dos minutos].' },
-  { id: 'usuarios', motivo: '[Por qué este análisis respalda la solución].' },
-  { id: 'investigacion', motivo: '[El dato que más pesa en la propuesta].' },
-] // p. ej. 'https://github.com/usuario/repo'
+  { id: 'prototipo', motivo: 'Pruébalo: elige qué quieres sentir y descubre una experiencia real de Tenerife avalada por su barrio.' },
+  { id: 'investigacion', motivo: 'El 62,2 % de los residentes cree que el turismo es beneficioso, pero solo el 35,9 % nota que mejora su vida (ISTAC, 2026).' },
+  { id: 'viabilidad', motivo: 'Cómo se pone en marcha: piloto en 3 municipios, fondo pagado sobre todo por quien se beneficia del turismo, e hitos hasta el año 5.' },
+]

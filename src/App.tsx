@@ -5,17 +5,18 @@ import { Icon } from './components/Icon'
 import { NovaMark } from './components/NovaMark'
 import { Cielo } from './components/Cielo'
 import Inicio from './pages/Inicio'
-import Investigacion from './pages/Investigacion'
-import Usuarios from './pages/Usuarios'
-import Prototipo from './pages/Prototipo'
-import Presentacion from './pages/Presentacion'
+import { Movil } from './prototipo/Movil'
 
-const PAGINAS: Record<string, () => JSX.Element> = {
-  investigacion: Investigacion,
-  usuarios: Usuarios,
-  prototipo: Prototipo,
-  presentacion: Presentacion,
-}
+/**
+ * Registro automático de páginas: src/pages/Nombre.tsx se asocia a la sección con id 'nombre'.
+ * Pestaña nueva = copiar src/pages/_Plantilla.tsx a src/pages/Nombre.tsx + una entrada en SECCIONES.
+ * Los archivos que empiezan por _ no se registran.
+ */
+const PAGINAS: Record<string, () => JSX.Element> = Object.fromEntries(
+  Object.entries(import.meta.glob<{ default: () => JSX.Element }>(['./pages/*.tsx', '!./pages/_*.tsx'], { eager: true }))
+    .map(([ruta, m]) => [ruta.slice(8, -4).toLowerCase(), m.default] as const)
+    .filter(([id]) => !id.startsWith('_')),
+)
 
 function ScrollTop() {
   const { pathname } = useLocation()
@@ -39,6 +40,9 @@ function BackToTop() {
 
 export default function App() {
   const visibles = SECCIONES.filter((s) => s.visible)
+  const { pathname } = useLocation()
+  // Prototipo a pantalla completa (#/app): sin cabecera ni pie, para abrirlo desde el QR en el móvil.
+  if (pathname === '/app') return <div className="app-escena"><Movil completo /></div>
   return (
     <>
       <ScrollTop />

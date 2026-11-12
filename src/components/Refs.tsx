@@ -1,6 +1,7 @@
 import { FUENTES } from '../data/investigacion'
+import { rutaDe } from '../config/proyecto'
 
-/** Referencias numeradas [n] que saltan a la lista de fuentes de la pestaña Investigación. */
+/** Referencias numeradas [n] que saltan a la lista de fuentes de la pestaña Diagnóstico (id 'investigacion'). */
 export function Refs({ ids }: { ids: number[] }) {
   if (!ids.length) return null
   return (
@@ -8,7 +9,7 @@ export function Refs({ ids }: { ids: number[] }) {
       {ids.map((id) => {
         const f = FUENTES.find((x) => x.id === id)
         return (
-          <a key={id} className="ref" href={`#/investigacion?f=${id}`} title={f ? `${f.titulo} · ${f.medio}` : `Fuente ${id}`}>
+          <a key={id} className="ref" href={`#${rutaDe('investigacion')}?f=${id}`} title={f ? `${f.titulo} · ${f.medio}` : `Fuente ${id}`}>
             {id}
           </a>
         )

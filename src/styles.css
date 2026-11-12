@@ -30,6 +30,16 @@
   --font: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --display: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
   --max: 1180px;
+  /* prototipo móvil (src/prototipo) · Tenique: fogón y tierra volcánica. Todos los pares ≥ 4,5:1 */
+  --app-bg: #f7f0e6;          /* crema */
+  --app-surface: #fffaf3;
+  --app-ink: #2b1a12;         /* 14,7:1 sobre el fondo */
+  --app-ink-2: #6a5244;       /* 6,4:1 sobre el fondo */
+  --app-line: rgba(43, 26, 18, .12);
+  --app-press: rgba(43, 26, 18, .06);
+  --app-accent: #a8380f;      /* brasa: 5,7:1 sobre el fondo; blanco encima 6,5:1 */
+  --app-on-accent: #ffffff;
+  --app-font: var(--font);
   color-scheme: dark;
 }
 
@@ -177,7 +187,7 @@ tbody tr:hover { background: rgba(255, 255, 255, .025); }
 .reto-card { border-color: rgba(255, 210, 122, .25); background: linear-gradient(160deg, rgba(255, 210, 122, .08), rgba(255, 255, 255, .015) 55%); display: flex; flex-direction: column; gap: 10px; }
 .reto-card h3 { font-size: 26px; }
 
-.preview { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius); overflow: hidden; background: var(--night-2); border: 1px solid var(--line); }
+.preview { position: relative; width: 100%; align-self: start; aspect-ratio: 16 / 9; border-radius: var(--radius); overflow: hidden; background: var(--night-2); border: 1px solid var(--line); }
 .preview video { width: 100%; height: 100%; object-fit: cover; display: block; }
 .preview-empty { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 24px; color: var(--text-2); background: radial-gradient(60% 80% at 50% 40%, rgba(255, 210, 122, .12), transparent 70%); }
 .preview-empty b { display: block; color: var(--text); font-family: var(--display); font-size: 18px; margin: 14px 0 4px; }
@@ -571,3 +581,57 @@ tbody tr:hover { background: rgba(255, 255, 255, .025); }
 .ref-card, .entidad, .reto, .senal { transition: transform .2s var(--ease-out), border-color .2s var(--ease-out); }
 @media (hover: hover) and (pointer: fine) { .ref-card:hover, .reto:hover, .entidad:hover { transform: translateY(-3px); border-color: rgba(255, 210, 122, .4); } }
 @media (prefers-reduced-motion: reduce) { .tab-panel, .tab-panel *, .barra, .mapa-svg .isla { animation: none !important; } .tabs-ind { transition: none; } }
+
+/* ─────────────── componentes reutilizables (components/Grafico, Tabla, Tarjeta, Vacio) ─────────────── */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.graf, .tabla { margin: 0; min-width: 0; }
+.graf-t { font-family: var(--display); font-weight: 600; font-size: 16px; color: var(--text); margin-bottom: 14px; }
+.tabla .graf-t { margin-bottom: 10px; }
+.graf-pie { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+th.num, td.num { text-align: right; }
+
+/* barras horizontales */
+.gb { display: grid; gap: 8px; }
+.gb-fila { display: grid; grid-template-columns: minmax(80px, 140px) minmax(0, 1fr) auto; gap: 12px; align-items: center; }
+.gb-nombre { font-size: 13.5px; color: var(--text-2); overflow-wrap: anywhere; }
+.gb-pista { height: 22px; border-radius: 5px; background: rgba(255, 255, 255, .04); overflow: hidden; }
+.gb-barra { display: block; height: 100%; border-radius: 5px; background: var(--ice); opacity: .75; transform-origin: left center; animation: gb-crece .3s var(--ease-out) backwards; }
+.gb-fila.on .gb-barra { background: var(--nova); opacity: 1; }
+.gb-fila.on .gb-nombre { color: var(--text); font-weight: 600; }
+.gb-valor { font-size: 13.5px; font-weight: 600; color: var(--text); min-width: 3.5em; text-align: right; }
+@keyframes gb-crece { from { transform: scaleX(0); } }
+@media (max-width: 520px) { .gb-fila { grid-template-columns: minmax(0, 1fr) auto; row-gap: 4px; } .gb-pista { grid-column: 1 / -1; grid-row: 2; } }
+
+/* línea */
+.gl { position: relative; height: 180px; }
+.gl svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.gl-punto { position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: var(--night); border: 2px solid var(--nova); }
+.gl-punto i { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); font-style: normal; font-size: 12px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+.gl-punto.on { background: var(--nova); }
+.gl-punto.on i { color: var(--text); }
+.gl-eje { display: grid; margin-top: 8px; border-top: 1px solid var(--line); padding-top: 8px; }
+.gl-eje span { font-size: 12px; color: var(--muted); text-align: center; overflow-wrap: anywhere; }
+
+/* tarjeta */
+.tarjeta { display: flex; flex-direction: column; gap: 8px; }
+.tj-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.tj-top .kicker { display: inline-flex; align-items: center; gap: 6px; }
+.tarjeta h3 { font-size: 18px; }
+.tj-txt { font-size: 14.5px; color: var(--text-2); }
+.tj-go { margin-top: auto; padding-top: 6px; font-size: 13.5px; font-weight: 600; color: var(--nova); display: inline-flex; gap: 6px; align-items: center; }
+.tj-go svg { transition: transform .2s var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .tarjeta.link-card:hover .tj-go svg { transform: translateX(3px); } }
+
+@media (prefers-reduced-motion: reduce) { .gb-barra { animation: none !important; } }
+
+/* instrucciones para el equipo: solo en local (components/Vacio → SoloLocal) */
+.solo-local { display: block; margin-top: 8px; padding: 8px 10px; border: 1px dashed rgba(157, 188, 255, .45); border-radius: 8px; font-size: 13px; color: var(--ice); text-align: left; }
+.solo-local::before { content: 'Solo en local · '; font-weight: 600; }
+
+/* inicio: tarjeta de la propuesta */
+.tenique-card { display: flex; flex-direction: column; gap: 10px; padding: 28px; border-color: rgba(255, 210, 122, .3); background: linear-gradient(160deg, rgba(255, 138, 92, .1), rgba(255, 255, 255, .015) 60%); }
+.tenique-card h2 { font-size: clamp(34px, 5vw, 52px); letter-spacing: -0.04em; }
+.tenique-def { max-width: 720px; color: var(--text-2); }
+.tenique-def b { color: var(--text); font-family: var(--display); }
+.tenique-lema { max-width: 720px; font-size: 18px; color: var(--text); }
+.tenique-lema b { color: var(--nova); }

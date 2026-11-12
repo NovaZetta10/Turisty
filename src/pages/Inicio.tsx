@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { EQUIPO, EQUIPO_NOMBRE, EVENTO, PREVIEW, RETO, SECCIONES } from '../config/proyecto'
+import { EQUIPO, EQUIPO_NOMBRE, EVENTO, PREVIEW, RETO, SECCIONES, rutaDe } from '../config/proyecto'
 import { Icon } from '../components/Icon'
 import { Avatar } from '../components/Avatar'
 import { NovaMark } from '../components/NovaMark'
 import { Tilt } from '../components/Tilt'
+import { SoloLocal } from '../components/Vacio'
+import { Refs } from '../components/Refs'
+import { FUENTE_TENIQUE } from '../data/investigacion'
 
 function Preview() {
   const [falla, setFalla] = useState(false)
@@ -20,7 +23,8 @@ function Preview() {
           <div>
             <div className="preview-play"><Icon name="play" size={22} fill /></div>
             <b>{PREVIEW.titulo}</b>
-            <span className="small">Hueco para el vídeo: guárdalo como <span className="code">public/{PREVIEW.video}</span></span>
+            <span className="small">Vídeo en preparación.</span>
+            <SoloLocal>Guárdalo como <span className="code">public/{PREVIEW.video}</span></SoloLocal>
           </div>
         </div>
       )}
@@ -52,11 +56,12 @@ export default function Inicio() {
           <b>nova</b> <i>(del latín <i>stella nova</i>, «estrella nueva»)</i>: estrella que, de repente, brilla miles de veces más de lo habitual.
         </p>
         <p className="definition enter enter-3">
-          Canarias tiene uno de los cielos más limpios del planeta. Nosotros venimos a buscarle una luz nueva a lo que ya conocemos.
+          Bajo el cielo de Tenerife venimos a buscarle una luz nueva a lo que ya conocemos: cómo convivimos quienes vivimos aquí y quienes nos visitan.
         </p>
         <div className="hero-actions enter enter-4">
-          {secciones[0] && <Link className="btn primary" to={secciones[0].ruta}>Ver {secciones[0].corto.toLowerCase()} <Icon name="arrow" /></Link>}
-          <Link className="btn" to="/presentacion">Presentación</Link>
+          <Link className="btn primary" to={rutaDe('prototipo')}>Conoce Tenique <Icon name="arrow" /></Link>
+          {secciones[0] && <Link className="btn" to={secciones[0].ruta}>{secciones[0].corto}</Link>}
+          <Link className="btn" to={rutaDe('presentacion')}>Presentación</Link>
         </div>
 
         <div className="constellation enter enter-5" id="equipo">
@@ -95,13 +100,14 @@ export default function Inicio() {
           ) : (
             <>
               <h3>Reto por anunciar</h3>
-              <p className="muted">La empresa y la pregunta se conocen el día del arranque. Se cambian en <span className="code">src/config/proyecto.ts</span> y toda la web se actualiza.</p>
+              <p className="muted">La empresa y la pregunta se conocen el día del arranque.</p>
+              <SoloLocal>Se cambian en <span className="code">src/config/proyecto.ts</span> y toda la web se actualiza.</SoloLocal>
             </>
           )}
           {RETO.criterios.length > 0 && (
             <div>
               <div className="col-t" style={{ marginTop: 6 }}>Criterios de evaluación</div>
-              <ul className="list">{RETO.criterios.map((c) => <li key={c.nombre}>{c.nombre} <span className="muted tnum">· {c.peso} %</span></li>)}</ul>
+              <ul className="list">{RETO.criterios.map((c) => <li key={c.nombre}>{c.nombre}{c.peso != null && <span className="muted tnum"> · {c.peso} %</span>}</li>)}</ul>
             </div>
           )}
           {RETO.entregablesPedidos.length > 0 && (
@@ -114,6 +120,19 @@ export default function Inicio() {
         <Preview />
       </section>
 
+      <section className="section">
+        <Link to={rutaDe('prototipo')} className="card link-card tenique-card">
+          <span className="kicker">Nuestra propuesta</span>
+          <h2>Tenique</h2>
+          <p className="tenique-def">
+            <b>tenique</b> <i>(canarismo)</i>: cada una de las tres piedras con que se hace un hogar rústico, que sirven para sustentar un tostador, una olla o cualquier otro recipiente.
+            <span className="muted small"> · Academia Canaria de la Lengua</span><Refs ids={[FUENTE_TENIQUE]} />
+          </p>
+          <p className="tenique-lema">Un fogón no se sostiene con una piedra ni con dos. Tenerife tampoco: vecinos, visitantes e instituciones. <b>Tenerife se cocina entre todos.</b></p>
+          <p className="tenique-def">Tenique es un programa estable, no una campaña: experiencias reales que vecinos y visitantes comparten en toda la isla. Funciona con personas (anfitriones y mediadores), con puntos físicos para quien no usa el móvil y con una app para descubrirlas por la emoción que buscas. Cada experiencia deja valor en su barrio, y se ve.</p>
+          <span className="tj-go">Ver la propuesta <Icon name="arrow" size={14} /></span>
+        </Link>
+      </section>
     </div>
   )
 }

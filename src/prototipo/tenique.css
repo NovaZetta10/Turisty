@@ -1,0 +1,69 @@
+/* Tenique: piezas propias (marca, emociones, sello, aporte al barrio). Colores: tokens --app-*. */
+.tq-marca { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; padding: 8px 0 4px; }
+.tq-logo { width: 60px; height: 60px; border-radius: 20px; display: grid; place-items: center; background: var(--app-accent); color: var(--app-on-accent); margin-bottom: 6px; }
+.tq-marca h2 { font-family: var(--app-font); font-size: 30px; letter-spacing: -0.03em; color: var(--app-ink); }
+.tq-marca p { font-size: 15px; color: var(--app-ink-2); }
+
+.tq-emociones { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.tq-emo { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; min-height: 92px; padding: 14px; border-radius: 16px; border: 1px solid var(--app-line); background: var(--app-surface); color: var(--app-accent); font: inherit; text-align: left; cursor: pointer; transition: transform .15s var(--ease-out), border-color .15s var(--ease-out); }
+.tq-emo:active { transform: scale(.97); border-color: var(--app-accent); }
+.tq-emo b { font-size: 16px; color: var(--app-ink); }
+.tq-emo small { position: absolute; top: 12px; right: 12px; font-size: 12px; color: var(--app-ink-2); }
+
+.tq-exp { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; width: 100%; padding: 14px; border-radius: 16px; border: 1px solid var(--app-line); background: var(--app-surface); color: inherit; font: inherit; text-align: left; cursor: pointer; transition: transform .15s var(--ease-out); }
+.tq-exp:active { transform: scale(.98); }
+.tq-exp b { font-size: 16px; line-height: 1.3; }
+.tq-exp small { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--app-ink-2); }
+
+.tq-sello { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 700; color: var(--app-accent); }
+.tq-valora { display: inline-flex; align-items: center; gap: 4px; flex-wrap: wrap; font-size: 13px; color: var(--app-ink-2); }
+.tq-valora svg { color: var(--app-accent); }
+.tq-valora b { color: var(--app-ink); }
+.tq-ej { display: inline-block; padding: 1px 6px; border-radius: 999px; border: 1px dashed var(--app-ink-2); font-size: 10.5px; font-weight: 600; letter-spacing: .02em; color: var(--app-ink-2); vertical-align: 1px; }
+.tq-ficha-pie { display: flex; flex-direction: column; gap: 6px; padding-top: 4px; }
+
+.tq-aporte { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 14px; background: color-mix(in srgb, var(--app-accent) 10%, var(--app-surface)); color: var(--app-ink); font-size: 14.5px; }
+.tq-aporte svg { flex: none; color: var(--app-accent); margin-top: 1px; }
+.tq-aporte.grande { text-align: left; font-size: 15px; width: 100%; }
+.tq-aporte small { display: block; margin-top: 4px; font-size: 13px; color: var(--app-ink-2); }
+.tq-precio { display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: var(--app-ink-2); }
+.tq-precio b { font-size: 20px; color: var(--app-ink); }
+.tq-fuente { align-self: center; display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; color: var(--app-ink-2); text-decoration: underline; text-underline-offset: 2px; overflow-wrap: anywhere; }
+.tq-nota { font-size: 12.5px; color: var(--app-ink-2); text-align: center; }
+
+.tq-form { display: flex; flex-direction: column; gap: 14px; }
+.tq-multi { flex-wrap: wrap; overflow: visible; }
+.tq-check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--app-ink); cursor: pointer; }
+.tq-check input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--app-accent); flex: none; }
+.tq-enviada { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 20px 8px; }
+
+.tq-validar { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 14px; }
+.tq-validar b { display: block; font-weight: 600; line-height: 1.3; }
+.tq-validar small { display: block; font-size: 13px; color: var(--app-ink-2); }
+.tq-acciones { display: flex; gap: 6px; flex: none; }
+.tq-acciones button { width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--app-line); background: var(--app-surface); color: var(--app-ink); display: grid; place-items: center; cursor: pointer; transition: transform .15s var(--ease-out); }
+.tq-acciones button.si { background: var(--app-accent); border-color: var(--app-accent); color: var(--app-on-accent); }
+.tq-acciones button:active { transform: scale(.92); }
+.tq-validar .app-estado { flex: none; }
+.app-seg-panel { display: flex; flex-direction: column; gap: 12px; }
+.movil .app-ficha-img { aspect-ratio: 3 / 1; }
+.tq-en { color: var(--app-ink-2); font-size: 12.5px; }
+.tq-barrio { border-style: dashed; }
+.tq-datos li { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 14px; }
+.tq-datos b { display: block; font-weight: 600; line-height: 1.3; }
+.tq-datos small { display: block; font-size: 13px; color: var(--app-ink-2); }
+.tq-datos a { color: inherit; text-decoration: underline; }
+.tq-falta { color: var(--app-ink-2); flex: none; }
+.tq-piedras { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border-radius: 16px; background: var(--app-surface); border: 1px solid var(--app-line); }
+.tq-piedras-t { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--app-ink-2); }
+.tq-piedra { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+.tq-piedra > svg { color: var(--app-accent); }
+.tq-piedra-ico { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; background: color-mix(in srgb, var(--app-accent) 12%, var(--app-surface)); color: var(--app-accent); }
+.tq-piedra b { display: block; font-size: 14px; line-height: 1.3; color: var(--app-ink); }
+.tq-piedra small { display: block; font-size: 12.5px; color: var(--app-ink-2); line-height: 1.35; }
+.tq-sello svg + svg { margin-left: -2px; }
+.tq-dato-nota { font-style: italic; }
+.tq-datos li > b { white-space: nowrap; flex: none; }
+.tq-datos small a + a { margin-left: 3px; }
+.tq-frase { display: block; margin-top: 2px; font-size: 14px; color: var(--app-ink); }
+.tq-no-publica { font-weight: 600; }

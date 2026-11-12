@@ -1,0 +1,58 @@
+/* Pestaña Viabilidad (src/pages/Viabilidad.tsx). Solo tokens de :root; movimiento corto y solo transform/opacity. */
+.via-base { display: inline-flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.via-partida { display: block; color: var(--text); font-weight: 600; }
+.via-ok { color: var(--ok); }
+.via-stop { color: var(--nova-hot); }
+.tag.via-nivel-alto { background: rgba(255, 138, 92, .14); color: var(--nova-hot); }
+
+/* supuestos */
+.via-sup { margin-bottom: 16px; }
+.via-sup-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.via-sup-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 24px; margin-top: 14px; }
+.via-rango { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--text-2); }
+.via-rango b { color: var(--text); }
+.via-rango input { width: 100%; accent-color: var(--nova); height: 28px; }
+
+/* totales */
+.via-totales { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin-bottom: 16px; }
+.via-totales .hero-stat b { font-size: clamp(26px, 3.4vw, 40px); }
+.via-totales .hero-stat small { font-size: 13px; }
+@media (max-width: 640px) { .via-totales { grid-template-columns: 1fr; } }
+
+/* tabla editable + gráfico */
+.via-costes { display: grid; gap: 16px; }
+.via-input { width: 96px; height: 34px; padding: 0 8px; border-radius: 8px; border: 1px solid var(--line-2); background: rgba(255, 255, 255, .04); color: var(--text); font: inherit; font-size: 14px; text-align: right; font-variant-numeric: tabular-nums; transition: border-color .15s var(--ease-out), box-shadow .15s var(--ease-out); }
+.via-input:focus { outline: none; border-color: var(--nova); box-shadow: 0 0 0 3px rgba(255, 210, 122, .15); }
+
+/* hoja de ruta: columnas en escritorio, lista vertical en móvil */
+.via-ruta { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; counter-reset: fase; }
+.via-fase { position: relative; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.via-fase h3 { margin: 0; }
+.via-fase-top { display: flex; align-items: center; gap: 8px; }
+.via-fase-n { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--nova); color: var(--night); font-weight: 700; font-size: 13px; flex: none; }
+.via-fase-obj { margin: 0; color: var(--text); }
+.via-hitos { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 8px; border-top: 1px solid var(--line); padding-top: 10px; }
+.via-hitos li { display: flex; flex-direction: column; gap: 2px; font-size: 14px; color: var(--text-2); }
+.via-hitos small { color: var(--nova); font-size: 12px; }
+.via-decision { margin: auto 0 0; padding: 8px 10px; border-radius: 8px; background: rgba(255, 210, 122, .08); color: var(--text); }
+@media (max-width: 1100px) { .via-ruta { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) {
+  .via-ruta { grid-template-columns: 1fr; }
+  .via-fase { padding-left: 18px; border-left: 3px solid var(--nova); }
+}
+
+/* fondo del barrio */
+.via-flujo { list-style: none; margin: 0 0 16px; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.via-flujo li { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.via-flujo h3, .via-flujo p { margin: 0; }
+@media (max-width: 900px) { .via-flujo { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .via-flujo { grid-template-columns: 1fr; } }
+.via-fondo-sim { display: grid; gap: 0; }
+.via-escenarios { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* grupos del simulador del fondo, alerta y límites */
+.via-grupo { border: 0; margin: 14px 0 0; padding: 0; min-width: 0; }
+.via-grupo legend { padding: 0; margin-bottom: 2px; text-transform: uppercase; letter-spacing: .06em; font-size: 11px; }
+.via-grupo .via-sup-grid { margin-top: 6px; }
+.via-alerta { color: var(--nova-hot); }
+.via-limites { margin-top: 16px; }

@@ -1,0 +1,53 @@
+/* Diagnóstico (src/pages/Investigacion.tsx). Solo tokens de :root; movimiento solo con transform/opacity. */
+
+.resp { display: flex; flex-direction: column; gap: 8px; }
+.resp-n { font-family: var(--display); font-size: 13px; font-weight: 600; color: var(--night); background: var(--nova); width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; }
+.resp h3 { font-size: 17px; }
+.resp p { font-size: 14px; color: var(--text-2); }
+
+/* Percepción de residentes */
+.perc-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+.perc-cols { gap: 28px; }
+.perc-list { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.perc { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 't v' 'b b'; gap: 4px 12px; }
+.perc-t { grid-area: t; font-size: 13.5px; color: var(--text); min-width: 0; }
+.perc-v { grid-area: v; font-size: 13.5px; font-weight: 600; white-space: nowrap; text-align: right; }
+.perc-v small { margin-left: 6px; font-size: 11.5px; font-weight: 500; color: var(--muted); }
+.perc-bar { grid-area: b; position: relative; height: 6px; border-radius: 3px; background: var(--line); }
+.perc-bar i { position: absolute; inset: 0; border-radius: 3px; transform-origin: left; transition: transform .3s var(--ease-out); }
+.perc.beneficio .perc-bar i { background: var(--ok); }
+.perc.coste .perc-bar i { background: var(--nova-hot); }
+.perc-bar b { position: absolute; top: -3px; width: 2px; height: 12px; margin-left: -1px; background: var(--text); border-radius: 1px; transition: left .3s var(--ease-out); }
+.perc.beneficio small.up, .perc.coste small.dn { color: var(--ok); }
+.perc.beneficio small.dn, .perc.coste small.up { color: var(--nova-hot); }
+
+/* Zonas y causas */
+.zona, .causa { display: flex; flex-direction: column; gap: 8px; }
+.zona h3, .causa h3 { font-size: 17px; }
+.zona .ref-top .tag:first-child { white-space: normal; height: auto; padding: 3px 9px; }
+.causa.principal { border-color: rgba(255, 210, 122, .45); }
+
+.puente { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+.puente > div { flex: 1 1 320px; }
+.puente p { margin-top: 6px; color: var(--text-2); }
+
+/* Tabla de presión */
+.presion-v { display: inline-flex; align-items: center; justify-content: flex-end; gap: 8px; }
+.presion-v i { display: block; width: 70px; height: 6px; border-radius: 3px; background: var(--nova); transform-origin: left; }
+.presion-v b { min-width: 42px; }
+
+.leccion { font-size: 13px; color: var(--text-2); border-left: 2px solid var(--nova); padding-left: 10px; }
+
+/* Qué hace Tenique con cada causa */
+.causa-tq { margin-top: auto; font-size: 13px; color: var(--text-2); border-top: 1px solid var(--line); padding-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+.causa-tq.aborda b:first-child { color: var(--ok); }
+.causa-tq.en-parte b:first-child { color: var(--nova); }
+.causa-tq.no-aborda b:first-child { color: var(--nova-hot); }
+.causa-quien { color: var(--muted); }
+
+/* Qué deja el turismo en tu municipio */
+.tu-muni-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+.tu-muni-head h2 { margin-top: 4px; }
+.tu-muni-sel { display: block; margin-top: 4px; min-width: 240px; max-width: 100%; }
+.tu-muni-datos .senal b { font-size: 26px; }
+.no-existe li::marker { color: var(--nova-hot); }

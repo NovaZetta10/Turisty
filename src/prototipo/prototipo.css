@@ -1,0 +1,66 @@
+/* Prototipo móvil. Colores: tokens --app-* en :root de src/styles.css (se adaptan a la marca del reto). */
+.movil { --r: 34px; position: relative; overflow: hidden; height: min(780px, 80vh); aspect-ratio: 375 / 780; max-width: 100%; margin: 0 auto; border-radius: var(--r); padding: 8px; background: #05070f; box-shadow: 0 0 0 1px var(--line-2), var(--shadow-lg); }
+.movil-pantalla { height: 100%; display: flex; flex-direction: column; overflow: hidden; border-radius: calc(var(--r) - 8px); background: var(--app-bg); color: var(--app-ink); font-family: var(--app-font); font-size: 15px; line-height: 1.45; animation: app-entra .22s var(--ease-out) both; }
+.movil-pantalla.vuelta { animation-name: app-vuelve; }
+@keyframes app-entra { from { opacity: 0; transform: translateX(14px); } }
+@keyframes app-vuelve { from { opacity: 0; transform: translateX(-14px); } }
+
+/* ruta #/app: en el móvil ocupa toda la pantalla */
+.app-escena { min-height: 100dvh; display: grid; place-items: center; padding: 24px 16px; }
+@media (max-width: 520px) {
+  .app-escena { padding: 0; }
+  .movil.completo { height: 100dvh; width: 100%; aspect-ratio: auto; padding: 0; border-radius: 0; box-shadow: none; }
+  .movil.completo .movil-pantalla { border-radius: 0; }
+}
+
+.app-barra { flex: none; display: grid; grid-template-columns: 40px minmax(0, 1fr) 40px; align-items: center; height: 56px; padding: 0 8px; border-bottom: 1px solid var(--app-line); background: var(--app-surface); }
+.app-barra h1 { font-family: var(--app-font); font-size: 16px; font-weight: 600; letter-spacing: 0; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.app-icono { width: 40px; height: 40px; display: grid; place-items: center; border: 0; background: none; color: inherit; border-radius: 50%; cursor: pointer; }
+button.app-icono:active { transform: scale(.94); }
+
+.app-cuerpo { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px; overscroll-behavior: contain; }
+.app-titulo span { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--app-accent); }
+.app-titulo h2 { font-family: var(--app-font); font-size: 22px; letter-spacing: -0.02em; color: var(--app-ink); margin-top: 2px; }
+.app-texto { color: var(--app-ink-2); font-size: 14.5px; }
+
+.app-boton { height: 48px; border-radius: 14px; border: 1px solid transparent; font: inherit; font-weight: 600; cursor: pointer; transition: transform .15s var(--ease-out), opacity .15s var(--ease-out); }
+.app-boton.principal { background: var(--app-accent); color: var(--app-on-accent); }
+.app-boton.secundario { background: transparent; border-color: var(--app-line); color: var(--app-ink); }
+.app-boton:active { transform: scale(.97); }
+
+.app-lista { list-style: none; margin: 0; padding: 0; border-radius: 14px; background: var(--app-surface); border: 1px solid var(--app-line); overflow: hidden; }
+.app-lista li + li { border-top: 1px solid var(--app-line); }
+.app-lista button { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 14px; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; transition: background-color .15s var(--ease-out); }
+.app-lista button:disabled { cursor: default; }
+.app-lista button:not(:disabled):active { background: var(--app-press); }
+.app-lista b { display: block; font-weight: 600; }
+.app-lista small { display: block; font-size: 13px; color: var(--app-ink-2); }
+
+.app-tarjeta { display: flex; flex-direction: column; gap: 0; width: 100%; padding: 0; text-align: left; font: inherit; color: inherit; border-radius: 16px; background: var(--app-surface); border: 1px solid var(--app-line); overflow: hidden; }
+button.app-tarjeta { cursor: pointer; transition: transform .15s var(--ease-out); }
+button.app-tarjeta:active { transform: scale(.98); }
+.app-tarjeta img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.app-tarjeta > div { padding: 14px; }
+.app-tarjeta b { display: block; font-size: 16px; }
+.app-tarjeta p { font-size: 14px; color: var(--app-ink-2); margin-top: 2px; }
+
+.app-campo { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: var(--app-ink-2); }
+.app-campo input { height: 46px; border-radius: 12px; border: 1px solid var(--app-line); background: var(--app-surface); color: var(--app-ink); padding: 0 12px; font: inherit; font-size: 16px; font-weight: 400; }
+.app-campo input:focus { outline: 2px solid var(--app-accent); outline-offset: 1px; }
+
+.app-chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; flex: none; }
+.app-chips button { flex: none; height: 34px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--app-line); background: var(--app-surface); color: var(--app-ink); font: inherit; font-size: 13.5px; cursor: pointer; }
+.app-chips button.on { background: var(--app-ink); color: var(--app-bg); border-color: var(--app-ink); }
+
+.app-tabbar { flex: none; display: flex; border-top: 1px solid var(--app-line); background: var(--app-surface); padding: 6px 4px calc(6px + env(safe-area-inset-bottom)); }
+.app-tabbar button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; border: 0; background: none; color: var(--app-ink-2); font: inherit; font-size: 11px; font-weight: 500; padding: 4px 0; cursor: pointer; }
+.app-tabbar button.on { color: var(--app-accent); }
+
+@media (prefers-reduced-motion: reduce) { .movil-pantalla { animation: none; } }
+
+/* pestaña Prototipo: teléfono + QR al lado */
+.proto-interno { display: grid; grid-template-columns: auto minmax(0, 320px); gap: 32px; justify-content: center; align-items: start; }
+.proto-lado { position: sticky; top: 84px; }
+.proto-qr { width: 180px; max-width: 100%; margin: 12px 0 8px; padding: 10px; border-radius: 12px; background: #f6f2e9; }
+.proto-qr svg { display: block; width: 100%; height: auto; }
+@media (max-width: 760px) { .proto-interno { grid-template-columns: minmax(0, 1fr); } .proto-lado { position: static; } }

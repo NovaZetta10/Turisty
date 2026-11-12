@@ -1,0 +1,140 @@
+# Checklist de entrega · equipo Nova
+
+La pasa el subagente revisor antes de cada entrega. Cada punto se marca ✅, ❌ (con el arreglo y su dueño) o «n/a».
+Dueños: coordinador (`src/config/`, `App.tsx`, `styles.css`, `src/components/`), investigación, usuarios, prototipo, negocio, pitch. Ver «Quién toca qué» en el README.
+
+## 0. Rúbrica de jurado · Reto 1 de Turismo de Tenerife
+
+Fuente: PDF del reto («Presentacion_NextGen_reto1.pdf», entregado por Esther el 12-11-2026). Los criterios **no tienen pesos publicados**: no se asignan pesos ni notas numéricas inventadas. Cada criterio se valora como «fuerte / justo / flojo», con la prueba en la web.
+
+Pregunta literal: «¿Cómo podríamos convertir la relación entre población local y turistas en una convivencia que sea, para ambos, identidad, bienestar y orgullo compartido?» El PDF añade: «Lo que más cuenta es la claridad y la fuerza de la idea».
+
+### 0.1 Entregables oficiales
+
+| Entregable | Dónde está | Qué necesita un jurado para la nota máxima | Alerta |
+|---|---|---|---|
+| **Diagnóstico** | `/diagnostico` | Qué pasa **en Tenerife** y por qué, con fuentes. Causas más allá de vivienda y movilidad, contrastadas y no supuestas. Qué no se sabe (el PDF dice que no hay datos desglosados del retorno del turismo en Tenerife) y cómo se mediría. Voz del vecino, aunque sea poca y declarada. | «Causas dadas por hechas». Cifras de Canarias leídas como de Tenerife. |
+| **Plan de acción** | `/plan` | Hoja de ruta a corto, medio y largo plazo con plazos realistas. Un piloto concreto (dónde, con quién, cuánto tiempo). Cómo se financia, qué permisos hacen falta y qué se mide. Los presupuestos y objetivos supuestos aparecen etiquetados como supuestos. | «Es otra campaña». Plazos de un año para todo. |
+| **Mapeo de responsabilidades** | `/responsabilidades` | Un papel concreto para cada agente: Turismo de Tenerife, Cabildo y administraciones, empresas turísticas, propietarios de vivienda vacacional, población local y turistas. Qué aporta cada uno, qué recibe y cómo colaboran entre sí, no solo con la administración. | «Responsabilidad solo de la administración». Vivienda vacacional o turistas sin papel. |
+
+### 0.2 Criterios oficiales (sin pesos)
+
+| Criterio | Nota máxima si el jurado ve… | Señal de alerta |
+|---|---|---|
+| **Viabilidad** (legal, medioambiental, económica, presupuestaria) | Encaje legal de que un vecino ofrezca y cobre una experiencia (alta, seguro, fiscalidad), marcado «Por verificar» hasta tener fuente. Límites de carga en espacios naturales. Coste por fases y quién lo paga. Un piloto pequeño antes de toda la isla. | «Toda la isla desde el día 1» sin piloto. Ingresos para anfitriones sin marco legal. |
+| **Involucración de la sociedad tinerfeña en su conjunto** (no solo jóvenes) | Mayores, zonas rurales, asociaciones vecinales, comercio y productor local. Canales sin móvil: puntos físicos con personas que atienden. | «Solo digital». Persona tipo joven y conectada. |
+| **Factor humano** (persona en el centro, no solo digital) | El encuentro entre personas es el producto y la app solo lo organiza. Mediadores o anfitriones con nombre de rol, y el relato del vecino. | La demo es lo único que se enseña. |
+| **Impacto del turismo responsable** (gasto en la economía local, todos los ámbitos) | Adónde va cada euro: anfitrión, comercio, fondo de barrio. Un indicador medible y el método para medirlo. El fondo publica en qué se gasta. | Impacto descrito con adjetivos, sin indicador. |
+| **Innovación** | Qué es nuevo frente a lo que ya existe (experiencias tipo marketplace, campañas institucionales). Es corresponsable y de doble sentido: el local también participa y gana. | «Es otra campaña». «Esto ya existe con otro nombre». |
+
+### 0.3 Requisitos transversales del PDF (comprobar en todas las pestañas)
+- [ ] Los **tres ejes combinados** se ven: comunicación y relato, datos y transparencia en lenguaje cercano, y corresponsabilidad y acción.
+- [ ] **Pack integral**: una parte digital y acciones humanas y relacionales.
+- [ ] Llega a **quien no está en redes**.
+- [ ] La **población local es protagonista**, no un decorado para el turista.
+- [ ] Es de **doble sentido**: ni solo para el turista ni solo para el local.
+- [ ] **No es otra campaña de comunicación**.
+- [ ] Cubre **Tenerife entera**, con zonas rurales y no solo el sur.
+- [ ] «Pensar a lo grande»: hay visión a largo plazo y un ajuste por fases.
+
+### 0.4 Las cinco alertas, frase por frase
+Si una de estas frases se le puede ocurrir a un jurado al ver una pestaña, esa pestaña pierde puntos:
+1. «Es otra campaña»: hay logo, lema y vídeo, pero no un programa estable con agentes y presupuesto.
+2. «Solo digital»: la app ocupa el centro y los puntos físicos son una línea al final.
+3. «Solo para el turista»: el vecino aparece como oferta y no como usuario que también disfruta y gana.
+4. «Causas dadas por hechas»: el diagnóstico repite «vivienda y movilidad» o «falta de contacto» sin datos de Tenerife ni contraste.
+5. «Responsabilidad solo de la administración»: el fondo o el programa dependen solo del Cabildo, y las empresas y la vivienda vacacional no aportan nada concreto.
+
+## 1. Encaje con el reto
+- [ ] `RETO` relleno (`definido: true`), con la pregunta tal cual la plantea la empresa.
+- [ ] Cada entregable de `RETO.entregablesPedidos` tiene su pestaña o su sitio, visible y en estado «listo».
+- [ ] Rúbrica del punto 0 pasada pestaña por pestaña: «fuerte / justo / flojo» por criterio y dónde perdemos puntos. Sin pesos inventados.
+- [ ] La solución responde a la pregunta del reto, no a otra parecida.
+- [ ] `DESTACADOS` apunta a los 2–3 entregables que más puntúan, cada uno con un motivo real.
+- [ ] **Todo es de Tenerife.** Canarias u otros destinos aparecen solo como comparación declarada («Canarias: …», «frente a Canarias…»). Ninguna cifra regional puede leerse como de Tenerife.
+
+## 2. Datos
+- [ ] Cada cifra visible tiene referencia [n] y la fuente dice exactamente eso.
+- [ ] Una sola serie para cada magnitud en toda la web y la presentación (ojo: turistas totales de Promotur ≠ extranjeros del INE ≠ «visitantes» de la prensa).
+- [ ] Nada marcado «Por verificar» en la presentación.
+- [ ] Los enlaces de `FUENTES` abren (los que bloquean a los robots, abiertos a mano).
+- [ ] Fechas de consulta y de los datos visibles cuando importan.
+
+## 3. Honestidad
+- [ ] Ninguna cita de usuario inventada: las citas reales llevan `validado: true`; las nuestras se presentan como hipótesis.
+- [ ] Ningún cliente, acuerdo ni resultado inventado.
+- [ ] Los supuestos de negocio están etiquetados como supuestos, con el cálculo visible.
+- [ ] El prototipo dice qué es real y qué está simulado.
+
+## 4. Técnica
+- [ ] `npx tsc --noEmit` sin errores.
+- [ ] `npm run build` sin errores.
+- [ ] `npm run revisar:entrega` sin errores.
+- [ ] Todas las pestañas y `#/app`, a 390 px y a 1280 px: sin desbordes horizontales ni texto cortado. Incluidas todas las sub-pestañas de Investigación.
+- [ ] Ningún [corchete], «Por completar» ni texto para el equipo (rutas como `src/…` o `public/…`, «hueco», «rellena…») en lo que vaya a ver el jurado. `npm run revisar` no lo detecta todo: revisar a ojo Inicio, Usuarios, Prototipo y la portada de la presentación.
+- [ ] Vídeo de preview en `public/video/preview.mp4`, y se reproduce.
+- [ ] `SITIO_URL` relleno. Los dos QR de la presentación abren la web publicada en un móvil real (no `localhost`).
+- [ ] La demo (`#/app`) carga en un móvil real desde el QR, sin pantallas de ejemplo, y se reinicia sola.
+- [ ] «Exportar PDF»: una diapositiva por página y con los fondos.
+- [ ] Enlaces del equipo (LinkedIn, GitHub) apuntan a perfiles, no a búsquedas.
+- [ ] Raíz del repositorio limpia: sin capturas ni pruebas, y sin `dist/`, `tsconfig.tsbuildinfo` ni `node_modules` subidos.
+- [ ] Subido a GitHub también lo nuevo (`docs/`, `scripts/`, `src/prototipo/`…). Lo borrado en local, borrado también en el repositorio (`git rm`).
+- [ ] El workflow *Deploy* de la pestaña Actions termina en verde y la web publicada muestra la última versión.
+
+## 5. Accesibilidad básica
+- [ ] Contraste del texto ≥ 4,5:1, también en el prototipo (botón principal: texto blanco sobre `--app-accent`).
+- [ ] Foco visible al navegar con el tabulador, en la web y en el prototipo.
+- [ ] Imágenes con `alt` (decorativas con `alt=""`); botones de solo icono con `aria-label`.
+- [ ] Con «reducir movimiento» activado no hay animaciones grandes (cielo estático, sin contadores ni inclinaciones).
+- [ ] Campos de formulario con etiqueta.
+
+## 6. Pitch
+- [ ] Guion (`docs/pitch-guion.md`) cronometrado en voz alta por debajo de 5:00. Si pasa, decir qué se corta.
+- [ ] Cada diapositiva tiene una idea y un título que se lee en 3 segundos.
+- [ ] Cifras de la presentación con fuente en el pie.
+- [ ] Respuestas preparadas para las preguntas probables del jurado, con quién responde cada una.
+- [ ] Plan B si falla la wifi: PDF descargado y vídeo en local.
+
+## Veredicto
+- Lista para entregar: sí / no.
+- Qué falta, en orden de gravedad, con su dueño.
+
+---
+
+## Registro · 12-11-2026 · evaluación rápida de Tenique (antes de construir)
+
+Esta evaluación parte de la idea tal como la describe la memoria del proyecto, no de la web. Las valoraciones son mías y de juicio, no notas.
+
+| Criterio | Hoy | Por qué |
+|---|---|---|
+| Viabilidad | Flojo | No hay marco legal para que un vecino cobre una experiencia, ni piloto, ni financiación del fondo de barrio. |
+| Sociedad en su conjunto | Justo | Los puntos físicos y las zonas rurales ayudan, pero la pieza central es una app. |
+| Factor humano | Justo | El encuentro es el núcleo, pero se cuenta como «app de experiencias». |
+| Turismo responsable | Justo | El gasto va a anfitriones, al comercio y al fondo, pero no hay indicador ni método. |
+| Innovación | Justo | La búsqueda por emoción y el fondo de barrio son originales. El catálogo de experiencias puede parecer ya existente. |
+
+**Dónde perdemos puntos ya, por gravedad:**
+1. **Datos y transparencia queda como «apoyo».** El PDF pide los tres ejes combinados y nombra como hipótesis la transparencia cercana. Si solo se ve el fondo de barrio, falta medio eje. *Arreglo:* una pieza de transparencia propia, que cuente qué deja el turismo en tu barrio en lenguaje cercano. Puede ser el panel del fondo, pero a escala de isla, y diciendo qué datos no existen hoy. Afecta a investigación y prototipo.
+2. **Riesgo de que parezca «solo digital» y un marketplace de experiencias.** Si la portada y la demo son la app, el jurado ve un producto turístico. *Arreglo:* contar Tenique como programa con tres piedras: personas (anfitriones y mediadores en puntos físicos), lugares (puntos físicos en oficinas de turismo, centros ciudadanos y ayuntamientos) y app. La demo enseña también el perfil local y la gestión, no solo al turista buscando. Afecta a pitch, prototipo y coordinador (Inicio).
+3. **No responde a vivienda y movilidad.** El PDF dice que el malestar va ligado a eso. *Arreglo:* el diagnóstico dice explícitamente qué causas aborda Tenique (desconexión, falta de retorno visible, falta de voz) y cuáles no resuelve y quién debe resolverlas. Así se evita «causas dadas por hechas» y no se promete lo imposible. Afecta a investigación y pitch.
+4. **Corresponsabilidad de empresas y vivienda vacacional.** El fondo de barrio no dice quién lo financia. Si es solo el Cabildo, salta «solo la administración». *Arreglo:* aportación sistemática de empresas asociadas y de propietarios de vivienda vacacional al fondo, con el porcentaje marcado como supuesto, siguiendo la hipótesis del fondo coordinado del PDF. Afecta a negocio y responsabilidades.
+5. **Viabilidad legal de los anfitriones.** Que un vecino cobre una experiencia toca normativa turística, fiscalidad y seguros. *Arreglo:* nombrarlo como riesgo con el encaje «Por verificar» y una alternativa sin cobro: experiencias de asociaciones o gratuitas en el piloto. Afecta a negocio.
+6. **Experiencias reales, no inventadas.** Es una regla de Esther. En la demo y en la presentación, cada experiencia es real y lleva fuente, o se marca como ejemplo. Afecta a prototipo y pitch.
+7. **Marca «Tenerife despierta emociones».** Su vigencia está «Por verificar». Si no se verifica, no se cita como apoyo. Afecta a investigación.
+
+Lo que ya puntúa: el nombre y la metáfora de las tres piedras dan corresponsabilidad e identidad tinerfeña (relato). El ámbito es la isla entera con zonas rurales. El vecino de zona turística es la persona principal. Los puntos físicos sirven a quien no está en redes. El fondo de barrio es visible.
+
+## Registro · 12-11-2026 · «Canarias» presentado como Tenerife
+
+Revisado en el código. No lo he comprobado en el navegador porque las pestañas están en construcción.
+
+| # | Dónde | Qué se ve | Gravedad | Dueño |
+|---|---|---|---|---|
+| 1 | `/diagnostico` (`src/pages/Investigacion.tsx:85-86`) | Kicker «Investigación previa · antes de conocer el reto» y título «El turismo en Canarias, de un vistazo». El entregable Diagnóstico es hoy la investigación de Canarias. | Alta | investigación |
+| 2 | `/diagnostico`, Resumen (`CIFRAS_2025`, `CIFRAS_2026` en `src/data/investigacion.ts`) | Cifras de Canarias sin la palabra «Canarias» en la etiqueta: «Turistas totales 18,4 M», «Viviendas vacacionales 42.367», «Ocupación 82,2 %». Un jurado de Tenerife las lee como de la isla. | Alta | investigación |
+| 3 | `/diagnostico`, Mapa por islas y De dónde vienen (`Investigacion.tsx:123,130`, `MapaIslas`, `Mercados`) | «Canarias por islas», «Lanzarote vive del británico; La Palma, del alemán…». Sirve solo como comparación de Tenerife con el resto, y declarada. | Media | investigación (`MapaIslas` y `Mercados` son del coordinador) |
+| 4 | `/diagnostico`, Temas y retos, Benchmark y Datos y criterios (`DEBATES`, `RETOS_TIPO`, `FORMATO_HACKATHON`, `PENDIENTE_VERIFICAR`) | Temas regionales («única comunidad que pierde turistas», «Canarias Destino 2026») y material interno del hackathon («No hay criterios publicados…», «Talento Canario busca…»). Esto último no es diagnóstico y no debe verlo el jurado. | Media | investigación |
+| 5 | `/tenique`, demo del kit (`src/prototipo/pantallas.tsx:76,113-116`) | «Canarias sin conexión», pins en Gran Canaria y Lanzarote. Son pantallas de ejemplo y deben desaparecer. El mapa (`Mapa` en `piezas-flujo.tsx`) dibuja todo el archipiélago: usar `islasActivas={['tenerife']}` o un mapa solo de Tenerife. | Media | prototipo |
+| 6 | `src/data/usuarios.ts:47` | «Journey genérico del turista en Canarias». La pestaña Usuarios está oculta (`visible: false`): no se ve. | Baja | usuarios |
+
+Sin problema: Inicio («Bajo el cielo de Tenerife», Tenique), Plan de acción (`viabilidad.ts`), Responsabilidades y `presentacion.ts` no mencionan Canarias. «Talento Canario · Gobierno de Canarias» en el pie es el organizador y es correcto. «Academia Canaria de la Lengua» es la fuente de «tenique» y es correcto.
