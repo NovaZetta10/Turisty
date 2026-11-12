@@ -38,7 +38,7 @@ export function Cielo() {
           x: Math.random() * w, y: Math.random() * h,
           r: g > .97 ? 1.6 : g > .85 ? 1.1 : .6 + Math.random() * .4,
           fase: Math.random() * Math.PI * 2, vel: .25 + Math.random() * .6,
-          tono: g > .93 ? '255,238,210' : g > .85 ? '214,224,255' : '255,255,255',
+          tono: g > .93 ? '255,205,208' : g > .85 ? '214,224,255' : '255,255,255',
         }
       })
       lineas.clear(); brillo.clear()

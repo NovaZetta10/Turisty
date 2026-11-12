@@ -62,14 +62,14 @@ export const SLIDES: Slide[] = [
   {
     tipo: 'columnas',
     kicker: 'La solución · Tenique',
-    titulo: 'Un fogón no se sostiene con una piedra ni con dos. Tenerife se cocina entre todos.',
-    lead: 'Una experiencia solo entra en Tenique si la avalan quien la regula, quien vive al lado y quien la ha vivido.',
+    titulo: 'Un fogón no se sostiene con una piedra ni con dos.',
+    lead: 'Una experiencia solo entra si la avalan quien cuida el destino, quien vive al lado y quien la ha vivido. Lo pagan sobre todo quienes viven del turismo; deciden los vecinos; se prueba 6 meses en 3 municipios y se cambia lo que no funcione.',
     columnas: [
-      { titulo: 'Garantía Turismo de Tenerife', texto: 'Quien la regula comprueba que la experiencia es real y cumple las normas.' },
+      { titulo: 'Garantía Turismo de Tenerife', texto: 'Quien cuida el destino comprueba que la experiencia es real y cumple las normas.' },
       { titulo: 'Avalada por el barrio', texto: 'Los vecinos le dan su sello antes de que entre: es de aquí y el barrio está de acuerdo.' },
-      { titulo: 'Valorada por quien la vivió', texto: 'Vecinos y visitantes que participaron la puntúan después. Así se mantiene.' },
+      { titulo: 'Valorada por quien la vivió', texto: 'Todas las personas que asistieron, vecinos y visitantes, la puntúan después. Así se mantiene.' },
     ],
-    fuente: 'Tenique: cada una de las tres piedras del fogón (Academia Canaria de la Lengua, Diccionario básico de canarismos). Un programa estable con anfitriones y mediadores, puntos físicos y app: el paso siguiente a «Tenerife es tuya», del Cabildo.',
+    fuente: 'Tenerife se cocina entre todos. Tenique: cada una de las tres piedras del fogón (Academia Canaria de la Lengua, Diccionario básico de canarismos). Un programa estable con anfitriones y mediadores, puntos físicos y app: el paso siguiente a «Tenerife es tuya», del Cabildo.',
   },
   { tipo: 'cta', kicker: 'Para el jurado', titulo: 'Todo está aquí. Si solo tenéis cinco minutos, empezad por esto:', texto: 'Escanead para abrir todos los entregables.' },
 ]

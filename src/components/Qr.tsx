@@ -5,7 +5,7 @@ import QRCode from 'qrcode'
 export function Qr({ url, className = 's-qr' }: { url: string; className?: string }) {
   const [svg, setSvg] = useState('')
   useEffect(() => {
-    QRCode.toString(url, { type: 'svg', margin: 1, errorCorrectionLevel: 'M', color: { dark: '#060a17', light: '#f6f2e9' } }).then(setSvg).catch(() => setSvg(''))
+    QRCode.toString(url, { type: 'svg', margin: 1, errorCorrectionLevel: 'M', color: { dark: '#0d1433', light: '#f4f6fb' } }).then(setSvg).catch(() => setSvg(''))
   }, [url])
   return <div className={className} aria-label={`Código QR: ${url}`} dangerouslySetInnerHTML={{ __html: svg }} />
 }

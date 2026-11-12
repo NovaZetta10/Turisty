@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Tenique · Guion gráfico del teaser (30 s)</title>
+<style>
+  :root{--marino:#27336D;--azul:#1A4F9D;--rojo:#E20612;--blanco:#fff;--tinta:#1b2140;--gris:#5b6382;--fondo:#f3f4f8}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Montserrat,Poppins,"Segoe UI",system-ui,sans-serif;background:var(--fondo);color:var(--tinta);line-height:1.45}
+  header{background:var(--marino);color:#fff;padding:40px 56px 32px}
+  header h1{margin:0 0 6px;font-size:34px;font-weight:800;letter-spacing:-.5px}
+  header p{margin:0;opacity:.85;font-size:15px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+  .chip{font-size:12px;padding:4px 10px;border-radius:99px;background:rgba(255,255,255,.12)}
+  main{padding:32px 56px 64px;max-width:1400px;margin:auto}
+  h2{font-size:22px;font-weight:800;color:var(--marino);margin:40px 0 14px}
+  .timeline{display:flex;height:34px;border-radius:8px;overflow:hidden;font-size:12px;font-weight:700;color:#fff}
+  .timeline div{display:flex;align-items:center;justify-content:center;border-right:2px solid var(--fondo)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:24px}
+  .card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(20,30,70,.08)}
+  .frame{position:relative;aspect-ratio:16/9;background:var(--marino);color:#fff;overflow:hidden}
+  .frame .tc{position:absolute;top:10px;left:12px;font-size:11px;font-weight:700;background:rgba(0,0,0,.25);padding:2px 8px;border-radius:6px}
+  .frame .sub{position:absolute;left:50%;bottom:7%;transform:translateX(-50%);width:86%;text-align:center;font-size:10.5px;font-weight:500;background:rgba(39,51,109,.8);padding:4px 8px;border-radius:4px}
+  .frame .big{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 8%}
+  .h{font-size:26px;font-weight:800;line-height:1.1}
+  .meta{padding:16px 18px 18px;font-size:13.5px}
+  .meta dt{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--gris);font-weight:700;margin-top:10px}
+  .meta dd{margin:2px 0 0}
+  .meta .num{display:inline-block;font-size:11px;font-weight:800;color:#fff;background:var(--marino);border-radius:6px;padding:2px 8px;margin-right:6px}
+  .wc{color:var(--gris);font-size:11.5px}
+  .phone{position:absolute;top:8%;left:50%;transform:translateX(-50%);width:23%;height:84%;border-radius:14px;background:#fff;border:3px solid #0d1435;color:var(--tinta);font-size:7.5px;padding:8px 6px;display:flex;flex-direction:column;gap:5px}
+  .pill{border-radius:99px;padding:3px 6px;text-align:center;font-weight:700}
+  .p-on{background:var(--azul);color:#fff}.p-off{background:#e8ebf4}
+  .stone{display:flex;gap:4px;align-items:center}
+  .stone i{width:9px;height:7px;border-radius:50% 50% 40% 40%;background:var(--marino);display:inline-block}
+  .ejemplo{position:absolute;right:6%;top:42%;transform:rotate(-8deg);border:2px solid var(--rojo);color:var(--rojo);background:#fff;font-weight:800;font-size:11px;padding:2px 8px;border-radius:4px}
+  .side{position:absolute;left:5%;top:50%;transform:translateY(-50%);width:30%;font-weight:800;font-size:20px;line-height:1.1}
+  .side.r{left:auto;right:5%;text-align:right}
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;font-size:14px}
+  th,td{text-align:left;padding:10px 14px;border-bottom:1px solid #e6e8f0;vertical-align:top}
+  th{background:var(--marino);color:#fff;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .box{background:#fff;border-radius:14px;padding:20px 22px;font-size:14px}
+  .box h3{margin:0 0 8px;color:var(--marino);font-size:16px}
+  .box ol,.box ul{margin:6px 0 0;padding-left:20px}
+  .swatches{display:flex;gap:10px;margin:8px 0}
+  .sw{flex:1;border-radius:10px;padding:26px 10px 8px;color:#fff;font-size:12px;font-weight:700}
+  .note{font-size:12.5px;color:var(--gris);margin-top:28px}
+  code{background:#eef0f6;padding:1px 5px;border-radius:4px;font-size:12.5px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Tenique · teaser de 30 s</h1>
+  <p>Guion gráfico para la sesión de feedback · Hackathon Talento Canario · Santa Cruz de Tenerife, 12-11-2026 · Reto 1 de Turismo de Tenerife</p>
+  <div class="chips">
+    <span class="chip">1920×1080 · 16:9 · H.264</span><span class="chip">&lt; 25 MB → public/video/preview.mp4</span>
+    <span class="chip">Subtítulos siempre</span><span class="chip">Sin música o pista CC0</span><span class="chip">Voz en off: 68 palabras</span>
+  </div>
+</header>
+
+<main>
+<h2>Línea de tiempo</h2>
+<div class="timeline">
+  <div style="flex:5;background:var(--marino)">1 · Gancho 0–5 s</div>
+  <div style="flex:5;background:var(--rojo)">2 · Dato 5–10 s</div>
+  <div style="flex:7;background:var(--azul)">3 · Tenique 10–17 s</div>
+  <div style="flex:4;background:var(--marino)">4 · App: emoción 17–21 s</div>
+  <div style="flex:4;background:var(--azul)">5 · App: piedras 21–25 s</div>
+  <div style="flex:5;background:var(--marino)">6 · Cierre 25–30 s</div>
+</div>
+
+<h2>Planos</h2>
+<div class="grid">
+
+  <!-- 1 -->
+  <article class="card">
+    <div class="frame">
+      <span class="tc">00:00 – 00:05</span>
+      <div class="big">
+        <svg width="150" height="46" viewBox="0 0 150 46" aria-hidden="true">
+          <ellipse cx="25" cy="30" rx="20" ry="14" fill="#fff" opacity=".35"/>
+          <ellipse cx="75" cy="30" rx="20" ry="14" fill="#fff" opacity=".65"/>
+          <ellipse cx="125" cy="30" rx="20" ry="14" fill="#fff"/>
+        </svg>
+        <div class="h" style="margin-top:12px">¿Y si pudiéramos<br>haceros sentir…?</div>
+      </div>
+      <div class="sub">¿Y si pudiéramos haceros sentir que Tenerife también es vuestra?</div>
+    </div>
+    <dl class="meta">
+      <dd><span class="num">1</span><b>Gancho emocional</b></dd>
+      <dt>Imagen</dt><dd>Fondo marino liso. Tres piedras blancas aparecen una a una (0,5 s, 1,2 s, 1,9 s) con un ligero rebote. El texto entra palabra a palabra.</dd>
+      <dt>Texto en pantalla</dt><dd>«¿Y si pudiéramos haceros sentir…?» <span class="wc">(5 palabras)</span></dd>
+      <dt>Voz en off</dt><dd>«¿Y si pudiéramos haceros sentir que Tenerife también es vuestra?» <span class="wc">(10)</span></dd>
+      <dt>Salida</dt><dd>Fundido de 8 fotogramas a rojo.</dd>
+    </dl>
+  </article>
+
+  <!-- 2 -->
+  <article class="card">
+    <div class="frame">
+      <span class="tc">00:05 – 00:10</span>
+      <div class="side"><div style="font-size:40px">62,2 %</div><div style="font-size:12px;font-weight:600;opacity:.85">muy beneficioso<br>para la isla</div></div>
+      <div class="side r"><div style="font-size:40px;color:var(--rojo);background:#fff;display:inline-block;padding:0 6px;border-radius:6px">35,9 %</div><div style="font-size:12px;font-weight:600;opacity:.85;margin-top:4px">mejora mi<br>calidad de vida</div></div>
+      <div style="position:absolute;bottom:22%;width:100%;text-align:center;font-size:9px;opacity:.75">Fuente: ISTAC, 2026 · encuesta a residentes de Tenerife</div>
+      <div class="sub">Seis de cada diez ven el turismo muy beneficioso. Menos de cuatro sienten que mejora su vida.</div>
+    </div>
+    <dl class="meta">
+      <dd><span class="num">2</span><b>Dato</b></dd>
+      <dt>Imagen</dt><dd>Primero entra la cifra blanca (5,0 s). La roja entra con un golpe seco en el 7,0 s y la primera baja al 60 % de opacidad. Las cifras cuentan hacia arriba en 0,6 s.</dd>
+      <dt>Texto en pantalla</dt><dd>«62,2 % muy beneficioso · 35,9 % mejora mi vida» + pie «Fuente: ISTAC, 2026» <span class="wc">(dos rótulos de dato de 3–4 palabras cada uno)</span></dd>
+      <dt>Voz en off</dt><dd>«Seis de cada diez ven el turismo muy beneficioso. Menos de cuatro sienten que mejora su vida.» <span class="wc">(17)</span></dd>
+      <dt>Salida</dt><dd>Fundido de 8 fotogramas a azul.</dd>
+    </dl>
+  </article>
+
+  <!-- 3 -->
+  <article class="card">
+    <div class="frame" style="background:var(--azul)">
+      <span class="tc">00:10 – 00:17</span>
+      <div class="big">
+        <svg width="220" height="110" viewBox="0 0 220 110" aria-hidden="true">
+          <g transform="rotate(-9 110 55)">
+            <path d="M60 18 h100 l-8 42 a42 22 0 0 1 -84 0 z" fill="#0d1435"/>
+            <rect x="52" y="12" width="116" height="9" rx="4" fill="#0d1435"/>
+          </g>
+          <path d="M95 92 q8 -14 15 0 q7 -16 15 0" stroke="#E20612" stroke-width="4" fill="none"/>
+          <ellipse cx="62" cy="95" rx="22" ry="13" fill="#fff"/>
+          <ellipse cx="158" cy="95" rx="22" ry="13" fill="#fff"/>
+          <ellipse cx="110" cy="102" rx="22" ry="12" fill="none" stroke="#E20612" stroke-width="2.5" stroke-dasharray="5 4"/>
+        </svg>
+        <div class="h" style="font-size:22px;margin-top:6px">Tenique: la piedra del fogón</div>
+      </div>
+      <div class="sub">Un tenique es una piedra del fogón. Si falta una, el caldero cae.</div>
+    </div>
+    <dl class="meta">
+      <dd><span class="num">3</span><b>Tenique y la metáfora del fogón</b></dd>
+      <dt>Imagen</dt><dd>Ilustración plana propia en SVG. El caldero descansa sobre tres piedras con una llama roja (10–13 s). En el 14 s se retira una piedra, que queda como contorno rojo discontinuo, y el caldero se inclina 9°. En el 16 s, rótulo pequeño: «Vecinos · visitantes · instituciones».</dd>
+      <dt>Texto en pantalla</dt><dd>«Tenique: la piedra del fogón» <span class="wc">(5)</span> · crédito pequeño: «Academia Canaria de la Lengua»</dd>
+      <dt>Voz en off</dt><dd>«Un tenique es una piedra del fogón. Si falta una, el caldero cae.» <span class="wc">(13)</span></dd>
+      <dt>Salida</dt><dd>Corte en seco: la piedra roja «salta» al móvil del plano 4.</dd>
+    </dl>
+  </article>
+
+  <!-- 4 -->
+  <article class="card">
+    <div class="frame">
+      <span class="tc">00:17 – 00:21</span>
+      <div class="side" style="font-size:18px">Quiero<br>sentir…<br><span style="color:#fff;background:var(--rojo);padding:0 6px;border-radius:4px">sabor</span></div>
+      <div class="phone">
+        <div class="pill p-on">Vivo en Tenerife</div>
+        <div style="font-weight:800;font-size:8.5px;margin-top:4px">Quiero sentir…</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+          <div class="pill p-off">raíces</div><div class="pill p-on">sabor</div>
+          <div class="pill p-off">calma</div><div class="pill p-off">orgullo</div>
+        </div>
+        <div style="margin-top:auto;background:#e8ebf4;border-radius:6px;padding:5px;font-weight:700">Mercadillo del Agricultor de Tacoronte</div>
+      </div>
+      <div class="sub">Eliges qué quieres sentir. El vecino te abre su isla.</div>
+    </div>
+    <dl class="meta">
+      <dd><span class="num">4</span><b>La app: vecino y emoción</b></dd>
+      <dt>Imagen</dt><dd>Grabación real de la app dentro de un marco de móvil en el centro, de unos 900 px de alto. Clips A y B: el perfil «Vivo en Tenerife» y luego la emoción «Sabor». Zoom suave del 100 % al 106 %.</dd>
+      <dt>Texto en pantalla</dt><dd>«Quiero sentir… sabor» <span class="wc">(3)</span></dd>
+      <dt>Voz en off</dt><dd>«Eliges qué quieres sentir. El vecino te abre su isla.» <span class="wc">(10)</span></dd>
+      <dt>Salida</dt><dd>Corte en seco al tocar la tarjeta.</dd>
+    </dl>
+  </article>
+
+  <!-- 5 -->
+  <article class="card">
+    <div class="frame" style="background:var(--azul)">
+      <span class="tc">00:21 – 00:25</span>
+      <div class="side" style="font-size:17px">Tres piedras.<br>Un fondo<br>del barrio.</div>
+      <div class="phone">
+        <div style="font-weight:800;font-size:8.5px">Mercadillo del Agricultor de Tacoronte</div>
+        <div style="opacity:.7">Tacoronte · sáb. y dom.</div>
+        <div class="stone"><i></i>Garantía Turismo de Tenerife</div>
+        <div class="stone"><i></i>Avalada por el barrio</div>
+        <div class="stone"><i style="background:var(--rojo)"></i>Valorada por quien la vivió</div>
+        <div style="margin-top:auto;background:#e8ebf4;border-radius:6px;padding:5px"><b>Qué deja el turismo aquí</b><br>Fondo del barrio: — €</div>
+      </div>
+      <span class="ejemplo">EJEMPLO</span>
+      <div class="sub">Cada experiencia deja algo en el barrio.</div>
+    </div>
+    <dl class="meta">
+      <dd><span class="num">5</span><b>La app: experiencia real y las tres piedras</b></dd>
+      <dt>Imagen</dt><dd>Clips C, D y E: la ficha del Mercadillo del Agricultor de Tacoronte (real, en <code>src/data/experiencias.ts</code>), un desplazamiento lento hasta las tres piedras, que se iluminan una a una, y la sección «Qué deja el turismo aquí». Sello rojo «EJEMPLO» sobre cualquier importe o valoración.</dd>
+      <dt>Texto en pantalla</dt><dd>«Tres piedras. Un fondo del barrio.» <span class="wc">(6)</span> + sello «Ejemplo»</dd>
+      <dt>Voz en off</dt><dd>«Cada experiencia deja algo en el barrio.» <span class="wc">(7)</span></dd>
+      <dt>Salida</dt><dd>Fundido de 8 fotogramas a marino.</dd>
+    </dl>
+  </article>
+
+  <!-- 6 -->
+  <article class="card">
+    <div class="frame">
+      <span class="tc">00:25 – 00:30</span>
+      <div class="big" style="padding-bottom:12%">
+        <svg width="130" height="40" viewBox="0 0 150 46" aria-hidden="true">
+          <ellipse cx="25" cy="30" rx="20" ry="14" fill="#fff"/>
+          <ellipse cx="75" cy="30" rx="20" ry="14" fill="#E20612"/>
+          <ellipse cx="125" cy="30" rx="20" ry="14" fill="#fff"/>
+        </svg>
+        <div class="h" style="font-size:24px;margin-top:8px">Tenerife se cocina<br>entre todos</div>
+      </div>
+      <div style="position:absolute;left:4%;bottom:21%;display:flex;align-items:center;gap:6px;font-size:7.5px;opacity:.85">
+        <span>Reto propuesto por</span><img src="../../public/img/marca/turismo-tenerife-blanco.png" alt="Turismo de Tenerife" style="height:16px">
+      </div>
+      <div style="position:absolute;right:4%;bottom:21%;font-size:10px;font-weight:800;letter-spacing:.04em;opacity:.85">nova</div>
+      <div class="sub">Tenerife se cocina entre todos. Os lo demostramos: sacad el móvil.</div>
+    </div>
+    <dl class="meta">
+      <dd><span class="num">6</span><b>Cierre: lema, llamada y logos</b></dd>
+      <dt>Imagen</dt><dd>Vuelven las tres piedras y la central entra en rojo en el 25 s. Lema centrado. En el 27 s aparecen los logos: abajo a la izquierda, «Reto propuesto por» con el logo blanco de Turismo de Tenerife (el único plano con ese logo), a unos 60 px de alto; abajo a la derecha, «nova» pequeño. Últimos 0,5 s fijos.</dd>
+      <dt>Texto en pantalla</dt><dd>«Tenerife se cocina entre todos» <span class="wc">(5)</span>. La llamada «sacad el móvil» va en la voz y en los subtítulos.</dd>
+      <dt>Voz en off</dt><dd>«Tenerife se cocina entre todos. Os lo demostramos: sacad el móvil.» <span class="wc">(11)</span></dd>
+      <dt>Salida</dt><dd>Corte a negro en el 30,0 s y la presentación arranca en directo.</dd>
+    </dl>
+  </article>
+</div>
+
+<h2>Voz en off completa · 68 palabras</h2>
+<div class="box">
+  ¿Y si pudiéramos haceros sentir que Tenerife también es vuestra? · Seis de cada diez ven el turismo muy beneficioso. Menos de cuatro sienten que mejora su vida. · Un tenique es una piedra del fogón. Si falta una, el caldero cae. · Eliges qué quieres sentir. El vecino te abre su isla. · Cada experiencia deja algo en el barrio. · Tenerife se cocina entre todos. Os lo demostramos: sacad el móvil.
+  <p class="wc" style="margin:10px 0 0">Ritmo de lectura: unas 2,3 palabras por segundo, pausado y cercano. Voz canaria natural, sin tono de anuncio. Los subtítulos repiten la voz al pie de la letra.</p>
+</div>
+
+<h2>Dos alternativas para el gancho (0–5 s)</h2>
+<div class="two">
+  <div class="box"><h3>A · «¿Y si el turismo también fuera tuyo?»</h3>
+    Texto en pantalla igual (7 palabras con «¿Y si»; si se recorta a «¿Y si fuera tuyo?», 4). Visual: un fogón ilustrado con tres piedras y una silla vacía al lado, que se ilumina. Voz: «¿Y si el turismo también fuera tuyo?» Apela a la pertenencia del residente.</div>
+  <div class="box"><h3>B · «¿Cuándo sentiste orgullo de tu isla?»</h3>
+    Texto en pantalla: «¿Cuándo sentiste orgullo de tu isla?» (6). Visual: sobre fondo marino, la palabra «orgullo» se forma letra a letra y la «o» final se convierte en una piedra. Voz: «¿Cuándo fue la última vez que sentiste orgullo de tu isla?» Conecta con «orgullo compartido» del enunciado del reto.</div>
+</div>
+
+<h2>Qué grabar de la pantalla</h2>
+<table>
+  <tr><th>Clip</th><th>URL / acción</th><th>Duración útil</th><th>Plano</th></tr>
+  <tr><td>A</td><td><code>novazetta10.github.io/Turisty/#/app</code> → tocar perfil «Vivo en Tenerife»</td><td>2 s</td><td>4</td></tr>
+  <tr><td>B</td><td>Pantalla «Quiero sentir…» → tocar «Sabor»</td><td>2 s</td><td>4</td></tr>
+  <tr><td>C</td><td>Tocar la tarjeta «Mercadillo del Agricultor de Tacoronte»</td><td>1,5 s</td><td>5</td></tr>
+  <tr><td>D</td><td>Desplazamiento lento hasta las tres piedras</td><td>1,5 s</td><td>5</td></tr>
+  <tr><td>E</td><td>Bajar hasta «Qué deja el turismo aquí»</td><td>1 s</td><td>5</td></tr>
+  <tr><td>Respaldo</td><td><code>#/tenique</code>: vista de los 4 perfiles, a 1920×1080</td><td>3 s</td><td>3 o recurso</td></tr>
+</table>
+<div class="box" style="margin-top:14px">
+  <ul>
+    <li><b>Tamaño:</b> ventana de 430×932 (modo dispositivo de Chrome), con escala de dispositivo 2×. Así se obtiene un vídeo de 860×1864 que se coloca en el marco de móvil a unos 900 px de alto sobre el lienzo de 1920×1080.</li>
+    <li><b>Captura:</b> 60 fps, sin cursor (o con el puntero táctil de las DevTools), notificaciones desactivadas, clics lentos con medio segundo de pausa antes y después.</li>
+    <li><b>Toma:</b> grabar cada clip por separado con 3–4 s de margen y recortarlos en el montaje.</li>
+    <li><b>Datos:</b> cualquier importe o valoración visible de la app se tapa o lleva el sello «Ejemplo».</li>
+  </ul>
+</div>
+
+<h2>Ritmo, transiciones y tipografía</h2>
+<div class="two">
+  <div class="box"><h3>Ritmo y transiciones</h3>
+    <ul>
+      <li>Tres capítulos: emoción (planos 1–3), producto (4–5) y llamada (6). Fundido de 8 fotogramas entre capítulos y cortes en seco dentro de la app.</li>
+      <li>Dos golpes en rojo: la cifra de 35,9 % (7 s) y la piedra central del cierre (25 s).</li>
+      <li>Movimiento: entradas con desplazamiento de 24 px y suavizado <i>ease-out</i> de 300 ms. Nada de rebotes largos ni giros.</li>
+      <li>Sonido: sin música o con una pista CC0 suave (acústica, timple o guitarra) al −22 LUFS bajo la voz. Que la caída del caldero suene a piedra.</li>
+    </ul>
+  </div>
+  <div class="box"><h3>Tipografía y color</h3>
+    <ul>
+      <li><b>Montserrat</b> (licencia OFL). Titulares en ExtraBold 800, de 96 a 120 px y con −1 % de interletrado. Cifras en 800 a 220 px. Subtítulos en Medium 500 a 44 px, blancos sobre una banda marina al 80 %, en el tercio inferior y con un máximo de 2 líneas.</li>
+      <li>Texto siempre blanco sobre marino o azul. El rojo solo como acento (dato y piedra), nunca en el texto largo.</li>
+    </ul>
+    <div class="swatches">
+      <div class="sw" style="background:#27336D">#27336D<br>fondo</div>
+      <div class="sw" style="background:#1A4F9D">#1A4F9D<br>apoyo</div>
+      <div class="sw" style="background:#E20612">#E20612<br>acento</div>
+      <div class="sw" style="background:#fff;color:#27336D;border:1px solid #dde">#FFFFFF<br>texto</div>
+    </div>
+  </div>
+</div>
+
+<h2>Exportación</h2>
+<div class="box">H.264 (High), 1920×1080, 30 fps, CRF 23 o 4–5 Mbps VBR, audio AAC a 128 kbps. Resultado esperado: unos 15–19 MB (límite: 25 MB). Guardar como <code>public/video/preview.mp4</code> y añadir <code>-movflags +faststart</code> para que arranque rápido en la web.<br>
+<code>ffmpeg -i master.mov -c:v libx264 -profile:v high -crf 23 -pix_fmt yuv420p -r 30 -c:a aac -b:a 128k -movflags +faststart public/video/preview.mp4</code></div>
+
+<p class="note">Comprobaciones: las cifras proceden del ISTAC (2026), con la fuente en pantalla. La única experiencia mostrada es real y verificada en el catálogo. Los importes y valoraciones llevan el sello «Ejemplo». Las ilustraciones son SVG propias y no hay fotos de terceros. El logo de Turismo de Tenerife solo aparece en el plano 6, con el texto «Reto propuesto por Turismo de Tenerife».</p>
+</main>
+</body>
+</html>

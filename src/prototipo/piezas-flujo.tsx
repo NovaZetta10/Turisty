@@ -98,7 +98,7 @@ export type DatosReserva = { fecha: string; personas: number; franja: string; co
  * Formulario de reserva: fecha, personas y franja. Guarda la reserva en useDemo().datos[clave] y va a `destino`.
  * `precio` (por persona) solo si es un dato real con fuente o un ejemplo marcado como tal.
  */
-export function Reserva({ franjas, destino, precio, maxPersonas = 8, clave = 'reserva' }: { franjas: string[]; destino: string; precio?: number; maxPersonas?: number; clave?: string }) {
+export function Reserva({ franjas, destino, precio, maxPersonas = 8, clave = 'reserva', textoBoton }: { franjas: string[]; destino: string; precio?: number; maxPersonas?: number; clave?: string; textoBoton?: string }) {
   const t = useT()
   const { ir } = useNav()
   const { guardar } = useDemo()
@@ -123,7 +123,7 @@ export function Reserva({ franjas, destino, precio, maxPersonas = 8, clave = 're
       <div className="app-campo"><span>{t({ es: 'Hora', en: 'Time' })}</span><ChipsApp opciones={franjas} activa={franja} onCambio={setFranja} /></div>
       {total != null && <div className="app-total"><span>{t({ es: 'Total', en: 'Total' })}</span><b className="tnum">{total.toLocaleString(t({ es: 'es-ES', en: 'en-GB' }))} €</b></div>}
       <button className="app-boton principal" disabled={!franja} onClick={reservar}>
-        {franja ? t({ es: 'Reservar', en: 'Book' }) : t({ es: 'Elige una hora', en: 'Choose a time' })}
+        {franja ? textoBoton ?? t({ es: 'Reservar', en: 'Book' }) : t({ es: 'Elige una hora', en: 'Choose a time' })}
       </button>
     </div>
   )

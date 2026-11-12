@@ -9,7 +9,8 @@ Reto 1 de Turismo de Tenerife (convivencia). Responded aquí mismo debajo de cad
 4. La IA de búsqueda por emoción y traducción: ¿qué no puede salir hacia la API (nombres, ubicación de casas de anfitriones)?
 5. Figura jurídica del fondo: ¿convenio, consorcio, fundación pública o subvención? ¿Puede una misma cuenta recibir dinero del Cabildo y de empresas? (Si no es tu campo, ¿a quién le preguntamos?)
 6. **Prioritaria.** ¿Puede un vecino particular cobrar por una experiencia (un taller, una ruta, una comida en su casa) sin darse de alta como actividad? ¿Qué le exige la normativa turística de Canarias (licencia de actividad turística, guía habilitado), qué tributa (IRPF, IGIC) y qué seguro necesita? Mientras no lo sepamos, en el piloto los vecinos no cobran: solo pagan las experiencias de asociaciones, entidades y empresas. Si no es tu campo, dinos a quién preguntamos.
-7. ¿Qué mínimo de seguridad exigirías en el piloto (cifrado, copias, registros de acceso) y cuántas horas cuesta?
+7. Ecotasa mínima para residentes (opción estudiada, idea de Turismo de Tenerife): ¿puede una tasa distinguir entre residentes y visitantes? ¿Quién la aprueba y puede lo recaudado ir a un fondo de barrio?
+8. ¿Qué mínimo de seguridad exigirías en el piloto (cifrado, copias, registros de acceso) y cuántas horas cuesta?
 
 ## Para Marcelo (logística y operativa)
 1. Un punto físico por municipio: ¿quién atiende en la oficina de turismo o el centro ciudadano y cuántas horas a la semana le quita?

@@ -11,6 +11,8 @@ import { FUENTE_TENIQUE } from '../data/investigacion'
 
 function Preview() {
   const [falla, setFalla] = useState(false)
+  // Sin vídeo: en la web publicada no se muestra el hueco (el jurado no debe ver «en preparación»).
+  if (falla && !import.meta.env.DEV) return null
   return (
     <div className="preview">
       {!falla && (
@@ -37,7 +39,7 @@ function Constelacion({ n }: { n: number }) {
   const pts = Array.from({ length: n }, (_, i) => [((i + 0.5) / n) * 100, i % 2 ? 70 : 30])
   return (
     <svg className="constellation-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-      <polyline points={pts.map((p) => p.join(',')).join(' ')} fill="none" stroke="rgba(255,210,122,.35)" strokeWidth="1" strokeDasharray="3 4" vectorEffect="non-scaling-stroke" />
+      <polyline points={pts.map((p) => p.join(',')).join(' ')} fill="none" stroke="rgba(255,107,112,.35)" strokeWidth="1" strokeDasharray="3 4" vectorEffect="non-scaling-stroke" />
     </svg>
   )
 }
@@ -91,6 +93,7 @@ export default function Inicio() {
 
       <section className="section split">
         <div className="card reto-card">
+          <img className="reto-logo" src={import.meta.env.BASE_URL + 'img/marca/turismo-tenerife-blanco.png'} alt="Turismo de Tenerife" />
           <span className="kicker">El reto{RETO.definido ? ` · ${RETO.empresa}` : ''}</span>
           {RETO.definido ? (
             <>
@@ -116,6 +119,7 @@ export default function Inicio() {
               <ul className="list">{RETO.entregablesPedidos.map((e) => <li key={e}>{e}</li>)}</ul>
             </div>
           )}
+          <p className="reto-pie">Reto propuesto por Turismo de Tenerife</p>
         </div>
         <Preview />
       </section>

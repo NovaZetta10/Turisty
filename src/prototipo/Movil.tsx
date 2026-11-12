@@ -5,17 +5,34 @@ import { DEMO, PANTALLAS } from './pantallas'
 import './prototipo.css'
 import './kit.css'
 
+type Props = {
+  /** Ocupa toda la pantalla en el móvil (ruta #/app); en escritorio sigue enmarcado. */
+  completo?: boolean
+  /** Teléfono más pequeño (vista «Los 4 perfiles»). */
+  compacto?: boolean
+  /** Pantalla con la que arranca (y a la que vuelve al reiniciar). Por defecto, la primera de PANTALLAS. */
+  pantalla?: string
+  /** Datos con los que arranca (perfil, municipio…). */
+  datosIniciales?: Record<string, unknown>
+  /** Pantallas por las que avanza solo mientras `auto` sea true (2,5 s cada una). Se para al tocar el teléfono. */
+  recorrido?: string[]
+  auto?: boolean
+  /** Etiqueta accesible del teléfono. */
+  etiqueta?: string
+}
+
 /**
- * El prototipo dentro de un marco de teléfono. Lleva su propio historial, idioma y datos de la demo.
- * `completo`: ocupa toda la pantalla en el móvil (ruta #/app); en escritorio sigue enmarcado.
+ * El prototipo dentro de un marco de teléfono. Lleva su propio historial, idioma y datos de la demo,
+ * así que pueden convivir varios teléfonos independientes en la misma página.
  * Se reinicia solo tras DEMO.reinicioSegundos sin tocarlo, para que cada persona empiece desde el principio.
  */
-export function Movil({ completo = false }: { completo?: boolean }) {
-  const inicio = PANTALLAS[0]?.id ?? ''
+export function Movil({ completo = false, compacto = false, pantalla, datosIniciales, recorrido, auto: autoProp = false, etiqueta }: Props) {
+  const inicio = pantalla ?? PANTALLAS[0]?.id ?? ''
+  const datos0 = useRef(datosIniciales ?? {}).current
   const [pila, setPila] = useState<string[]>([inicio])
   const [vuelta, setVuelta] = useState(false)
   const [idioma, setIdioma] = useState<Idioma>(DEMO.idioma)
-  const [datos, setDatos] = useState<Record<string, unknown>>({})
+  const [datos, setDatos] = useState<Record<string, unknown>>(datos0)
   const [version, setVersion] = useState(0) // cambia al reiniciar: vuelve a montar las pantallas desde cero
   const [aviso, setAviso] = useState(false)
   const actual = pila[pila.length - 1]
@@ -33,17 +50,29 @@ export function Movil({ completo = false }: { completo?: boolean }) {
     setVuelta(true)
     setPila([inicio])
     setIdioma(DEMO.idioma)
-    setDatos({})
+    setDatos(datos0)
     setVersion((v) => v + 1)
-  }, [inicio])
+  }, [inicio, datos0])
   const guardar = useCallback((clave: string, valor: unknown) => setDatos((d) => ({ ...d, [clave]: valor })), [])
+
+  // Recorrido automático: avanza cada 2,5 s; cualquier toque lo para.
+  const [auto, setAuto] = useState(autoProp)
+  useEffect(() => setAuto(autoProp), [autoProp])
+  useEffect(() => {
+    if (!auto || !recorrido?.length) return
+    let i = 0
+    setVuelta(false)
+    setPila([recorrido[0]])
+    const t = window.setInterval(() => { i = (i + 1) % recorrido.length; setVuelta(false); setPila([recorrido[i]]) }, 2500)
+    return () => window.clearInterval(t)
+  }, [auto, recorrido])
 
   // Reinicio por inactividad: solo si la demo se ha tocado (no está ya en el inicio limpio).
   const marco = useRef<HTMLDivElement>(null)
-  const sucio = pila.length > 1 || actual !== inicio || idioma !== DEMO.idioma || Object.keys(datos).length > 0
+  const sucio = pila.length > 1 || actual !== inicio || idioma !== DEMO.idioma || datos !== datos0
   useEffect(() => {
     const el = marco.current
-    if (!el || !sucio || !DEMO.reinicioSegundos) return
+    if (!el || !sucio || !DEMO.reinicioSegundos || auto) return
     let t = 0
     const armar = () => {
       window.clearTimeout(t)
@@ -53,11 +82,17 @@ export function Movil({ completo = false }: { completo?: boolean }) {
     eventos.forEach((e) => el.addEventListener(e, armar, { capture: true, passive: true }))
     armar()
     return () => { window.clearTimeout(t); eventos.forEach((e) => el.removeEventListener(e, armar, { capture: true })) }
-  }, [sucio, reiniciar])
+  }, [sucio, reiniciar, auto])
 
   const Vista = PANTALLAS.find((x) => x.id === actual)?.render // se monta como componente: cada pantalla tiene sus propios hooks
   return (
-    <div ref={marco} className={`movil ${completo ? 'completo' : ''}`} lang={idioma}>
+    <div
+      ref={marco}
+      className={`movil ${completo ? 'completo' : ''} ${compacto ? 'compacto' : ''}`}
+      lang={idioma}
+      aria-label={etiqueta}
+      onPointerDownCapture={() => auto && setAuto(false)}
+    >
       <IdiomaCtx.Provider value={{ idioma, setIdioma }}>
         <DemoCtx.Provider value={{ datos, guardar }}>
           <NavCtx.Provider value={{ actual, ir, atras, puedeVolver: pila.length > 1, reiniciar }}>

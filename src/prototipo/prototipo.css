@@ -61,6 +61,26 @@ button.app-tarjeta:active { transform: scale(.98); }
 /* pestaña Prototipo: teléfono + QR al lado */
 .proto-interno { display: grid; grid-template-columns: auto minmax(0, 320px); gap: 32px; justify-content: center; align-items: start; }
 .proto-lado { position: sticky; top: 84px; }
-.proto-qr { width: 180px; max-width: 100%; margin: 12px 0 8px; padding: 10px; border-radius: 12px; background: #f6f2e9; }
+.proto-qr { width: 180px; max-width: 100%; margin: 12px 0 8px; padding: 10px; border-radius: 12px; background: var(--app-bg); }
 .proto-qr svg { display: block; width: 100%; height: auto; }
 @media (max-width: 760px) { .proto-interno { grid-template-columns: minmax(0, 1fr); } .proto-lado { position: static; } }
+
+/* «Así lo ve cada perfil» (pestaña Tenique): 4 teléfonos a tamaño real (375×780) escalados con --s; carrusel en el móvil */
+.proto-vistas { display: flex; gap: 6px; margin-bottom: 18px; }
+.proto-4 { --s: .72; min-width: 0; max-width: 100%; }
+.proto-4-barra { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+.chips.proto-4-chips { display: none; }
+.proto-4-pista { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; justify-items: center; }
+.proto-4-tel { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.proto-4-escala { position: relative; width: calc(375px * var(--s)); height: calc(780px * var(--s)); }
+.proto-4-escala .movil { position: absolute; left: 0; top: 0; width: 375px; height: 780px; max-width: none; transform: scale(var(--s)); transform-origin: 0 0; }
+.proto-4-tel figcaption { font-size: 14px; font-weight: 600; color: var(--text-2); text-align: center; }
+.proto-4-nota { margin-top: 12px; text-align: center; }
+@media (max-width: 1199px) { .proto-4 { --s: .58; } }
+@media (max-width: 999px) { .proto-4 { --s: .7; } .proto-4-pista { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 24px; } }
+@media (max-width: 760px) {
+  .proto-4 { --s: .78; }
+  .chips.proto-4-chips { display: flex; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .proto-4-pista { display: flex; gap: 14px; width: 100%; max-width: 100%; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; margin: 0; padding: 0 0 4px; }
+  .proto-4-tel { flex: 0 0 auto; scroll-snap-align: center; }
+}

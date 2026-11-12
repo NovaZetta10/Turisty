@@ -3,7 +3,8 @@
 //   import Usuarios from './Usuarios'   →   <Usuarios />
 // Datos en src/data/usuarios.ts. Todo es hipótesis hasta que lo validen entrevistas reales.
 import { useState } from 'react'
-import { EMOCIONES, EMOCION_TXT, FASES, FRASE_PROBLEMA, JOURNEY, PERSONAS, type PasoJourney } from '../data/usuarios'
+import { EMOCIONES, EMOCION_TXT, ENCUESTA, ENTREVISTAS, FASES, FRASE_PROBLEMA, JOURNEY, PERSONAS, estadoHipotesis, type PasoJourney } from '../data/usuarios'
+import { HIPOTESIS } from '../data/investigacion'
 import { Refs } from '../components/Refs'
 import { iniciales } from '../components/Avatar'
 import { Icon } from '../components/Icon'
@@ -59,6 +60,7 @@ export default function Usuarios() {
       <Personas />
       <Recorrido />
       <Emociones />
+      <Contrastado />
     </>
   )
 }
@@ -196,5 +198,107 @@ function Emociones() {
         ))}
       </div>
     </section>
+  )
+}
+
+/** Resultado de entrevistas y encuesta reales. Solo aparece cuando hay datos en ENTREVISTAS o en ENCUESTA. */
+const TAG = { confirmada: 'ok', 'caída': 'off', 'sin datos': 'warn' } as const
+const mayus = (s: string) => s[0].toUpperCase() + s.slice(1)
+const num = (n: number, uno: string, varios: string) => `${n} ${n === 1 ? uno : varios}`
+
+function Contrastado() {
+  if (ENTREVISTAS.length === 0 && !ENCUESTA) return null
+  return (
+    <section id="contrastado" className="section">
+      <div className="section-head">
+        <div>
+          <h2>Lo que hemos contrastado</h2>
+          <p>Con personas reales, durante el evento. Son muestras pequeñas y de conveniencia: indican, no demuestran. Por eso damos cuentas («N de M»), no porcentajes.</p>
+        </div>
+      </div>
+      <ResultadoEntrevistas />
+      <ResultadoEncuesta />
+    </section>
+  )
+}
+
+function ResultadoEntrevistas() {
+  if (ENTREVISTAS.length === 0) return null
+  const vecinos = ENTREVISTAS.filter((e) => e.tipo === 'vecino').length
+  const turistas = ENTREVISTAS.length - vecinos
+  const hip = HIPOTESIS.map((h) => ({ ...h, r: estadoHipotesis(h.id) })).filter((h) => h.r.n > 0)
+  const cuenta = new Map<string, number>()
+  ENTREVISTAS.forEach((e) => e.emociones.forEach((id) => cuenta.set(id, (cuenta.get(id) ?? 0) + 1)))
+  const emos = [...cuenta.entries()].sort((a, b) => b[1] - a[1])
+  const citas = ENTREVISTAS.filter((e) => e.cita)
+  return (
+    <>
+      <h3 className="us-sub">Entrevistas: {num(ENTREVISTAS.length, 'persona', 'personas')} ({num(vecinos, 'vecino', 'vecinos')} y {num(turistas, 'turista', 'turistas')}), 5 minutos cada una</h3>
+      {hip.length > 0 && (
+        <div className="card us-hip">
+          {hip.map((h) => (
+            <div key={h.id} className="us-hip-fila">
+              <span className="us-hip-id tnum">{h.id}</span>
+              <span className="us-hip-t">{h.texto}</span>
+              <span className="small muted tnum">{h.r.a} a favor · {h.r.c} en contra · de {h.r.n}</span>
+              <span className={`tag ${TAG[h.r.estado]}`}><span className="dot" />{mayus(h.r.estado)}</span>
+            </div>
+          ))}
+        </div>
+      )}
+      {emos.length > 0 && (
+        <>
+          <h4 className="us-sub4">Emociones que más eligieron</h4>
+          <div className="chips">{emos.map(([id, n]) => <span key={id} className="tag">{EMOCIONES.find((e) => e.id === id)?.nombre ?? id} · {n}</span>)}</div>
+        </>
+      )}
+      {citas.length > 0 && (
+        <>
+          <h4 className="us-sub4">Lo que nos dijeron</h4>
+          <div className="grid g2">{citas.map((e) => <blockquote key={e.codigo} className="card us-cita"><p>«{e.cita}»</p><span className="small muted">{e.codigo} · {e.tipo}, zona {e.zona}</span></blockquote>)}</div>
+        </>
+      )}
+    </>
+  )
+}
+
+function ResultadoEncuesta() {
+  const E = ENCUESTA
+  if (!E) return null
+  const partes = [E.vecinos != null && num(E.vecinos, 'vecino', 'vecinos'), E.turistas != null && num(E.turistas, 'turista', 'turistas')].filter(Boolean).join(' y ')
+  const hip = HIPOTESIS.filter((h) => E.hipotesis[h.id]).map((h) => ({ ...h, v: E.hipotesis[h.id]! }))
+  return (
+    <>
+      <h3 className="us-sub">Encuesta a {num(E.respuestas, 'persona', 'personas')} el {E.fecha}{partes ? ` (${partes})` : ''}</h3>
+      <p className="small muted">Formulario anónimo, distinto de las entrevistas. Cada dato dice a cuántas personas se refiere.</p>
+      {E.resultados.length > 0 && (
+        <div className="card us-hip" style={{ marginTop: 10 }}>
+          {E.resultados.map((r, i) => (
+            <div key={i} className="us-enc-fila">
+              <span className="us-hip-t">{r.pregunta}: <b>{r.respuesta}</b>{r.grupo && <span className="muted"> · {r.grupo}</span>}</span>
+              <span className="tnum us-enc-n">{r.n} de {r.de}</span>
+            </div>
+          ))}
+        </div>
+      )}
+      {hip.length > 0 && (
+        <div className="card us-hip" style={{ marginTop: 12 }}>
+          {hip.map((h) => (
+            <div key={h.id} className="us-hip-fila">
+              <span className="us-hip-id tnum">{h.id}</span>
+              <span className="us-hip-t">{h.texto}</span>
+              <span className="small muted">{h.v.apoyo}</span>
+              <span className={`tag ${TAG[h.v.estado]}`}><span className="dot" />{mayus(h.v.estado)}</span>
+            </div>
+          ))}
+        </div>
+      )}
+      {E.citas.length > 0 && (
+        <>
+          <h4 className="us-sub4">Respuestas abiertas</h4>
+          <div className="grid g2">{E.citas.map((c, i) => <blockquote key={i} className="card us-cita"><p>«{c.texto}»</p><span className="small muted">Encuesta · {c.perfil}</span></blockquote>)}</div>
+        </>
+      )}
+    </>
   )
 }

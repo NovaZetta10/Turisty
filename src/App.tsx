@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Route, Routes, useLocation } from 'react-router-dom'
-import { EQUIPO_NOMBRE, EVENTO, REPO_URL, SECCIONES } from './config/proyecto'
+import { EQUIPO_NOMBRE, EVENTO, REPO_URL, RETO, SECCIONES } from './config/proyecto'
 import { Icon } from './components/Icon'
 import { NovaMark } from './components/NovaMark'
 import { Cielo } from './components/Cielo'
@@ -71,7 +71,7 @@ export default function App() {
       </main>
       <footer className="footer no-print">
         <div className="wrap">
-          <span>Equipo {EQUIPO_NOMBRE} · {EVENTO.nombre} · {EVENTO.fecha}</span>
+          <span>Equipo {EQUIPO_NOMBRE} · {EVENTO.nombre} · {EVENTO.fecha}{RETO.definido && <> · Reto propuesto por {RETO.empresa}</>}</span>
           {REPO_URL && <a href={REPO_URL} target="_blank" rel="noreferrer">Código en GitHub</a>}
         </div>
       </footer>

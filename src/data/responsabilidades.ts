@@ -1,10 +1,14 @@
 // Entregable 3 · Mapeo de responsabilidades. Dueño: subagente de usuarios.
-// Es una PROPUESTA del equipo: ningún agente la ha aceptado todavía. Alineada con los supuestos de Negocio
-// y con el plan de acción (src/data/viabilidad.ts). Si cambia el plan, revisa ACCIONES, FLUJOS y COMPETENCIAS.
-// Regla del revisor: el fondo NO depende solo de la administración. Empresas y vivienda vacacional aportan
-// con cuotas anuales; el 10 % de cada reserva de pago y las donaciones también van al fondo. El Cabildo solo suma
-// un 25 % por cada euro privado. Gestiona el Cabildo a través de Turismo de Tenerife; deciden los vecinos.
-// En el piloto los vecinos particulares NO cobran (gratis o con donación); cobran asociaciones, entidades y empresas.
+// Es una PROPUESTA del equipo: ningún agente la ha aceptado todavía. Alineada con el plan de acción
+// (src/data/viabilidad.ts). Si cambia el plan, revisa ACCIONES, FLUJOS y COMPETENCIAS.
+// Reglas acordadas:
+// - El fondo NO depende solo de la administración: empresas y vivienda vacacional pagan cuotas anuales; el 10 % de
+//   cada reserva de pago y las donaciones también van al fondo. El Cabildo solo suma un 25 % por cada euro privado.
+// - El fondo lo gestiona el CABILDO (una cuenta por municipio). Deciden los vecinos; el ayuntamiento comprueba y ejecuta.
+// - Turismo de Tenerife promociona y gestiona el destino: coordina el programa, da la garantía, promociona y publica.
+//   No gestiona dinero ni obras. Los dinamizadores los contrata el Cabildo con los ayuntamientos.
+//   Las encuestas de percepción las hace el ISTAC o una universidad.
+// - En el piloto los vecinos particulares NO cobran (gratis o con donación); cobran asociaciones, entidades y empresas.
 
 export type Piedra = 'vecinos' | 'visitantes' | 'instituciones'
 
@@ -25,29 +29,29 @@ export type Agente = {
 }
 
 export const PIEDRAS: { id: Piedra; nombre: string; texto: string }[] = [
-  { id: 'vecinos', nombre: 'Vecinos', texto: 'Ofrecen lo suyo, avalan las experiencias de su barrio y deciden en qué se gasta el fondo de su barrio.' },
-  { id: 'visitantes', nombre: 'Visitantes', texto: 'Los turistas y quienes los alojan: participan, difunden y aportan al fondo de forma sistemática.' },
-  { id: 'instituciones', nombre: 'Instituciones', texto: 'Dan el marco: validan, coordinan y custodian el fondo, abren puntos físicos y rinden cuentas.' },
+  { id: 'vecinos', nombre: 'Vecinos', texto: 'Ponen su tiempo y lo suyo, avalan las experiencias de su barrio y deciden en qué se gasta el fondo.' },
+  { id: 'visitantes', nombre: 'Visitantes y sector turístico', texto: 'Los turistas y quienes viven de recibirlos: empresas turísticas y vivienda vacacional. Van juntos porque el turismo les beneficia directamente: participan, difunden y pagan al fondo de forma sistemática.' },
+  { id: 'instituciones', nombre: 'Instituciones', texto: 'Dan el marco: el Cabildo gestiona el fondo, Turismo de Tenerife coordina y garantiza, los ayuntamientos abren el punto físico y ejecutan, y una entidad independiente mide.' },
 ]
 
 export const AGENTES: Agente[] = [
   {
     id: 'tdt', nombre: 'Turismo de Tenerife', corto: 'Turismo de Tenerife', icono: 'star', piedra: 'instituciones',
-    aporta: ['Validación de cada experiencia', 'Coordinación diaria del programa y gestión de la app', 'Gestión del fondo por encargo del Cabildo, con una cuenta por municipio', 'Publicación de cada proyecto pagado: cartel en la calle, app e informe trimestral', 'Dinamizadores de barrio contratados por Turismo de Tenerife, uno por municipio, que captan y forman anfitriones desde el punto físico', 'Encuestas de convivencia'],
+    aporta: ['Coordinación del programa y gestión de la app', '«Garantía Turismo de Tenerife»: comprueba cada experiencia', 'Promoción de Tenique entre visitantes y residentes', 'Publicación de cada proyecto pagado: cartel en la calle, app e informe trimestral'],
     recibe: ['Un producto turístico diferencial y de toda la isla', 'Datos de convivencia para su estrategia', 'Mejor imagen del destino entre residentes'],
-    decide: ['«Garantía Turismo de Tenerife»: si cada experiencia cumple sus condiciones', 'Normas de calidad y seguridad del programa'],
+    decide: ['Si cada experiencia cumple sus condiciones', 'Normas de calidad y seguridad del programa'],
     coordina: ['cabildo', 'ayto', 'empresas', 'local'],
   },
   {
     id: 'cabildo', nombre: 'Cabildo de Tenerife', corto: 'Cabildo', icono: 'globe', piedra: 'instituciones',
-    aporta: ['Convenio que crea el programa y el fondo', 'Titularidad del fondo, gestionado a través de Turismo de Tenerife', 'Un 25 % más por cada euro privado que entra al fondo (nunca la mayor parte)', 'Convenio de cuotas con patronales y asociaciones de vivienda vacacional', 'Figura jurídica, datos abiertos y expansión a nuevos municipios'],
+    aporta: ['Convenio que crea el programa y el fondo', 'Gestión del fondo, con una cuenta por municipio, y rendición de cuentas', 'Un 25 % más por cada euro privado que entra al fondo (nunca la mayor parte)', 'Dinamizadores de barrio, contratados con los ayuntamientos', 'Convenio de cuotas con patronales y asociaciones de vivienda vacacional', 'Figura jurídica, datos abiertos y expansión a nuevos municipios'],
     recibe: ['Una herramienta de corresponsabilidad medible', 'Retorno visible del turismo en los barrios', 'Indicadores de convivencia por municipio'],
     decide: ['Figura jurídica y reglas del fondo', 'Ritmo de entrada de municipios'],
     coordina: ['tdt', 'ayto', 'empresas', 'evaluador'],
   },
   {
     id: 'ayto', nombre: 'Ayuntamientos', corto: 'Ayuntamientos', icono: 'home', piedra: 'instituciones',
-    aporta: ['Punto físico cedido, para quien no usa el móvil y como base del dinamizador', 'Organización de la votación del fondo, en papel y en la app', 'Comprobación de que cada proyecto votado se puede hacer', 'Ejecución de los proyectos votados'],
+    aporta: ['Punto físico cedido, para quien no usa el móvil y como base del dinamizador', 'Dinamizador de barrio, contratado con el Cabildo', 'Organización de la votación del fondo, en papel y en la app', 'Comprobación de que cada proyecto votado se puede hacer', 'Ejecución de los proyectos votados'],
     recibe: ['Proyectos de barrio pagados por el fondo', 'Vecinos implicados en el turismo de su municipio'],
     decide: ['Si un proyecto votado se puede hacer', 'Dónde va el punto físico'],
     coordina: ['cabildo', 'tdt', 'local'],
@@ -68,9 +72,9 @@ export const AGENTES: Agente[] = [
   },
   {
     id: 'local', nombre: 'Vecinos y asociaciones vecinales', corto: 'Vecinos y asociaciones', icono: 'heart', piedra: 'vecinos',
-    aporta: ['Experiencias reales: en el piloto, gratis o con donación al fondo si las ofrece un vecino particular; las asociaciones pueden cobrar', '«Avalada por el barrio»: el aval de la asociación vecinal o de los vecinos, que pueden retirarlo', 'Participación', 'Votos en los presupuestos participativos del fondo'],
+    aporta: ['Tiempo, como anfitrión (en el piloto, gratis o con donación) o como voluntario', '«Avalada por el barrio»: el aval de la asociación vecinal o de los vecinos, que pueden retirarlo', 'Voto en los presupuestos participativos del fondo', 'Precio de residente, simbólico, en las experiencias de pago; o tiempo, si no puede pagar', 'Valoración de las experiencias a las que asiste'],
     recibe: ['Fondo del barrio con uso visible, que deciden ellos', 'Voz y reconocimiento', 'Ingreso para las asociaciones desde el piloto; para vecinos particulares, en la expansión si el informe jurídico lo permite'],
-    decide: ['En qué se gasta el fondo de su barrio', 'Qué experiencias avalan y cuándo retiran el aval', 'Si participa, como anfitrión o como asistente'],
+    decide: ['En qué se gasta el fondo de su barrio', 'Qué experiencias avalan y cuándo retiran el aval', 'Si participa, como anfitrión, voluntario o asistente'],
     coordina: ['ayto', 'tdt', 'comercio', 'vv'],
   },
   {
@@ -82,14 +86,14 @@ export const AGENTES: Agente[] = [
   },
   {
     id: 'turistas', nombre: 'Turistas', corto: 'Turistas', icono: 'search', piedra: 'visitantes',
-    aporta: ['El 10 % de cada reserva de pago, que va al fondo', 'Donaciones en las experiencias gratuitas, que van enteras al fondo', 'Su presencia como invitado, no como cliente', '«Valorada por quien la vivió»: su puntuación después de asistir'],
+    aporta: ['El 10 % de cada reserva de pago, que va al fondo', 'Donaciones en las experiencias gratuitas, que van enteras al fondo', 'Su presencia como invitado, no como cliente', 'Valoración de las experiencias a las que asiste'],
     recibe: ['Experiencias auténticas con gente de la isla', 'Saber qué ha dejado su viaje en el barrio'],
     decide: ['Qué experiencia elige y cómo se comporta'],
     coordina: ['local', 'empresas', 'vv'],
   },
   {
-    id: 'evaluador', nombre: 'Universidad o entidad independiente', corto: 'Evaluación externa', icono: 'check', piedra: 'instituciones',
-    aporta: ['Evaluación externa del programa y de la convivencia', 'Método de medición que no depende de quien gestiona'],
+    id: 'evaluador', nombre: 'ISTAC o universidad', corto: 'ISTAC o universidad', icono: 'check', piedra: 'instituciones',
+    aporta: ['Encuestas de percepción de la convivencia', 'Evaluación externa del programa', 'Método de medición que no depende de quien gestiona'],
     recibe: ['Datos del programa para investigar'],
     decide: ['Su método y sus conclusiones'],
     coordina: ['cabildo', 'tdt'],
@@ -109,26 +113,27 @@ export type Accion = { accion: string; desde: Etapa; papeles: Partial<Record<Age
 
 /** Matriz agente × acción. Mismo orden que el plan de acción. `desde`: etapa en la que empieza. */
 export const ACCIONES: Accion[] = [
-  { accion: 'Firmar el convenio que crea el programa y el fondo', desde: ETAPAS[0], papeles: { cabildo: 'A', tdt: 'R', ayto: 'C', empresas: 'C', local: 'I' } },
+  { accion: 'Firmar el convenio que crea el programa y el fondo', desde: ETAPAS[0], papeles: { cabildo: 'A/R', tdt: 'C', ayto: 'C', empresas: 'C', local: 'I' } },
   { accion: 'Fijar las cuotas de empresas y de vivienda vacacional (convenio)', desde: ETAPAS[0], papeles: { cabildo: 'A', empresas: 'R', vv: 'R', tdt: 'C', ayto: 'I' } },
   { accion: 'Elegir los municipios del piloto', desde: ETAPAS[0], papeles: { cabildo: 'A', ayto: 'R', tdt: 'C', local: 'C' } },
-  { accion: 'Captar y formar anfitriones (dinamizador de barrio)', desde: ETAPAS[0], papeles: { tdt: 'A/R', local: 'C', ayto: 'I', comercio: 'C' } },
-  { accion: 'Validar experiencias (triple validación: garantía, aval del barrio y valoración)', desde: ETAPAS[1], papeles: { tdt: 'A/R', local: 'R', turistas: 'R', ayto: 'I' } },
+  { accion: 'Contratar a los dinamizadores de barrio', desde: ETAPAS[0], papeles: { cabildo: 'A/R', ayto: 'R', tdt: 'I' } },
+  { accion: 'Captar y formar anfitriones (dinamizador de barrio)', desde: ETAPAS[0], papeles: { cabildo: 'A', ayto: 'R', tdt: 'C', local: 'C', comercio: 'C' } },
+  { accion: 'Validar experiencias (triple validación: garantía, aval del barrio y valoración de quien asistió)', desde: ETAPAS[1], papeles: { tdt: 'A/R', local: 'R', turistas: 'R', ayto: 'I' } },
   { accion: 'Ofrecer experiencias (vecinos particulares: gratis o con donación en el piloto)', desde: ETAPAS[1], papeles: { local: 'R', comercio: 'R', empresas: 'R', tdt: 'A' } },
   { accion: 'Abrir y atender los puntos físicos', desde: ETAPAS[1], papeles: { ayto: 'A/R', tdt: 'C', local: 'I' } },
-  { accion: 'Difundir Tenique entre los visitantes', desde: ETAPAS[1], papeles: { tdt: 'A/R', empresas: 'R', vv: 'R', turistas: 'I' } },
-  { accion: 'Reservar y participar', desde: ETAPAS[1], papeles: { turistas: 'R', local: 'R', tdt: 'A' } },
-  { accion: 'Pagar las cuotas anuales al fondo', desde: ETAPAS[1], papeles: { empresas: 'R', vv: 'R', cabildo: 'A', tdt: 'I', local: 'I' } },
-  { accion: 'Aportar el 10 % de cada reserva y las donaciones', desde: ETAPAS[1], papeles: { turistas: 'R', tdt: 'A', local: 'I' } },
-  { accion: 'Sumar un 25 % por cada euro privado', desde: ETAPAS[1], papeles: { cabildo: 'A/R', tdt: 'I' } },
-  { accion: 'Gestionar el fondo (una cuenta por municipio)', desde: ETAPAS[1], papeles: { cabildo: 'A', tdt: 'R', ayto: 'I' } },
-  { accion: 'Organizar la votación del fondo (app y papel)', desde: ETAPAS[1], papeles: { ayto: 'A/R', tdt: 'C', local: 'I' } },
-  { accion: 'Decidir en qué se gasta el fondo (presupuestos participativos)', desde: ETAPAS[1], papeles: { local: 'A/R', ayto: 'C', tdt: 'I', empresas: 'I', vv: 'I', turistas: 'I' } },
+  { accion: 'Promocionar Tenique entre visitantes y residentes', desde: ETAPAS[1], papeles: { tdt: 'A/R', empresas: 'R', vv: 'R', ayto: 'C', turistas: 'I', local: 'I' } },
+  { accion: 'Reservar y participar (residentes a precio simbólico o con tiempo)', desde: ETAPAS[1], papeles: { turistas: 'R', local: 'R', tdt: 'A' } },
+  { accion: 'Pagar las cuotas anuales al fondo', desde: ETAPAS[1], papeles: { empresas: 'R', vv: 'R', cabildo: 'A', local: 'I' } },
+  { accion: 'Aportar el 10 % de cada reserva y las donaciones', desde: ETAPAS[1], papeles: { turistas: 'R', local: 'R', cabildo: 'A' } },
+  { accion: 'Sumar un 25 % por cada euro privado', desde: ETAPAS[1], papeles: { cabildo: 'A/R' } },
+  { accion: 'Gestionar el fondo (una cuenta por municipio)', desde: ETAPAS[1], papeles: { cabildo: 'A/R', ayto: 'I', tdt: 'I' } },
+  { accion: 'Organizar la votación del fondo (app y papel)', desde: ETAPAS[1], papeles: { ayto: 'A/R', cabildo: 'C', local: 'I' } },
+  { accion: 'Decidir en qué se gasta el fondo (presupuestos participativos)', desde: ETAPAS[1], papeles: { local: 'A/R', ayto: 'C', cabildo: 'I', empresas: 'I', vv: 'I', turistas: 'I' } },
   { accion: 'Comprobar que el proyecto se puede hacer y ejecutarlo', desde: ETAPAS[1], papeles: { ayto: 'A/R', cabildo: 'I', local: 'I' } },
-  { accion: 'Publicar cada proyecto: cartel, app e informe trimestral', desde: ETAPAS[1], papeles: { tdt: 'R', cabildo: 'A', ayto: 'C', local: 'I', turistas: 'I', empresas: 'I', vv: 'I' } },
-  { accion: 'Medir la convivencia (encuestas e informes)', desde: ETAPAS[1], papeles: { tdt: 'R', cabildo: 'A', local: 'C', ayto: 'C' } },
+  { accion: 'Publicar cada proyecto: cartel, app e informe trimestral', desde: ETAPAS[1], papeles: { tdt: 'A/R', cabildo: 'C', ayto: 'C', local: 'I', turistas: 'I', empresas: 'I', vv: 'I' } },
+  { accion: 'Medir la convivencia (encuestas de percepción)', desde: ETAPAS[1], papeles: { evaluador: 'R', cabildo: 'A', tdt: 'C', local: 'C', ayto: 'C' } },
   { accion: 'Publicar los datos del programa como datos abiertos', desde: ETAPAS[2], papeles: { cabildo: 'A/R', tdt: 'C' } },
-  { accion: 'Abrir el cobro a vecinos anfitriones, si el informe jurídico lo permite', desde: ETAPAS[2], papeles: { cabildo: 'A', tdt: 'R', local: 'C' } },
+  { accion: 'Abrir el cobro a vecinos anfitriones, si el informe jurídico lo permite', desde: ETAPAS[2], papeles: { cabildo: 'A/R', tdt: 'C', local: 'C' } },
   { accion: 'Ampliar a nuevos municipios', desde: ETAPAS[2], papeles: { cabildo: 'A/R', ayto: 'C', tdt: 'C', local: 'I' } },
   { accion: 'Evaluar el programa de forma independiente', desde: ETAPAS[2], papeles: { evaluador: 'R', cabildo: 'A', tdt: 'C', local: 'C' } },
 ]
@@ -139,29 +144,30 @@ export type Flujo = { de: string; a: string; que: string; tipo: 'dinero' | 'expe
 export const FLUJOS: Flujo[] = [
   { de: 'Empresas turísticas', a: 'Fondo del barrio', que: 'Cuota anual por tramos, fijada en el convenio', tipo: 'dinero' },
   { de: 'Vivienda vacacional', a: 'Fondo del barrio', que: 'Cuota anual por vivienda adherida (supuesto: 50 € al año), fijada en el convenio', tipo: 'dinero' },
-  { de: 'Turistas', a: 'Fondo del barrio', que: 'El 10 % de cada reserva de pago y las donaciones de las experiencias gratuitas', tipo: 'dinero' },
-  { de: 'Cabildo', a: 'Fondo del barrio', que: 'Un 25 % más por cada euro privado (nunca la mayor parte)', tipo: 'dinero' },
+  { de: 'Quien reserva', a: 'Fondo del barrio', que: 'El 10 % de cada reserva de pago y las donaciones de las experiencias gratuitas', tipo: 'dinero' },
+  { de: 'Cabildo', a: 'Fondo del barrio', que: 'Un 25 % más por cada euro privado (nunca la mayor parte). Lo gestiona, con una cuenta por municipio', tipo: 'dinero' },
   { de: 'Turistas', a: 'Asociaciones, entidades y empresas', que: 'Pago por la experiencia (en el piloto, los vecinos particulares no cobran)', tipo: 'dinero' },
   { de: 'Anfitriones y comercio', a: 'Turistas y vecinos', que: 'Experiencias reales compartidas', tipo: 'experiencia' },
   { de: 'Asociaciones vecinales', a: 'Turismo de Tenerife', que: 'Aval del barrio a cada experiencia (y su retirada)', tipo: 'decision' },
-  { de: 'Turistas', a: 'Turismo de Tenerife', que: 'Valoración de la experiencia que vivieron', tipo: 'decision' },
+  { de: 'Quien asistió (vecinos y visitantes)', a: 'Turismo de Tenerife', que: 'Valoración de la experiencia', tipo: 'decision' },
   { de: 'Vecinos', a: 'Ayuntamiento', que: 'Voto del uso del fondo', tipo: 'decision' },
   { de: 'Ayuntamiento', a: 'Barrio', que: 'Proyecto pagado por el fondo, señalizado en la calle', tipo: 'experiencia' },
   { de: 'Turismo de Tenerife', a: 'Todos', que: 'Cada proyecto, en un cartel en la calle, en la app y en el informe trimestral', tipo: 'informacion' },
+  { de: 'ISTAC o universidad', a: 'Todos', que: 'Encuesta de percepción de la convivencia', tipo: 'informacion' },
 ]
 
 /** Triple validación: cada experiencia se sostiene sobre tres piedras. Decisión del equipo (Esther). */
 export const VALIDACION: { sello: string; quien: string; que: string }[] = [
   { sello: 'Garantía Turismo de Tenerife', quien: 'Turismo de Tenerife', que: 'Comprueba que la experiencia cumple sus condiciones.' },
   { sello: 'Avalada por el barrio', quien: 'Asociación vecinal o vecinos', que: 'Avalan que es real y de aquí. Pueden retirar el aval.' },
-  { sello: 'Valorada por quien la vivió', quien: 'Turistas que asistieron', que: 'Puntúan después de vivirla.' },
+  { sello: 'Valorada por quien la vivió', quien: 'Todas las personas que asistieron, vecinos y visitantes', que: 'Puntúan después de vivirla.' },
 ]
 
 export const FLUJO_TXT: Record<Flujo['tipo'], string> = { dinero: 'Dinero', experiencia: 'Experiencia', decision: 'Decisión', informacion: 'Información' }
 
 /**
  * Causas que Tenique NO resuelve y quién tiene la competencia. Deben coincidir con el Diagnóstico.
- * Verificado por Investigación (BOE, BOC y prensa): vivienda 11, 71, 74; movilidad 72, 73; saneamiento 73, 80, 81 (el papel del Consejo Insular de Aguas, por verificar).
+ * Verificado por Investigación (BOE, BOC y prensa): vivienda 11, 71, 74; movilidad 72, 73; saneamiento 73, 80, 81, 85.
  */
 export type Competencia = { tema: string; quien: string; que: string; tenique: string; fuentes: number[]; verificado: boolean }
 
@@ -184,10 +190,10 @@ export const COMPETENCIAS: Competencia[] = [
   },
   {
     tema: 'Saneamiento y vertidos',
-    quien: 'Ayuntamientos, Gobierno de Canarias y Cabildo (Consejo Insular de Aguas)',
-    que: 'Ayuntamientos: evacuación y tratamiento de aguas residuales (Ley 7/1985, art. 25.2 c). Gobierno de Canarias: censo y autorización de vertidos. Cabildo, a través del Consejo Insular de Aguas: planificación (por verificar). En 2026 Sanidad recomendó once cierres de baño en Tenerife, tres de ellos en Playa Jardín.',
+    quien: 'Ayuntamientos, Gobierno de Canarias y Consejo Insular de Aguas de Tenerife',
+    que: 'Ayuntamientos: evacuación y tratamiento de aguas residuales (Ley 7/1985, art. 25.2 c). Gobierno de Canarias: censo y autorización de vertidos. Consejo Insular de Aguas de Tenerife: planificación hidrológica insular (Ley 12/1990 de Aguas de Canarias, arts. 9.1 y 40.1). En 2026 Sanidad recomendó once cierres de baño en Tenerife, tres de ellos en Playa Jardín.',
     tenique: 'No lo resuelve. Traslada a quien decide lo que cuentan vecinos y visitantes. El fondo no paga obras de saneamiento, que corresponden a estas administraciones.',
-    fuentes: [73, 80, 81],
-    verificado: false,
+    fuentes: [73, 80, 85, 81],
+    verificado: true,
   },
 ]

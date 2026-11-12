@@ -139,3 +139,80 @@ export const EMOCIONES: EmocionBusqueda[] = [
 
 /** Frase-problema propuesta para la diapositiva «El problema». Hipótesis hasta las entrevistas. */
 export const FRASE_PROBLEMA = 'Quien vive en una zona turística de Tenerife convive cada día con el turismo, pero no siente que le pertenezca: ve el coste en su barrio y no ve el retorno. Y el visitante que quiere conocer la isla de verdad no encuentra cómo acercarse a ella.'
+
+// ─── Entrevistas reales ────────────────────────────────────────────────────────
+// Vuelca aquí cada entrevista hecha con el guion (docs/usuarios-guion-tenique.md), una por persona.
+// Pasos y reglas en docs/usuarios-volcado.md. Sin nombres ni datos personales: solo el código.
+// En cuanto haya una, la sección «Lo que hemos contrastado» aparece sola dentro de Diagnóstico.
+
+/** + apoya la hipótesis · − la contradice. Si el tema no salió, no pongas la clave. */
+export type Senal = '+' | '-'
+
+export type Entrevista = {
+  /** V01, V02… vecinos · T01, T02… turistas. */
+  codigo: string
+  tipo: 'vecino' | 'turista'
+  zona: 'turística' | 'rural' | 'otra'
+  edad: '<30' | '30-60' | '>60'
+  /** Señal por hipótesis, con los ids de HIPOTESIS (src/data/investigacion.ts): { H1: '+', H3: '-' }. */
+  hipotesis: Partial<Record<string, Senal>>
+  /** Las dos emociones elegidas en V7/T5, con el id de EMOCIONES (pertenencia, sabor…). */
+  emociones: string[]
+  /** Emoción que dijo que faltaba, tal cual. */
+  falta?: string
+  /** Frase literal. Solo si dio permiso para citarla (sin nombre). */
+  cita?: string
+  /** T6: precio que dijo, tal cual («20 €»). Para Negocio. */
+  precio?: string
+}
+
+export const ENTREVISTAS: Entrevista[] = []
+
+/**
+ * Regla del equipo, fijada antes de entrevistar: con 3 o más entrevistas en las que salió el tema,
+ * «confirmada» si al menos la mitad la apoya, «caída» si al menos la mitad la contradice; si no, «sin datos».
+ */
+export function estadoHipotesis(id: string): { a: number; c: number; n: number; estado: 'confirmada' | 'caída' | 'sin datos' } {
+  const senales = ENTREVISTAS.map((e) => e.hipotesis[id]).filter((s): s is Senal => !!s)
+  const a = senales.filter((s) => s === '+').length
+  const c = senales.length - a
+  const n = senales.length
+  const estado = n < 3 ? 'sin datos' : a >= n / 2 && a > c ? 'confirmada' : c >= n / 2 && c > a ? 'caída' : 'sin datos'
+  return { a, c, n, estado }
+}
+
+// ─── Encuesta (formulario) ─────────────────────────────────────────────────────
+// Una encuesta NO es una entrevista: se muestra aparte y como «encuesta a N personas el {fecha}».
+// Pasos en docs/usuarios-volcado.md (apartado «Encuesta»). Nunca copies nombres, correos ni teléfonos.
+// Resúmela con: node scripts/encuesta.mjs ruta/al/archivo.csv   (el CSV se queda FUERA del repositorio).
+
+export type ResultadoEncuesta = {
+  /** Pregunta, resumida. */
+  pregunta: string
+  /** Respuesta que se cuenta («Sí», «Vivienda», «4 o 5 sobre 5»…). */
+  respuesta: string
+  /** Cuántos dieron esa respuesta, de cuántos respondieron a esa pregunta en ese grupo. */
+  n: number
+  de: number
+  /** Grupo, si la encuesta permite separar: «vecinos», «turistas», «vecinos · zona rural»… */
+  grupo?: string
+  /** Hipótesis que mide (ids de HIPOTESIS). */
+  hipotesis?: string[]
+}
+
+export type Encuesta = {
+  /** dd-mm-aaaa */
+  fecha: string
+  /** Personas que respondieron. */
+  respuestas: number
+  vecinos?: number
+  turistas?: number
+  resultados: ResultadoEncuesta[]
+  /** Veredicto del equipo por hipótesis, con la misma regla que las entrevistas. `apoyo`: la cuenta que lo justifica. */
+  hipotesis: Partial<Record<string, { estado: 'confirmada' | 'caída' | 'sin datos'; apoyo: string }>>
+  /** Citas literales de respuestas abiertas, sin nada que identifique a la persona. */
+  citas: { texto: string; perfil: string }[]
+}
+
+/** null hasta que el equipo pase los resultados. */
+export const ENCUESTA: Encuesta | null = null

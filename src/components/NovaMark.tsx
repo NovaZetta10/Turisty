@@ -1,12 +1,12 @@
-/** El destello de nova: estrella de cuatro puntas con núcleo caliente. */
+/** El destello de nova: estrella de cuatro puntas con núcleo rojo, guiño al sol rojo del logo de Turismo de Tenerife. */
 export function NovaMark({ size = 22, className = 'nova-mark' }: { size?: number | string; className?: string }) {
   return (
     <svg className={className} width={size} height={size} viewBox="0 0 48 48" aria-hidden="true">
       <defs>
         <radialGradient id="nm-core" cx="50%" cy="50%" r="50%">
           <stop offset="0" stopColor="#fff" />
-          <stop offset=".35" stopColor="#ffe3a3" />
-          <stop offset="1" stopColor="#ffb35c" />
+          <stop offset=".35" stopColor="#ff6b70" />
+          <stop offset="1" stopColor="#e20612" />
         </radialGradient>
       </defs>
       <path d="M24 2c1.2 11.5 3.5 18.8 22 22-18.5 3.2-20.8 10.5-22 22-1.2-11.5-3.5-18.8-22-22C20.5 20.8 22.8 13.5 24 2z" fill="url(#nm-core)" />

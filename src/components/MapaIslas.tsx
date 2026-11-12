@@ -16,7 +16,7 @@ const METRICAS: { k: Clave; t: string; fmt: (v: number) => string }[] = [
 ]
 
 // rampa secuencial de un solo tono (ámbar nova): oscuro = poco, brillante = mucho
-const RAMPA = ['#4a3c22', '#7a5f2a', '#ad7f31', '#dca548', '#ffd27a']
+const RAMPA = ['#2a2f5c', '#5a2a5e', '#8c1e4a', '#c0102e', '#ff6b70'] // marino → rojo de marca: más rojo = más presión
 const hex = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16))
 function color(t: number) {
   const x = Math.max(0, Math.min(1, t)) * (RAMPA.length - 1)
@@ -46,7 +46,7 @@ export function MapaIslas() {
           <svg viewBox={MAPA_VIEWBOX} role="img" aria-label={`Mapa de Canarias coloreado por ${met.t.toLowerCase()}`}>
             <defs>
               <pattern id="sin-dato" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                <rect width="6" height="6" fill="#141d3a" /><line x1="0" y1="0" x2="0" y2="6" stroke="#3a456b" strokeWidth="2" />
+                <rect width="6" height="6" fill="#1c2552" /><line x1="0" y1="0" x2="0" y2="6" stroke="#3a456b" strokeWidth="2" />
               </pattern>
             </defs>
             {ISLAS.map((i) => {

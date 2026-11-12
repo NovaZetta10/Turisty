@@ -3,11 +3,11 @@
 Reto 1 de Turismo de Tenerife: «¿Cómo podríamos convertir la relación entre población local y turistas en una convivencia que sea, para ambos, identidad, bienestar y orgullo compartido?».
 Las diapositivas están en `src/data/presentacion.ts` y se presentan en la pestaña *Presentación*.
 
-Las diapositivas ya no tienen nada entre [corchetes]. Lo que queda entre corchetes en este guion solo se dice si llega el dato verificado; si no llega, la frase se omite.
+Las diapositivas ya no tienen nada entre [corchetes]. En el guion solo queda una respuesta pendiente de Prototipo (qué es simulado en la demo).
 
 ## Idea que tiene que quedar
 
-Un fogón no se sostiene con una piedra ni con dos. Una experiencia solo entra en Tenique si la avalan quien la regula, quien vive al lado y quien la ha vivido. Tenerife se cocina entre todos.
+Un fogón no se sostiene con una piedra ni con dos. Una experiencia solo entra en Tenique si la avalan quien cuida el destino, quien vive al lado y quien la ha vivido. Lo pagan sobre todo quienes viven del turismo; deciden los vecinos; se prueba 6 meses en 3 municipios y se cambia lo que no funcione. Tenerife se cocina entre todos.
 
 Los tres ejes del reto tienen que oírse con estas palabras:
 - **Acción compartida**: experiencias entre vecinos y visitantes.
@@ -15,6 +15,8 @@ Los tres ejes del reto tienen que oírse con estas palabras:
 - **Relato**: el fogón.
 
 ## Reglas de contenido
+- Turismo de Tenerife no regula: es «quien cuida el destino».
+- «Valorada por quien la vivió» son todas las personas que asistieron, vecinos y visitantes.
 - Tenique no se cuenta como «una app». Es un programa con anfitriones y mediadores, puntos físicos y app.
 - Vivienda y movilidad: una sola frase honesta. Tenique no las resuelve y decimos de quién son: vivienda, Gobierno de Canarias y ayuntamientos; movilidad, Cabildo, ayuntamientos y Gobierno de Canarias (verificado en Responsabilidades, fuentes 71–74).
 - La frase-problema (`FRASE_PROBLEMA` de `src/data/usuarios.ts`) es una **hipótesis** hasta que haya entrevistas, y se dice como hipótesis.
@@ -25,6 +27,7 @@ Los tres ejes del reto tienen que oírse con estas palabras:
 - Vertidos y playas cerradas: no están en las diapositivas, que no tienen tiempo para ellos. Solo se responden si el jurado pregunta (pregunta 17 de `docs/pitch-preguntas.md`), con las dos partes y diciendo de quién es: ayuntamientos, Gobierno de Canarias y Consejo Insular de Aguas.
 - Hablamos su idioma: «experiencias», «despierta emociones», «producto local». Sus campañas van casi todas al visitante y ninguna trata la convivencia ni lo que el turismo devuelve (`docs/investigacion-campanas.md`). Tenique no compite con ellas: completa lo que no cuentan.
 - «Tenerife es tuya» (Cabildo, desde 2020, unos 2.500 participantes; fuente 84, comprobada en la web el 12-11-2026) es el antecedente. Tenique es su paso siguiente. La cifra solo se da si preguntan.
+- REGENERATe (Cabildo a través de Turismo de Tenerife, desde 2024; fuente 86, comprobada en la web el 12-11-2026) es el otro antecedente. No cabe en los 5 minutos: va en la respuesta a «¿no es otra campaña?» (pregunta 3).
 - La marca se escribe «Tenerife! despierta emociones», con exclamación tras «Tenerife». Sigue en uso en 2026: la usa Turismo de Tenerife en su blog corporativo, 09-09-2026 (fuente 75). Frase de enlace: «Vuestra marca despierta emociones; Tenique las hace compartidas».
 
 ## Reparto de tiempos
@@ -93,26 +96,28 @@ Reglas:
 - Cifras: ISTAC, ECOSOC (FUENTES 49, 50 y 51 de `investigacion.ts`). Las competencias, de Responsabilidades (fuentes 71–74). La de las experiencias es la observación del catálogo.
 
 ### 6 · Tenique (1:30) · Marcelo
-- Diapositiva: «Un fogón no se sostiene con una piedra ni con dos. Tenerife se cocina entre todos». Debajo, la regla de entrada. Tres columnas: Garantía Turismo de Tenerife, Avalada por el barrio y Valorada por quien la vivió.
+- Diapositiva: «Un fogón no se sostiene con una piedra ni con dos». Debajo, la regla de entrada y cómo se paga y se prueba. Tres columnas: Garantía Turismo de Tenerife, Avalada por el barrio y Valorada por quien la vivió. Al pie, el lema y la definición de tenique.
 - Se dice:
-  1. «En Canarias, un tenique es cada una de las tres piedras del fogón. Con una no se cocina. Con dos, tampoco». (15 s)
-  2. «Por eso una experiencia solo entra en Tenique si la avalan tres: quien la regula, que es Turismo de Tenerife; quien vive al lado, que es el barrio; y quien la ha vivido, que la puntúa después». (25 s)
-  3. «Tenique es el paso siguiente a *Tenerife es tuya*: del residente que redescubre su isla al residente que la comparte con quien viene. No es publicidad ni una app. Son anfitriones y mediadores que juntan a vecinos y visitantes; puntos físicos en oficinas de turismo, centros ciudadanos y ayuntamientos, para quien no usa el móvil; y la app que estáis tocando. Esto es **acción compartida**». (25 s)
-  4. «Un ejemplo real: la Fiesta del Cacharro y la Castaña, el 29 de noviembre en el Puerto de la Cruz. Hoy es una fiesta de vecinos. Con Tenique, un vecino puede ser anfitrión de quien viene a vivirla». (15 s)
-  5. «Y Tenique enseña **qué deja el turismo en tu barrio**: esos son los datos. El **relato** es este fogón». (10 s)
+  1. «En Canarias, un tenique es cada una de las tres piedras del fogón. Con una no se cocina. Con dos, tampoco». (12 s)
+  2. «Por eso una experiencia solo entra en Tenique si la avalan tres: quien cuida el destino, que es Turismo de Tenerife; quien vive al lado, que es el barrio; y quien la ha vivido: todas las personas que asistieron, vecinos y visitantes, la puntúan después». (20 s)
+  3. «Es el paso siguiente a *Tenerife es tuya*: del residente que redescubre su isla al que la comparte con quien viene. No es publicidad ni una app: son anfitriones y mediadores, puntos físicos para quien no usa el móvil y la app que estáis tocando. Esto es **acción compartida**». (25 s)
+  4. «Un ejemplo real: la Fiesta del Cacharro y la Castaña, el 29 de noviembre en el Puerto de la Cruz. Con Tenique, un vecino puede ser anfitrión de quien viene a vivirla». (10 s)
+  5. «Lo pagan sobre todo quienes viven del turismo, y los vecinos deciden en qué se gasta el fondo de su barrio. Se prueba 6 meses en 3 municipios, se mide y se cambia lo que no funcione». (15 s)
+  6. «Y enseña **qué deja el turismo en tu barrio**: esos son los datos. El **relato** es este fogón». (8 s)
 - Remate, despacio: «Tenerife se cocina entre todos».
+- Frase 5: es lo que pidió Turismo de Tenerife al presentar el reto: probar, medir y cambiar, con los afectados decidiendo. Datos del plan de acción (`viabilidad.ts`: piloto de 6 meses en 3 municipios, uno turístico, uno rural y uno metropolitano).
 - Fuente del ejemplo: Hola Islas Canarias (turismo oficial de Canarias), ficha «Fiestas del cacharro y la castaña», consultada el 12-11-2026 (`cacharros-puerto-de-la-cruz` en `experiencias.ts`, verificada).
 
 ### 7 · Acción · entregables (0:50) · Giulia
-- Diapositiva: QR a la web y los `DESTACADOS` con su motivo.
-- Se dice: «Todo está en esta web: el diagnóstico, el plan de acción y el mapeo de responsabilidades. Si tenéis cinco minutos, empezad por [destacado 1], porque [motivo]».
-- Siguiente paso: «[Piloto: dónde, cuándo y con quién, del plan de acción]».
-- Última frase, memorizada y sin muletillas: «Tenerife se cocina entre todos. Gracias».
+- Diapositiva: QR a la web y los tres `DESTACADOS` con su motivo: Tenique, Diagnóstico y Plan de acción.
+- Se dice: «Todo está en esta web: el diagnóstico, el plan de acción y el mapeo de responsabilidades. Si tenéis cinco minutos: Tenique ya lo tenéis en el móvil; después, el diagnóstico, con el "sí, pero no lo noto"; y el plan de acción, con el piloto, quién paga y los hitos hasta el año 5». (30 s)
+- Honestidad sobre las entrevistas: «Aún no hemos podido entrevistar a vecinos. Por eso, antes de empezar, los escuchamos con una encuesta independiente; a los seis meses, la repetimos. Si no mejora, se cambia». (10 s) El plan de acción lo detalla: encuesta externa (ISTAC o universidad) a residentes, con la misma pregunta, en papel y en línea; éxito si la percepción sube 10 puntos o más (supuesto). Si el equipo trae resultados de su formulario, la primera frase se cambia por «encuestamos a N personas el 12-11-2026» con lo que digan.
+- Última frase, memorizada y sin muletillas: «Tenerife se cocina entre todos. Gracias». (5 s)
 
 ## Antes de presentar
 - [ ] `npm run revisar:entrega` sin errores en `presentacion.SLIDES` ni en `DESTACADOS`.
 - [ ] Sin avisos en la pestaña *Presentación* (ni relleno ni «QR apuntan a dirección local»).
-- [ ] Los QR de las diapositivas 3 y 6 probados con un iPhone y un Android sobre la web publicada.
+- [ ] Los QR de las diapositivas 3 y 7 probados con un iPhone y un Android sobre la web publicada.
 - [ ] Pantalla completa (`F`) probada en el ordenador y el proyector del evento.
 - [ ] PDF exportado (*Exportar PDF* → «Guardar como PDF», márgenes «Ninguno», «Gráficos de fondo» activado): 7 páginas y ninguna en blanco al final.
 - [ ] PDF guardado en un USB y en el móvil por si falla la conexión.

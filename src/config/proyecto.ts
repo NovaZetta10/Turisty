@@ -68,6 +68,7 @@ export const EQUIPO: Miembro[] = [
     nombre: 'Giulia',
     rol: 'Turismo',
     estudios: 'Grado en Turismo (cuarto curso)',
+    linkedin: 'https://www.linkedin.com/in/giulia-gottardo-8a44223aa',
   },
   {
     nombre: 'Javier Domínguez Parras',
@@ -80,6 +81,7 @@ export const EQUIPO: Miembro[] = [
     nombre: 'Marcelo',
     rol: 'Telecomunicaciones, logística & cocina',
     estudios: 'FP media y superior de Telecomunicaciones, dos especializaciones en logística; cursando FP superior de Dirección de Cocina',
+    linkedin: 'https://www.linkedin.com/in/marcelo-l%C3%B3pez-gonz%C3%A1lez-672957240',
   },
 ]
 
@@ -104,7 +106,7 @@ export const SECCIONES: Seccion[] = [
     titulo: 'Diagnóstico',
     corto: 'Diagnóstico',
     resumen: 'Qué pasa de verdad hoy en la convivencia entre turistas y población local en Tenerife, y sus causas reales, con datos y con quien lo vive.',
-    estado: 'en-curso',
+    estado: 'listo',
     visible: true,
   },
   {
@@ -113,7 +115,7 @@ export const SECCIONES: Seccion[] = [
     titulo: 'Tenique',
     corto: 'Tenique',
     resumen: 'Nuestra propuesta: experiencias reales que vecinos y visitantes comparten en toda la isla. Tenerife se cocina entre todos.',
-    estado: 'en-curso',
+    estado: 'listo',
     visible: true,
   },
   {
@@ -122,7 +124,7 @@ export const SECCIONES: Seccion[] = [
     titulo: 'Plan de acción',
     corto: 'Plan de acción',
     resumen: 'Cómo se pone en marcha: hoja de ruta a corto, medio y largo plazo, piloto, costes, fondo de barrio, indicadores y riesgos.',
-    estado: 'en-curso',
+    estado: 'listo',
     visible: true,
   },
   {
@@ -131,7 +133,7 @@ export const SECCIONES: Seccion[] = [
     titulo: 'Mapeo de responsabilidades',
     corto: 'Responsabilidades',
     resumen: 'Qué papel juega cada agente (Turismo de Tenerife, Cabildo, empresas, vivienda vacacional, población local y turistas) y cómo colaboran.',
-    estado: 'en-curso',
+    estado: 'listo',
     visible: true,
   },
   {
@@ -140,7 +142,7 @@ export const SECCIONES: Seccion[] = [
     titulo: 'Presentación',
     corto: 'Presentación',
     resumen: 'Las diapositivas del pitch, en el navegador y a pantalla completa.',
-    estado: 'en-curso',
+    estado: 'listo',
     visible: true,
   },
   {
@@ -167,10 +169,10 @@ export const PROTOTIPO = {
   notas: [] as string[],
 }
 
-export const REPO_URL = '' // p. ej. 'https://github.com/usuario/repo'
+export const REPO_URL = 'https://github.com/novazetta10/Turisty'
 
 /** Dirección pública de la web (para los QR de la presentación). Vacía = se usa la dirección actual. */
-export const SITIO_URL = ''
+export const SITIO_URL = 'https://novazetta10.github.io/Turisty/'
 
 /**
  * Llamada a la acción final de la presentación: los 2–3 entregables que queremos que el jurado revise primero.

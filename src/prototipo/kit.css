@@ -65,7 +65,7 @@
 .app-confirma h2 { font-family: var(--app-font); font-size: 21px; color: var(--app-ink); }
 .app-ok { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: var(--app-accent); color: var(--app-on-accent); animation: app-ok .3s var(--ease-out) both; }
 @keyframes app-ok { from { opacity: 0; transform: scale(.6); } }
-.app-qr { width: 170px; padding: 10px; border-radius: 14px; background: #f6f2e9; border: 1px solid var(--app-line); }
+.app-qr { width: 170px; padding: 10px; border-radius: 14px; background: var(--app-bg); border: 1px solid var(--app-line); }
 .app-qr svg { display: block; width: 100%; height: auto; }
 .app-codigo { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; letter-spacing: .06em; color: var(--app-ink); }
 .app-resumen { width: 100%; margin: 4px 0 0; border-radius: 14px; background: var(--app-surface); border: 1px solid var(--app-line); text-align: left; }

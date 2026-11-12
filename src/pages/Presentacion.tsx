@@ -128,6 +128,9 @@ function SlideView({ s, i, dir }: { s: Slide; i: number; dir?: number }) {
   const sinPie = s.tipo === 'portada' || s.tipo === 'pregunta'
   return (
     <div className={`slide ${dir && dir < 0 ? 'back' : ''}`}>
+      {(s.tipo === 'portada' || s.tipo === 'cta') && (
+        <img className="s-logo" src={import.meta.env.BASE_URL + 'img/marca/turismo-tenerife-blanco.png'} alt="Turismo de Tenerife" />
+      )}
       <Contenido s={s} />
       {!sinPie && (
         <div className="s-foot">

@@ -62,7 +62,9 @@ for (const dir of ['src/pages', 'src/prototipo']) {
     readFileSync(join(raiz, dir, f), 'utf8').split('\n').forEach((linea, i) => {
       if (/RETO\.definido \?|revisar:ignorar/.test(linea)) return
       for (const t of linea.match(TEXTOS) ?? []) {
-        if (HUECO.test(t) && !/entre corchetes/.test(t)) errores.push(`${dir}/${f}:${i + 1}: «${t.slice(0, 70)}»`)
+        // Selectores CSS de atributo ('[data-x]', "[aria-x=y]") no son texto de relleno.
+        const selector = /^['"]\[[\w-]+(?:[~|^$*]?=[^\]]*)?\]['"]$/.test(t)
+        if (HUECO.test(t) && !selector && !/entre corchetes/.test(t)) errores.push(`${dir}/${f}:${i + 1}: «${t.slice(0, 70)}»`)
       }
     })
   }

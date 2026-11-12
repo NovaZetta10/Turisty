@@ -138,3 +138,66 @@ Revisado en el código. No lo he comprobado en el navegador porque las pestañas
 | 6 | `src/data/usuarios.ts:47` | «Journey genérico del turista en Canarias». La pestaña Usuarios está oculta (`visible: false`): no se ve. | Baja | usuarios |
 
 Sin problema: Inicio («Bajo el cielo de Tenerife», Tenique), Plan de acción (`viabilidad.ts`), Responsabilidades y `presentacion.ts` no mencionan Canarias. «Talento Canario · Gobierno de Canarias» en el pie es el organizador y es correcto. «Academia Canaria de la Lengua» es la fuente de «tenique» y es correcto.
+
+## Registro · 12-11-2026 · revisión completa (versión local)
+
+Revisión hecha sobre la versión local. Además del PDF, se tiene en cuenta lo que pidió quien presentó el reto en nombre de Turismo de Tenerife: participación real de los afectados («probar, medir y cambiar»), retorno explicado en lenguaje sencillo y desglosado, fondo de empresas por zonas, corresponsabilidad también del residente, foco ahora en el residente, y Turismo de Tenerife dedicado a promoción y gestión del destino, no a obras.
+
+### Técnica: ✅
+- ✅ `npx tsc --noEmit`, sin errores.
+- ✅ `vite build`, sin errores (salida fuera del repositorio, ya borrada).
+- ✅ `npm run revisar:entrega`: 0 errores. Hay 2 avisos (falta el vídeo de preview y el LinkedIn de Javier es una búsqueda) y 1 dato «Por verificar» (`REFERENTES[9]`, Venecia).
+- ✅ Sin desbordes horizontales a 390 ni a 1280 px en Inicio, en las 8 sub-pestañas de Diagnóstico, en Tenique, Plan, Responsabilidades y Presentación, y en `#/app`.
+- ✅ Contraste: `--app-accent` es ahora `#a8380f` (blanco encima, 6,5:1). No hay imágenes sin `alt` ni botones sin nombre en `#/app`.
+- ✅ No se ve ningún texto interno: las rutas `src/…` y `public/…` van dentro de `SoloLocal` y solo aparecen con `npm run dev`. Única excepción: «script en scripts/datos/descargar.mjs», en Fuentes.
+- ✅ Web publicada (versión anterior): carga, y `#/app` funciona en un móvil emulado de 390 px, sin desbordes.
+- ✅ Enlaces de `FUENTES`: 84 de 85 responden 200. La [37] (Iberostar) devuelve 403 a los robots y hay que abrirla a mano.
+- ✅ Raíz limpia: sin `dist/` ni `tsconfig.tsbuildinfo`.
+
+### Lo que pidió Turismo de Tenerife en la presentación del reto
+| Petición | Estado | Prueba |
+|---|---|---|
+| Probar, medir y cambiar | ✅ | Plan: piloto de 6 meses con umbrales «seguimos si / paramos si» y encuesta antes y después. |
+| Participación real de los afectados | ❌ | Las personas y las hipótesis H1–H11 están sin contrastar: no hay ni una voz real de vecinos. |
+| Retorno en lenguaje sencillo y desglosado | ✅ | «Qué deja el turismo en tu municipio» (12 municipios), con lo que se sabe y lo que nadie publica, también dentro de la app. |
+| Fondo de las empresas por zonas | ✅ | Una cuenta por municipio. Lo pagan sobre todo las empresas y la vivienda vacacional, y el Cabildo «suma, no sostiene». |
+| Corresponsabilidad del residente | ⚠️ | El residente avala, vota y ofrece, pero no aporta nada material y no se dice por qué. La ecotasa mínima para residentes no se menciona. |
+| Foco ahora en el residente | ⚠️ | La pregunta del pitch y la persona principal ponen al residente en el centro, pero la app abre con «Estoy de visita» como primera opción. |
+| Turismo de Tenerife no hace obras | ⚠️ | Las obras las hacen los ayuntamientos ✅. Pero el pitch llama a Turismo de Tenerife «quien la regula», y le asigna los dinamizadores de barrio y la gestión del fondo sin justificarlo como gestión del destino. |
+
+### Puntuación por criterio (sin pesos)
+| Criterio | Nota | Por qué |
+|---|---|---|
+| Viabilidad | **Fuerte** | Hoja de ruta en 5 fases con decisión en los meses 9 y 24. Hay tabla legal (figura del fondo, anfitriones, IGIC, seguros, RGPD), costes con simulador y supuestos marcados, y en el piloto los vecinos no cobran. |
+| Sociedad en su conjunto | **Justo** | Hay puntos físicos, votación en papel, KPI por edad y zona rural, municipio rural en el piloto y Tenerife es tuya (mayores y colectivos). Falta la participación real de los afectados. |
+| Factor humano | **Justo** | En el plan sí hay personas (dinamizadores, anfitriones). Pero la pestaña Tenique es solo un teléfono, y la demo empieza por el visitante. |
+| Turismo responsable | **Fuerte** | Hay un KPI de gasto que se queda en el barrio (85 % supuesto), fondo por municipio con cartel en la calle y transparencia por municipio. |
+| Innovación | **Justo** | La triple validación, el fondo votado por el barrio y la búsqueda por emoción ligada a la marca vigente son originales. Pero la demo vende plazas de 10 € en romerías y procesiones, y el propio diagnóstico dice que apenas hay vecinos anfitriones. |
+
+### Arreglos, de más a menos grave
+1. **El pitch no cuenta ni el plan ni el fondo.** Problema: las 7 diapositivas no hablan del fondo, del piloto ni de qué pone cada agente, y el guion de la 7 sigue con «[destacado 1]» y «[Piloto…]». Dónde: `src/data/presentacion.ts` y `docs/pitch-guion.md`. Por qué importa: viabilidad e impacto, dos de los cinco criterios, no se oyen en los 5 minutos, y «lo que más cuenta es la claridad y la fuerza de la idea». Arreglo: en la diapositiva 6 o en una nueva, contar en una frase quién paga el fondo, quién decide en qué se gasta y el piloto (3 municipios, 6 meses, umbral). Rellenar la diapositiva 7 con el plan. Recortar la 5 si no cabe. Dueño: **pitch**.
+2. **«Quien la regula, que es Turismo de Tenerife».** Problema: Turismo de Tenerife promociona y gestiona el destino; no regula actividades. Dónde: diapositiva 6 de `presentacion.ts` («Quien la regula comprueba…») y el guion de la diapositiva 6, punto 2. Por qué importa: el jurado es Turismo de Tenerife y lo corregirá en directo. Arreglo: «quien cuida el destino» o «quien da la garantía». Dueño: **pitch**.
+3. **Ninguna voz real de vecinos.** Problema: las personas, el recorrido y H1–H11 son hipótesis. Dónde: Diagnóstico, «A quién le pasa» y «Causas». Por qué importa: quien presentó el reto pidió participación real de los afectados, y sin ella «Sociedad en su conjunto» se queda en «justo». Arreglo: hacer hoy 5–8 entrevistas cortas con el guion (`docs/usuarios-guion-tenique.md`). Publicar las citas con su código y `validado: true`, y decir qué hipótesis se confirman o se caen. Si no se llega, decirlo en el pitch como primer paso del piloto. Dueños: **usuarios** e **investigación**.
+4. **La demo empieza por el visitante y vende plazas en fiestas populares.** Problema: la primera opción es «Estoy de visita». La ficha de una procesión (Embarcación de la Virgen del Carmen) muestra «Plaza Tenique 10 € · Reservar». Dónde: `src/prototipo/pantallas.tsx`. Por qué importa: choca con «foco ahora en el residente», con el miedo de la persona («que su barrio se convierta en un decorado») y con el propio plan (en el piloto los vecinos no cobran). Arreglo: poner «Vivo en Tenerife» primero. En fiestas y actos religiosos, la experiencia es «acompañado por un vecino», gratis o con donación al fondo, nunca una plaza de pago en la fiesta. En la demo, enseñar primero una experiencia con anfitrión. Dueño: **prototipo**.
+5. **La pestaña Tenique no explica el programa.** Problema: dice «Entregable · prototipo · La solución, navegable» y solo muestra el teléfono. Dónde: `src/pages/Prototipo.tsx`. Por qué importa: quien entra por esa pestaña ve una app, y salta la alerta «solo digital». Arreglo: un bloque corto antes del teléfono con las tres partes (personas, puntos físicos, app), la triple validación y el fondo, enlazando a Plan y Responsabilidades. Cambiar el kicker a «La propuesta». Dueño: **coordinador**.
+6. **No se dice qué pone el residente.** Problema: el residente decide y avala, pero no se dice qué aporta. Tampoco se responde a la idea de la ecotasa mínima para residentes. Dónde: `src/data/responsabilidades.ts` y el fondo en `viabilidad.ts`. Por qué importa: el representante de Turismo de Tenerife lo planteó, y saldrá en las preguntas. Arreglo: escribir qué pone el residente (tiempo como anfitrión, aval, voto, y el 10 % cuando reserva a precio de residente). Añadir la ecotasa mínima como opción estudiada, sí o no y por qué, marcada como supuesto. Respuesta preparada en `docs/pitch-preguntas.md`. Dueños: **negocio** (responsabilidades y viabilidad) y **pitch**.
+7. **El papel de Turismo de Tenerife va más allá de su función.** Problema: contrata dinamizadores de barrio, gestiona el fondo y hace las encuestas. Dónde: Plan, fase 1, y la ficha de Turismo de Tenerife en Responsabilidades. Por qué importa: dijeron que su papel es la promoción y la gestión del destino. El jurado puede ver un encargo que no es suyo. Arreglo: justificar cada tarea como gestión del destino, o pasar los dinamizadores a Cabildo y ayuntamientos y dejar a Turismo de Tenerife la garantía, la difusión, la medición y la publicación. Dueño: **negocio**.
+8. **Incoherencias entre pestañas.**
+   - «Valorada por quien la vivió» son «vecinos y visitantes» en el pitch, pero «turistas que asistieron» en Responsabilidades.
+   - La piedra 2 se llama «Visitantes» y mete a empresas y vivienda vacacional, mientras Inicio dice «vecinos, visitantes e instituciones».
+
+   Arreglo: unificar. En la valoración, «vecinos y visitantes». En la piedra 2, nombrarla para que se vea a las empresas, o explicarlo en una frase. Dueños: **negocio** (responsabilidades) y **pitch**.
+9. **Falta el vídeo de preview.** Inicio muestra «Vídeo en preparación.» al jurado. Arreglo: subir `public/video/preview.mp4` u ocultar el bloque si no hay vídeo. Dueños: **Esther** y **coordinador**.
+10. **Las secciones siguen «En curso».** Las 5 pestañas visibles tienen `estado: 'en-curso'`. Arreglo: pasar a «listo» lo que se entregue, justo antes de la entrega. Dueño: **coordinador** (`proyecto.ts`).
+11. **Menores.**
+   - LinkedIn de Javier: es una búsqueda. Dueños: Esther y coordinador.
+   - «Javier» aparece como revisor en la tabla legal del Plan: usar el rol («equipo Nova») o la entidad. Dueño: negocio.
+   - «script en scripts/datos/descargar.mjs» se ve en Fuentes. Dueño: investigación.
+   - H11 aparece antes que H10 en Causas. Dueño: investigación.
+   - Abrir la [37] a mano. Dueño: investigación.
+
+### Veredicto
+**No lista para entregar todavía, pero cerca.** La web es sólida en lo técnico, en el diagnóstico (Tenerife, con fuentes, y con lo que Tenique no resuelve y quién debe resolverlo), en el plan y en el mapeo. Lo que falta pesa en la nota:
+- Imprescindible: arreglos 1 a 4 (pitch con plan y fondo, papel correcto de Turismo de Tenerife, voces reales y demo centrada en el residente), más el 9 y el 10 justo antes de entregar.
+- Muy recomendable: 5 a 8.
+- Con lo imprescindible resuelto, la estimación pasaría a «fuerte» en sociedad en su conjunto y factor humano, e innovación quedaría entre «justo» y «fuerte».

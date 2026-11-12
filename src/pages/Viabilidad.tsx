@@ -4,8 +4,8 @@ import { Tabla, type Columna } from '../components/Tabla'
 import { Rejilla, Tarjeta } from '../components/Tarjeta'
 import { Refs, Verificado } from '../components/Refs'
 import {
-  CATEGORIA_TXT, COSTES, ENCAJE, ESCENARIOS, FASES, FONDO, KPIS, LEGAL, LIMITES, PILOTO, RIESGOS, SUPUESTOS, SUPUESTOS_FONDO, fondoAnual, importe, totales,
-  type Categoria, type Coste, type Hipotesis, type Nivel, type Riesgo,
+  CATEGORIA_TXT, COSTES, ENCAJE, ESCENARIOS, FASES, FONDO, KPIS, LEGAL, LIMITES, OPCIONES, RESIDENTE, PILOTO, RIESGOS, SUPUESTOS, SUPUESTOS_FONDO, fondoAnual, importe, totales,
+  type Categoria, type Coste, type Pagador, type Hipotesis, type Nivel, type Riesgo,
 } from '../data/viabilidad'
 import '../styles/viabilidad.css'
 
@@ -135,9 +135,17 @@ function Simulador() {
     .sort((a, b) => b.valor - a.valor)
     .map((p) => ({ ...p, texto: eur.format(p.valor) }))
 
+  const PAGADORES: Pagador[] = ['Cabildo', 'Turismo de Tenerife', 'Ayuntamientos']
+  const porPagador = PAGADORES
+    .map((k) => ({ etiqueta: k, valor: costes.filter((c) => c.paga === k).reduce((a, c) => a + importe(c) * (c.tipo === 'mensual' ? meses : 1), 0) }))
+    .filter((p) => p.valor > 0)
+    .sort((a, b) => b.valor - a.valor)
+    .map((p) => ({ ...p, texto: eur.format(p.valor) }))
+
   const columnas: Columna<Coste>[] = [
     { clave: 'partida', titulo: 'Partida', render: (c) => <><b className="via-partida">{c.partida}</b>{c.nota && <span className="small muted">{c.nota}</span>}</> },
     { clave: 'categoria', titulo: 'Tipo', render: (c) => <span className="small">{CATEGORIA_TXT[c.categoria]} · {c.tipo === 'mensual' ? 'mensual' : 'una vez'}</span> },
+    { clave: 'paga', titulo: 'Paga', render: (c) => <span className="small">{c.paga}</span> },
     { clave: 'cantidad', titulo: 'Cantidad', num: true, render: (c) => <input className="via-input" type="number" min={0} step="any" inputMode="decimal" value={c.cantidad} aria-label={`Cantidad de ${c.partida} (${c.unidad})`} onChange={(e) => cambia(c.id, 'cantidad', e.target.value)} /> },
     { clave: 'unidad', titulo: 'Unidad', render: (c) => <span className="small muted">{c.unidad}</span> },
     { clave: 'precio', titulo: 'Precio (€)', num: true, render: (c) => <input className="via-input" type="number" min={0} step="any" inputMode="decimal" value={c.precio} aria-label={`Precio por ${c.unidad} de ${c.partida}`} onChange={(e) => cambia(c.id, 'precio', e.target.value)} /> },
@@ -169,8 +177,11 @@ function Simulador() {
       </div>
 
       <div className="via-costes">
-        <Tabla<Coste> titulo="Partidas" columnas={columnas} filas={costes} minAncho={820} nota="Precios sin IVA ni IGIC. Los servicios en dólares se pasan a euros 1 a 1 (supuesto). Lo marcado «Supuesto» no tiene fuente y no se presenta como dato." />
-        {porCategoria.length > 0 && <Barras titulo={`Coste por tipo (${meses} ${meses === 1 ? 'mes' : 'meses'}, sin margen)`} datos={porCategoria} />}
+        <Tabla<Coste> titulo="Partidas" columnas={columnas} filas={costes} minAncho={900} nota="Precios sin IVA ni IGIC. Los servicios en dólares se pasan a euros 1 a 1 (supuesto). Lo marcado «Supuesto» no tiene fuente y no se presenta como dato." />
+        <div className="via-dos">
+          {porPagador.length > 0 && <Barras titulo={`Quién paga (${meses} ${meses === 1 ? 'mes' : 'meses'}, sin margen)`} datos={porPagador} />}
+          {porCategoria.length > 0 && <Barras titulo={`Coste por tipo (${meses} ${meses === 1 ? 'mes' : 'meses'}, sin margen)`} datos={porCategoria} />}
+        </div>
       </div>
     </>
   )
@@ -217,13 +228,20 @@ export default function Viabilidad() {
             </li>
           ))}
         </ol>
+        <div className="card via-residente">
+          <div className="col-t">Qué pone el residente</div>
+          <p className="small muted">El vecino no solo recibe: también aporta, cada uno como puede.</p>
+          <ul className="via-hitos">
+            {RESIDENTE.map((r) => <li key={r.que}><span>{r.que}</span><small>{r.texto}</small></li>)}
+          </ul>
+        </div>
         <SimuladorFondo />
         <div style={{ marginTop: 16 }}>
           <Tabla titulo="Pendiente de revisión legal antes de mover dinero" columnas={COL_LEGAL} filas={LEGAL} minAncho={680} />
         </div>
       </Bloque>
 
-      <Bloque id="piloto" n={3} titulo="Piloto" texto="Dónde, cuánto tiempo, con quién y qué tiene que pasar para seguir. Los umbrales son supuestos que se fijan con Turismo de Tenerife.">
+      <Bloque id="piloto" n={3} titulo="Piloto" texto="Dónde, cuánto tiempo, con quién y qué tiene que pasar para seguir. Los umbrales son supuestos que se fijan con Turismo de Tenerife y el Cabildo.">
         <Rejilla cols={3}>
           <Tarjeta kicker="Dónde" titulo="3 municipios"><p>{PILOTO.donde}</p></Tarjeta>
           <Tarjeta kicker="Cuánto tiempo" titulo="6 meses"><p>{PILOTO.duracion}</p></Tarjeta>
@@ -251,17 +269,36 @@ export default function Viabilidad() {
       </Bloque>
 
       <Bloque id="encaje" n={6} titulo="Encaje con lo que ya existe" texto="Tenique no empieza de cero: se apoya en programas que ya funcionan en Tenerife.">
-        <Rejilla cols={ENCAJE.length > 1 ? 2 : 1 as 2}>
+        <div className="via-encaje">
           {ENCAJE.map((e) => (
             <Tarjeta key={e.programa} kicker={e.quien} titulo={e.programa} fuentes={e.fuentes}>
               <p>{e.queEs}</p>
               <p style={{ marginTop: 8 }}><span className="tag warn"><span className="dot" />Propuesta</span> {e.comoEncaja}</p>
             </Tarjeta>
           ))}
-        </Rejilla>
+        </div>
       </Bloque>
 
-      <Bloque id="riesgos" n={7} titulo="Riesgos" texto="Legales, de adopción, operativos, medioambientales y económicos, con su mitigación. Y los límites de lo que Tenique puede hacer.">
+      <Bloque id="opciones" n={7} titulo="Opciones estudiadas" texto="Ideas que hemos analizado y que no entran en el plan base, con nuestra recomendación.">
+        {OPCIONES.map((o) => (
+          <div key={o.titulo} className="card via-opcion">
+            <div className="via-opcion-head">
+              <div><span className="kicker">Opción estudiada</span><h3>{o.titulo}</h3></div>
+              <span className="tag warn"><span className="dot" />Recomendación: {o.recomendacion}</span>
+            </div>
+            <p className="small muted">{o.origen}</p>
+            <p>{o.queEs}</p>
+            <div className="via-dos">
+              <div><div className="col-t via-ok">A favor</div><ul className="list">{o.pros.map((x) => <li key={x}>{x}</li>)}</ul></div>
+              <div><div className="col-t via-stop">En contra</div><ul className="list">{o.contras.map((x) => <li key={x}>{x}</li>)}</ul></div>
+            </div>
+            <p><b>Nuestra recomendación.</b> {o.porque}</p>
+            <p className="small"><Verificado ok={false} /> Riesgo legal: {o.riesgoLegal}</p>
+          </div>
+        ))}
+      </Bloque>
+
+      <Bloque id="riesgos" n={8} titulo="Riesgos" texto="Legales, de adopción, operativos, medioambientales y económicos, con su mitigación. Y los límites de lo que Tenique puede hacer.">
         <Tabla<Riesgo> columnas={COL_RIESGOS} filas={RIESGOS} minAncho={760} />
         <div className="card via-limites">
           <div className="col-t">Lo que Tenique no resuelve</div>

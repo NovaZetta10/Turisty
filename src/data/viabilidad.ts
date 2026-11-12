@@ -27,15 +27,15 @@ export const FASES: Fase[] = [
     objetivo: 'Dejar listo lo legal, elegir dónde empezar y captar a los primeros anfitriones.',
     alcance: '3 municipios: uno turístico, uno rural y uno metropolitano',
     hitos: [
-      { que: 'Convenio entre Turismo de Tenerife y Cabildo para crear el programa y el fondo', lidera: 'Cabildo y Turismo de Tenerife' },
+      { que: 'Convenio entre Cabildo y Turismo de Tenerife: el Cabildo crea y gestiona el fondo; Turismo de Tenerife coordina el programa', lidera: 'Cabildo y Turismo de Tenerife' },
       { que: 'Informe jurídico: figura del fondo, fiscalidad de anfitriones, seguros y RGPD', lidera: 'Servicios jurídicos del Cabildo' },
       { que: 'Elección de los 3 municipios y acuerdo con sus ayuntamientos', lidera: 'Cabildo con los ayuntamientos' },
-      { que: 'Contratación de un dinamizador de barrio por municipio, que trabaja desde el punto físico que cede el ayuntamiento', lidera: 'Turismo de Tenerife (gestor del programa)' },
+      { que: 'Contratación de un dinamizador de barrio por municipio, que trabaja desde el punto físico que cede el ayuntamiento', lidera: 'Cabildo con los ayuntamientos' },
       { que: 'Captación y formación de anfitriones: vecinos, asociaciones, comercio y productores locales y empresas; protocolo de las tres piedras de validación', lidera: 'Dinamizadores de barrio' },
       { que: 'Propuesta: invitar a ser anfitriones a los participantes de «Tenerife es tuya», el programa de rutas del Cabildo para residentes', lidera: 'Turismo de Tenerife con el Cabildo', fuentes: [84] },
       { que: 'Acuerdo de aportación con empresas turísticas y con propietarios y gestores de vivienda vacacional', lidera: 'Cabildo con patronales y asociaciones de vivienda vacacional' },
       { que: 'App mínima y un punto físico por municipio (oficina de turismo o centro ciudadano que cede el ayuntamiento)', lidera: 'Turismo de Tenerife con los ayuntamientos' },
-      { que: 'Encuesta de partida a residentes (antes)', lidera: 'Turismo de Tenerife' },
+      { que: 'Encuesta de partida a residentes (antes), con evaluación externa', lidera: 'ISTAC o universidad, por encargo del Cabildo' },
     ],
   },
   {
@@ -45,12 +45,13 @@ export const FASES: Fase[] = [
     objetivo: 'Probar con gente real si vecinos y visitantes comparten experiencias y si el fondo se nota en el barrio.',
     alcance: '3 municipios, 6 meses',
     hitos: [
-      { que: 'Primeras experiencias con las tres piedras: «Garantía Turismo de Tenerife» (revisión de condiciones antes de publicar), «Avalada por el barrio» (aval de la asociación o de los vecinos) y «Valorada por quien la vivió» (solo asistentes)', lidera: 'Turismo de Tenerife, con el dinamizador para el aval vecinal' },
+      { que: 'Primeras experiencias con las tres piedras: «Garantía Turismo de Tenerife» (revisión de condiciones antes de publicar), «Avalada por el barrio» (aval de la asociación o de los vecinos) y «Valorada por quien la vivió» (todas las personas que asistieron, vecinos y visitantes)', lidera: 'Turismo de Tenerife, con el dinamizador para el aval vecinal' },
       { que: 'Primeras experiencias: de pago solo si las ofrecen asociaciones, entidades, comercio y productores locales o empresas; los vecinos, gratis o con donación al fondo', lidera: 'Anfitriones y asociaciones' },
-      { que: 'Primeras empresas y viviendas vacacionales adheridas con aportación al fondo', lidera: 'Turismo de Tenerife con las patronales' },
+      { que: 'Primeras empresas y viviendas vacacionales adheridas con aportación al fondo', lidera: 'Cabildo con las patronales; Turismo de Tenerife las invita' },
       { que: 'Primera votación del fondo en cada barrio, en la app y en papel', lidera: 'Ayuntamientos' },
       { que: 'Primer proyecto pagado por el fondo, señalizado en la calle', lidera: 'Ayuntamientos' },
-      { que: 'Encuesta de cierre a residentes (después) y evaluación con los umbrales', lidera: 'Turismo de Tenerife' },
+      { que: 'Encuesta de cierre a residentes (después)', lidera: 'ISTAC o universidad (evaluación externa)' },
+      { que: 'Evaluación con los umbrales y publicación de resultados', lidera: 'Turismo de Tenerife con el Cabildo' },
     ],
     decision: 'Mes 9: seguir, ajustar o parar según los umbrales del piloto.',
   },
@@ -63,8 +64,8 @@ export const FASES: Fase[] = [
     hitos: [
       { que: 'Nuevos municipios por tandas, cada uno con su punto físico', lidera: 'Cabildo' },
       { que: 'Aportación de empresas turísticas y de vivienda vacacional por tramos, recogida en el convenio', lidera: 'Cabildo y patronales' },
-      { que: 'Vecinos anfitriones pueden cobrar, solo si el informe jurídico deja clara la figura (alta, impuestos, seguro)', lidera: 'Cabildo y Turismo de Tenerife' },
-      { que: 'Primer informe anual del fondo en lenguaje cercano', lidera: 'Turismo de Tenerife' },
+      { que: 'Vecinos anfitriones pueden cobrar, solo si el informe jurídico deja clara la figura (alta, impuestos, seguro)', lidera: 'Cabildo' },
+      { que: 'Primer informe anual del fondo en lenguaje cercano', lidera: 'Cabildo (cuentas) y Turismo de Tenerife (publicación)' },
       { que: 'Datos del programa publicados como datos abiertos', lidera: 'Cabildo' },
     ],
     decision: 'Mes 24: decidir la figura estable del fondo con lo aprendido.',
@@ -89,13 +90,22 @@ export const FASES: Fase[] = [
     alcance: 'Toda Tenerife',
     hitos: [
       { que: 'Tenique dentro de la estrategia turística insular', lidera: 'Cabildo y Turismo de Tenerife' },
-      { que: 'Medición anual de percepción de residentes comparable año a año', lidera: 'Turismo de Tenerife' },
-      { que: 'Evaluación externa del impacto y ajuste del modelo', lidera: 'Universidad o entidad independiente' },
+      { que: 'Medición anual de percepción de residentes comparable año a año', lidera: 'ISTAC o universidad' },
+      { que: 'Evaluación externa del impacto y ajuste del modelo', lidera: 'ISTAC, universidad o entidad independiente' },
     ],
   },
 ]
 
 // ─── 2 · fondo del barrio ────────────────────────────────────────────────────
+
+/** Qué pone el residente: no solo recibe, también aporta. */
+export const RESIDENTE: { que: string; texto: string }[] = [
+  { que: 'Su tiempo', texto: 'Como anfitrión de una experiencia o como voluntario en las de su barrio.' },
+  { que: 'Su aval', texto: 'Avala, con su asociación o en reunión abierta, las experiencias de su barrio («Avalada por el barrio»).' },
+  { que: 'Su voto', texto: 'Decide en qué se gasta el fondo de su barrio, en la app o en papel.' },
+  { que: 'Su parte al reservar', texto: 'Paga un precio de residente simbólico y el 10 % va al fondo, como en cualquier reserva (supuesto).' },
+  { que: 'O su tiempo, si no puede pagar', texto: 'Quien no puede pagar participa a cambio de horas de voluntariado en el barrio.' },
+]
 
 export type PiezaFondo = { titulo: string; texto: string; quien: string }
 
@@ -108,8 +118,8 @@ export const FONDO: PiezaFondo[] = [
   },
   {
     titulo: 'Quién lo gestiona',
-    texto: 'El Cabildo, a través de Turismo de Tenerife, con una cuenta separada por municipio. Nadie del programa cobra de esa cuenta.',
-    quien: 'Cabildo y Turismo de Tenerife',
+    texto: 'El Cabildo, con una cuenta separada por municipio. Nadie del programa cobra de esa cuenta. Turismo de Tenerife no maneja el dinero: coordina el programa y lo da a conocer.',
+    quien: 'Cabildo',
   },
   {
     titulo: 'Quién decide en qué se gasta',
@@ -119,17 +129,17 @@ export const FONDO: PiezaFondo[] = [
   {
     titulo: 'Cómo se publica',
     texto: 'Cada proyecto lleva un cartel en la calle («esto lo ha pagado Tenique») y aparece en la app y en el punto físico con lo que costó. Informe trimestral corto y sin jerga.',
-    quien: 'Turismo de Tenerife',
+    quien: 'Cabildo (cuentas) y Turismo de Tenerife (publicación)',
   },
 ]
 
-/** Lo que necesita revisión legal antes de mover dinero. Para Javier y para los servicios jurídicos del Cabildo. */
+/** Lo que necesita revisión legal antes de mover dinero. En la web solo figuran cargos, nunca nombres del equipo. */
 export const LEGAL: { tema: string; pregunta: string; quien: string }[] = [
   { tema: 'Figura del fondo', pregunta: '¿Convenio, consorcio, fundación pública o línea de subvenciones? ¿Puede recibir dinero de empresas privadas y del Cabildo en la misma cuenta?', quien: 'Servicios jurídicos del Cabildo' },
-  { tema: 'Anfitriones particulares', pregunta: '¿Puede un vecino cobrar por una experiencia? ¿Cuándo tiene que darse de alta como actividad, qué licencia de actividad turística necesita y qué experiencias exigen guía habilitado según la normativa turística de Canarias? Hasta saberlo, los vecinos no cobran.', quien: 'Javier, servicios jurídicos y Hacienda' },
+  { tema: 'Anfitriones particulares', pregunta: '¿Puede un vecino cobrar por una experiencia? ¿Cuándo tiene que darse de alta como actividad, qué licencia de actividad turística necesita y qué experiencias exigen guía habilitado según la normativa turística de Canarias? Hasta saberlo, los vecinos no cobran.', quien: 'Asesoría jurídica del Cabildo y Hacienda' },
   { tema: 'Impuestos', pregunta: '¿Cómo tributa el porcentaje que va al fondo (IGIC) y la aportación de las empresas (¿mecenazgo?)?', quien: 'Hacienda' },
   { tema: 'Seguros', pregunta: '¿Póliza colectiva de responsabilidad civil para anfitriones? ¿Quién responde si alguien se hace daño?', quien: 'Correduría de seguros' },
-  { tema: 'Datos personales (RGPD)', pregunta: 'Datos de vecinos y turistas, valoraciones, votos del fondo y posibles menores: evaluación de impacto, base legal, servidores en la UE y minimización.', quien: 'Javier y delegado de protección de datos del Cabildo' },
+  { tema: 'Datos personales (RGPD)', pregunta: 'Datos de vecinos y turistas, valoraciones, votos del fondo y posibles menores: evaluación de impacto, base legal, servidores en la UE y minimización.', quien: 'Delegado de protección de datos del Cabildo' },
 ]
 
 /** Supuestos del simulador del fondo. Ningún valor tiene fuente: son puntos de partida para discutir. */
@@ -180,14 +190,14 @@ export type Piloto = { donde: string; duracion: string; conQuien: string; hipote
 export const PILOTO: Piloto = {
   donde: 'Un municipio turístico, uno rural y uno metropolitano, elegidos con el Cabildo y los ayuntamientos. Un punto físico en cada uno.',
   duracion: '6 meses (meses 4–9), después de 3 meses de preparación. Evaluación al cerrar.',
-  conQuien: 'Turismo de Tenerife (gestor del programa, contrata a los dinamizadores), Cabildo, 3 ayuntamientos (ceden el punto físico), asociaciones vecinales, comercio y productores locales (mercados del agricultor, bodegas, queserías, artesanos), 30–50 anfitriones y las primeras empresas y viviendas vacacionales adheridas. Los vecinos no cobran en el piloto: ofrecen experiencias gratis o con donación al fondo; cobran asociaciones, entidades, comercio y productores locales y empresas.',
+  conQuien: 'Turismo de Tenerife (coordina, da la garantía y promociona), Cabildo (gestiona el fondo y contrata a los dinamizadores con los ayuntamientos), 3 ayuntamientos (ceden el punto físico), ISTAC o universidad (evaluación externa), asociaciones vecinales, comercio y productores locales (mercados del agricultor, bodegas, queserías, artesanos), 30–50 anfitriones y las primeras empresas y viviendas vacacionales adheridas. Los vecinos no cobran en el piloto: ofrecen experiencias gratis o con donación al fondo; cobran asociaciones, entidades, comercio y productores locales y empresas.',
   hipotesis: [
     { hipotesis: 'Hay vecinos dispuestos a ser anfitriones aunque al principio no cobren.', metrica: 'Anfitriones con al menos una experiencia al mes.', exito: '30 o más entre los 3 municipios', parada: 'Menos de 10' },
     { hipotesis: 'Los visitantes reservan experiencias locales buscando una emoción.', metrica: 'Reservas al mes y valoración media de quienes participan.', exito: '300 o más reservas al mes al final del piloto', parada: 'Menos de 75' },
     { hipotesis: 'Los residentes también participan, no solo los turistas.', metrica: 'Parte de las plazas ocupadas por residentes.', exito: '25 % o más', parada: 'Menos del 10 %' },
     { hipotesis: 'El gasto se queda en el barrio cuando la experiencia incluye comercio y producto local.', metrica: 'Parte de lo que paga el visitante que cobran anfitriones, comercio y productores del municipio, más lo que el fondo gasta allí.', exito: '85 % o más', parada: 'Menos del 60 %' },
     { hipotesis: 'Llegamos a quien no usa redes.', metrica: 'Reservas, altas y votos hechos en los puntos físicos.', exito: '20 % o más', parada: 'Menos del 5 %' },
-    { hipotesis: 'Un fondo visible mejora cómo ven los vecinos el turismo.', metrica: 'Encuesta a residentes antes y después, con la misma pregunta.', exito: 'Sube 10 puntos o más', parada: 'No sube o baja' },
+    { hipotesis: 'Un fondo visible mejora cómo ven los vecinos el turismo.', metrica: 'Encuesta externa (ISTAC o universidad) a residentes antes y después, con la misma pregunta.', exito: 'Sube 10 puntos o más', parada: 'No sube o baja' },
     { hipotesis: 'Las empresas turísticas y la vivienda vacacional aportan si el destino del dinero es visible.', metrica: 'Empresas y viviendas adheridas con aportación firmada, y parte del fondo que es privada.', exito: '15 empresas y 200 viviendas o más; el dinero privado es la mayor parte del fondo', parada: 'Menos de 5 empresas, o el fondo depende sobre todo del Cabildo' },
   ],
 }
@@ -217,7 +227,7 @@ export const KPIS: Kpi[] = [
     nombre: 'Percepción de los residentes',
     criterio: 'Factor humano y orgullo',
     comoSeMide: 'Parte de residentes que dice que el turismo mejora su barrio y que se siente orgullosa de cómo se recibe al visitante. Misma encuesta antes, después y cada año.',
-    fuenteDatos: 'Encuesta propia en papel y en la app',
+    fuenteDatos: 'Encuesta del ISTAC o de la universidad (evaluación externa), en papel y en línea',
     objetivo: '+10 puntos en los barrios del piloto',
     supuesto: true,
   },
@@ -254,31 +264,33 @@ export type Coste = {
   unidad: string
   precio: number // € por unidad
   nota?: string
+  paga: Pagador
   fuentes: number[]
   supuesto: boolean
 }
+export type Pagador = 'Cabildo' | 'Turismo de Tenerife' | 'Ayuntamientos'
 
 // Precios de servicios en dólares: se toma 1 $ = 1 € para simplificar (supuesto; el tipo real cambia el total en céntimos).
 export const COSTES: Coste[] = [
   // implantación
-  { id: 'app', partida: 'App y panel de gestión (versión del piloto)', categoria: 'personas', tipo: 'implantacion', cantidad: 1200, unidad: 'h', precio: 45, nota: 'Horas y tarifa sin fuente', fuentes: [], supuesto: true },
-  { id: 'servicio', partida: 'Diseño del servicio, sello local y contenidos', categoria: 'personas', tipo: 'implantacion', cantidad: 300, unidad: 'h', precio: 40, fuentes: [], supuesto: true },
-  { id: 'legal', partida: 'Asesoría jurídica (fondo, fiscalidad, RGPD)', categoria: 'personas', tipo: 'implantacion', cantidad: 1, unidad: 'informe', precio: 8000, fuentes: [], supuesto: true },
-  { id: 'formacion', partida: 'Formación de anfitriones y del personal de los puntos', categoria: 'personas', tipo: 'implantacion', cantidad: 20, unidad: 'sesión', precio: 300, fuentes: [], supuesto: true },
-  { id: 'puntos', partida: 'Material de los puntos físicos y carteles del fondo', categoria: 'infraestructura', tipo: 'implantacion', cantidad: 3, unidad: 'punto', precio: 1500, fuentes: [], supuesto: true },
-  { id: 'encuesta', partida: 'Encuestas a residentes (antes y después)', categoria: 'personas', tipo: 'implantacion', cantidad: 2, unidad: 'oleada', precio: 4000, fuentes: [], supuesto: true },
-  { id: 'protocolo', partida: 'Protocolo de revisión «Garantía Turismo de Tenerife» y modelo de aval vecinal', categoria: 'personas', tipo: 'implantacion', cantidad: 60, unidad: 'h', precio: 40, fuentes: [], supuesto: true },
+  { id: 'app', partida: 'App y panel de gestión (versión del piloto)', categoria: 'personas', tipo: 'implantacion', cantidad: 1200, unidad: 'h', precio: 45, nota: 'Horas y tarifa sin fuente', paga: 'Turismo de Tenerife', fuentes: [], supuesto: true },
+  { id: 'servicio', partida: 'Diseño del servicio, sello local y contenidos', categoria: 'personas', tipo: 'implantacion', cantidad: 300, unidad: 'h', precio: 40, paga: 'Turismo de Tenerife', fuentes: [], supuesto: true },
+  { id: 'legal', partida: 'Asesoría jurídica (fondo, fiscalidad, RGPD)', categoria: 'personas', tipo: 'implantacion', cantidad: 1, unidad: 'informe', precio: 8000, paga: 'Cabildo', fuentes: [], supuesto: true },
+  { id: 'formacion', partida: 'Formación de anfitriones y del personal de los puntos', categoria: 'personas', tipo: 'implantacion', cantidad: 20, unidad: 'sesión', precio: 300, paga: 'Turismo de Tenerife', fuentes: [], supuesto: true },
+  { id: 'puntos', partida: 'Material de los puntos físicos (local cedido por el ayuntamiento) y carteles del fondo', categoria: 'infraestructura', tipo: 'implantacion', cantidad: 3, unidad: 'punto', precio: 1500, paga: 'Ayuntamientos', fuentes: [], supuesto: true },
+  { id: 'encuesta', partida: 'Encuestas a residentes antes y después (ISTAC o universidad)', categoria: 'personas', tipo: 'implantacion', cantidad: 2, unidad: 'oleada', precio: 4000, paga: 'Cabildo', fuentes: [], supuesto: true },
+  { id: 'protocolo', partida: 'Protocolo de revisión «Garantía Turismo de Tenerife» y modelo de aval vecinal', categoria: 'personas', tipo: 'implantacion', cantidad: 60, unidad: 'h', precio: 40, paga: 'Turismo de Tenerife', fuentes: [], supuesto: true },
   // mensual
-  { id: 'revision', partida: 'Revisión de experiencias antes de publicar (Garantía Turismo de Tenerife)', categoria: 'personas', tipo: 'mensual', cantidad: 40, unidad: 'h', precio: 35, nota: 'Unas 20 experiencias nuevas o renovadas al mes × 2 h. El aval vecinal lo acompaña el dinamizador, sin coste extra', fuentes: [], supuesto: true },
-  { id: 'coordinacion', partida: 'Coordinación del programa', categoria: 'personas', tipo: 'mensual', cantidad: 1, unidad: 'persona', precio: 3500, nota: 'Coste empresa mensual sin fuente', fuentes: [], supuesto: true },
-  { id: 'dinamizadores', partida: 'Dinamizadores de barrio', categoria: 'personas', tipo: 'mensual', cantidad: 3, unidad: 'persona', precio: 2500, nota: 'Uno por municipio del piloto. Los contrata Turismo de Tenerife; trabajan desde el punto físico que cede el ayuntamiento', fuentes: [], supuesto: true },
-  { id: 'mantenimiento', partida: 'Mantenimiento y soporte de la app', categoria: 'mantenimiento', tipo: 'mensual', cantidad: 40, unidad: 'h', precio: 45, fuentes: [], supuesto: true },
-  { id: 'seguro', partida: 'Seguro colectivo de responsabilidad civil', categoria: 'mantenimiento', tipo: 'mensual', cantidad: 1, unidad: 'póliza', precio: 400, fuentes: [], supuesto: true },
-  { id: 'backend', partida: 'Base de datos y usuarios (Supabase Pro)', categoria: 'infraestructura', tipo: 'mensual', cantidad: 1, unidad: 'mes', precio: 25, nota: 'Precio oficial: 25 $/mes', fuentes: [76], supuesto: false },
-  { id: 'web', partida: 'Alojamiento web (Vercel Pro)', categoria: 'infraestructura', tipo: 'mensual', cantidad: 1, unidad: 'mes', precio: 20, nota: 'Precio oficial: 20 $/mes', fuentes: [77], supuesto: false },
-  { id: 'mapas', partida: 'Mapas (Mapbox)', categoria: 'infraestructura', tipo: 'mensual', cantidad: 1, unidad: 'mes', precio: 0, nota: '50.000 cargas web al mes gratis', fuentes: [78], supuesto: false },
-  { id: 'ia', partida: 'IA para búsqueda por emoción y traducción (Claude Haiku 5.5)', categoria: 'herramientas', tipo: 'mensual', cantidad: 50, unidad: 'M tokens', precio: 0.3, nota: '0,10 $ entrada y 0,50 $ salida por millón; volumen y mezcla supuestos', fuentes: [79], supuesto: true },
-  { id: 'avisos', partida: 'Avisos por WhatsApp (confirmaciones)', categoria: 'herramientas', tipo: 'mensual', cantidad: 2000, unidad: 'mensaje', precio: 0.0166, nota: 'Tarifa de utilidad en España por verificar en la tabla oficial de Meta', fuentes: [], supuesto: true },
+  { id: 'revision', partida: 'Revisión de experiencias antes de publicar (Garantía Turismo de Tenerife)', categoria: 'personas', tipo: 'mensual', cantidad: 40, unidad: 'h', precio: 35, nota: 'Unas 20 experiencias nuevas o renovadas al mes × 2 h. El aval vecinal lo acompaña el dinamizador, sin coste extra', paga: 'Turismo de Tenerife', fuentes: [], supuesto: true },
+  { id: 'coordinacion', partida: 'Coordinación del programa', categoria: 'personas', tipo: 'mensual', cantidad: 1, unidad: 'persona', precio: 3500, nota: 'Coste empresa mensual sin fuente', paga: 'Turismo de Tenerife', fuentes: [], supuesto: true },
+  { id: 'dinamizadores', partida: 'Dinamizadores de barrio', categoria: 'personas', tipo: 'mensual', cantidad: 3, unidad: 'persona', precio: 2500, nota: 'Uno por municipio del piloto. Los contrata el Cabildo con los ayuntamientos; trabajan desde el punto físico que cede el ayuntamiento', paga: 'Cabildo', fuentes: [], supuesto: true },
+  { id: 'mantenimiento', partida: 'Mantenimiento y soporte de la app', categoria: 'mantenimiento', tipo: 'mensual', cantidad: 40, unidad: 'h', precio: 45, paga: 'Turismo de Tenerife', fuentes: [], supuesto: true },
+  { id: 'seguro', partida: 'Seguro colectivo de responsabilidad civil', categoria: 'mantenimiento', tipo: 'mensual', cantidad: 1, unidad: 'póliza', precio: 400, paga: 'Cabildo', fuentes: [], supuesto: true },
+  { id: 'backend', partida: 'Base de datos y usuarios (Supabase Pro)', categoria: 'infraestructura', tipo: 'mensual', cantidad: 1, unidad: 'mes', precio: 25, nota: 'Precio oficial: 25 $/mes', paga: 'Turismo de Tenerife', fuentes: [76], supuesto: false },
+  { id: 'web', partida: 'Alojamiento web (Vercel Pro)', categoria: 'infraestructura', tipo: 'mensual', cantidad: 1, unidad: 'mes', precio: 20, nota: 'Precio oficial: 20 $/mes', paga: 'Turismo de Tenerife', fuentes: [77], supuesto: false },
+  { id: 'mapas', partida: 'Mapas (Mapbox)', categoria: 'infraestructura', tipo: 'mensual', cantidad: 1, unidad: 'mes', precio: 0, nota: '50.000 cargas web al mes gratis', paga: 'Turismo de Tenerife', fuentes: [78], supuesto: false },
+  { id: 'ia', partida: 'IA para búsqueda por emoción y traducción (Claude Haiku 5.5)', categoria: 'herramientas', tipo: 'mensual', cantidad: 50, unidad: 'M tokens', precio: 0.3, nota: '0,10 $ entrada y 0,50 $ salida por millón; volumen y mezcla supuestos', paga: 'Turismo de Tenerife', fuentes: [79], supuesto: true },
+  { id: 'avisos', partida: 'Avisos por WhatsApp (confirmaciones)', categoria: 'herramientas', tipo: 'mensual', cantidad: 2000, unidad: 'mensaje', precio: 0.0166, nota: 'Tarifa de utilidad en España por verificar en la tabla oficial de Meta', paga: 'Turismo de Tenerife', fuentes: [], supuesto: true },
 ]
 
 /** Supuestos globales del simulador de costes. */
@@ -304,7 +316,31 @@ export const RIESGOS: Riesgo[] = [
   { riesgo: 'Que parezca que el fondo lo paga solo la administración.', tipo: 'económico', probabilidad: 'medio', impacto: 'alto', mitigacion: 'Aportación sistemática de empresas turísticas y vivienda vacacional en el convenio; el Cabildo solo suma una parte por cada euro privado y se publica qué parte pone cada uno.' },
   { riesgo: 'El fondo es tan pequeño al principio que no se nota.', tipo: 'económico', probabilidad: 'alto', impacto: 'medio', mitigacion: 'Aportación del Cabildo por cada euro, proyectos pequeños pero muy visibles y publicar desde el primer euro.' },
   { riesgo: 'Pocas asociaciones dispuestas a avalar experiencias, sobre todo en barrios sin asociación activa.', tipo: 'adopción', probabilidad: 'medio', impacto: 'alto', mitigacion: 'Si no hay asociación, el aval lo dan vecinos del barrio en una reunión abierta en el punto físico, con el dinamizador. Avalar es poco trabajo (una ficha y una visita) y la asociación gana voz en el fondo de su barrio.' },
-  { riesgo: 'Valoraciones falsas o compradas.', tipo: 'técnico', probabilidad: 'bajo', impacto: 'medio', mitigacion: 'Solo valora quien la vivió (asistentes con reserva confirmada); el aval lo dan la asociación o los vecinos del barrio.' },
+  { riesgo: 'Ecotasa para residentes (opción estudiada): no sabemos si una tasa puede distinguir entre residentes y visitantes, quién la aprueba ni si puede ir a un fondo de barrio.', tipo: 'legal', probabilidad: 'medio', impacto: 'medio', porVerificar: true, mitigacion: 'No entra en el plan base. Solo en piloto y después de un informe jurídico.' },
+  { riesgo: 'Valoraciones falsas o compradas.', tipo: 'técnico', probabilidad: 'bajo', impacto: 'medio', mitigacion: 'Valoran todas las personas que asistieron, vecinos y visitantes, y solo ellas (reserva o registro de asistencia); el aval lo dan la asociación o los vecinos del barrio.' },
+]
+
+/** Opciones estudiadas que no forman parte del plan base. */
+export type Opcion = { titulo: string; origen: string; queEs: string; pros: string[]; contras: string[]; recomendacion: 'sí' | 'no' | 'en piloto'; porque: string; riesgoLegal: string }
+export const OPCIONES: Opcion[] = [
+  {
+    titulo: 'Ecotasa mínima para residentes',
+    origen: 'Idea de Turismo de Tenerife al presentar el reto: en Masca el turista paga 28 € y el residente podría pagar algo simbólico, quizá 5 €.',
+    queEs: 'Que el residente también pague una cantidad pequeña en los espacios naturales donde ya se cobra al visitante, para que el cuidado sea compartido.',
+    pros: [
+      'Corresponsabilidad real: todos aportan al espacio que disfrutan.',
+      'El visitante ve que no se le cobra solo a él.',
+      'Ayuda a ordenar el acceso a espacios saturados.',
+    ],
+    contras: [
+      'Puede sentirse como pagar por entrar en tu propia isla, lo contrario del orgullo que buscamos.',
+      'Pesa más en quien menos tiene.',
+      'Con 5 € por persona, cobrar y controlar puede costar casi lo que se recauda.',
+    ],
+    recomendacion: 'en piloto',
+    porque: 'Solo en un espacio que ya cobra al visitante, desde el año 1 y con lo recaudado para el fondo del barrio cercano. Exentos quienes no puedan pagar y los participantes de «Tenerife es tuya»; también se puede pagar con horas de voluntariado. Si la encuesta muestra rechazo, se retira.',
+    riesgoLegal: '¿Puede una tasa distinguir entre residentes y visitantes? ¿Quién la aprueba y puede lo recaudado ir a un fondo de barrio?',
+  },
 ]
 
 /** Lo que Tenique no resuelve y a quién corresponde. El detalle está en el diagnóstico (Investigación). */
@@ -322,7 +358,7 @@ export const LIMITES: Limite[] = [
   { tema: 'Saneamiento y vertidos', verificado: true, partes: [
     { quien: 'ayuntamientos (evacuación y tratamiento de aguas residuales)', fuentes: [73] },
     { quien: 'Gobierno de Canarias (censo y autorización de vertidos)', fuentes: [80] },
-    { quien: 'Cabildo, a través del Consejo Insular de Aguas: planificación (por verificar)', fuentes: [] },
+    { quien: 'Consejo Insular de Aguas de Tenerife (planificación hidrológica insular)', fuentes: [85] },
   ] },
 ]
 
