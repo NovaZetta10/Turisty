@@ -5,6 +5,7 @@ import { Icon } from '../components/Icon'
 import { NovaMark } from '../components/NovaMark'
 import { Qr, urlBase } from '../components/Qr'
 import { tieneRelleno } from '../config/relleno'
+import { Fogon } from '../components/Piedra'
 import '../styles/presentacion.css'
 
 const A = ({ i, children, className = '', style }: { i: number; children: React.ReactNode; className?: string; style?: CSSProperties }) => (
@@ -113,11 +114,13 @@ function Contenido({ s }: { s: Slide }) {
     case 'revelacion':
       return (
         <div className="s-reveal">
-          <A i={0}><span className="s-reveal-antes">{s.antes}</span></A>
-          <A i={1}><div className="s-reveal-nombre">{s.nombre}</div></A>
-          <A i={2} className="s-reveal-piedras" ><span /><span /><span /></A>
-          <A i={3}><p className="s-reveal-def">{s.definicion}</p></A>
-          <A i={4}><p className="s-fuente">{s.fuente}</p></A>
+          <div className="s-reveal-txt">
+            <A i={0}><span className="s-reveal-antes">{s.antes}</span></A>
+            <A i={1}><div className="s-reveal-nombre">{s.nombre}</div></A>
+            <A i={3}><p className="s-reveal-def">{s.definicion}</p></A>
+            <A i={4}><p className="s-fuente">{s.fuente}</p></A>
+          </div>
+          <A i={2} className="s-fogon-comun"><Fogon leyenda /></A>
         </div>
       )
     case 'pareja':
@@ -152,7 +155,7 @@ function Contenido({ s }: { s: Slide }) {
             </div>
             <A i={6}><div className="s-fogon-lema">{s.lema}</div></A>
           </div>
-          <A i={5} className="s-fogon-dibujo"><FogonDibujo nombres={s.piedras.map((p) => p.nombre)} /></A>
+          <A i={5} className="s-fogon-comun"><Fogon leyenda /></A>
         </div>
       )
     case 'final':
@@ -189,36 +192,6 @@ function Contenido({ s }: { s: Slide }) {
       )
     }
   }
-}
-
-/** Caldero sobre tres piedras con el fuego encendido. Solo SVG y tokens de marca. */
-function FogonDibujo({ nombres }: { nombres: string[] }) {
-  return (
-    <svg viewBox="0 0 320 260" role="img" aria-label={`Caldero sobre tres piedras: ${nombres.join(', ')}`}>
-      <defs>
-        <radialGradient id="s-fuego" cx="50%" cy="70%" r="60%">
-          <stop offset="0" stopColor="#ffffff" />
-          <stop offset=".35" stopColor="var(--nova-hot)" />
-          <stop offset=".7" stopColor="var(--accent-fill)" />
-          <stop offset="1" stopColor="var(--accent-fill)" stopOpacity="0" />
-        </radialGradient>
-      </defs>
-      <ellipse cx="160" cy="196" rx="70" ry="44" fill="url(#s-fuego)" className="s-fogon-llama" />
-      <path d="M78 92h164l-14 72c-4 20-24 32-68 32s-64-12-68-32z" fill="var(--night-2)" stroke="var(--text-2)" strokeWidth="3" />
-      <path d="M70 92h180" stroke="var(--text-2)" strokeWidth="6" strokeLinecap="round" />
-      <path d="M128 70c0-14 10-18 6-30M160 66c0-14 10-18 6-30M192 70c0-14 10-18 6-30" stroke="var(--muted)" strokeWidth="3" fill="none" strokeLinecap="round" className="s-fogon-vapor" />
-      <g fill="var(--line-2)" stroke="var(--text-2)" strokeWidth="2">
-        <ellipse cx="66" cy="214" rx="42" ry="26" />
-        <ellipse cx="254" cy="214" rx="42" ry="26" />
-        <ellipse cx="160" cy="232" rx="42" ry="22" />
-      </g>
-      <g fontFamily="var(--font)" fontSize="13" fontWeight="600" fill="var(--text)" textAnchor="middle">
-        <text x="66" y="219">{nombres[0]}</text>
-        <text x="254" y="219">{nombres[2]}</text>
-        <text x="160" y="237">{nombres[1]}</text>
-      </g>
-    </svg>
-  )
 }
 
 /** QR pequeño a la demo, fijo en la esquina superior derecha. */

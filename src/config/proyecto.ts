@@ -127,7 +127,7 @@ export const SECCIONES: Seccion[] = [
     ruta: '/responsabilidades',
     titulo: 'Mapeo de responsabilidades',
     corto: 'Responsabilidades',
-    resumen: 'Qué papel juega cada agente (Turismo de Tenerife, Cabildo, empresas, vivienda vacacional, población local y turistas) y cómo colaboran.',
+    resumen: 'Qué papel juega cada entidad (Turismo de Tenerife, Cabildo, empresas, vivienda vacacional, población local y turistas) y cómo colaboran.',
     estado: 'listo',
     visible: true,
   },

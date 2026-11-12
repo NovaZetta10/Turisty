@@ -25,6 +25,11 @@
   .grano{position:absolute;inset:0;pointer-events:none;opacity:.07;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
   .vineta{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.3) 100%)}
   .fuente{position:absolute;left:140px;bottom:70px;font-size:24px;font-weight:600;opacity:.75}
+  .pista{position:absolute;left:140px;width:1240px;height:110px;border-radius:8px;background:rgba(255,255,255,.1);overflow:hidden}
+  .barra{height:100%;width:0;border-radius:0 8px 8px 0}
+  .cifra{position:absolute;font-size:118px;line-height:110px;opacity:0;white-space:nowrap}
+  .perfil{display:flex;align-items:center;justify-content:center;gap:12px;font-size:34px;font-weight:700;opacity:0;margin-top:12px}
+  .perfil i{display:inline-grid;place-items:center;width:52px;height:52px;border-radius:50%;background:#fff;color:#27336D;flex:none}
   .escenario{position:absolute;inset:0;perspective:2200px}
   .movil{position:absolute;left:1180px;top:110px;width:425px;height:888px;border-radius:60px;background:#0b1030;padding:14px;box-shadow:0 60px 120px rgba(0,0,0,.5),inset 0 0 0 2px rgba(255,255,255,.08)}
   .pantalla{position:relative;width:397px;height:860px;border-radius:47px;overflow:hidden;background:#f3f4f8}
@@ -60,17 +65,15 @@
 </section>
 
 <!-- C · dato -->
-<section class="esc" id="C1" style="background:var(--marino)">
-  <div class="t-s" style="position:absolute;left:140px;top:120px;font-size:30px;letter-spacing:5px;text-transform:uppercase;opacity:.75">Residentes de Tenerife</div>
-  <div class="t-xl" id="c1n" style="position:absolute;left:120px;top:220px;font-size:420px;transform-origin:20% 60%">62,2 %</div>
-  <div class="t-l" id="c1l" style="position:absolute;left:140px;top:720px;font-size:66px;font-weight:700">creen que el turismo es<br>muy beneficioso para la isla</div>
+<section class="esc" id="C" style="background:var(--marino)">
+  <div class="t-s" style="position:absolute;left:140px;top:110px;font-size:30px;letter-spacing:5px;text-transform:uppercase;opacity:.75">Residentes de Tenerife</div>
+  <div class="t-l" style="position:absolute;left:140px;top:220px;font-size:80px"><span class="ln" id="cl1"><span>Bueno para la isla</span></span></div>
+  <div class="pista" style="top:340px"><div class="barra" id="cb1" style="background:#fff"></div></div>
+  <div class="t-xl cifra" id="cn1" style="top:340px">62,2 %</div>
+  <div class="t-l" style="position:absolute;left:140px;top:560px;font-size:80px"><span class="ln" id="cl2"><span>Mejora mi vida</span></span></div>
+  <div class="pista" id="cp2" style="top:680px;opacity:0"><div class="barra" id="cb2" style="background:var(--rojo)"></div></div>
+  <div class="t-xl cifra" id="cn2" style="top:680px">35,9 %</div>
   <div class="fuente">Fuente: ISTAC, 2026 · encuesta a residentes de Tenerife</div>
-</section>
-<section class="esc" id="C2" style="background:var(--rojo)">
-  <div class="t-s" style="position:absolute;left:140px;top:120px;font-size:30px;letter-spacing:5px;text-transform:uppercase;opacity:.85">Residentes de Tenerife</div>
-  <div class="t-xl" id="c2n" style="position:absolute;left:120px;top:220px;font-size:420px;transform-origin:20% 60%">35,9 %</div>
-  <div class="t-l" id="c2l" style="position:absolute;left:140px;top:720px;font-size:66px;font-weight:700">dicen que mejora<br>su calidad de vida</div>
-  <div class="fuente" style="opacity:.9">Fuente: ISTAC, 2026 · encuesta a residentes de Tenerife</div>
 </section>
 <section class="esc" id="C3" style="background:#0a0d26">
   <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
@@ -92,18 +95,36 @@
   </div>
 </section>
 
-<!-- E · app -->
-<section class="esc" id="E" style="background:radial-gradient(ellipse at 70% 40%,#2c3a7d,#161d4a 70%)">
-  <div class="t-l" style="font-size:118px;position:absolute;left:140px;top:420px"><span class="ln" id="e1"><span>Vivo en Tenerife.</span></span></div>
-  <div class="t-l" style="font-size:118px;position:absolute;left:140px;top:360px"><span class="ln" id="e2"><span>Quiero sentir…</span></span><span class="ln" id="e2b"><span style="color:#ffb27a">sabor.</span></span></div>
-  <div class="t-l" style="font-size:118px;position:absolute;left:140px;top:420px"><span class="ln" id="e4"><span>Tres piedras.</span></span></div>
-  <div class="t-l" style="font-size:92px;position:absolute;left:140px;top:680px"><span class="ln" id="e5"><span>Lo deciden los vecinos.</span></span></div>
-  <div class="escenario">
-    <div class="movil" id="movil"><div class="pantalla" id="pantalla"><div class="toque" id="toque"></div></div></div>
+<!-- E · tres piedras y fondo del barrio (gráfico propio, sin capturas) -->
+<section class="esc" id="E" style="background:var(--marino)">
+  <div class="t-l" style="position:absolute;left:0;right:0;top:120px;text-align:center;font-size:96px"><span class="ln" id="eh1"><span>Cada experiencia, tres piedras.</span></span></div>
+  <div class="t-l" style="position:absolute;left:0;right:0;top:120px;text-align:center;font-size:96px"><span class="ln" id="eh2"><span>Y deja dinero en el barrio.</span></span></div>
+  <svg id="tres" width="1920" height="1080" viewBox="0 0 1920 1080" style="position:absolute;inset:0">
+    <defs>
+      <radialGradient id="egs" cx="38%" cy="30%" r="75%"><stop offset="0" stop-color="#8f98bb"/><stop offset=".55" stop-color="#47507a"/><stop offset="1" stop-color="#232a52"/></radialGradient>
+      <radialGradient id="egl" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ff8a3d" stop-opacity=".55"/><stop offset="1" stop-color="#ff8a3d" stop-opacity="0"/></radialGradient>
+    </defs>
+    <g id="ep0"><ellipse class="glow" rx="260" ry="170" fill="url(#egl)" opacity="0"/><ellipse rx="150" ry="90" fill="url(#egs)"/><ellipse class="aro" rx="150" ry="90" fill="none" stroke="#fff" stroke-width="5" opacity="0"/></g>
+    <g id="ep1"><ellipse class="glow" rx="260" ry="170" fill="url(#egl)" opacity="0"/><ellipse rx="150" ry="90" fill="url(#egs)"/><ellipse class="aro" rx="150" ry="90" fill="none" stroke="#fff" stroke-width="5" opacity="0"/></g>
+    <g id="ep2"><ellipse class="glow" rx="260" ry="170" fill="url(#egl)" opacity="0"/><ellipse rx="150" ry="90" fill="url(#egs)"/><ellipse class="aro" rx="150" ry="90" fill="none" stroke="#fff" stroke-width="5" opacity="0"/></g>
+    <g id="em0" opacity="0"><circle r="46" fill="#fff"/><text text-anchor="middle" y="19" font-family="Montserrat" font-weight="900" font-size="54" fill="#E20612">€</text></g>
+    <g id="em1" opacity="0"><circle r="46" fill="#fff"/><text text-anchor="middle" y="19" font-family="Montserrat" font-weight="900" font-size="54" fill="#E20612">€</text></g>
+    <g id="em2" opacity="0"><circle r="46" fill="#fff"/><text text-anchor="middle" y="19" font-family="Montserrat" font-weight="900" font-size="54" fill="#E20612">€</text></g>
+    <g id="eb" opacity="0"><circle r="175" fill="#fff"/><text text-anchor="middle" font-family="Montserrat" font-weight="800" font-size="54" fill="#27336D"><tspan x="0" y="-8">Fondo</tspan><tspan x="0" y="54">del barrio</tspan></text></g>
+  </svg>
+  <div style="position:absolute;left:100px;width:600px;top:690px;text-align:center"><div class="t-l" style="font-size:76px"><span class="ln" id="ek0"><span>Garantizada</span></span></div><div class="perfil" id="es0"><i><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6zM8.5 12l2.5 2.5 4.5-5"/></svg></i>Turismo de Tenerife</div></div>
+  <div style="position:absolute;left:660px;width:600px;top:690px;text-align:center"><div class="t-l" style="font-size:76px"><span class="ln" id="ek1"><span>Avalada</span></span></div><div class="perfil" id="es1"><i><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 6.5M18 14a6 6 0 0 1 3.5 6"/></svg></i>Anfitrión o asociación</div></div>
+  <div style="position:absolute;left:1220px;width:600px;top:690px;text-align:center"><div class="t-l" style="font-size:76px"><span class="ln" id="ek2"><span>Valorada</span></span></div><div class="perfil" id="es2"><i><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 9.5V20h12V9.5M10 20v-5h4v5"/></svg></i><i><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></i>Vecino o visitante</div></div>
+  <div class="t-l" style="position:absolute;left:0;right:0;top:690px;text-align:center;font-size:92px"><span class="ln" id="e5"><span>Lo deciden los vecinos.</span></span></div>
+</section>
+
+<!-- G · avance del prototipo (capturas reales) -->
+<section class="esc" id="G" style="background:radial-gradient(ellipse at 70% 40%,#2c3a7d,#161d4a 70%)">
+  <div style="position:absolute;left:140px;top:400px">
+    <div class="t-l" style="font-size:120px"><span class="ln" id="g1"><span>Ya funciona.</span></span></div>
+    <div class="t-s" id="g2" style="font-size:32px;margin-top:22px;opacity:0">Prototipo Tenique · datos de ejemplo</div>
   </div>
-  <div class="recorte" id="rPiedras"></div>
-  <div class="recorte" id="rDeja"></div>
-  <div class="etiqueta" id="ej">EJEMPLO</div>
+  <div class="escenario"><div class="movil" id="movil"><div class="pantalla" id="pantalla"></div></div></div>
 </section>
 
 <!-- F · cierre -->
@@ -140,9 +161,9 @@ const back = (k) => { k = cl(k); const c = 1.9; return 1 + (c + 1) * Math.pow(k 
 const rebote = (k) => { k = cl(k); const n = 7.5625, d = 2.75; if (k < 1 / d) return n * k * k; if (k < 2 / d) return n * (k -= 1.5 / d) * k + .75; if (k < 2.5 / d) return n * (k -= 2.25 / d) * k + .9375; return n * (k -= 2.625 / d) * k + .984375 }
 
 // Duración total y escenas con cortes secos: [id, inicio, fin]
-const DURACION = 43
+const DURACION = 45
 window.DURACION = DURACION
-const ESC = [['A', 0, 2.4], ['B', 2.4, 6.4], ['B2', 6.4, 8.2], ['C1', 8.2, 11.2], ['C2', 11.2, 14.2], ['C3', 14.2, 16.0], ['D', 16.0, 26.5], ['E', 26.5, 37.0], ['F1', 37.0, 40.0], ['F3', 40.0, 99]]
+const ESC = [['A', 0, 2.4], ['B', 2.4, 6.4], ['B2', 6.4, 8.2], ['C', 8.2, 14.2], ['C3', 14.2, 16.0], ['D', 16.0, 26.5], ['E', 26.5, 36.5], ['G', 36.5, 40.0], ['F1', 40.0, 42.6], ['F3', 42.6, 99]]
 let T = 0
 
 // Línea con máscara: sube desde abajo y sale hacia arriba
@@ -229,27 +250,12 @@ function fogon(p, cx, cy, s, st) {
   cal.style.opacity = T < st.cal ? 0 : 1
 }
 
-// ── App: capturas reales
-const S = 397 / 430
+// ── Prototipo: capturas reales (solo para el avance)
 const IM = {}
-function img(n, src) { const i = new Image(); i.src = src; $('#pantalla').insertBefore(i, $('#toque')); IM[n] = i; return i }
-img('inicio', 'capturas/01-inicio.png'); img('muni', 'capturas/02-municipio.png'); img('sentir', 'capturas/03-sentir.png'); img('lista', 'capturas/04-lista.png')
+function img(n, src) { const i = new Image(); i.src = src; $('#pantalla').appendChild(i); IM[n] = i; return i }
+img('inicio', 'capturas/01-inicio.png'); img('sentir', 'capturas/03-sentir.png')
 const SCROLL = Array.from({ length: 25 }, (_, i) => img('s' + i, `capturas/06-scroll-piedras-${String(i).padStart(2, '0')}.jpg`))
-const FINAL = 'capturas/06-scroll-piedras-24.jpg'
-let META = null
-const PANT = [[26.5, 'inicio'], [28.0, 'muni'], [29.0, 'sentir'], [30.6, 'lista'], [31.8, 'ficha']]
-const TOQ = [[27.5, '01-inicio'], [28.6, '02-municipio'], [30.1, '03-sentir'], [31.3, '04-lista']]
-// Recortes de la última captura (px de la imagen a 2×). «Qué deja aquí» sin la línea del enlace subrayado.
-const R_PIEDRAS = { x: 32, y: 692, w: 796, h: 280 }
-const R_DEJA = { x: 32, y: 1247, w: 796, h: 116 }
-function prepRecorte(el, r, extra = 0) {
-  Object.assign(el.style, { width: r.w + 'px', height: r.h + extra + 'px', backgroundImage: `url(${FINAL})`, backgroundSize: '860px 1864px', backgroundPosition: `-${r.x}px -${r.y}px`, borderRadius: '24px' })
-}
-prepRecorte($('#rPiedras'), R_PIEDRAS)
-prepRecorte($('#rDeja'), R_DEJA, 26)
-$('#rDeja').style.backgroundColor = 'rgb(234,239,245)'
-$('#rDeja').style.boxShadow = '0 50px 100px rgba(0,0,0,.45), inset 0 0 0 2px rgb(216,219,226)'
-const pantImg = (n) => n === 'ficha' ? SCROLL[0] : IM[n]
+const PANT = [[36.5, 'inicio'], [37.4, 'sentir'], [38.3, 'ficha']]
 
 function render(t) {
   T = t
@@ -276,10 +282,21 @@ function render(t) {
   linea('#b21', 6.5, 99, .5); linea('#b22', 7.1, 99, .5)
 
   // C · dato (8,2–16)
-  golpe($('#c1n'), 8.2); suma(temblor(8.2, 18, .45))
-  aparece($('#c1l'), 8.8)
-  golpe($('#c2n'), 11.2); suma(temblor(11.2, 24, .5))
-  aparece($('#c2l'), 11.8)
+  if (t >= 8.2 && t < 14.2) {
+    const fmt = (x) => x.toFixed(1).replace('.', ',') + ' %'
+    const barra = (n, v, a) => {
+      const k = eio(pr(t, a, a + 1.0))
+      $('#cb' + n).style.width = v * k + '%'
+      const c = $('#cn' + n)
+      c.textContent = fmt(v * k)
+      c.style.left = (140 + 1240 * v / 100 * k + 32) + 'px'
+      c.style.opacity = pr(t, a, a + .2)
+    }
+    linea('#cl1', 8.35, 99, .6); barra(1, 62.2, 8.7)
+    linea('#cl2', 10.9, 99, .6); barra(2, 35.9, 11.25)
+    $('#cp2').style.opacity = pr(t, 10.9, 11.2)
+    suma(temblor(12.25, 8, .35))
+  }
   linea('#c3', 14.45, 99, .8)
 
   // D · fogón (16–26,5). TENIQUE entra una vez y se queda arriba.
@@ -294,68 +311,76 @@ function render(t) {
     suma(temblor(23.2, 12, .4)); suma(temblor(24.6, 9, .3)); suma(temblor(19.38, 7, .3))
   }
 
-  // E · app (26,5–37)
-  if (t >= 26.5 && t < 37) {
-    let cur = 'inicio', desde = 26.5, idx = 0
-    PANT.forEach(([a, n], i) => { if (t >= a) { cur = n; desde = a; idx = i } })
-    Object.values(IM).forEach((i) => { i.style.opacity = 0; i.style.zIndex = 0; i.style.transform = 'none' })
-    const im = cur === 'ficha' ? SCROLL[Math.round(eio(pr(t, 32.1, 33.3)) * 24)] : IM[cur]
-    const k = eo(pr(t, desde, desde + .4))
-    im.style.opacity = 1; im.style.zIndex = 2
-    im.style.transform = idx === 0 ? 'none' : `translateX(${(1 - k) * 100}%)`
-    if (idx > 0 && k < 1) { const ia = pantImg(PANT[idx - 1][1]); ia.style.opacity = 1; ia.style.zIndex = 1; ia.style.transform = `translateX(${-k * 30}%)` }
-    const tq = $('#toque'), tc = TOQ.find(([a]) => t >= a - .3 && t < a + .4)
-    if (tc && META) {
-      const r = META[tc[1]], kk = pr(t, tc[0] - .3, tc[0] + .4)
-      tq.style.left = (r.x + r.w / 2) * S + 'px'; tq.style.top = (r.y + Math.min(r.h / 2, 60)) * S + 'px'
-      tq.style.opacity = kk < .4 ? kk / .4 : 1 - (kk - .4) / .6
-      tq.style.transform = `scale(${t < tc[0] ? 1 - (tc[0] - t) : 1 + pr(t, tc[0], tc[0] + .4) * .7})`
-    } else tq.style.opacity = 0
-    const ent = eo(pr(t, 26.5, 27.4)), rec = eio(pr(t, 33.5, 34.1))
-    const m = $('#movil')
-    m.style.transform = `translate3d(${(1 - ent) * 600 + rec * 280}px, ${(1 - ent) * 60}px, ${-rec * 600}px) rotateY(${-20 + 10 * pr(t, 26.5, 33.5) - rec * 10}deg) rotateX(${5 - rec * 2}deg) rotateZ(1.5deg)`
-    m.style.opacity = 1 - rec * .6
-    linea('#e1', 26.8, 28.7)
-    linea('#e2', 29.1, 31.0); linea('#e2b', 30.15, 31.0, .45)
-    linea('#e4', 32.0, 33.4)
-    linea('#e5', 35.9, 99)
-    const s0 = 397 / 860
-    const sacar = (el, r, a, b, dx, dy, esc) => {
-      const kk = eio(pr(t, a, a + .6)), ko = eio(pr(t, b, b + .4))
-      const ox = 1200 + r.x * s0, oy = 130 + r.y * s0
-      const x = ox + (dx - ox) * kk - ko * 1500, y = oy + (dy - oy) * kk
-      const s = s0 + (esc - s0) * kk
-      el.style.transform = `translate(${x}px, ${y}px) scale(${s}) rotate(${(1 - kk) * -4}deg)`
-      el.style.opacity = Math.min(1, pr(t, a, a + .1))
-      el.style.display = t >= a && t < b + .4 ? 'block' : 'none'
+  // E · tres piedras y fondo del barrio (26,5–37)
+  if (t >= 26.5 && t < 36.5) {
+    linea('#eh1', 26.7, 31.4, .6); linea('#eh2', 31.8, 99, .6)
+    const X = [400, 960, 1520], LUZ = [27.8, 29.0, 30.2]
+    const baja = eio(pr(t, 31.6, 32.3))
+    for (let i = 0; i < 3; i++) {
+      const a = 26.8 + i * .3
+      const caida = (1 - rebote(pr(t, a, a + .5))) * -800
+      const luz = pr(t, LUZ[i], LUZ[i] + .35)
+      const pulso = 1 + .06 * Math.sin(Math.PI * pr(t, LUZ[i], LUZ[i] + .35))
+      const x = X[i] + (960 + (i - 1) * 260 - X[i]) * baja, y = 540 + caida + baja * 380
+      const g = $('#ep' + i)
+      g.setAttribute('transform', `translate(${x} ${y}) scale(${pulso * (1 - .45 * baja)})`)
+      g.style.opacity = t < a ? 0 : 1
+      g.querySelector('.glow').setAttribute('opacity', luz * (.85 + .15 * Math.sin(t * 9 + i)) * (1 - .5 * baja))
+      g.querySelector('.aro').setAttribute('opacity', luz * .9 * (1 - baja))
+      linea('#ek' + i, LUZ[i], 31.3, .5)
+      $('#es' + i).style.opacity = pr(t, LUZ[i] + .3, LUZ[i] + .65) * (1 - pr(t, 31.3, 31.6)); $('#es' + i).style.transform = `translateY(${(1 - eo(pr(t, LUZ[i] + .3, LUZ[i] + .8))) * 20}px)`
+      // moneda: sale de la piedra y vuela al fondo del barrio
+      const m0 = 32.2 + i * .25, km = eio(pr(t, m0, m0 + .8))
+      const sx0 = 960 + (i - 1) * 260, sy0 = 880
+      const mx = sx0 + (960 - sx0) * km, my = sy0 + (470 - sy0) * km - Math.sin(Math.PI * km) * 160
+      const m = $('#em' + i)
+      m.setAttribute('transform', `translate(${mx} ${my}) scale(${back(pr(t, m0, m0 + .3)) * (1 - .6 * pr(t, m0 + .7, m0 + .8))})`)
+      m.setAttribute('opacity', t < m0 ? 0 : 1 - pr(t, m0 + .72, m0 + .8))
     }
-    sacar($('#rPiedras'), R_PIEDRAS, 33.5, 35.0, 140, 330, 1.15)
-    sacar($('#rDeja'), R_DEJA, 35.1, 99, 140, 380, 1.15)
-    const ej = $('#ej'), enP = t >= 34.0 && t < 35.0, enD = t >= 35.6
-    ej.style.left = '140px'; ej.style.top = (enP ? 262 : 312) + 'px'
-    ej.style.opacity = enP ? pr(t, 34.1, 34.3) * (1 - pr(t, 34.9, 35.0)) : enD ? pr(t, 35.7, 35.9) : 0
+    const kb = pr(t, 32.95, 33.5)
+    $('#eb').setAttribute('transform', `translate(960 470) scale(${Math.max(0, back(kb)) * (1 + .05 * Math.sin(Math.PI * pr(t, 33.45, 33.7)))})`)
+    $('#eb').setAttribute('opacity', t < 32.95 ? 0 : 1)
+    linea('#e5', 34.2, 99, .6)
+    suma(temblor(26.98, 6, .3)); suma(temblor(27.28, 6, .3)); suma(temblor(27.58, 6, .3)); suma(temblor(33.0, 8, .35))
   }
 
-  // F · cierre (37–43)
-  if (t >= 37 && t < 40) fogon('f', 960, 330, .55, { a: 36.7, b: 36.75, c: 36.8, fuego: 37.1, cal: 36.85 })
-  linea('#f1', 37.5, 99, .7); linea('#f2', 38.2, 99, .7)
-  linea('#f5', 40.3, 99, .8)
-  aparece($('#marcaPiedras'), 40.15, .7)
-  $('#f6').style.opacity = eo(pr(t, 41.0, 41.6)); $('#f7').style.opacity = eo(pr(t, 41.3, 41.9))
+  // G · avance del prototipo (36,5–40)
+  if (t >= 36.5 && t < 40) {
+    let cur = 'inicio', desde = 36.5, idx = 0
+    PANT.forEach(([a, n], i) => { if (t >= a) { cur = n; desde = a; idx = i } })
+    Object.values(IM).forEach((i) => { i.style.opacity = 0; i.style.zIndex = 0; i.style.transform = 'none' })
+    const im = cur === 'ficha' ? SCROLL[Math.round(eio(pr(t, 38.5, 39.7)) * 24)] : IM[cur]
+    const k = eo(pr(t, desde, desde + .35))
+    im.style.opacity = 1; im.style.zIndex = 2
+    im.style.transform = idx === 0 ? 'none' : `translateX(${(1 - k) * 100}%)`
+    if (idx > 0 && k < 1) { const ia = PANT[idx - 1][1] === 'ficha' ? SCROLL[0] : IM[PANT[idx - 1][1]]; ia.style.opacity = 1; ia.style.zIndex = 1; ia.style.transform = `translateX(${-k * 30}%)` }
+    const ent = eo(pr(t, 36.5, 37.2))
+    $('#movil').style.transform = `translate3d(0, ${(1 - ent) * 900}px, 0) rotateY(${-22 + 10 * pr(t, 36.5, 40)}deg) rotateX(${6 + (1 - ent) * 20}deg) rotateZ(1.5deg)`
+    linea('#g1', 36.9, 99, .6)
+    aparece($('#g2'), 37.5, .6, 16)
+  }
+
+  // F · cierre (40–45)
+  if (t >= 40 && t < 42.6) fogon('f', 960, 330, .55, { a: 39.7, b: 39.75, c: 39.8, fuego: 40.1, cal: 39.85 })
+  linea('#f1', 40.4, 99, .7); linea('#f2', 41.0, 99, .7)
+  linea('#f5', 42.9, 99, .8)
+  aparece($('#marcaPiedras'), 42.75, .7)
+  $('#f6').style.opacity = eo(pr(t, 43.4, 44.0)); $('#f7').style.opacity = eo(pr(t, 43.6, 44.2))
 
   // fundidos breves a negro entre capítulos y al final
   $('#negro').style.opacity = Math.max(
     1 - pr(t, 0, .4),
     t < 16.25 ? pr(t, 15.75, 16.0) * (1 - pr(t, 16.0, 16.25)) : 0,
     t > 26 && t < 26.75 ? pr(t, 26.25, 26.5) * (1 - pr(t, 26.5, 26.75)) : 0,
-    t > 36.5 && t < 37.25 ? pr(t, 36.75, 37.0) * (1 - pr(t, 37.0, 37.25)) : 0,
-    pr(t, 42.4, 43.0))
+    t > 39.5 && t < 40.25 ? pr(t, 39.75, 40.0) * (1 - pr(t, 40.0, 40.25)) : 0,
+    pr(t, 44.4, 45.0))
   $('#todo').style.transform = `translate(${sx}px, ${sy}px) scale(${sx || sy ? 1.02 : 1})`
 }
 
 window.listo = (async () => {
-  META = await (await fetch('capturas/meta.json')).json().catch(() => null)
+  await Promise.all(['500', '600', '700', '800', '900'].map((w) => document.fonts.load(`${w} 60px Montserrat`, 'Áa€')))
   await document.fonts.ready
+  if (!['500', '700', '800', '900'].every((w) => document.fonts.check(`${w} 60px Montserrat`))) throw new Error('Montserrat no ha cargado')
   await Promise.all([...document.images].map((i) => i.complete ? 0 : new Promise((r) => { i.onload = i.onerror = r })))
   render(0)
   return true

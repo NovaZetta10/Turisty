@@ -682,3 +682,22 @@ th.num, td.num { text-align: right; }
   .nav a.nav-destacada { position: sticky; right: 0; z-index: 1; background: var(--brand-blue); box-shadow: -10px 0 12px -4px var(--night), 0 0 0 1px color-mix(in srgb, var(--on-accent) 25%, transparent); }
   .nav a.nav-destacada.active { background: var(--accent-fill); }
 }
+
+/* ─────────────── piedras del fogón (components/Piedra) ─────────────── */
+.piedra { position: relative; display: inline-grid; place-items: center; flex: none; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .35)); }
+.piedra > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.piedra-ic { position: relative; color: #fff; display: grid; place-items: center; }
+.piedra-vecinos { --piedra-luz: #ff4a52; --piedra-sombra: #b0050f; }        /* blanco sobre #b0050f: 7,0:1 */
+.piedra-visitantes { --piedra-luz: #3a76c9; --piedra-sombra: #143f80; }     /* blanco sobre #143f80: 10,1:1 */
+.piedra-instituciones { --piedra-luz: #5865a8; --piedra-sombra: #27336d; }  /* blanco sobre #27336d: 11,8:1 */
+
+.fogon { --fs: 72px; position: relative; margin: 0 auto; width: calc(var(--fs) * 3.4); height: calc(var(--fs) * 3); }
+.fogon-llama { position: absolute; left: 50%; top: 62%; translate: -50% -50%; color: var(--accent-fill); filter: drop-shadow(0 0 18px color-mix(in srgb, var(--accent-fill) 70%, transparent)); transform-origin: 50% 90%; animation: fogon-llama 1.6s ease-in-out infinite alternate; }
+.fogon-p { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; animation: fogon-entra .28s var(--ease-out) backwards; }
+.fogon-p span:not(.piedra):not(.piedra-ic) { font-size: 12.5px; font-weight: 600; color: var(--text-2); max-width: calc(var(--fs) * 1.6); line-height: 1.25; }
+.fogon-p1 { left: 50%; top: 0; translate: -50% 0; animation-delay: .05s; }
+.fogon-p2 { left: 0; bottom: 0; animation-delay: .13s; }
+.fogon-p3 { right: 0; bottom: 0; animation-delay: .21s; }
+@keyframes fogon-entra { from { opacity: 0; transform: translateY(8px) scale(.96); } }
+@keyframes fogon-llama { from { transform: scale(.96); opacity: .9; } to { transform: scale(1.04); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .fogon-llama, .fogon-p { animation: none; } }

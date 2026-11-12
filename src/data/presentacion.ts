@@ -103,7 +103,7 @@ export const SLIDES: Slide[] = [
     titulo: 'Con las tres, el fogón se enciende.',
     piedras: [
       { nombre: 'Vecinos', texto: 'Un fondo que deciden ellos, voz y reconocimiento.' },
-      { nombre: 'Visitantes', texto: 'La isla de verdad, con quien la vive.' },
+      { nombre: 'Visitantes y sector', texto: 'La isla de verdad con quien la vive, y un gasto que llega al barrio.' },
       { nombre: 'Instituciones', texto: 'Datos de convivencia y un retorno que se ve.' },
     ],
     lema: 'Tenerife se cocina entre todos.',

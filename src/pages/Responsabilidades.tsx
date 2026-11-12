@@ -6,6 +6,7 @@ import { SECCIONES, rutaDe } from '../config/proyecto'
 import { Tabla, type Columna } from '../components/Tabla'
 import { Icon } from '../components/Icon'
 import { Refs, Verificado } from '../components/Refs'
+import { Fogon, Piedra } from '../components/Piedra'
 import { ACCIONES, AGENTES, COMPETENCIAS, FLUJOS, FLUJO_TXT, PIEDRAS, RACI_TXT, VALIDACION, type Accion, type AgenteId, type Competencia, type Raci } from '../data/responsabilidades'
 import '../styles/responsabilidades.css'
 
@@ -23,7 +24,7 @@ export default function Responsabilidades() {
       </header>
       <div className="callout enter enter-2" style={{ marginBottom: 8 }}>
         <Icon name="alert" size={16} />
-        <span>Es nuestra propuesta de reparto: ningún agente la ha aceptado todavía. Encaja con el <Link to={rutaDe('viabilidad')}>plan de acción</Link>, donde están los plazos y lo que falta por revisar en lo legal.</span>
+        <span>Este reparto de papeles es nuestra propuesta. Se acordará con cada entidad en los primeros meses del plan (convenio con el Cabildo, patronales y asociaciones). Los plazos y lo que falta por revisar en lo legal están en el <Link to={rutaDe('viabilidad')}>plan de acción</Link>.</span>
       </div>
       <TresPiedras />
       <PorAgente />
@@ -46,14 +47,14 @@ function TresPiedras() {
       <div className="rs-fogon">
         {PIEDRAS.map((p, i) => (
           <div key={p.id} className={`card rs-piedra rs-${p.id} enter enter-${i + 2}`}>
-            <span className="kicker">Piedra {i + 1}</span>
+            <div className="rs-piedra-top"><Piedra tipo={p.id} size={60} titulo={p.nombre} /><span className="kicker">Piedra {i + 1}</span></div>
             <h3>{p.nombre}</h3>
             <p>{p.texto}</p>
             <div className="chips">{AGENTES.filter((a) => a.piedra === p.id).map((a) => <span key={a.id} className="tag"><Icon name={a.icono} size={12} />{a.nombre}</span>)}</div>
           </div>
         ))}
         <div className="rs-centro enter enter-5">
-          <span className="rs-llama" aria-hidden="true" />
+          <Fogon size={64} leyenda={false} />
           <b>Experiencias compartidas</b>
           <span className="small muted">y fondo del barrio con uso visible</span>
         </div>
@@ -94,7 +95,7 @@ function PorAgente() {
   const a = AGENTES.find((x) => x.id === id) ?? AGENTES[0]
   return (
     <section id="agentes" className="section">
-      <div className="section-head"><div><h2>El papel de cada agente</h2><p>Elige uno para ver qué pone, qué recibe y qué decide.</p></div></div>
+      <div className="section-head"><div><h2>El papel de cada entidad</h2><p>Elige una para ver qué pone, qué recibe y qué decide.</p></div></div>
       <div className="chips" role="tablist">
         {AGENTES.map((x) => (
           <button key={x.id} role="tab" aria-selected={x.id === a.id} className={`chip ${x.id === a.id ? 'on' : ''}`} onClick={() => setId(x.id)}>{x.nombre}</button>
@@ -135,7 +136,7 @@ function Matriz() {
   ]
   return (
     <section id="matriz" className="section">
-      <div className="section-head"><div><h2>Quién hace qué</h2><p>Matriz de responsabilidades. En cada acción, un solo agente rinde cuentas. Desplaza en horizontal en el móvil.</p></div></div>
+      <div className="section-head"><div><h2>Quién hace qué</h2><p>Matriz de responsabilidades. En cada acción, una sola entidad rinde cuentas. Desplaza en horizontal en el móvil.</p></div></div>
       <div className="rs-leyenda small muted">
         {(['R', 'A', 'A/R', 'C', 'I'] as Raci[]).map((r) => <span key={r}><Celda v={r} /> {RACI_TXT[r]}</span>)}
       </div>

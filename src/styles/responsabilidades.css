@@ -7,15 +7,15 @@
 .rs-instituciones { grid-area: ins; }
 .rs-centro { grid-area: cen; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 6px; padding: 16px; }
 .rs-piedra { display: flex; flex-direction: column; gap: 8px; }
+.rs-piedra-top { display: flex; align-items: center; gap: 12px; margin-bottom: 2px; }
+.rs-piedra-top svg { flex: none; }
 .rs-piedra h3 { font-size: 20px; }
 .rs-piedra p { color: var(--text-2); font-size: 14px; }
 .rs-piedra .chips { margin-top: auto; padding-top: 6px; }
 .rs-piedra .tag { gap: 5px; }
-.rs-llama { width: 56px; height: 56px; border-radius: 50%; background: radial-gradient(circle at 50% 60%, #ffffff 0, #ff6b70 30%, #e20612 52%, color-mix(in srgb, var(--brand-red) 15%, transparent) 66%, transparent 72%); box-shadow: 0 0 40px color-mix(in srgb, var(--brand-red) 35%, transparent); }
 @media (max-width: 760px) {
   .rs-fogon { grid-template-columns: 1fr; grid-template-areas: "vec" "vis" "ins" "cen"; }
-  .rs-centro { flex-direction: row; justify-content: flex-start; text-align: left; flex-wrap: wrap; padding: 4px 0; }
-  .rs-llama { width: 32px; height: 32px; }
+  .rs-centro { padding: 8px 0; }
 }
 
 /* Flujos */

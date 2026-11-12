@@ -1,12 +1,12 @@
 """Efectos de sonido del teaser, sintetizados desde cero con numpy (sin muestras ni música de terceros).
-Uso: python scripts/teaser/sonido.py  →  scripts/teaser/audio/efectos.wav (48 kHz, estéreo, 43 s)
+Uso: python scripts/teaser/sonido.py  →  scripts/teaser/audio/efectos.wav (48 kHz, estéreo, 45 s)
 Los tiempos coinciden con escena.html."""
 import wave
 from pathlib import Path
 import numpy as np
 
 SR = 48000
-DUR = 43.0
+DUR = 45.0
 N = int(SR * DUR)
 rng = np.random.default_rng(7)
 L = np.zeros(N)
@@ -151,6 +151,18 @@ def latido():
     return np.sin(2 * np.pi * (45 + 50 * np.exp(-t * 35)) * t) * env(len(t), .002, .08)
 
 
+def moneda():
+    t = t_(.6)
+    parciales = [(2093, 1.0, .18), (3140, .6, .12), (4410, .4, .08), (5590, .25, .06)]
+    return sum(a * np.sin(2 * np.pi * f * t) * np.exp(-t / c) for f, a, c in parciales) * .35
+
+
+def campana():
+    t = t_(1.6)
+    parciales = [(523, 1.0, .9), (1046, .4, .6), (1570, .2, .4), (2093, .1, .3)]
+    return eco(sum(a * np.sin(2 * np.pi * f * t) * np.exp(-t / c) for f, a, c in parciales) * env(len(t), .005, 2) * .25, 1.2, .3)
+
+
 # ── Pista (tiempos de escena.html, 43 s)
 # A · gancho (0–2,4)
 poner(chasquido_fuego(2.4, 30, .9) * np.linspace(.3, 1, int(SR * 2.4)), 0.0, 1.0)
@@ -162,9 +174,11 @@ for i, a in enumerate([2.4, 3.4, 4.4, 5.4]):
 poner(golpe_corto(.6), 6.5, .6)
 poner(golpe_corto(.6), 7.1, .6)
 poner(subida(.55), 7.6, .55)
-# C · dato
-poner(bum(1.0, 2.8), 8.2, 1.0)
-poner(bum(1.2, 3.0), 11.2, 1.0)
+# C · dato: dos barras que crecen
+poner(zas(1.0, .7), 8.65, .6)
+poner(golpe_corto(.9), 9.7, .9)
+poner(zas(1.0, .7), 11.2, .6)
+poner(bum(.9, 2.6), 12.25, .9)
 poner(zumbido(1.8), 14.2, .9)
 poner(zas(.5, .8), 15.55, .8)
 # D · fogón
@@ -180,25 +194,32 @@ poner(golpe_piedra(.7), 23.2, .6, pan=-.2)
 poner(golpe_piedra(1.2), 24.62, 1.0, pan=.4)
 poner(caldero(.6), 24.85, .6)
 poner(zas(.5, .8), 26.2, .8)
-# E · app
-for a in np.arange(26.5, 36.9, .75):
-    poner(latido(), a, .4)
-for a in [28.0, 29.0, 30.6, 31.8]:
-    poner(zas(.35, .55), a - .05, .55, pan=.4)
-for a in [27.5, 28.6, 30.1, 31.3]:
-    poner(toque(), a, .7, pan=.35)
-poner(zas(.55, .9), 33.45, .8, pan=-.3)
-poner(golpe_corto(.8), 34.1, .8)
-poner(zas(.55, .9), 35.05, .8, pan=-.3)
-poner(golpe_corto(.8), 35.7, .8)
-poner(zas(.5, .7), 36.7, .7)
+# E · tres piedras y fondo del barrio
+for a, p in [(26.98, -.5), (27.28, 0), (27.58, .5)]:
+    poner(golpe_piedra(.9), a, .8, pan=p)
+for a, p in [(27.8, -.5), (29.0, 0), (30.2, .5)]:
+    poner(encendido(), a, .5, pan=p)
+    poner(campana(), a + .02, .5, pan=p)
+poner(zas(.6, .8), 31.5, .7)
+for k, a in enumerate([32.2, 32.45, 32.7]):
+    poner(zas(.35, .35), a, .35, pan=(-.4, 0, .4)[k])
+    poner(moneda(), a + .78, .7, pan=(-.2, 0, .2)[k])
+poner(bum(.5, 2.0), 32.95, .55)
+poner(golpe_corto(.6), 34.2, .6)
+poner(zas(.5, .7), 36.2, .6)
+# G · avance del prototipo
+poner(zas(.7, .9), 36.45, .8, pan=.3)
+poner(zas(.35, .55), 37.35, .5, pan=.4)
+poner(zas(.35, .55), 38.25, .5, pan=.4)
+poner(toque(), 37.15, .5, pan=.35)
+poner(toque(), 38.05, .5, pan=.35)
 # F · cierre
-poner(encendido(), 37.1, .6)
-poner(chasquido_fuego(3.0, 35, .8), 37.0, .7)
-poner(zas(.5, .6), 39.75, .6)
-poner(bum(.55, 2.4), 40.15, .55)
-cola = chasquido_fuego(2.6, 18, .5) * np.linspace(1, 0, int(SR * 2.6)) ** 2
-poner(cola, 40.0, .6)
+poner(encendido(), 40.1, .6)
+poner(chasquido_fuego(2.6, 35, .8), 40.0, .7)
+poner(zas(.5, .6), 42.35, .6)
+poner(bum(.55, 2.4), 42.75, .55)
+cola = chasquido_fuego(2.4, 18, .5) * np.linspace(1, 0, int(SR * 2.4)) ** 2
+poner(cola, 42.6, .6)
 
 # ── Masterización simple: normalizar a −1 dBFS con limitador suave
 st = np.stack([L, R])
