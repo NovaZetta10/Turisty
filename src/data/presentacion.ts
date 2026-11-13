@@ -184,5 +184,5 @@ export const SLIDES: Slide[] = [
       { titulo: 'Ved un día en Tenique en vivo', texto: 'La simulación con todos los perfiles moviéndose a lo largo de un día.', destino: 'gestion' },
     ],
   },
-  { tipo: 'final', titulo: 'Somos Nova', frase: 'Estos dos días nos hemos sentido parte de Tenerife. Esperamos haberos hecho sentir orgullo de ella.', subtitulo: '¿Preguntas?' },
+  { tipo: 'final', titulo: 'Somos Nova', frase: 'Estos dos días nos hemos sentido orgullosos de nuestra isla. Esperamos haberos contagiado ese orgullo.', subtitulo: '¿Preguntas?' },
 ]
