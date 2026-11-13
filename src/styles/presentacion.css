@@ -297,8 +297,10 @@
 }
 .print-deck .s-sello-g, .print-deck .s-marca, .print-deck .s-burbuja { animation: none !important; }
 
-.s-tel { width: 15cqw; }
+/* Móvil grande con vídeo (vecino y visitante): ~77 % del alto de la diapositiva (16:9 → 56,25cqw de alto) */
+.s-tel { width: 22.6cqw; }
 .s-imgs { top: 15cqw; right: 9cqw; }
+.s-imgs:has(.s-tel) { top: .5cqw; right: 8cqw; }
 .s-solucion.con-imgs { padding-right: 28cqw; }
 .s-gestion-cuerpo { grid-template-columns: 61cqw 1fr; gap: 2.2cqw; }
 .s-gestion-demo { width: 61cqw; }
@@ -306,17 +308,15 @@
 .s-gestion-nota { margin-top: .6cqw; font-size: 1.1cqw; max-width: 100%; }
 .s-imgs { right: 10cqw; }
 .s-solucion.con-imgs { padding-right: 30cqw; }
+.s-imgs:has(.s-tel) { right: 8cqw; }
+.s-solucion.con-imgs:has(.s-tel) { padding-right: 36cqw; }
 .s-datos-col ul { font-size: 1.9cqw; }
 .s-datos-prop span { font-size: 2.6cqw; }
 .s-datos-frase { font-size: 2.5cqw; }
 .s-datos-col { padding: 1.8cqw; }
-/* Los vídeos del móvil (780×1688) traen la app en el cuarto superior izquierdo y gris alrededor: se recorta ese cuarto.
-   Si se vuelven a grabar a tamaño completo, borrar estas dos reglas. */
-.s-tel { position: relative; }
-.s-tel .s-demo-video { position: absolute; left: 0; top: 0; width: 200%; height: 200%; object-fit: fill; }
-
 /* QR blanco y limpio: sin anillo ni halo azul (anula la regla de styles.css) */
 .slide .s-qr { box-shadow: none; background: #fff; }
 .slide .s-qr-mini, .slide .s-qr-cta { box-shadow: none; }
 /* Sendero: sin la frase naranja; el botón de la app queda pegado a la fricción */
 .s-hito-fric { margin-bottom: .2cqw; }
+.s-final-frase { font-family: var(--display); font-size: 2.6cqw; line-height: 1.3; font-weight: 600; color: var(--nova); max-width: 62cqw; margin: 1.2cqw 0 1.6cqw; letter-spacing: -0.01em; }

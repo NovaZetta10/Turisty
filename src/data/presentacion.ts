@@ -34,7 +34,7 @@ export type Slide =
   /** El fogón encendido: tres piedras sosteniendo el caldero y el mensaje clave. */
   | { tipo: 'fogon'; kicker: string; titulo: string; piedras: { nombre: string; texto: string }[]; mensaje?: string }
   /** Cierre: remate grande, equipo y preguntas. */
-  | { tipo: 'final'; titulo: string; subtitulo: string }
+  | { tipo: 'final'; titulo: string; subtitulo: string; frase?: string }
   | { tipo: 'columnas'; kicker: string; titulo: string; lead?: string; columnas: { titulo: string; texto: string }[]; fuente?: string }
   | { tipo: 'pasos'; kicker: string; titulo: string; pasos: { titulo: string; texto: string }[] }
   | { tipo: 'cifras'; kicker: string; titulo: string; cifras: { valor: string; etiqueta: string }[]; fuente?: string }
@@ -184,5 +184,5 @@ export const SLIDES: Slide[] = [
       { titulo: 'Ved un día en Tenique en vivo', texto: 'La simulación con todos los perfiles moviéndose a lo largo de un día.', destino: 'gestion' },
     ],
   },
-  { tipo: 'final', titulo: 'Somos Nova', subtitulo: '¿Preguntas?' },
+  { tipo: 'final', titulo: 'Somos Nova', frase: 'Estos dos días nos hemos sentido parte de Tenerife. Esperamos haberos hecho sentir orgullo de ella.', subtitulo: '¿Preguntas?' },
 ]

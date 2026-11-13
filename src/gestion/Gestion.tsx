@@ -163,6 +163,11 @@ export default function Gestion() {
       </div>
 
       <header className="gs-barra">
+        {window.self === window.top && (
+          <Link className="gs-volver" to="/tenique" onClick={(e) => { if (window.history.length > 1) { e.preventDefault(); window.history.back() } }} aria-label="Volver a la web">
+            <Icon name="left" size={16} /> Volver
+          </Link>
+        )}
         <img className="gs-logo" src={import.meta.env.BASE_URL + 'img/marca/turismo-tenerife-blanco.png'} alt="Turismo de Tenerife" />
         <div className="gs-titulo"><h1>Panel de gestión</h1><span>Tenique · Turismo de Tenerife</span></div>
         <div className="gs-seg gs-vista" role="group" aria-label="Vista del panel">

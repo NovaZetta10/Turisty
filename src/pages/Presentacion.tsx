@@ -308,6 +308,7 @@ function Contenido({ s }: { s: Slide }) {
       return (
         <div className="s-final">
           <A i={0} className="s-pop"><div className="s-mega">{s.titulo}</div></A>
+          {s.frase && <A i={1}><p className="s-final-frase">{s.frase}</p></A>}
           <A i={2} className="s-final-equipo">
             <span>{EQUIPO.map((m) => m.nombre.split(' ').slice(0, 1).join(' ')).join(' · ')}</span>
           </A>

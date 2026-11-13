@@ -211,3 +211,8 @@
   .gs > :not(.gs-girar) { display: none; }
   .gs-girar { position: fixed; }
 }
+
+/* Volver a la web (solo cuando el panel no está embebido en la pestaña Tenique) */
+.gs-volver { display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px 6px 8px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--text); text-decoration: none; font-size: 13px; font-weight: 600; white-space: nowrap; transition: background-color .15s var(--ease-out), transform .12s var(--ease-out); }
+.gs-volver:hover { background: rgba(255, 255, 255, .08); }
+.gs-volver:active { transform: scale(.97); }
