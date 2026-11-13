@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import {
-  AVISO_SERIES, AVISO_TENERIFE, CAUSAS, CIFRAS_2026, CIFRAS_TENERIFE, DATOS_ABIERTOS, FUENTES, GUION, HALLAZGO_JOVENES, HIPOTESIS, IMPORTA_ARRASTRE, IMPORTA_TURISMO,
+  AVISO_SERIES, AVISO_TENERIFE, CAUSAS, CIFRAS_2026, CIFRAS_TENERIFE, DATOS_ABIERTOS, FUENTES, GUION, HALLAZGO_JOVENES, HIPOTESIS, IMPORTA_ARRASTRE, IMPORTA_TURISMO, SONDEO, type ItemSondeo,
   ANTES_DESPUES, MUNICIPIO_EXISTE, MUNICIPIO_NO_EXISTE, PERCEPCION, PRESION, PRESION_TENERIFE, REFERENTES, RESPUESTA_RETO, RETORNO, RETORNO_COMPROMISO, RETORNO_HUECOS,
   SIN_ANTES_DESPUES,
   TURISTAS_TF_ENE_SEP, ZONAS, type Municipio, type Percepcion,
@@ -147,6 +147,73 @@ function Compromiso() {
       <ol className="list small">{RETORNO_COMPROMISO.pasos.map((x) => <li key={x}>{x}</li>)}</ol>
       <p className="small muted">Es una propuesta: hoy nadie publica estas cifras y no las inventamos. El reto lo señala como carencia.</p>
     </div>
+  )
+}
+
+/** Barras de acuerdo del sondeo. Con `desacuerdo`, la barra se parte en acuerdo / desacuerdo. */
+function BarrasSondeo({ items, tipo }: { items: ItemSondeo[]; tipo: 'coste' | 'beneficio' | 'falta' }) {
+  return (
+    <ul className="perc-list sond-list">
+      {items.map((x) => (
+        <li key={x.texto} className={`perc sond ${tipo}`}>
+          <span className="perc-t">{x.texto}</span>
+          <span className="perc-v">{x.acuerdo} %{x.desacuerdo != null && <small>en desacuerdo: {x.desacuerdo} %</small>}</span>
+          <span className="perc-bar" aria-hidden="true">
+            <i style={{ transform: `scaleX(${x.acuerdo / 100})` }} />
+            {x.desacuerdo != null && <i className="sond-no" style={{ transform: `scaleX(${x.desacuerdo / 100})` }} />}
+          </span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+/** «Nuestro sondeo (exploratorio)»: encuesta propia, muestra de conveniencia. */
+function Sondeo() {
+  return (
+    <section className="section">
+      <div className="section-head"><div><h2>Nuestro sondeo (exploratorio)</h2><p>Lo preguntamos a {SONDEO.n} residentes cercanos al equipo el {SONDEO.fecha}. Porcentaje «de acuerdo» o «muy de acuerdo».</p></div></div>
+      <p className="nota sond-aviso"><Icon name="alert" size={14} /> Es una muestra de conveniencia y no es representativa: sobre todo gente joven ({SONDEO.edad}). Sirve para orientar las entrevistas, no para medir la isla. <Refs ids={SONDEO.fuentes} /></p>
+
+      <div className="card sond-mensaje">
+        <div className="kicker">Lo que nos dice</div>
+        <p>Valoran el encuentro con la gente de fuera (79 %), pero sienten que su cultura y su economía local no ganan: solo el 23 % cree que el turismo mantiene la identidad y el 32 %, que impulsa el consumo de productos locales. Ese es el hueco de Tenique.</p>
+      </div>
+
+      <div className="grid g2 sond-cols">
+        <div className="card">
+          <h3>Lo que valoran</h3>
+          <BarrasSondeo items={SONDEO.valoran} tipo="beneficio" />
+        </div>
+        <div className="card">
+          <h3>Lo que echan de menos</h3>
+          <BarrasSondeo items={SONDEO.echanDeMenos} tipo="falta" />
+          <p className="small muted sond-ley"><i className="sond-key si" /> de acuerdo · <i className="sond-key no" /> en desacuerdo</p>
+        </div>
+      </div>
+
+      <div className="grid g2 sond-cols">
+        <div className="card">
+          <h3>Los problemas que ven</h3>
+          <BarrasSondeo items={SONDEO.problemas} tipo="coste" />
+        </div>
+        <div className="card sond-lado">
+          <div>
+            <h3>Qué cambiarían</h3>
+            <p className="small muted">Pregunta abierta, resumida por temas.</p>
+            <ul className="list small">{SONDEO.temas.map((t) => <li key={t}>{t}</li>)}</ul>
+          </div>
+          <div>
+            <h3>Frente al ISTAC</h3>
+            <p className="small">Aquí, el 79 % ve tensiones entre residentes y turistas; en la encuesta oficial, el 53,9 % <Refs ids={[49]} />. No son comparables: nuestra muestra es pequeña y muy joven. Encaja con la hipótesis H10, que dice que los jóvenes son los más críticos.</p>
+          </div>
+          <div>
+            <h3>Línea base</h3>
+            <p className="small">Repetiremos las mismas preguntas a quien participe en la prueba de concepto de dos semanas, antes y después, para ver si algo cambia.</p>
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }
 
@@ -305,6 +372,8 @@ export default function Investigacion() {
               <div className="section-head"><div><h2>Qué piensan los residentes</h2><p>Elige la zona. En dos años casi todo lo bueno baja y casi todo lo malo sube.</p></div></div>
               <Percepciones />
             </section>
+
+            <Sondeo />
 
             <section className="section">
               <div className="section-head"><div><h2>Cuatro Tenerifes</h2><p>El malestar no es igual en el sur que en Santa Cruz o en un pueblo del norte.</p></div></div>
@@ -489,9 +558,9 @@ export default function Investigacion() {
                     <div style={{ minWidth: 0 }}>
                       <div className="t">{x.titulo}</div>
                       <div className="m">{x.medio}{x.fecha ? ` · ${x.fecha}` : ''}</div>
-                      <a className="url" href={x.url} target="_blank" rel="noreferrer">{x.url}</a>
+                      {x.url ? <a className="url" href={x.url} target="_blank" rel="noreferrer">{x.url}</a> : <span className="url">Sin enlace público: solo se publican porcentajes agregados.</span>}
                     </div>
-                    {x.abierta ? <span className="tag ok"><Icon name="check" size={12} />Abierta</span> : <span className="tag warn">No se pudo abrir</span>}
+                    {!x.url ? <span className="tag">Propia</span> : x.abierta ? <span className="tag ok"><Icon name="check" size={12} />Abierta</span> : <span className="tag warn">No se pudo abrir</span>}
                   </div>
                 ))}
               </div>

@@ -111,3 +111,18 @@ select.search.tu-muni-sel option { background-color: var(--night-2); color: var(
 .imp-mariposa { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; border-color: color-mix(in srgb, var(--ok) 40%, transparent); }
 .imp-idea { font-size: 16px; font-weight: 600; color: var(--text); }
 @media (max-width: 480px) { .imp-serie { gap: 6px; } .imp-serie li { padding: 8px; } .imp-serie b { font-size: 17px; } .imp-serie small { font-size: 10px; letter-spacing: .02em; } }
+
+/* Nuestro sondeo (exploratorio) */
+.sond-aviso { margin: 0 0 16px; }
+.sond-mensaje { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; border-color: color-mix(in srgb, var(--nova) 40%, transparent); }
+.sond-mensaje p { font-size: 15px; color: var(--text); }
+.sond-cols { margin-top: 16px; }
+.sond-cols h3 { font-size: 16px; }
+.sond.falta .perc-bar i:first-child { background: var(--accent-fill); }
+.sond.falta .perc-bar i.sond-no { background: var(--muted); opacity: .45; transform-origin: right; }
+.sond-ley { margin-top: 12px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.sond-key { display: inline-block; width: 10px; height: 10px; border-radius: 2px; }
+.sond-key.si { background: var(--accent-fill); }
+.sond-key.no { background: var(--muted); opacity: .45; }
+.sond-lado { display: flex; flex-direction: column; gap: 16px; }
+.sond-lado .list { margin-top: 6px; }

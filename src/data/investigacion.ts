@@ -103,6 +103,7 @@ export const FUENTES: Fuente[] = [
   { id: 95, titulo: 'Juventud · Ayuntamiento de Adeje', medio: 'Ayuntamiento de Adeje', fecha: 'consultado el 12-11-2026', url: 'https://www.adeje.es/juventud', abierta: true },
   { id: 96, titulo: 'Estudio IMPACTUR Canarias 2024 y avance 2025 (PDF)', medio: 'Exceltur y Gobierno de Canarias', fecha: '05-2026', url: 'https://www.exceltur.org/wp-content/uploads/2026/05/Estudio-IMPACTUR-Canarias-2024-y-Avance-2025_.pdf', abierta: true },
   { id: 97, titulo: 'Indicador «Paro registrado», islas, mensual', medio: 'ISTAC · API de indicadores', fecha: 'consultado el 12-11-2026', url: 'https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PARO_REGISTRADO', abierta: true },
+  { id: 98, titulo: 'Encuesta propia del equipo Nova (Google Forms), n = 47 residentes mayores de edad; muestra de conveniencia, no representativa', medio: 'Equipo Nova', fecha: '12-11-2026', url: '', abierta: true },
 ]
 
 export type Dato = { etiqueta: string; valor: string; detalle?: string; fuentes: number[]; verificado: boolean }
@@ -456,6 +457,54 @@ export const IMPORTA_TURISMO: Serie[] = [
 export const IMPORTA_ARRASTRE = {
   texto: 'Por cada 100 € que generan directamente las empresas turísticas, se mueven 44,5 € en otros sectores: alimentación, comercio, logística, construcción, energía, servicios a empresas e industria. Y por cada 100 empleos turísticos, 38,5 más fuera del turismo (33,8 en 2019).',
   fuentes: [96],
+}
+
+/**
+ * Nuestro sondeo exploratorio (fuente 98). Muestra de conveniencia: personas cercanas al equipo, sobre todo jóvenes.
+ * No es representativo. Solo porcentajes agregados: ni respuestas literales ni datos que identifiquen a nadie.
+ * El Excel de respuestas no va al repositorio.
+ */
+export type ItemSondeo = { texto: string; acuerdo: number; desacuerdo?: number }
+
+export const SONDEO = {
+  n: 47,
+  fecha: '12-11-2026',
+  edad: '64 % de 18 a 24 años y 26 % de 25 a 34',
+  problemas: [
+    { texto: 'Encarece la vivienda', acuerdo: 91 },
+    { texto: 'Perjudica el tráfico y la movilidad', acuerdo: 91 },
+    { texto: 'Daña los ecosistemas', acuerdo: 87 },
+    { texto: 'Encarece el coste de la vida', acuerdo: 85 },
+    { texto: 'Provoca cambios de residencia no deseados', acuerdo: 83 },
+    { texto: 'Consume agua, energía o suelo en detrimento de los residentes', acuerdo: 83 },
+    { texto: 'Causa tensiones entre residentes y turistas', acuerdo: 79 },
+    { texto: 'Genera demasiados residuos', acuerdo: 77 },
+    { texto: 'Crea empleo precario', acuerdo: 68 },
+    { texto: 'Colapsa la sanidad', acuerdo: 43 },
+  ] as ItemSondeo[],
+  valoran: [
+    { texto: 'Permite relacionarse con gente de otros lugares', acuerdo: 79 },
+    { texto: 'Aumenta la oferta cultural y festiva', acuerdo: 60 },
+    { texto: 'Contribuye al desarrollo económico', acuerdo: 57 },
+    { texto: 'Favorece el intercambio entre culturas', acuerdo: 53 },
+  ] as ItemSondeo[],
+  echanDeMenos: [
+    { texto: 'Mantiene la identidad, la cultura y las tradiciones', acuerdo: 23, desacuerdo: 70 },
+    { texto: 'Contribuye al consumo de productos locales', acuerdo: 32, desacuerdo: 45 },
+    { texto: 'Aumenta la calidad de vida de los residentes', acuerdo: 15, desacuerdo: 64 },
+    { texto: 'Sus beneficios son muy superiores a sus costes', acuerdo: 21, desacuerdo: 60 },
+    { texto: 'Hay que seguir potenciándolo como motor', acuerdo: 26, desacuerdo: 57 },
+    { texto: 'Ayuda a conservar los espacios naturales', acuerdo: 9, desacuerdo: 64 },
+  ] as ItemSondeo[],
+  /** Resumen por temas de la pregunta abierta, de más a menos repetido. Sin citas. */
+  temas: [
+    'Controlar o limitar el número de turistas y la masificación (lo más repetido).',
+    'Regular la vivienda vacacional.',
+    'Que los beneficios lleguen al pueblo y al comercio local.',
+    'Respeto a la cultura y al entorno; turismo de calidad.',
+    'Tasas en los lugares saturados.',
+  ],
+  fuentes: [98],
 }
 
 /** Lo que devuelve el turismo a Tenerife, con lo que hay publicado. */
